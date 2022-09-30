@@ -4,6 +4,7 @@ ispwApplication:
   encryptionProtocol: None
   host: cw09.compuware.com
   hostCodePage: '1047'
+  sandbox: 'N'
   pathMappings:
   - path: \AMAC
     types:
@@ -55,8 +56,9 @@ ispwApplication:
       ispwType: CMAP
   - path: \COB
     types:
-    - fileExtension: cob
+    - fileExtension: cob   
       ispwType: COB
+      progType: 'Yes'
   - path: \COPY
     types:
     - fileExtension: copy
