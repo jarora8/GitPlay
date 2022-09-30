@@ -17,4 +17,4 @@ node {
     stream: 'PLAY',
     ispwConfigPath: 'ispwconfig.yml' 
   }  
-}
+  
