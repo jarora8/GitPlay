@@ -7,7 +7,7 @@
 000700********************************************************
 000800* THIS PROGRAM IS A TRAINING PROGRAM
 000900*      WITH A LINK TO TSUBR07
-001000*			CMD Test3
+001000*			Test Jenkins Instance 1
 001100*      AND COPYLIBS   TCPYA07   (HEADER)
 001200*                     TCPYB07   (LINK AREA)
 001300* ======================================================
