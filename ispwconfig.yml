@@ -1,8 +1,8 @@
 !!com.compuware.ispw.wzzms.models.IspwRoot
 ispwApplication:
-  application: PLAY
+  application: TXX2
   encryptionProtocol: None
-  host: cw09.compuware.com
+  host: 192.168.96.142
   hostCodePage: '1047'
   pathMappings:
   - path: \AMAC
@@ -293,7 +293,7 @@ ispwApplication:
     types:
     - fileExtension: zip
       ispwType: ZIP
-  port: 47623
+  port: 16196
   readWriteTimeout: 90
-  runtimeConfig: tpzp
-  stream: PLAY
+  runtimeConfig: ISP8
+  stream: CWEZ
