@@ -1,0 +1,46 @@
+000100******************************************************************00010000
+000200*    THIS COPY BOOK CONTAINS THE TRANSACTION SORT KEYS           *00020000
+000300*    THAT CONTROL THE PRINTING OF THE FREE FORM STATEMENT.       *00030000
+000400******************************************************************00040000
+000500*01  TRANSACTION-SORT-KEYS.                                       00050000
+000600                                                                  00060000
+000700*    THESE KEYS ARE FOR DDA AND SAVINGS TRANSACTIONS              00070000
+000800                                                                  00080000
+000900     02  HDR-KEY             PIC XX      VALUE 'AA'.              00090000
+001000     02  NOW-HDR-KEY         PIC XX      VALUE 'AD'.              00100000
+001100     02  DEP-KEY             PIC XX      VALUE 'AG'.              00110000
+001200     02  MAT-INT-INV-KEY     PIC XX      VALUE 'AJ'.              00120000
+001300     02  CHECKPLUS-CRED-KEY  PIC XX      VALUE 'AG'.              00130003
+001400     02  ATM-DEPOSIT-KEY     PIC XX      VALUE 'AG'.              00140003
+001500     02  NON-SER-CHK-KEY     PIC XX      VALUE 'AS'.              00150002
+001600     02  SER-CHK-KEY         PIC XX      VALUE 'AV'.              00160002
+001700     02  CHECKPLUS-DEB-KEY   PIC XX      VALUE 'BB'.              00170003
+001800     02  PAYLINE-PAYMENT-KEY PIC XX      VALUE 'BB'.              00180002
+001900     02  ATM-WITHDRAWAL-KEY  PIC XX      VALUE 'BB'.              00190003
+002000     02  NON-SER-NON-CHK-KEY PIC XX      VALUE 'BH'.              00200002
+002100     02  NON-SER-SC-KEY      PIC XX      VALUE 'BH'.              00210003
+002200     02  PUR-INV-KEY         PIC XX      VALUE 'BN'.              00220002
+002300     02  TRLR-KEY            PIC XX      VALUE 'BZ'.              00230002
+002400                                                                  00240000
+002500                                                                  00250000
+002600*    THESE KEYS ARE FOR INVESTMENT TRANSACTIONS                   00260000
+002700                                                                  00270000
+002800     02  INV-HDR-KEY         PIC XX      VALUE 'DA'.              00280000
+002900     02  INV-PUR-KEY         PIC XX      VALUE 'DG'.              00290000
+003000     02  INV-MAT-KEY         PIC XX      VALUE 'DJ'.              00300000
+003100     02  INV-INT-KEY         PIC XX      VALUE 'DM'.              00310000
+003200     02  INV-TAX-KEY         PIC XX      VALUE 'DP'.              00320000
+003300     02  INV-TRLR-KEY        PIC XX      VALUE 'DZ'.              00330000
+003400                                                                  00340000
+003500                                                                  00350000
+003600*    THESE KEYS ARE FOR OVERDRAFT BANKING TRANSACTIONS            00360000
+003700                                                                  00370000
+003800     02  ODB-HDR-KEY         PIC XX      VALUE 'GA'.              00380000
+003900     02  ODB-HDR-2-KEY       PIC XX      VALUE 'GD'.              00390000
+004000     02  ODB-PAY-ADV-KEY     PIC XX      VALUE 'GG'.              00400000
+004010     02  ODB-MIN-PAY-KEY2    PIC XX      VALUE 'GH'.              00401004
+004100     02  ODB-FIN-CHG-KEY     PIC XX      VALUE 'GJ'.              00410000
+004200     02  ODB-INS-CHG-KEY     PIC XX      VALUE 'GM'.              00420000
+004210     02  ODB-FIN-CHG-KEY2    PIC XX      VALUE 'GN'.              00421004
+004300     02  ODB-MIN-PAY-KEY     PIC XX      VALUE 'GP'.              00430000
+004400     02  ODB-TRLR-KEY        PIC XX      VALUE 'GZ'.              00440000

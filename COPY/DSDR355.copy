@@ -1,0 +1,21 @@
+000100*01  LIST-POST.                                                   00010000
+000200     02  LP-BANK-NO          PIC 99.                              00020000
+000300     02  LP-REPORT-CODE      PIC S999                    COMP-3.  00030000
+000400     02  LP-SORT-KEY         PIC X(20).                           00040000
+000500     02  LP-ACCT-ID          PIC 999                     COMP-3.  00050000
+000600     02  LP-ACCT-NO          PIC 9(9)                    COMP-3.  00060000
+000700     02  LP-CRF-REC-ID       PIC X(11).                           00070000
+000800     02  LP-SHORT-NM         PIC X(14).                           00080000
+000900     02  LP-CONTINUATION     PIC S999                    COMP-3.  00090000
+001000         88  LP-DETAIL-RECORD            VALUE +001.              00100000
+001100         88  LP-TOTAL-RECORD             VALUE +002.              00110000
+001200     02  LP-TX-AMT           PIC S9(9)V99                COMP-3.  00120000
+001300     02  LP-ITEM-ID          PIC X(6).                            00130000
+001400     02  FILLER REDEFINES LP-ITEM-ID.                             00140000
+001500         03  LP-BATCH-NO     PIC S9(5)                   COMP-3.  00150000
+001600         03  LP-SEQ-NO       PIC S9(5)                   COMP-3.  00160000
+001700     02  LP-CHK-NO           PIC S9(9)                   COMP-3.  00170000
+001800     02  FILLER              PIC X(125).                          00180001
+001900*  THIS RECORD LAYOUT IS USED FOR REPORT CODE 55                  00190000
+002000*  THIS RECORD IS 200 CHARACTERS                                  00200000
+002100*        55 = LIST POST                                           00210000

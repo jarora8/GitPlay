@@ -1,0 +1,26 @@
+000100*01  OVERDRAFT-BANKING-TRLR.                                      00010000
+000200     02  ODT-BANK-NO          PIC 99.                             00020003
+000300     02  ODT-ACCT-ID          PIC 999                     COMP-3. 00030003
+000400     02  ODT-ACCT-NO          PIC 9(9)                    COMP-3. 00040003
+000500     02  ODT-REPORT-CODE      PIC S999                    COMP-3. 00050003
+000600     02  ODT-ODB-STATUS       PIC XX.                             00060003
+000700     02  ODT-GR-LOAN-BAL      PIC S9(11)V99               COMP-3. 00070003
+000800     02  ODT-NEW-INT-RATE     PIC SV9(5)                  COMP-3. 00080003
+000900     02  ODT-FILLER1          PIC X.                              00090003
+001000     02  ODT-SORT-KEY         PIC XX.                             00100003
+001100     02  ODT-CURR-PROC-DT     PIC S9(7)                   COMP-3. 00110003
+001200     02  ODT-AVG-BAL-TO-COMP  PIC S9(9)V99                COMP-3. 00120003
+001300     02  ODT-INT-RATE-1       PIC SV9(5)                  COMP-3. 00130003
+001400     02  ODT-INT-AMT-1        PIC S9(9)V99                COMP-3. 00140003
+001500     02  ODT-INT-RATE-2       PIC SV9(5)                  COMP-3. 00150003
+001600     02  ODT-ACCT-TO-CHRG     PIC 9(9)                    COMP-3. 00160003
+001700     02  ODT-AMT-TO-CHRG      PIC S9(9)V99                COMP-3. 00170003
+001800     02  ODT-2ND-RATE-IND     PIC X.                              00180003
+001910     02  ODT-INT-CHG-1        PIC S9(5)V99                COMP-3. 00191003
+001920     02  ODT-INT-CHG-2        PIC S9(5)V99                COMP-3. 00192003
+001921     02  ODT-AVG-BAL-TO-COMP2 PIC S9(9)V99                COMP-3. 00192103
+001922     02  ODT-GR-LOAN-BAL2     PIC S9(11)V99               COMP-3. 00192204
+001930     02  ODT-FILLER2          PIC X(144).                         00193004
+002000*  THIS LAYOUT IS USED FOR THE OVERDRAFT BANKING TRAILER.         00200000
+002100*  REPORT CODE 995.                                               00210000
+002200*  THIS RECORD IS 225 CHARACTERS.                                 00220000

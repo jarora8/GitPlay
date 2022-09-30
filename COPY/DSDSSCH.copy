@@ -1,0 +1,46 @@
+000100*01  PD-SC-STMT-HDR.                                              00010000
+000200     02  SCH-BANK-NO         PIC 99.                              00020000
+000300     02  SCH-ACCT-ID         PIC 999                     COMP-3.  00030000
+000400     02  SCH-ACCT-NO         PIC 9(9)                    COMP-3.  00040000
+000500     02  SCH-REPORT-CODE     PIC S999                    COMP-3.  00050000
+000600     02  SCH-REL-ACCT-CODE   PIC 9(7)                    COMP-3.  00060000
+000700     02  SCH-OFF-CODE1       PIC XXX.                             00070000
+000800     02  SCH-SC-CODE.                                             00080000
+000900         03  SCH-SC-DISP     PIC 9.                               00090000
+001000         03  SCH-SC-ROUTINE  PIC 99.                              00100000
+001100     02  SCH-ACCT-TYPE.                                           00110000
+001200         03  SCH-DISP-CODE   PIC X.                               00120000
+001300             88  SCH-FIXED-ACCT          VALUE '0'.               00130000
+001400             88  SCH-AUTO-CLOSE          VALUE '1'.               00140000
+001500             88  SCH-BANK-EMP-PAYROLL    VALUE '8'.               00150000
+001600             88  SCH-BANK-EMPLOYEE       VALUE '8' '9'.           00160000
+001700         03  SCH-TYPE-CODE   PIC 99.                              00170000
+001800             88  SCH-PERSONAL            VALUE 01 02 08           00180000
+001900                                               40 60 73           00190000
+002000                                               80 THRU 84.        00200000
+002100     02  SCH-ACCT-CLASS      PIC XXX.                             00210000
+002200         88  SCH-DDA-ACCOUNT             VALUE 'DDA'.             00220000
+002300         88  SCH-NOW-ACCOUNT             VALUE 'NOW'.             00230000
+002400         88  SCH-IMM-ACCOUNT             VALUE 'IMM' 'IMP' 'IMT'  00240000
+002500                                               'IMA' 'IML'.       00250000
+002600         88  SCH-IMP-ACCOUNT             VALUE 'IMP'.             00260000
+002700         88  SCH-IMT-ACCOUNT             VALUE 'IMT'.             00270000
+002800         88  SCH-IMA-ACCOUNT             VALUE 'IMA'.             00280000
+002900         88  SCH-IML-ACCOUNT             VALUE 'IML'.             00290000
+003000         88  SCH-CMM-ACCOUNT             VALUE 'CMM'.             00300000
+003100         88  SCH-SAV-ACCOUNT             VALUE 'SAV'.             00310000
+003200         88  SCH-CC-ACCOUNT              VALUE 'CC '.             00320000
+003300     02  SCH-SC-ANL-STMT-IND PIC X.                               00330000
+003400         88  SCH-SC-STMT                 VALUE '1'.               00340000
+003500         88  SCH-ANL-STMT                VALUE '2' '3'.           00350000
+003600         88  SCH-SC-ANL-STMT             VALUE '4' '5'.           00360000
+003700     02  SCH-SC-ANAL-OFFICER PIC X(20).                           00370000
+003800     02  SCH-INV-SWEEP-FEE   PIC S9(7)V99                COMP-3.  00380000
+003900     02  SCH-INV-ACCR-BASIS-IND                                   00390000
+004000                             PIC X.                               00400000
+004100     02  SCH-PC-DIALUP-INQ-FEE                                    00410000
+004200                             PIC S9(7)V99                COMP-3.  00420000
+004300     02  SCH-FILLER          PIC X(166).                          00430001
+004400*  THIS LAYOUT IS USED FOR A SERVICE CHARGE STATEMENT HEADER.     00440000
+004500*    REPORT CODE IS 041 OR 042.                                   00450000
+004600*  THIS RECORD IS 225 CHARACTERS.                                 00460000

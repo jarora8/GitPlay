@@ -1,0 +1,166 @@
+000100*01  RELATIONSHIP-BANKING-BALANCES.                               00010000
+000200     05  RBB-RECORD-ID.                                           00020000
+000300         10  RBB-BANK-NO     PIC 99.                              00030000
+000400         10  RBB-ACCT-ID     PIC 999                     COMP-3.  00040000
+000500         10  RBB-ACCT-NO     PIC 9(9)                    COMP-3.  00050000
+000600*                                                                 00060000
+000700     05  RBB-CURR-DATE       PIC 9(7)                    COMP-3.  00070000
+000800*                                                                 00080000
+000900     05  RBB-BALANCES.                                            00090000
+001000*                                                                 00100000
+001100         10  RBB-TOT-DDA-AVG-CUR-BAL                              00110000
+001200                             PIC S9(9)V99                COMP-3.  00120000
+001300         10  RBB-TOT-DDA-AVG-COL-BAL                              00130000
+001400                             PIC S9(9)V99                COMP-3.  00140000
+001500         10  RBB-TOT-DDA-LOW-BAL                                  00150000
+001600                             PIC S9(9)V99                COMP-3.  00160000
+001700*                                                                 00170000
+001800*                                                                 00180000
+001900         10  RBB-TOT-NOW-AVG-CUR-BAL                              00190000
+002000                             PIC S9(9)V99                COMP-3.  00200000
+002100         10  RBB-TOT-NOW-AVG-COL-BAL                              00210000
+002200                             PIC S9(9)V99                COMP-3.  00220000
+002300         10  RBB-TOT-NOW-LOW-BAL                                  00230000
+002400                             PIC S9(9)V99                COMP-3.  00240000
+002500*                                                                 00250000
+002600*                                                                 00260000
+002700         10  RBB-TOT-IMM-AVG-CUR-BAL                              00270000
+002800                             PIC S9(9)V99                COMP-3.  00280000
+002900         10  RBB-TOT-IMM-AVG-COL-BAL                              00290000
+003000                             PIC S9(9)V99                COMP-3.  00300000
+003100         10  RBB-TOT-IMM-LOW-BAL                                  00310000
+003200                             PIC S9(9)V99                COMP-3.  00320000
+003300*                                                                 00330000
+003400*                                                                 00340000
+003500         10  RBB-TOT-CMM-AVG-CUR-BAL                              00350000
+003600                             PIC S9(9)V99                COMP-3.  00360000
+003700         10  RBB-TOT-CMM-AVG-COL-BAL                              00370000
+003800                             PIC S9(9)V99                COMP-3.  00380000
+003900         10  RBB-TOT-CMM-LOW-BAL                                  00390000
+004000                             PIC S9(9)V99                COMP-3.  00400000
+004100*                                                                 00410000
+004200*                                                                 00420000
+004300         10  RBB-TOT-SAV-AVG-CUR-BAL                              00430000
+004400                             PIC S9(9)V99                COMP-3.  00440000
+004500         10  RBB-TOT-SAV-AVG-COL-BAL                              00450000
+004600                             PIC S9(9)V99                COMP-3.  00460000
+004700         10  RBB-TOT-SAV-LOW-BAL                                  00470000
+004800                             PIC S9(9)V99                COMP-3.  00480000
+004900*                                                                 00490000
+005000*                                                                 00500000
+005100         10  RBB-TOT-INV-BAL PIC S9(9)V99                COMP-3.  00510002
+005200         10  RBB-TOT-CIA-BAL PIC S9(9)V99                COMP-3.  00520005
+005300         10  FILLER          PIC X(6).                            00530005
+005400*                                                                 00540002
+005500*                                                                 00550002
+005600         10  RBB-TOT-CC-CUR-BAL                                   00560000
+005700                             PIC S9(9)V99                COMP-3.  00570000
+005800*                                                                 00580000
+005900*                                                                 00590000
+006000         10  RBB-TOT-CD-CUR-BAL                                   00600000
+006100                             PIC S9(9)V99                COMP-3.  00610000
+006200         10  RBB-TOT-IRA-CUR-BAL                                  00620000
+006300                             PIC S9(9)V99                COMP-3.  00630000
+006400*                                                                 00640000
+006500*                                                                 00650000
+006600         10  RBB-TOT-CD-LST-STMT-BAL                              00660000
+006700                             PIC S9(9)V99                COMP-3.  00670000
+006800*                                                                 00680000
+006900*                                                                 00690000
+007000         10  RBB-BIG-DDA-AVG-CUR-BAL                              00700000
+007100                             PIC S9(9)V99                COMP-3.  00710000
+007200         10  RBB-BIG-DDA-AVG-COL-BAL                              00720000
+007300                             PIC S9(9)V99                COMP-3.  00730000
+007400         10  RBB-BIG-DDA-LOW-BAL                                  00740000
+007500                             PIC S9(9)V99                COMP-3.  00750000
+007600*                                                                 00760000
+007700*                                                                 00770000
+007800         10  RBB-BIG-IMM-AVG-CUR-BAL                              00780000
+007900                             PIC S9(9)V99                COMP-3.  00790000
+008000         10  RBB-BIG-IMM-AVG-COL-BAL                              00800000
+008100                             PIC S9(9)V99                COMP-3.  00810000
+008200         10  RBB-BIG-IMM-LOW-BAL                                  00820000
+008300                             PIC S9(9)V99                COMP-3.  00830000
+008400*                                                                 00840000
+008500*                                                                 00850000
+008600         10  RBB-BIG-SAV-AVG-CUR-BAL                              00860000
+008700                             PIC S9(9)V99                COMP-3.  00870000
+008800         10  RBB-BIG-SAV-AVG-COL-BAL                              00880000
+008900                             PIC S9(9)V99                COMP-3.  00890000
+009000         10  RBB-BIG-SAV-LOW-BAL                                  00900000
+009100                             PIC S9(9)V99                COMP-3.  00910000
+009200*                                                                 00920000
+009300*                                                                 00930000
+009400         10  RBB-TOT-SEC-DDA-AVG-CUR-BAL                          00940004
+009500                             PIC S9(9)V99                COMP-3.  00950000
+009600         10  RBB-TOT-SEC-DDA-AVG-COL-BAL                          00960004
+009700                             PIC S9(9)V99                COMP-3.  00970000
+009800         10  RBB-TOT-SEC-DDA-LOW-BAL                              00980004
+009900                             PIC S9(9)V99                COMP-3.  00990000
+010000*                                                                 01000000
+010100*                                                                 01010000
+010200         10  RBB-BIG-CD-LST-STMT-BAL                              01020000
+010300                             PIC S9(9)V99                COMP-3.  01030000
+010400*                                                                 01040000
+010500*                                                                 01050000
+010600         10  RBB-TOT-SEC-IRA-CUR-BAL                              01060000
+010700                             PIC S9(9)V99                COMP-3.  01070000
+010800*                                                                 01080000
+010900*                                                                 01090000
+011000     05  FILLER-A            PIC X(20).                           01100004
+011100*                                                                 01110001
+011200     05  RBB-CLASSIC-PRIMARY PIC X.                               01120001
+011300*                                                                 01130000
+011301******************************************************************01130106
+011302*                                                        COPYBOOK*01130200
+011303*                                                                *01130300
+011304* PURPOSE: THIS LAYOUT WILL BE USED TO STORE RELATIONSHIP        *01130406
+011305*  BANKING BALANCES.                                             *01130506
+011306*                                                                *01130606
+011307* LENGTH OF COPYBOOK: 250 BYTES                                  *01130706
+011308* LENGTH OF SORT KEY: N/A                                        *01130806
+011309*                                                                *01130906
+011310* USAGE: USE CALL IN DSDS BATCH PROGRAMS FOR SERVICE CHARGE      *01131006
+011311*   ROUTINE PROCESSING                                           *01131106
+011312*                                                                *01131206
+011313* FIELD DESCRIPTION/VALUES:                                      *01131306
+011314*                                                                *01131406
+011315*   RBB-RECORD-ID               RECORD ID                        *01131506
+011320*   RBB-CURR-DATE               CURRENT DATE                     *01132006
+011324*   RBB-TOT-DDA-AVG-CUR-BAL     TOTAL DDA AVG CURRENT BALANCE    *01132406
+011326*   RBB-TOT-DDA-AVG-COL-BAL     TOTAL DDA AVG COLLECTED BALANCE  *01132606
+011328*   RBB-TOT-DDA-LOW-BAL         TOTAL DDA LOW BALANCE            *01132806
+011332*   RBB-TOT-NOW-AVG-CUR-BAL     TOTAL NOW AVG CURRENT BALANCE    *01133206
+011334*   RBB-TOT-NOW-AVG-COL-BAL     TOTAL NOW AVG COLLECTED BALANCE  *01133406
+011336*   RBB-TOT-NOW-LOW-BAL         TOTAL NOW LOW BALANCE            *01133606
+011340*   RBB-TOT-IMM-AVG-CUR-BAL     TOTAL IMM AVG CURRENT BALANCE    *01134006
+011342*   RBB-TOT-IMM-AVG-COL-BAL     TOTAL IMM AVG COLLECTED BALANCE  *01134206
+011344*   RBB-TOT-IMM-LOW-BAL         TOTAL IMM LOW BALANCE            *01134406
+011348*   RBB-TOT-CMM-AVG-CUR-BAL     TOTAL CMM AVG CURRENT BALANCE    *01134806
+011350*   RBB-TOT-CMM-AVG-COL-BAL     TOTAL CMM AVG COLLECTED BALANCE  *01135006
+011352*   RBB-TOT-CMM-LOW-BAL         TOTAL CMM LOW BALANCE            *01135206
+011356*   RBB-TOT-SAV-AVG-CUR-BAL     TOTAL SAV AVG CURRENT BALANCE    *01135606
+011358*   RBB-TOT-SAV-AVG-COL-BAL     TOTAL SAV AVG COLLECTED BALANCE  *01135806
+011360*   RBB-TOT-SAV-LOW-BAL         TOTAL SAV LOW BALANCE            *01136006
+011364*   RBB-TOT-INV-BAL             TOTAL INV BALANCE                *01136406
+011365*   RBB-TOT-CIA-BAL             TOTAL CIA BLANCE                 *01136506
+011369*   RBB-TOT-CC-CUR-BAL          TOTAL CC CURRENT BALANCE         *01136906
+011373*   RBB-TOT-CD-CUR-BAL          TOTAL CD CURRENT BALANCE         *01137306
+011375*   RBB-TOT-IRA-CUR-BAL         TOTAL IRA CURRENT BALANCE        *01137506
+011379*   RBB-TOT-CD-LST-STMT-BAL     TOTAL CD LAST STMT BALANCE       *01137906
+011383*   RBB-BIG-DDA-AVG-CUR-BAL     BIG DDA AVG CURRENT BALANCE      *01138306
+011385*   RBB-BIG-DDA-AVG-COL-BAL     BIG DDA AVG COLLECTED BALANCE    *01138506
+011387*   RBB-BIG-DDA-LOW-BAL         BIG DDA LOW BALANCE              *01138706
+011391*   RBB-BIG-IMM-AVG-CUR-BAL     BIG IMM AVG CURRENT BALANCE      *01139106
+011393*   RBB-BIG-IMM-AVG-COL-BAL     BIG IMM AVG COLLECTED BALANCE    *01139306
+011395*   RBB-BIG-IMM-LOW-BAL         BIG IMM LOW BALANCE              *01139506
+011399*   RBB-BIG-SAV-AVG-CUR-BAL     BIG SAV AVG CURRENT BALANCE      *01139906
+011410*   RBB-BIG-SAV-AVG-COL-BAL     BIG SAV AVG COLLECTED BALANCE    *01141006
+011430*   RBB-BIG-SAV-LOW-BAL         BIG SAV LOW BALANCE              *01143006
+011470*   RBB-TOT-SEC-DDA-AVG-CUR-BAL TOTAL SEC DDA AVG CUR BAL        *01147006
+011490*   RBB-TOT-SEC-DDA-AVG-COL-BAL TOTAL SEC DDA AVG COL BAL        *01149006
+011492*   RBB-TOT-SEC-DDA-LOW-BAL     TOTAL SEC DDA LOW BAL            *01149206
+011496*   RBB-BIG-CD-LST-STMT-BAL     BIG CD LAST STMT BALANCE         *01149606
+011500*   RBB-TOT-SEC-IRA-CUR-BAL     TOTAL SEC IRA CUR BAL            *01150006
+011560*   RBB-CLASSIC-PRIMARY         CLASSIC PRIMARY IND              *01156006
+011600******************************************************************01160006

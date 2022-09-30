@@ -1,0 +1,36 @@
+000025******************************************************************00002500
+000030*                                                                *00003000
+000040*                D S D S M L H     C O P Y B O O K               *00004000
+000050*                                                                *00005000
+000091******************************************************************00009100
+000100 01  ML-HELOC-ADVANCE-RECORD.                                     00010000
+000200     02  MLH-BANK-NBR            PIC 9(3)                COMP-3.  00020000
+000300     02  MLH-ACCT-ID             PIC 9(3)                COMP-3.  00030000
+000400     02  MLH-ACCT-NBR            PIC 9(9)                COMP-3.  00040000
+000500     02  MLH-SHORT-NAME          PIC X(14).                       00050000
+000600     02  MLH-ML-HELOC-NBR        PIC 9(11)               COMP-3.  00060000
+000700     02  MLH-ADVANCE-AMT         PIC S9(9)V99            COMP-3.  00070000
+000800     02  MLH-PROCESS-DATE        PIC X(10).                       00080001
+001220     02  FILLER                  PIC X(35).                       00122001
+001230******************************************************************00123000
+001240*                                                        COPYBOOK*00124000
+001250*                                                                *00125000
+001260* PURPOSE: RECORD LAYOUT FOR ML HELOC ADVANCES MADE IN DSDS100   *00126000
+001270*                                                                *00127000
+001280* LENGTH OF COPYBOOK: 80                                         *00128000
+001290* LENGTH OF SORT KEY: N/A                                        *00129000
+001300*                                                                *00130000
+001400* USAGE: USED IN THE POSTING PROGRAM (DSDS100) TO GENERATED A    *00140000
+001500*        FILE FOR ML OF THE ML HELOC ADVANCES MADE DURING POSTING*00150000
+001600*                                                                *00160000
+001700* FIELD DESCRIPTION/VALUES:                                      *00170000
+001800*                                                                *00180000
+001900*    MLH-BANK-NBR      - DSDS BANK NUMBER                       * 00190000
+002000*    MLH-ACCT-ID       - DSDS ACCOUNT ID                         *00200000
+002100*    MLH-ACCT-NBR      - DSDS ACCOUNT NUMBER                     *00210000
+002200*    MLH-SHORT-NAME    - DSDS ACCOUNT SHORT NAME                 *00220000
+002300*    MLH-ML-HELOC-NBR  - ML HELOC REM NUMBER                     *00230000
+002400*    MLH-ADVANCE-AMT   - AMOUNT ADVANCED                         *00240000
+002410*    MLH-PROCESS DATE  - PROCESSING DATE (YYYY-MM-DD)            *00241001
+002500*                                                                *00250000
+002600******************************************************************00260000

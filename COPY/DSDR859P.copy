@@ -1,0 +1,50 @@
+000010******************************************************************00001000
+000020*      DSDS SAC REPORT RECORD (REPORTS 853, 854, 855)            *00002000
+000030*   RECORD = 300 BYTES; SORT KEY = 50 BYTES;  DATA = 250 BYTES   *00003000
+000040******************************************************************00004000
+000050*01  DSDS859-REPORT-RECORD.                                       00005000
+000060     02  RPT859-REPORT-RECORD.                                    00006000
+000070         03  RPT859-BANK-NBR        PIC 9(03)             COMP-3. 00007000
+000080         03  RPT859-RPT-NBR         PIC 9(03)             COMP-3. 00008000
+000090     02  RPT859-SORT-KEY.                                         00009000
+000091         03  SORT859-BANK-NBR       PIC 9(03)             COMP-3. 00009100
+000092         03  SORT859-RPT-NBR        PIC 9(03)             COMP-3. 00009200
+000093         03  SORT859-SORT-FIELDS.                                 00009300
+000094             04  SORT859-DDA-ACCT   PIC 9(09)             COMP-3. 00009400
+000095             04  SORT859-ITEM-ID    PIC 9(10)             COMP-3. 00009500
+000096             04  SORT859-CUST-NAME  PIC X(20).                    00009600
+000097             04  SORT859-TX-CODE    PIC 9(03)             COMP-3. 00009700
+000104         03  FILLER                 PIC X(09).                    00009800
+000110     02  RPT859-DATA.                                             00009900
+000200         03  RPT859-SHORT-NAME      PIC X(20).                    00010000
+000210         03  RPT859-DDA-ACCT-NBR    PIC 9(09)             COMP-3. 00020000
+000310         03  RPT859-CUST-NBR        PIC 9(09)             COMP-3. 00030000
+000320         03  RPT859-SEQ-NBR         PIC 9(03)             COMP-3. 00031000
+000330         03  RPT859-CD-NBR          PIC 9(09)             COMP-3. 00032000
+000340         03  RPT859-TX-CODE         PIC 9(03)             COMP-3. 00033000
+000350         03  RPT859-TX-AMOUNT       PIC S9(09)V99         COMP-3. 00034000
+000360         03  RPT859-TX-DATE         PIC X(10).                    00035000
+000370         03  RPT859-BATCH-NBR       PIC 9(09)             COMP-3. 00036000
+000380         03  RPT859-BATCH-SEQ       PIC 9(03)             COMP-3. 00037000
+000390         03  RPT859-ACH-IND         PIC X(01).                    00038000
+000405         03  RPT859-SAC-BALANCE     PIC S9(09)V99         COMP-3. 00039000
+000409         03  RPT859-ITEM-ID         PIC 9(09)             COMP-3. 00040000
+000410         03  RPT859-EXCEPT-CODE     PIC 9(03)             COMP-3. 00041000
+000411         03  RPT859-EXCEPT-DESC     PIC X(40).                    00041100
+000415         03  RPT859-TYPE            PIC X(03).                    00041200
+000417         03  RPT859-STMT-CYCLE      PIC S9(03)            COMP-3. 00041300
+000418         03  RPT859-STATUS          PIC X(03).                    00041400
+000419         03  RPT859-OFF-CODE1       PIC X(03).                    00041500
+000420         03  RPT859-DT-OPENED       PIC X(10).                    00041600
+000421         03  RPT859-DT-LAST-ACT     PIC X(10).                    00041700
+000422         03  RPT859-ATM-IND         PIC X(01).                    00041800
+000423         03  RPT859-SAC-IND         PIC X(01).                    00041900
+000429         03  RPT859-CD-TX-CODE      PIC 9(03)             COMP-3. 00042000
+000430         03  RPT859-CD-DEP-WTD      PIC 9(03)             COMP-3. 00043000
+000431         03  RPT859-CD-DT-POST      PIC X(10).                    00043100
+000432         03  RPT859-CD-DT-EFF       PIC X(10).                    00043200
+000433         03  RPT859-GL-DEB-AMT      PIC S9(09)V99         COMP-3. 00043300
+000434         03  RPT859-GL-CRD-AMT      PIC S9(09)V99         COMP-3. 00043400
+000435         03  RPT859-POST-IND        PIC X(01).                    00043500
+000436         03  RPT859-OFFSET-IND      PIC X(01).                    00043600
+000440         03  FILLER                 PIC X(63).                    00043700

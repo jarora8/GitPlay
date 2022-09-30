@@ -1,0 +1,19 @@
+ALFISPI: /* Einige Absturz-Varianten für Schulungszwecke1 */            00000010
+    PROC(EIN_PTR, AUS_PTR) OPTIONS(FETCHABLE);
+
+ %INCLUDE $ALINTER;
+
+    DCL 1 ALIVISPI_S,
+ %INCLUDE ALIVISPI;
+ ;
+
+ ALIVISPI_S = '';
+
+    SELECT(STRING(ALIVISPI_S));
+       WHEN('');
+       OTHER;
+    END;
+
+    /* VERSION 2 */
+
+ END ALFISPI;                                                           00001030

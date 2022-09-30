@@ -1,0 +1,255 @@
+000100******************************************************************00010028
+000200*                                                        COPYBOOK*00020028
+000300*                                                                *00030028
+000400* PURPOSE: CIF ACCOUNT KEY CROSS REFERENCE                       *00040028
+000500*                                                                *00050028
+000600* LENGTH OF COPYBOOK: 25                                         *00060028
+000700* LENGTH OF SORT KEY: N/A                                        *00070028
+000800*                                                                *00080028
+000900* USAGE: USED THROUGHOUT BANKING TO FORMAT ACCOUNT KEY DEPENDING *00090028
+001000*        ON FILE-ID                                              *00100028
+001100*                                                                *00110028
+001200* NOTE:  CIF-XREF-KEY IS SUBDEFINED BY ALL OF THE FOLLOWING      *00120028
+001300*        FIELDS ALONG WITH FILLER WHERE APPLICABLE.              *00130028
+001400*                                                                *00140028
+001500* FIELD DESCRIPTION/VALUES:                                      *00150028
+001600*   CIF-XREF-KEY           25 CHARACTER CIF ACCOUNT KEY FIELD    *00160028
+001700*   XKEY-ADDR-ID           9 DIGIT ADDRESS ID                    *00170028
+001800*   XKEY-ATM-ACCT-NBR      19 CHARACTER ATM ACCOUNT NUMBER       *00180028
+001900*   XKEY-BBI-ACCT-NBR      9 DIGIT BBI ACCOUNT NUMBER            *00190028
+002000*   XKEY-BD-ACCT-NBR       9 DIGIT BD ACCOUNT NUMBER             *00200028
+002100*   XKEY-BD-PREFIX         4 DIGIT BD ACCOUNT NUMBER PREFIX      *00210028
+002200*   XKEY-BD-NBR            5 DIGIT BD ACCOUNT NUMBER SUFFIX      *00220028
+002300*   XKEY-BNF-ACCT-NBR      9 DIGIT BNF ACCOUNT NUMBER            *00230028
+002400*   XKEY-CIA-ACCT-NBR      8 DIGIT CIA ACCOUNT NUMBER            *00240030
+002410*   XKEY-CCA-ACCT-NBR      19 CHARACTER CREDIT CARD ACCOUNT NBR  *00241028
+002420*   XKEY-CCM-ACCT-NBR      9 DIGIT CCM ACCOUNT NUMBER            *00242028
+002430*   XKEY-CD-ACCT-NBR       9 CHARACTER CD ACCOUNT NUMBER         *00243028
+002440*   XKEY-CL-ACCT-NBR       7 DIGIT CL ACCOUNT NUMBER             *00244028
+002450*   XKEY-CL-BR-NBR         4 DIGIT CL BRANCH NUMBER              *00245028
+002460*   XKEY-CL-COMM-NBR       3 DIGIT CL COMM NUMBER                *00246028
+002470*   XKEY-CL-NOTE-NBR       7 DIGIT CL NOTE NUMBER                *00247028
+002480*   XKEY-COMP-APPL         3 DIGIT COMP APPL NUMBER              *00248028
+002490*   XKEY-COMP-NBR          7 DIGIT COMP NUMBER                   *00249028
+002500*   XKEY-CPAS-ACCT-NBR     5 DIGIT CPAS ACCOUNT NUMBER           *00250028
+002600*   XKEY-CUST-ID           9 DIGIT CUSTOMER ID NUMBER            *00260028
+002700*   XKEY-DB-ACCT-NBR       9 DIGIT DB ACCOUNT NUYMBER            *00270028
+002800*   XKEY-DC-ACCT-NBR       6 DIGIT DC ACCOUNT NUMBER             *00280028
+002900*   XKEY-DL-LEASE-NBR      7 DIGIT DL LEASE NUMBER               *00290028
+003000*   XKEY-DSDS-ACCT-NBR     9 DIGIT DSDS ACCOUNT NUMBER           *00300028
+003100*   XKEY-DSDS-ACCT-ID      3 DIGIT DSDS ACCOUNT ID               *00310028
+003200*   XKEY-EBFS-ACCT-NBR     19 CHARACTER EBFS ACCOUNT NUMBER      *00320028
+003300*   XKEY-FP-DEALER-NBR     5 DIGIT FP DEALER NUMBER              *00330028
+003400*   XKEY-IBNK-ACCT-NBR     16 CHARACTER IBNK ACCOUNT NUMBER      *00340028
+003500*   XKEY-IL-ACCT-NBR       11 DIGIT IL ACCOUNT NUMBER            *00350028
+003600*   XKEY-IL-BR-NBR         3 DIGIT IL BRANCH NUMBER              *00360028
+003700*   XKEY-IL-CLASS-NBR      3 DIGIT IL CLASS NUMBER               *00370028
+003800*   XKEY-INS-ACCT-NBR      19 CHARACTER INS ACCOUNT NUMBER       *00380028
+003900*   XKEY-INV-ACCT-NBR      10 CHARACTER INV ACCOUNT NUMBER       *00390030
+004000*   XKEY-IRA-ACCT-NBR      9 DIGIT IRA ACCOUNT NUMBER            *00400028
+004100*   XKEY-LBP-ACCT-NBR      9 DIGIT LBP ACCOUNT NUMBER            *00410028
+004200*   XKEY-MA-ACCT-NBR       16 CHARACTER MERCHANT ACCOUNT NUMBER  *00420028
+004300*   XKEY-MF-ACCT-NBR       9 DIGIT MF ACCOUNT NUMBER             *00430028
+004400*   XKEY-ML-ACCT-NBR       7 DIGIT ML ACCOUNT NUMBER             *00440028
+004500*   XKEY-ML-BR-NBR         3 DIGIT ML BRANCH NUMBER              *00450028
+004600*   XKEY-PAC-ACCT-NBR      9 DIGIT PAC ACCOUNT NUMBER            *00460028
+004700*   XKEY-PLG-CODE          2 CHARACTER PLG CODE                  *00470028
+004800*   XKEY-RT-NBR            9 DIGIT RT NUMBER                     *00480028
+004900*   XKEY-SD-ACCT-NBR       7 CHARACTER SD ACCOUNT NUMBER         *00490028
+005000*   XKEY-SEC-ACCT-NBR      8 CHARACTER SEC ACCOUNT NUMBER        *00500028
+005100*   XKEY-ST-NBR            3 DIGIT ST NUMBER                     *00510028
+005200*   XKEY-TD-ACCT-NBR       6 DIGIT TD ACCOUNT NUMBER             *00520028
+005300*   XKEY-TRT-ACCT-NBR      5 DIGIT TRT ACCOUNT NUMBER            *00530028
+005400*   XKEY-USER-ACCT-NBR     9 DIGIT USER ACCOUNT NUMBER           *00540028
+005500*   XKEY-USER-GROUP        3 DIGIT USER GROUP                    *00550028
+005600*   XKEY-VRS-ACCT-NBR      9 DIGIT VRS ACCOUNT NUMBER            *00560028
+005700*   XKEY-AIS-NBR           9 DIGIT AIS NUMBER                    *00570028
+005800*   XKEY-ICBK-ACCT-NBR     16 CHARACTER ICBK ACCOUNT NUMBER      *00580028
+005900*   XKEY-CLSA-CUST-NBR     7 DIGIT CLSA CUSTOMER NUMBER          *00590028
+006000*   XKEY-CLSN-CUST-NBR     7 DIGIT CLSN CUSTOMER NUMBER          *00600028
+006100*   XKEY-CLSN-LOAN-NBR     4 DIGIT CLSN LOAN NUMBER              *00610028
+006200*   XKEY-ILSA-CUST-NBR     7 DIGIT ILSA CUSTOMER NUMBER          *00620028
+006300*   XKEY-ILSN-CUST-NBR     7 DIGIT ILSN CUSTOMER NUMBER          *00630028
+006400*   XKEY-ILSN-LOAN-NBR     4 DIGIT ILSN LOAN NUMBER              *00640028
+006500*   XKEY-CAP-ACCT-NBR      16 CHAR COMMERCIAL ACCT PAYABLE NUMBER*00650028
+006600*   XKEY-PCA-ACCT-NBR      16 CHAR PURCHASING CARD ACCT NUMBER   *00660028
+006610*   XKEY-BCA-ACCT-NBR      8 DIGIT SMALL BUSINESS CREDIT ACCT NBR*00661031
+006610*   XKEY-MCA-ACCT-NBR      11 DIGIT MASTER CREDIT CARD ACCT NBR  *00662034
+006610*   XKEY-BMA-ACCT-NBR      11 DIGIT BUSINESS MASTER ACCT NBR     *00663035
+006610*   XKEY-MBA-ACCT-NBR       5 DIGIT MID SIZE BUSINESS ACCT NBR   *00664037
+006700*                                                                *00670028
+006800******************************************************************00680028
+007600 01  CIF-XREF-KEY-AREA.                                           00760021
+007700     02  CIF-XREF-KEY           PIC X(25)     VALUE SPACES.       00770021
+007800     02  FILLER REDEFINES CIF-XREF-KEY.                           00780021
+007900         03  XKEY-ADDR-ID       PIC 9(9).                         00790021
+008000         03  FILLER             PIC X(16).                        00800021
+008100     02  FILLER REDEFINES CIF-XREF-KEY.                           00810021
+008200         03  XKEY-ATM-ACCT-NBR  PIC X(19).                        00820021
+008300         03  FILLER             PIC X(6).                         00830021
+008400     02  FILLER REDEFINES CIF-XREF-KEY.                           00840021
+008500         03  XKEY-BBI-ACCT-NBR  PIC 9(9).                         00850021
+008600         03  FILLER             PIC X(16).                        00860021
+008700     02  FILLER REDEFINES CIF-XREF-KEY.                           00870021
+008800         03  XKEY-BD-ACCT-NBR   PIC 9(9).                         00880021
+008900         03  FILLER REDEFINES XKEY-BD-ACCT-NBR.                   00890021
+009000             05  XKEY-BD-PREFIX PIC 9(4).                         00900021
+009100             05  XKEY-BD-NBR    PIC 9(5).                         00910021
+009200         03  FILLER             PIC X(16).                        00920021
+009300     02  FILLER REDEFINES CIF-XREF-KEY.                           00930021
+009400         03  XKEY-BNF-ACCT-NBR  PIC 9(9).                         00940021
+009500         03  FILLER             PIC X(16).                        00950021
+009600     02  FILLER REDEFINES CIF-XREF-KEY.                           00960021
+009700         03  XKEY-CCA-ACCT-NBR  PIC X(19).                        00970021
+009800         03  FILLER             PIC X(6).                         00980021
+009900     02  FILLER REDEFINES CIF-XREF-KEY.                           00990021
+010000         03  XKEY-CCM-ACCT-NBR  PIC 9(9).                         01000021
+010100         03  FILLER             PIC X(16).                        01010021
+010200     02  FILLER REDEFINES CIF-XREF-KEY.                           01020021
+010300         03  XKEY-CD-ACCT-NBR   PIC X(9).                         01030021
+010400         03  FILLER             PIC X(16).                        01040021
+010410     02  FILLER REDEFINES CIF-XREF-KEY.                           01041028
+010420         03  XKEY-CIA-ACCT-NBR  PIC X(08).                        01042030
+010430         03  FILLER             PIC X(17).                        01043032
+010500     02  FILLER REDEFINES CIF-XREF-KEY.                           01050021
+010600         03  XKEY-CL-ACCT-NBR   PIC 9(7).                         01060021
+010700         03  XKEY-CL-BR-NBR     PIC 9(4).                         01070021
+010800         03  XKEY-CL-COMM-NBR   PIC 9(3).                         01080021
+010900         03  XKEY-CL-NOTE-NBR   PIC 9(7).                         01090021
+011000         03  FILLER             PIC X(4).                         01100021
+011100     02  FILLER REDEFINES CIF-XREF-KEY.                           01110021
+011200         03  XKEY-COMP-ID       PIC 9(10).                        01120021
+011300         03  FILLER REDEFINES XKEY-COMP-ID.                       01130021
+011400             05  XKEY-COMP-APPL PIC 9(3).                         01140021
+011500             05  XKEY-COMP-NBR  PIC 9(7).                         01150021
+011600         03  FILLER             PIC X(15).                        01160021
+011700     02  FILLER REDEFINES CIF-XREF-KEY.                           01170021
+011800         03  XKEY-CPAS-ACCT-NBR PIC 9(5).                         01180021
+011900         03  FILLER             PIC X(20).                        01190021
+012000     02  FILLER REDEFINES CIF-XREF-KEY.                           01200021
+012100         03  XKEY-CUST-ID       PIC 9(9).                         01210021
+012200         03  FILLER             PIC X(16).                        01220021
+012300     02  FILLER REDEFINES CIF-XREF-KEY.                           01230021
+012400         03  XKEY-DB-ACCT-NBR   PIC 9(9).                         01240021
+012500         03  FILLER             PIC X(16).                        01250021
+012600     02  FILLER REDEFINES CIF-XREF-KEY.                           01260021
+012700         03  XKEY-DC-ACCT-NBR   PIC 9(6).                         01270021
+012800         03  FILLER             PIC X(19).                        01280021
+012900     02  FILLER REDEFINES CIF-XREF-KEY.                           01290021
+013000         03  XKEY-DL-LEASE-NBR  PIC 9(7).                         01300021
+013100         03  FILLER             PIC X(18).                        01310021
+013200     02  FILLER REDEFINES CIF-XREF-KEY.                           01320021
+013300         03  XKEY-DSDS-ACCT-NBR PIC 9(9).                         01330021
+013400         03  XKEY-DSDS-ACCT-ID  PIC 9(3).                         01340021
+013500         03  FILLER             PIC X(13).                        01350021
+013600     02  FILLER REDEFINES CIF-XREF-KEY.                           01360021
+013700         03  XKEY-EBFS-ACCT-NBR PIC X(19).                        01370021
+013800         03  FILLER             PIC X(6).                         01380021
+013900     02  FILLER REDEFINES CIF-XREF-KEY.                           01390021
+014000         03  XKEY-FP-DEALER-NBR PIC 9(5).                         01400021
+014100         03  FILLER             PIC X(20).                        01410021
+014200     02  FILLER REDEFINES CIF-XREF-KEY.                           01420021
+014300         03  XKEY-HSA-ACCT-NBR  PIC 9(13).                        01430033
+014400         03  FILLER             PIC X(12).                        01440033
+014401     02  FILLER REDEFINES CIF-XREF-KEY.                           01440133
+014402         03  XKEY-HSAI-ACCT-NBR PIC 9(13).                        01440233
+014403         03  FILLER             PIC X(12).                        01440333
+014410     02  FILLER REDEFINES CIF-XREF-KEY.                           01441033
+014420         03  XKEY-IBNK-ACCT-NBR PIC X(16).                        01442033
+014430         03  FILLER             PIC X(9).                         01443033
+014500     02  FILLER REDEFINES CIF-XREF-KEY.                           01450021
+014600         03  XKEY-IL-ACCT-NBR   PIC 9(11).                        01460021
+014700         03  XKEY-IL-BR-NBR     PIC 9(3).                         01470021
+014800         03  XKEY-IL-CLASS-NBR  PIC 9(3).                         01480021
+014900         03  FILLER             PIC X(8).                         01490021
+015000     02  FILLER REDEFINES CIF-XREF-KEY.                           01500021
+015100         03  XKEY-INS-ACCT-NBR  PIC X(19).                        01510021
+015200         03  FILLER             PIC X(6).                         01520021
+015300     02  FILLER REDEFINES CIF-XREF-KEY.                           01530021
+015400         03  XKEY-INV-ACCT-NBR  PIC X(10).                        01540030
+015500         03  FILLER             PIC X(15).                        01550030
+015600     02  FILLER REDEFINES CIF-XREF-KEY.                           01560021
+015700         03  XKEY-IRA-ACCT-NBR  PIC 9(9).                         01570021
+015800         03  FILLER             PIC X(16).                        01580021
+015900     02  FILLER REDEFINES CIF-XREF-KEY.                           01590021
+016000         03  XKEY-LBP-ACCT-NBR  PIC 9(9).                         01600021
+016100         03  FILLER             PIC X(16).                        01610021
+016200     02  FILLER REDEFINES CIF-XREF-KEY.                           01620021
+016300         03  XKEY-MA-ACCT-NBR   PIC X(16).                        01630024
+016400         03  FILLER             PIC X(9).                         01640024
+016500     02  FILLER REDEFINES CIF-XREF-KEY.                           01650024
+016600         03  XKEY-MF-ACCT-NBR   PIC 9(9).                         01660024
+016700         03  FILLER             PIC X(16).                        01670024
+016800     02  FILLER REDEFINES CIF-XREF-KEY.                           01680021
+016900         03  XKEY-ML-ACCT-NBR   PIC 9(7).                         01690021
+017000         03  XKEY-ML-BR-NBR     PIC 9(3).                         01700021
+017100         03  FILLER             PIC X(15).                        01710021
+017200     02  FILLER REDEFINES CIF-XREF-KEY.                           01720021
+017300         03  XKEY-PAC-ACCT-NBR  PIC 9(9).                         01730021
+017400         03  FILLER             PIC X(16).                        01740021
+017500     02  FILLER REDEFINES CIF-XREF-KEY.                           01750021
+017600         03  XKEY-PLG-CODE      PIC X(2).                         01760021
+017700         03  FILLER             PIC X(23).                        01770021
+017800     02  FILLER REDEFINES CIF-XREF-KEY.                           01780021
+017900         03  XKEY-RT-NBR        PIC 9(9).                         01790021
+018000         03  FILLER             PIC X(16).                        01800021
+018100     02  FILLER REDEFINES CIF-XREF-KEY.                           01810021
+018200         03  XKEY-SD-ACCT-NBR   PIC X(7).                         01820021
+018300         03  FILLER             PIC X(18).                        01830021
+018400     02  FILLER REDEFINES CIF-XREF-KEY.                           01840021
+018500         03  XKEY-SEC-ACCT-NBR  PIC X(8).                         01850021
+018600         03  FILLER             PIC X(17).                        01860021
+018700     02  FILLER REDEFINES CIF-XREF-KEY.                           01870021
+018800         03  XKEY-ST-NBR        PIC 9(3).                         01880021
+018900         03  FILLER             PIC X(22).                        01890021
+019000     02  FILLER REDEFINES CIF-XREF-KEY.                           01900021
+019100         03  XKEY-TD-ACCT-NBR   PIC 9(6).                         01910021
+019200         03  FILLER             PIC X(19).                        01920021
+019300     02  FILLER REDEFINES CIF-XREF-KEY.                           01930021
+019400         03  XKEY-TRT-ACCT-NBR  PIC 9(5).                         01940021
+019500         03  FILLER             PIC X(20).                        01950021
+019600     02  FILLER REDEFINES CIF-XREF-KEY.                           01960021
+019700         03  XKEY-USER-ACCT-NBR PIC 9(9).                         01970021
+019800         03  XKEY-USER-GROUP    PIC 9(3).                         01980021
+019900         03  FILLER             PIC X(13).                        01990021
+020000     02  FILLER REDEFINES CIF-XREF-KEY.                           02000021
+020100         03  XKEY-VRS-ACCT-NBR  PIC 9(9).                         02010021
+020200         03  FILLER             PIC X(16).                        02020021
+020300     02  FILLER REDEFINES CIF-XREF-KEY.                           02030021
+020400         03  XKEY-AIS-NBR       PIC 9(9).                         02040021
+020500         03  FILLER             PIC X(16).                        02050021
+020600     02  FILLER REDEFINES CIF-XREF-KEY.                           02060021
+020700         03  XKEY-ICBK-ACCT-NBR PIC X(16).                        02070021
+020800         03  FILLER             PIC X(9).                         02080021
+020900     02  FILLER REDEFINES CIF-XREF-KEY.                           02090022
+021000         03  XKEY-CLSA-CUST-NBR PIC 9(7).                         02100022
+021100         03  FILLER             PIC X(18).                        02110022
+021200     02  FILLER REDEFINES CIF-XREF-KEY.                           02120022
+021300         03  XKEY-CLSN-CUST-NBR PIC 9(7).                         02130022
+021400         03  XKEY-CLSN-LOAN-NBR PIC 9(4).                         02140022
+021500         03  FILLER             PIC X(14).                        02150022
+021600     02  FILLER REDEFINES CIF-XREF-KEY.                           02160023
+021700         03  XKEY-ILSA-CUST-NBR PIC 9(7).                         02170023
+021800         03  FILLER             PIC X(18).                        02180023
+021900     02  FILLER REDEFINES CIF-XREF-KEY.                           02190023
+022000         03  XKEY-ILSN-CUST-NBR PIC 9(7).                         02200023
+022100         03  XKEY-ILSN-LOAN-NBR PIC 9(4).                         02210023
+022200         03  FILLER             PIC X(14).                        02220023
+022300     02  FILLER REDEFINES CIF-XREF-KEY.                           02230026
+022400         03  XKEY-CAP-ACCT-NBR  PIC X(16).                        02240026
+022500         03  FILLER             PIC X(9).                         02250026
+022600     02  FILLER REDEFINES CIF-XREF-KEY.                           02260027
+022700         03  XKEY-PCA-ACCT-NBR  PIC X(16).                        02270027
+022800         03  FILLER             PIC X(9).                         02280027
+022900     02  FILLER REDEFINES CIF-XREF-KEY.                           02290031
+023000         03  XKEY-BCA-ACCT-NBR  PIC 9(08).                        02300031
+023100         03  FILLER             PIC X(17).                        02310031
+022900     02  FILLER REDEFINES CIF-XREF-KEY.                           02320034
+023000         03  XKEY-MCA-ACCT-NBR  PIC 9(11).                        02330034
+023100         03  FILLER             PIC X(14).                        02340034
+022900     02  FILLER REDEFINES CIF-XREF-KEY.                           02350035
+023000         03  XKEY-BMA-ACCT-NBR  PIC 9(11).                        02360035
+023100         03  FILLER             PIC X(14).                        02370035
+022600     02  FILLER REDEFINES CIF-XREF-KEY.                           02380036
+022700         03  XKEY-MBA-ACCT-NBR  PIC 9(05).                        02390036
+022800         03  FILLER             PIC X(20).                        02400036

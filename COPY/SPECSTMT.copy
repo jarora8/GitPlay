@@ -1,0 +1,39 @@
+      ******************************************************************
+      * DCLGEN TABLE(DSDS.SPECSTMT)                                    *
+      *        LIBRARY(LMFPROG.APPLDCL.U099632(SPECSTMT))              *
+      *        ACTION(REPLACE)                                         *
+      *        LANGUAGE(COBOL)                                         *
+      *        QUOTE                                                   *
+      * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+      ******************************************************************
+           EXEC SQL DECLARE DSDS.SPECSTMT TABLE
+           ( STMT_BANK_NBR                  DECIMAL(3, 0) NOT NULL,
+             STMT_ACCT_NBR                  DECIMAL(9, 0) NOT NULL,
+             STMT_START_DATE                DATE NOT NULL,
+             STMT_END_DATE                  DATE NOT NULL,
+             STMT_TRAN_CODE                 DECIMAL(3, 0) NOT NULL,
+             STMT_ACCT_ID                   DECIMAL(3, 0) NOT NULL,
+             STMT_FREQUENCY                 CHAR(1) NOT NULL,
+             STMT_NEXT_PROCESS              DATE NOT NULL,
+             STMT_SEQ_NBR                   DECIMAL(4, 0) NOT NULL,
+             STMT_PROCESS_DAY               DECIMAL(3, 0) NOT NULL,
+             STMT_CHARGE_SW                 CHAR(2) NOT NULL
+           ) END-EXEC.
+      ******************************************************************
+      * COBOL DECLARATION FOR TABLE DSDS.SPECSTMT                      *
+      ******************************************************************
+       01  DSDS-SPECSTMT.
+           10 STMT-BANK-NBR        PIC S9(3)V USAGE COMP-3.
+           10 STMT-ACCT-NBR        PIC S9(9)V USAGE COMP-3.
+           10 STMT-START-DATE      PIC X(10).
+           10 STMT-END-DATE        PIC X(10).
+           10 STMT-TRAN-CODE       PIC S9(3)V USAGE COMP-3.
+           10 STMT-ACCT-ID         PIC S9(3)V USAGE COMP-3.
+           10 STMT-FREQUENCY       PIC X(1).
+           10 STMT-NEXT-PROCESS    PIC X(10).
+           10 STMT-SEQ-NBR         PIC S9(4)V USAGE COMP-3.
+           10 STMT-PROCESS-DAY     PIC S9(3)V USAGE COMP-3.
+           10 STMT-CHARGE-SW       PIC X(2).
+      ******************************************************************
+      * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 11      *
+      ******************************************************************

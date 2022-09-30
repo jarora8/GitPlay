@@ -1,0 +1,11 @@
+000100*01  STOCK-PAPER-CTL.                                             00010000
+000200     02  SP-BANK-NO          PIC 99.                              00020000
+000300     02  SP-REPORT-CODE      PIC S999                    COMP-3.  00030000
+000400     02  SP-SORT-KEY         PIC X(20).                           00040000
+000500     02  SP-FILE-ID          PIC XXX.                             00050000
+000600     02  SP-CURR-PROC-DT     PIC S9(7)                   COMP-3.  00060001
+000700     02  SP-FILLER           PIC X(169).                          00070002
+000800*  THIS RECORD LAYOUT IS USED FOR THE STOCK PAPER REPORT FILE CTL 00080000
+000900*    BANK-NO, REPORT-CODE WILL BE ZEROS.                          00090000
+001000*    SORT-KEY WILL BE LOW VALUES.                                 00100000
+001100*  THIS RECORD IS 200 CHARACTERS                                  00110000

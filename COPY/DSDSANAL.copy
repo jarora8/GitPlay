@@ -1,0 +1,35 @@
+000100 01  DSDS-ACCOUNT-ANALYSIS-HISTORY.                               00010000
+000200     05  ACCT-ANAL-KEY.                                           00020000
+000300         10  ANAL-BK-NO          PIC 99.                          00030000
+000400         10  ANAL-ACCT-ID        PIC 999                 COMP-3.  00040000
+000500         10  ANAL-PRIM-ACCT      PIC 9(9)                COMP-3.  00050000
+000600         10  ANAL-SEC-ACCT       PIC 9(9)                COMP-3.  00060000
+000700     05  ACCT-ANAL-DATA      OCCURS 13 TIMES.                     00070000
+000800         10  ANAL-DATE           PIC 9(4).                        00080000
+000900         10  FILLER REDEFINES ANAL-DATE.                          00090000
+001000             15  ANAL-YY         PIC 99.                          00100000
+001100             15  ANAL-MM         PIC 99.                          00110000
+001200         10  ANAL-AVG-CURR-BAL   PIC S9(9)               COMP-3.  00120000
+001300         10  ANAL-AVG-COLL-BAL   PIC S9(9)               COMP-3.  00130000
+001400         10  ANAL-BAL-AVL-TO-SS  PIC S9(9)V99            COMP-3.  00140000
+001500         10  ANAL-BAL-REQ-TO-SS  PIC S9(9)V99            COMP-3.  00150000
+001600         10  ANAL-ADD-BAL-TO-SS  PIC S9(9)V99            COMP-3.  00160000
+001700         10  ANAL-TOT-PRICE-OF-S PIC S9(9)V99            COMP-3.  00170000
+001800         10  ANAL-EARN-RATE      PIC SV9(5)              COMP-3.  00180000
+001900         10  ANAL-OD-RATE        PIC SV9(5)              COMP-3.  00190000
+002000         10  ANAL-SC-EARN-AMT    PIC S9(9)V99            COMP-3.  00200000
+002100         10  ANAL-SC-EARN-ACCUM  PIC S9(9)V99            COMP-3.  00210000
+002200         10  ANAL-CHRG-IND       PIC X.                           00220000
+002300         10  ANAL-AMT-CHRG       PIC S9(9)V99            COMP-3.  00230000
+002400         10  ANAL-CYCLE-DATE     PIC S9(5)               COMP-3.  00240000
+002500         10  FILLER              PIC X(34).                       00250000
+002600     05  ACCT-ANAL-STATUS        PIC X.                           00260000
+002700         88  ACCT-ANAL-OPEN              VALUE ' '.               00270000
+002800         88  ACCT-ANAL-CLOSED            VALUE 'C'.               00280000
+002900         88  ACCT-ANAL-DELETE            VALUE 'D'.               00290000
+003000                                                                  00300000
+003100*   SS = SUPPORT-SERVICES                                         00310000
+003200*   S  = SERVICES                                                 00320000
+003300*   RECORD CONTAINS 1315 CHARACTERS                               00330000
+003400                                                                  00340000
+003500     EJECT                                                        00350000

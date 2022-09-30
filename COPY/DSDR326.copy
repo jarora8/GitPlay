@@ -1,0 +1,44 @@
+000100*01  REPURCHASE-AGREEMENT-RPT.                                    00010000
+000200     02  RP-BANK-NO          PIC 99.                              00020000
+000300     02  RP-REPORT-CODE      PIC S999                    COMP-3.  00030000
+000400     02  RP-SORT-KEY         PIC X(20).                           00040000
+000500     02  FILLER REDEFINES RP-SORT-KEY.                            00050000
+000600         03  SORT-PLAN       PIC XX.                              00060000
+000700         03  SORT-OVRNITE-RATE-IND                                00070000
+000800                             PIC X.                               00080000
+000900         03  SORT-ACCT-ID    PIC 999                     COMP-3.  00090000
+001000         03  SORT-ACCT-NO    PIC 9(9)                    COMP-3.  00100000
+001100         03  SORT-COLL-CODE  PIC X(4).                            00110005
+001200         03  SORT-COLL-RATE  PIC 9V99                    COMP-3.  00120007
+001300         03  SORT-COLL-SEQ   PIC 9(7)                    COMP-3.  00130007
+001400     02  RP-ACCT-ID          PIC 999                     COMP-3.  00140000
+001500     02  RP-ACCT-NO          PIC 9(9)                    COMP-3.  00150000
+001600     02  RP-CRF-REC-ID       PIC X(11).                           00160000
+001700     02  RP-SHORT-NM         PIC X(14).                           00170000
+001800     02  RP-CURR-BAL         PIC S9(9)V99                COMP-3.  00180000
+001900     02  RP-COLL-BAL         PIC S9(9)V99                COMP-3.  00190000
+002000     02  RP-PEGGED-BAL       PIC S9(9)V99                COMP-3.  00200000
+002100     02  RP-PUR-MAT-AMT      PIC S9(9)V99                COMP-3.  00210000
+002200     02  RP-COLLATERAL-DESC  PIC X(26).                           00220000
+002300     02  RP-INV-INCREMENT    PIC S9(7)V99                COMP-3.  00230000
+002400     02  RP-RATE-VARIANCE    PIC SV9(7)                  COMP-3.  00240000
+002500     02  RP-VARIANCE-IND     PIC X.                               00250000
+002600     02  RP-DISP-IND         PIC X.                               00260000
+002700     02  RP-MATURE-DATE      PIC S9(7)                   COMP-3.  00270002
+002800     02  RP-RENEWAL-CODE     PIC X.                               00280000
+002900     02  RP-PLAN             PIC XX.                              00290000
+003000     02  RP-ACCT-CLASS       PIC XXX.                             00300000
+003100     02  RP-PEG-BAL-ADJ-CODE PIC X.                               00310000
+003200     02  RP-MAIL-CODE        PIC X.                               00320000
+003300     02  RP-SECURE-AMT       PIC S9(9)V99                COMP-3.  00330000
+003400     02  RP-COLLATERAL-CODE  PIC X(4).                            00340004
+003500     02  RP-TX-AMT           PIC S9(9)V99                COMP-3.  00350000
+003600     02  RP-INV-LIMIT        PIC S9(9)                   COMP-3.  00360000
+003700     02  RP-SWEEP-TYPE       PIC X.                               00370000
+003800     02  RP-COLLATERAL-RATIO PIC S99V999                 COMP-3.  00380001
+003900     02  RP-COLLATERAL-RATE  PIC S9V99                   COMP-3.  00390006
+004000     02  FILLER              PIC X(44).                           00400006
+004100*  THIS RECORD LAYOUT IS USED FOR REPORT CODE 26, 27              00410000
+004200*  THIS RECORD IS 200 CHARACTERS                                  00420000
+004300*        26 = REPURCHASE AGREEMENT MATURITIES                     00430000
+004400*        27 = REPURCHASE AGREEMENT PURCHASES                      00440000

@@ -1,0 +1,16 @@
+ /*-------------------------------------------------------------------*/00000010
+ /*  ALIVISPI                                            PSWD: RWRN   */00000020
+ /*  Algemeine Informationseinheit: Anforderung                       */00000030
+ /*  L.AENDERUNG  : 06.06.2018 GUTENBRUNNER Daniel                    */00000040
+ /*-------------------------------------------------------------------*/00000050
+      3 ALIVISPI_KENNUNG   CHAR(8),         /* 'ALIVISPI'             */00000060
+      3 ALIVISPI_LGE       PIC'(6)9',       /* Länge                  */00000070
+      3 ID                 PIC'(6)9',       /* IE-Nummer              */00000080
+      3 ANFORDERUNG        CHAR(8),         /* Anforderungen:         */00000090
+                                            /* LESEN, SUCHEN          */00000100
+                                            /* AENDERN                */00000110
+                                            /* XXXXX                  */00000120
+      3 MANDANT            CHAR(3),         /* Mandant                */00000130
+      3 SINGLE_MSG         CHAR(1)          /* Single Message:        */00000140
+                                            /* 'N' = Nein, sonst Ja   */00000150
+ /*- Ende ALIVISPI ---------------------------------------------------*/00000160

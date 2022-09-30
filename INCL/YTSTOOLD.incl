@@ -1,0 +1,495 @@
+ /**********************************************************************
+
+ Date   : October 2018
+ Author : Yasmin Luetzelschwab
+ Purpose: Preprocessor definitions for YTSTOOL
+
+ -----------------------------------------------------------------------
+ MODIFICATION
+ ------------
+ CO: Christian Ott        (A158147)
+ YL: Yasmin Luetzelschwab (A722485)
+ CH: Christian Hirschi    (A336712)
+ -----------------------------------------------------------------------
+
+ -----------------------------------------------------------------------
+ TASS000017:  DC 3/2020  14.08.2020
+ -----------------------------------------------------------------------
+ 06.05.2020 | CO | TRACE PARAMETER setReturn
+ -----------------------------------------------------------------------
+ TASS000013:  DC 2/2020  08.05.2020
+ -----------------------------------------------------------------------
+ 05.03.2020 | YL | update setReturn: returnCode/reasonCode to int
+ -----------------------------------------------------------------------
+ TASS000007:  DC 4/2019  08.11.2019
+ -----------------------------------------------------------------------
+ 16.09.2019 | CH | add setReturn PP-Procedure
+ 14.10.2019 | CH | add putComp PP-Procedure, add it to setReturn
+ -----------------------------------------------------------------------
+ TASS000002:  DC 2/2019  10.05.2019
+ -----------------------------------------------------------------------
+ 06.09.2018 | YL | Initial version
+ -----------------------------------------------------------------------
+
+ **********************************************************************/
+
+ /*-------------------------------------------------------------------*/
+ /* preprocessor procedure msgFill for message handling               */
+ /*-------------------------------------------------------------------*/
+ %dcl  @YTSTOOL#msgFill entry;
+ %dcl  @YTSTOOL#msgFillCnt fixed;
+ %do skip;/*------------------------------------------------------------
+ generate the code to add content to the message with length-
+ control of the message and autoresize with TST_resizeMsgInt.
+ (reduce coding effort and keeps the source short).
+
+   @$msg Message-controller (is of type TSDEFS_msg_T).
+
+   @$name  The variable, literal, constant or structure that should
+           be added to the message-buffer (see also @$attr).
+
+   @$attr  The name-attribute. This parameter is optional. Is it
+           omitted, the variable must be a fix-length char, a pic
+           or a literal. Possible Values are:
+
+           C The variable must be of type char named constant.
+               (dcl nnnnn char value('mmmmm');)
+           F The variable must be of type fix-length char, pic
+               or literal. (Use it only if you need the parameter
+               @$annex - otherwise omit this parameter)
+           S The variable is a structure or a structure-level
+               variable. (structures with REFER are also supported,
+               currentsize is used as length)
+           V The variable must be of type char varying.
+
+   @$annex Use to fill the annex. This parameter is optional. Is it
+           omitted, the normal size of the message-buffer will be
+           used to check the free space in the buffer.
+           If the Parameter is given (content irrelevant) the
+           whole size (with mAnnex value) will be used to check
+           the free space in the buffer.
+
+ ATTENTION: This macro doesn't trim any variable. If a variable
+ ---------  must be trimed, fill it to a char varying before and
+            fill this char varying to the message.
+
+ example: @YTSTOOL#msgFill(msg,in.CIF);   <= Fix length char or pic
+          @YTSTOOL#msgFill(msg,'<header>');   <= literal
+          @YTSTOOL#msgFill(msg,TextVar,V);    <= char VARYING
+          @YTSTOOL#msgFill(msg,#startTag,C);  <= named constant
+          @YTSTOOL#msgFill(msg,outData,S);    <= structure
+          @YTSTOOL#msgFill(@$msg,outData.val,S);<= structure-level
+          @YTSTOOL#msgFill(@$msg,'</end>',F,A); <= literal as @$annex
+ ----------------------------------------------------------------*/%end;
+ %@YTSTOOL#msgFill:
+   proc(@$msg
+       ,@$name
+       ,@$attr
+       ,@$annex
+       )
+   statement;
+
+   dcl @$msg   char;
+   dcl @$name  char;
+   dcl @$attr  char;
+   dcl @$annex char;
+
+   dcl isStruc fixed;
+
+   /*--- number for the macroblock ---------------------------------*/
+   dcl bNo     char;
+
+   @YTSTOOL#msgFillCnt += 1;
+   bNo                  = trim(@YTSTOOL#msgFillCnt);
+
+   isStruc = 0;
+   if parmset(@$attr)
+     then do;
+       /*--- trim and uppercase the @$attr parameter ----------------*/
+       @$attr = uppercase(trim(@$attr));
+       if @$attr = 'S'
+       then isStruc = 1;
+     end;
+
+   ans('/*M*/ @YTSTOOL#msgFill#' || bNo || ': do;')
+     col(2) noScan;
+
+   /*--- normal size in use ----------------------------------------*/
+   if ^parmset(@$annex)
+     then do;
+       if isStruc = 0
+         then do;
+           ans('/*M*/ if ' ||trim(@$msg)||
+               '.mLength + length(' ||trim(@$name)
+               || ') > ' ||trim(@$msg)|| '.mSize then do;')
+             col(2) noScan;
+         end;
+         else do;
+           ans('/*M*/ if ' ||trim(@$msg)|| '.mLength + currentsize(' ||
+               trim(@$name)|| ') > ' ||trim(@$msg)|| '.mSize then do;')
+             col(2) noScan;
+         end;
+     end;
+   /*--- whole size with @$annex in use ------------------------------*/
+   else do;
+     if isStruc = 0
+       then do;
+         ans('/*M*/ if ' ||trim(@$msg)||
+             '.mLength + length(' ||trim(@$name)
+             || ') >')
+           col(2) noScan;
+         ans('/*M*/    ' ||trim(@$msg)|| '.mSize +')
+           col(2) noScan;
+         ans('/*M*/    ' ||trim(@$msg)|| '.mAnnex then do;')
+           col(2) noScan;
+       end;
+       else do;
+         ans('/*M*/ if ' ||trim(@$msg)|| '.mLength + currentsize(' ||
+             trim(@$name)|| ') >')
+           col(2) noScan;
+         ans('/*M*/    ' ||trim(@$msg)|| '.mSize +')
+           col(2) noScan;
+         ans('/*M*/    ' ||trim(@$msg)|| '.mAnnex then do;')
+           col(2) noScan;
+       end;
+   end;
+
+   ans('/*M*/  if ^YTSTOOL#resizeMsgInt(' ||trim(@$msg)
+       || ') then leave @YTSTOOL#msgFill#' || bNo || ';')
+     col(2) RESCAN;
+   ans('/*M*/ end;')
+     col(2) noScan;
+
+   select;
+     /*--- standard without @$attr: for fix length char --------------*/
+     when(^parmset(@$attr)) do;
+       ans('/*M*/ call plimove(ptradd(' ||trim(@$msg)|| '.mPtr,'
+                                        ||trim(@$msg)|| '.mLength)')
+         col(2) noScan;
+       ans('/*M*/             ,addr(' ||trim(@$name)|| ')')
+         col(2) noScan;
+       ans('/*M*/             ,length(' ||trim(@$name)|| '));')
+         col(2) noScan;
+       ans('/*M*/ ' ||trim(@$msg)|| '.mLength += length(' ||
+                      trim(@$name)|| ');')
+         col(2) noScan;
+     end;
+     /*--- with @$attr F for fix length char (same as the default) ---*/
+     when(@$attr = 'F') do;
+       ans('/*M*/ call plimove(ptradd(' ||trim(@$msg)|| '.mPtr,'
+                                        ||trim(@$msg)|| '.mLength)')
+         col(2) noScan;
+       ans('/*M*/             ,addr(' ||trim(@$name)|| ')')
+         col(2) noScan;
+       ans('/*M*/             ,length(' ||trim(@$name)|| '));')
+         col(2) noScan;
+       ans('/*M*/ ' ||trim(@$msg)|| '.mLength += length(' ||
+                      trim(@$name)|| ');')
+         col(2) noScan;
+     end;
+     /*--- with @$attr V for char varying ----------------------------*/
+     when(@$attr = 'V') do;
+       ans('/*M*/ call plimove(ptradd(' ||trim(@$msg)|| '.mPtr,'
+                                        ||trim(@$msg)|| '.mLength)')
+         col(2) noScan;
+       ans('/*M*/             ,addrdata(' ||trim(@$name)|| ')')
+         col(2) noScan;
+       ans('/*M*/             ,length(' ||trim(@$name)|| '));')
+         col(2) noScan;
+       ans('/*M*/ ' ||trim(@$msg)|| '.mLength += length(' ||
+                      trim(@$name)|| ');')
+         col(2) noScan;
+     end;
+     /*--- with @$attr C for named constant char (this with value) ---*/
+     when(@$attr = 'C') do;
+       ans('/*M*/ dcl TST_msgFillS' ||bNo|| ' char(length('
+                                    ||trim(@$name)|| ')) based;')
+         col(2) noScan;
+       ans('/*M*/ ptradd(' ||trim(@$msg)|| '.mPtr,' ||trim(@$msg)
+                      || '.mLength)->TST_msgFillS' ||bNo|| ' = '
+                      ||trim(@$name)|| ';')
+         col(2) noScan;
+       ans('/*M*/ ' ||trim(@$msg)|| '.mLength += length(' ||
+                      trim(@$name)|| ');')
+         col(2) noScan;
+     end;
+     /*--- with @$attr S for strutures or structure-levels -----------*/
+     when(@$attr = 'S') do;
+       ans('/*M*/ call plimove(ptradd(' ||trim(@$msg)|| '.mPtr,'
+                                        ||trim(@$msg)|| '.mLength)')
+         col(2) noScan;
+       ans('/*M*/             ,addr(' ||trim(@$name)|| ')')
+         col(2) noScan;
+       ans('/*M*/             ,currentsize(' ||trim(@$name)|| '));')
+         col(2) noScan;
+       ans('/*M*/ ' ||trim(@$msg)|| '.mLength += currentsize(' ||
+                      trim(@$name)|| ');')
+         col(2) noScan;
+     end;
+     other note('@YTSTOOL#msgFill: invalid third parameter',16);
+   end;
+
+   ans('/*M*/end @YTSTOOL#msgFill#' || bNo || ';')
+     col(2) noScan;
+
+ %end @YTSTOOL#msgFill;
+
+ %DCL @TSTOOL#PB2I entry;
+ %do skip;/*------------------------------------------------------------
+ @PRESENT_BIT_TO_INDICATOR
+    converts a present bit to an indicator
+    isPresent: '1'b =  0
+    isNull:    '0'b = -1
+ ----------------------------------------------------------------*/%end;
+ %@TSTOOL#PB2I:
+   proc(@$presentBit);
+   dcl @$presentBit char noScan;
+   ans('(bin('||@$presentBit||',15,0)-1)');
+ %end @TSTOOL#PB2I;
+
+ %DCL @TSTOOL#I2PB entry;
+ %do skip;/*------------------------------------------------------------
+ @INDICATOR_TO_PRESENT_BIT
+    converts an indicator to an present bit
+    isPresent: >=0 = '1'b
+    isNull:     <0 = '0'b
+ ----------------------------------------------------------------*/%end;
+ %@TSTOOL#I2PB:
+   proc(@$ind);
+   dcl @$ind char noScan;
+   ans('(-1<'||@$ind||')');
+ %end @TSTOOL#I2PB;
+
+ %DCL @YTSTOOL#setReturn entry;
+ %do skip;/*------------------------------------------------------------
+ fills the structure TSDEFS#return_T accordingly to the paramters.
+ if @$sqlca(and @$key) is provided the structure will automaticly
+ get filled and @$returnCode/@$reasonCode/@$reasonTxt can't be used.
+ - @$returnStruc: mandatory, has to be TSDEFS#return_T
+ - @$returnCode: optional, if omitted = 0
+ - @$reasonCode: optional, if omitted = 0
+ - @$reasonTxt: optional, if omitted = ''
+ - @$sqlca: optional, need @$key
+ - @$key: optional, need @$sqlca
+ - @$trace: optional, if omitted trace enabled
+   + values: Y=enabled
+             *else*=disabled
+ ----------------------------------------------------------------*/%end;
+ %@YTSTOOL#setReturn:
+   proc(@$returnStruc
+       ,@$returnCode
+       ,@$reasonCode
+       ,@$reasonTxt
+       ,@$sqlca
+       ,@$key
+       ,@$trace
+       )
+   statement;
+   dcl @$returnStruc char noScan;
+   dcl @$returnCode  char noScan;
+   dcl @$reasonCode  char noScan;
+   dcl @$reasonTxt   char noScan;
+   dcl @$sqlca       char noScan;
+   dcl @$key         char noScan;
+   dcl @$trace       char noScan;
+   dcl @c            char noScan;
+
+   /* validate input */
+   if ^parmset(@$returnStruc)
+   then note('@YTSTOOL#setReturn @$returnStruc has to be set', 16);
+   if parmset(@$sqlca) & parmset(@$returnCode)
+   then note('@YTSTOOL#setReturn @$sqlca & @$returnCode '
+           ||'must not be set together'
+            ,16);
+   if parmset(@$sqlca) & parmset(@$reasonCode)
+   then note('@YTSTOOL#setReturn @$sqlca & @$reasonCode '
+           ||'must not be set together'
+            ,16);
+   if parmset(@$sqlca) & parmset(@$reasonTxt)
+   then note('@YTSTOOL#setReturn @$sqlca & @$reasonTxt '
+           ||'must not be set together'
+            ,16);
+   if parmset(@$sqlca) & ^parmset(@$key)
+   | ^parmset(@$sqlca) &  parmset(@$key)
+   then note('@YTSTOOL#setReturn @$sqlca & @$key '
+           ||'must be set together'
+            ,16);
+
+   @c = counter;
+   ans('/*R*/dcl severity'||@c||' char(20);')
+     col(2) noScan;
+   /* set returnCode */
+   if parmset(@$sqlca)
+   then
+   do;
+     ans('/*R*/select;')
+       col(2) noScan;
+     ans('/*R*/  when('||@$sqlca||'.SQLCODE = 0)')
+       col(2) noScan;
+     ans('/*R*/    '||@$returnStruc||'.returnCode = 0;')
+       col(2) noScan;
+     ans('/*R*/  when('||@$sqlca||'.SQLCODE = 100)')
+       col(2) noScan;
+     ans('/*R*/    '||@$returnStruc||'.returnCode = 4;')
+       col(2) noScan;
+     ans('/*R*/  when('||@$sqlca||'.SQLCODE > 0)')
+       col(2) noScan;
+     ans('/*R*/    '||@$returnStruc||'.returnCode = 6;')
+       col(2) noScan;
+     ans('/*R*/  when('||@$sqlca||'.SQLCODE < 0)')
+       col(2) noScan;
+     ans('/*R*/    '||@$returnStruc||'.returnCode = 10;')
+       col(2) noScan;
+     ans('/*R*/  other '||@$returnStruc||'.returnCode = 16;')
+       col(2) noScan;
+     ans('/*R*/end;')
+       col(2) noScan;
+   end;
+   else
+   do;
+     if parmset(@$returnCode)
+     then
+       ans('/*R*/'||@$returnStruc||'.returnCode = '||@$returnCode||';')
+         col(2) noScan;
+     else
+       ans('/*R*/'||@$returnStruc||'.returnCode = 0;')
+         col(2) noScan;
+   end;
+   /* set reasonCode */
+   if parmset(@$sqlca)
+   then
+     ans('/*R*/'||@$returnStruc||'.reasonCode = '||@$sqlca||'.SQLCODE;')
+       col(2) noScan;
+   else
+   do;
+     if parmset(@$reasonCode)
+     then
+       ans('/*R*/'||@$returnStruc||'.reasonCode = '||@$reasonCode||';')
+         col(2) noScan;
+     else
+       ans('/*R*/'||@$returnStruc||'.reasonCode = 0;')
+         col(2) noScan;
+   end;
+
+   /* set reasonTxt */
+   ans('/*R*/'||@$returnStruc||'.reasonTxt = ')
+     col(2) noScan;
+   ans('/*R*/   packageName()||" on line "||trim(sourceLine())||":"')
+     col(2) noScan;
+   if parmset(@$sqlca)
+   then
+   do;
+     ans('/*R*/ ||" SQLCODE="||trim(char('||@$sqlca||'.SQLCODE))')
+       col(2) noScan;
+     ans('/*R*/ ||" KEY="||'||@$key)
+       col(2) noScan;
+   end;
+   else
+   do;
+     if parmset(@$reasonTxt)
+     then
+       ans('/*R*/ ||'||@$reasonTxt)
+         col(2) noScan;
+   end;
+   ans('/*R*/   ;')
+     col(2) noScan;
+
+   /* trace */
+   if @$trace ^= 'N' then
+   do;
+     if ^parmset(@$trace) then
+     do;
+       ans('/*R*/if '||@$returnStruc||'.returnCode >= 8')
+         col(2) noScan;
+       ans('/*R*/ | YTSTRAC#MainData.trace.traceLvl > 0')
+         col(2) noScan;
+       ans('/*R*/then')
+         col(2) noScan;
+     end;
+     if parmset(@$trace)
+       &@$trace ^= 'Y'
+     then
+     do;
+       ans('/*R*/if '||@$returnStruc||'.returnCode >= 8')
+         col(2) noScan;
+       ans('/*R*/ | '||@$trace||' > 0')
+         col(2) noScan;
+       ans('/*R*/then')
+         col(2) noScan;
+     end;
+     ans('/*R*/do;')
+       col(2) noScan;
+     /* set severity   */
+     ans('/*R*/  select('||@$returnStruc||'.returnCode);')
+       col(2) noScan;
+     ans('/*R*/    when(0) severity'||@c||' = "information";')
+       col(2) noScan;
+     ans('/*R*/    when(4) severity'||@c||' = "warning";')
+       col(2) noScan;
+     ans('/*R*/    when(6) severity'||@c||' = "Db2 warning";')
+       col(2) noScan;
+     ans('/*R*/    when(8) severity'||@c||' = "error";')
+       col(2) noScan;
+     ans('/*R*/    when(10) severity'||@c||' = "Db2 error";')
+       col(2) noScan;
+     ans('/*R*/    when(12) severity'||@c||' = "severe error";')
+       col(2) noScan;
+     ans('/*R*/    when(16) severity'||@c||' = "unrecoverable";')
+       col(2) noScan;
+     ans('/*R*/    other severity'||@c||' = "unknown severity";')
+       col(2) noScan;
+     ans('/*R*/  end;')
+     col(2) noScan;
+     ans('@YTSTOOL#putComp;');
+     ans('/*R*/  call YTSTOOL#traceReturn(severity'||@c)
+       col(2) noScan;
+     ans('/*R*/                          ,'||@$returnStruc)
+       col(2) noScan;
+     ans('/*R*/                          );')
+       col(2) noScan;
+     /***/
+     if parmset(@$sqlca)
+     then
+     do;
+       ans('/*R*/  call YTSTOOL#traceSqlca(severity'||@c)
+         col(2) noScan;
+       ans('/*R*/                         ,'||@$sqlca)
+         col(2) noScan;
+       ans('/*R*/                         ,packageName()')
+         col(2) noScan;
+       ans('/*R*/                         ,"source line: "')
+         col(2) noScan;
+       ans('/*R*/                        ||trim(sourceLine())')
+         col(2) noScan;
+       ans('/*R*/                         );')
+         col(2) noScan;
+     end;
+     ans('/*R*/end;')
+       col(2) noScan;
+   end;
+ %end @YTSTOOL#setReturn;
+
+ %DCL @YTSTOOL#putComp entry;
+ %dcl (COMPILETIME,SYSVERSION,QUOTE) builtin;
+ %do skip;/*------------------------------------------------------------
+ put compile information(compile time & compile version) of the caller
+ ----------------------------------------------------------------*/%end;
+ %@YTSTOOL#putComp:
+   proc()
+   statement;
+
+   dcl (COMPILETIME,SYSVERSION,QUOTE) builtin;
+   ans('/*T*/call YTSTOOL#traceText("compile information for "')
+     col(2) noScan;
+   ans('/*T*/                     ||packageName()')
+     col(2) noScan;
+   ans('/*T*/                      ,'||QUOTE(COMPILETIME))
+     col(2) noScan;
+   ans('/*T*/                     ||" "')
+     col(2) noScan;
+   ans('/*T*/                     ||'||QUOTE(SYSVERSION))
+     col(2) noScan;
+   ans('/*T*/                      );')
+     col(2) noScan;
+
+ %end @YTSTOOL#putComp;

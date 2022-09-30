@@ -1,0 +1,299 @@
+!!com.compuware.ispw.wzzms.models.IspwRoot
+ispwApplication:
+  application: PLAY
+  encryptionProtocol: None
+  host: cw09.compuware.com
+  hostCodePage: '1047'
+  pathMappings:
+  - path: \AMAC
+    types:
+    - fileExtension: amac
+      ispwType: AMAC
+  - path: \ARCH
+    types:
+    - fileExtension: archive
+      ispwType: ARCH
+  - path: \ASM
+    types:
+    - fileExtension: asm
+      ispwType: ASM
+  - path: \ASUB
+    types:
+    - fileExtension: asub
+      ispwType: ASUB
+  - path: \BDAF
+    types:
+    - fileExtension: bdaf
+      ispwType: BDAF
+  - path: \BDAT
+    types:
+    - fileExtension: bdat
+      ispwType: BDAT
+  - path: \BDAU
+    types:
+    - fileExtension: bdau
+      ispwType: BDAU
+  - path: \BDAV
+    types:
+    - fileExtension: bdav
+      ispwType: BDAV
+  - path: \BITM
+    types:
+    - fileExtension: bmp
+      ispwType: BITM
+  - path: \C
+    types:
+    - fileExtension: c
+      ispwType: C
+  - path: \CLST
+    types:
+    - fileExtension: clst
+      ispwType: CLST
+  - path: \CMAP
+    types:
+    - fileExtension: cmap
+      ispwType: CMAP
+  - path: \COB
+    types:
+    - fileExtension: cob
+      ispwType: COB
+  - path: \COPY
+    types:
+    - fileExtension: copy
+      ispwType: COPY
+  - path: \CVB
+    types:
+    - fileExtension: c
+      ispwType: CVB
+  - path: \DATA
+    types:
+    - fileExtension: data
+      ispwType: DATA
+  - path: \DBRM
+    types:
+    - fileExtension: dbrm
+      ispwType: DBRM
+  - path: \DCLG
+    types:
+    - fileExtension: dclg
+      ispwType: DCLG
+  - path: \DDL
+    types:
+    - fileExtension: ddl
+      ispwType: DDL
+  - path: \DOCJ
+    types:
+    - fileExtension: docj
+      ispwType: DOCJ
+  - path: \DOCP
+    types:
+    - fileExtension: docp
+      ispwType: DOCP
+  - path: \DSCT
+    types:
+    - fileExtension: dsct
+      ispwType: DSCT
+  - path: \FLDR
+    types:
+    - fileExtension: fldr
+      ispwType: FLDR
+  - path: \FORT
+    types:
+    - fileExtension: fort
+      ispwType: FORT
+  - path: \GIM
+    types:
+    - fileExtension: gim
+      ispwType: GIM
+  - path: \H
+    types:
+    - fileExtension: h
+      ispwType: H
+  - path: \HTML
+    types:
+    - fileExtension: html
+      ispwType: HTML
+  - path: \INCL
+    types:
+    - fileExtension: incl
+      ispwType: INCL
+  - path: \INTF
+    types:
+    - fileExtension: interface
+      ispwType: INTF
+  - path: \JAR
+    types:
+    - fileExtension: JAR
+      ispwType: JAR
+  - path: \JAVA
+    types:
+    - fileExtension: java
+      ispwType: JAVA
+  - path: \JOB
+    types:
+    - fileExtension: job
+      ispwType: JOB
+  - path: \JOBT
+    types:
+    - fileExtension: jobt
+      ispwType: JOBT
+  - path: \JS
+    types:
+    - fileExtension: js
+      ispwType: JS
+  - path: \LCTL
+    types:
+    - fileExtension: lctl
+      ispwType: LCTL
+  - path: \LINK
+    types:
+    - fileExtension: lnk
+      ispwType: LINK
+  - path: \LIST
+    types:
+    - fileExtension: list
+      ispwType: LIST
+  - path: \LKED
+    types:
+    - fileExtension: lked
+      ispwType: LKED
+  - path: \LNG2
+    types:
+    - fileExtension: lng2
+      ispwType: LNG2
+  - path: \LOAD
+    types:
+    - fileExtension: load
+      ispwType: LOAD
+  - path: \LONG
+    types:
+    - fileExtension: long
+      ispwType: LONG
+  - path: \LSTR
+    types:
+    - fileExtension: listructure
+      ispwType: LSTR
+  - path: \MAN
+    types:
+    - fileExtension: man
+      ispwType: MAN
+  - path: \MSGS
+    types:
+    - fileExtension: msgs
+      ispwType: MSGS
+  - path: \NOTE
+    types:
+    - fileExtension: note
+      ispwType: NOTE
+  - path: \OBJ
+    types:
+    - fileExtension: obj
+      ispwType: OBJ
+  - path: \OB04
+    types:
+    - fileExtension: clst
+      ispwType: OB04
+  - path: \PANL
+    types:
+    - fileExtension: panl
+      ispwType: PANL
+  - path: \PARM
+    types:
+    - fileExtension: parm
+      ispwType: PARM
+  - path: \PLAN
+    types:
+    - fileExtension: plan
+      ispwType: PLAN
+  - path: \PLI
+    types:
+    - fileExtension: pli
+      ispwType: PLI
+  - path: \PREF
+    types:
+    - fileExtension: prefs
+      ispwType: PREF
+  - path: \PROC
+    types:
+    - fileExtension: proc
+      ispwType: PROC
+  - path: \PROJ
+    types:
+    - fileExtension: project
+      ispwType: PROJ
+  - path: \PROP
+    types:
+    - fileExtension: properties
+      ispwType: PROP
+  - path: \PSUB
+    types:
+    - fileExtension: psub
+      ispwType: PSUB
+  - path: \RSLT
+    types:
+    - fileExtension: result
+      ispwType: RSLT
+  - path: \SKEL
+    types:
+    - fileExtension: skel
+      ispwType: SKEL
+  - path: \SRO
+    types:
+    - fileExtension: sro
+      ispwType: SRO
+  - path: \STUB
+    types:
+    - fileExtension: stub
+      ispwType: STUB
+  - path: \TABL
+    types:
+    - fileExtension: tabl
+      ispwType: TABL
+  - path: \TDAF
+    types:
+    - fileExtension: tdaf
+      ispwType: TDAF
+  - path: \TDAU
+    types:
+    - fileExtension: tdau
+      ispwType: TDAU
+  - path: \TDAV
+    types:
+    - fileExtension: tdav
+      ispwType: TDAV
+  - path: \TEXT
+    types:
+    - fileExtension: text
+      ispwType: TEXT
+  - path: \TJCL
+    types:
+    - fileExtension: jcl
+      ispwType: TJCL
+  - path: \TSCE
+    types:
+    - fileExtension: testscenario
+      ispwType: TSCE
+  - path: \TSUT
+    types:
+    - fileExtension: testsuite
+      ispwType: TSUT
+  - path: \TXT
+    types:
+    - fileExtension: txt
+      ispwType: TXT
+  - path: \WDLG
+    types:
+    - fileExtension: wdlg
+      ispwType: WDLG
+  - path: \XML
+    types:
+    - fileExtension: xml
+      ispwType: XML
+  - path: \ZIP
+    types:
+    - fileExtension: zip
+      ispwType: ZIP
+  port: 47623
+  readWriteTimeout: 90
+  runtimeConfig: tpzp
+  stream: PLAY

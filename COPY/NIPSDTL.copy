@@ -1,0 +1,81 @@
+      ******************************************************************
+      * DCLGEN TABLE(NIPS.DETAIL)                                      *
+      *        LIBRARY(LMFPROG.APPLDCL.U099244(NIPSDTL))               *
+      *        ACTION(REPLACE)                                         *
+      *        LANGUAGE(COBOL)                                         *
+      *        QUOTE                                                   *
+      * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+      ******************************************************************
+           EXEC SQL DECLARE NIPS.DETAIL TABLE
+           ( NIPS_BANK_NBR                  DECIMAL(2, 0) NOT NULL,
+             NIPS_ACCT_ID                   DECIMAL(3, 0) NOT NULL,
+             NIPS_ACCT_NBR                  DECIMAL(9, 0) NOT NULL,
+             NIPS_ACCT_TYPE                 CHAR(2) NOT NULL,
+             NIPS_SEQ_NBR                   DECIMAL(7, 0) NOT NULL,
+             NIPS_SHORT_NAME                CHAR(14) NOT NULL,
+             NIPS_TX_CODE                   DECIMAL(3, 0) NOT NULL,
+             NIPS_TX_AMT                    DECIMAL(11, 2) NOT NULL,
+             NIPS_CURR_BAL                  DECIMAL(11, 2) NOT NULL,
+             NIPS_REASON_CODE               DECIMAL(2, 0) NOT NULL,
+             NIPS_REASON                    CHAR(10) NOT NULL,
+             NIPS_SERIAL_NBR                DECIMAL(9, 0) NOT NULL,
+             NIPS_OPER_ID                   DECIMAL(5, 0) NOT NULL,
+             NIPS_AUTH_ID                   DECIMAL(5, 0) NOT NULL,
+             NIPS_PAY_IND                   CHAR(1) NOT NULL,
+             NIPS_CHRG_IND                  CHAR(1) NOT NULL,
+             NIPS_MANUAL_IND                CHAR(1) NOT NULL,
+             NIPS_PAYEE                     CHAR(20) NOT NULL,
+             NIPS_TX_DESC                   CHAR(26) NOT NULL,
+             NIPS_TX_DATE                   DATE NOT NULL,
+             NIPS_ENCL_SW                   DECIMAL(1, 0) NOT NULL,
+             NIPS_SC_ITEM                   DECIMAL(1, 0) NOT NULL,
+             NIPS_UPDATE_SW                 CHAR(1) NOT NULL,
+             NIPS_REFUND_OPER               DECIMAL(5, 0) NOT NULL,
+             NIPS_REFUND_REASON             CHAR(30) NOT NULL,
+             NIPS_REFUND_DATE               DATE NOT NULL,
+             NIPS_REFUND_IND                CHAR(1) NOT NULL,
+             NIPS_LAST_MAINT                DATE NOT NULL,
+             NIPS_TX_FEE                    DECIMAL(5, 2) NOT NULL,
+             NIPS_OA_ACCT_IND               CHAR(1) NOT NULL,
+             NIPS_SEC_TIME_IND              CHAR(1) NOT NULL,
+             NIPS_EITEM_IND                 CHAR(1) NOT NULL
+           ) END-EXEC.
+      ******************************************************************
+      * COBOL DECLARATION FOR TABLE NIPS.DETAIL                        *
+      ******************************************************************
+       01  NIPS-DETAIL.
+           10 NIPS-BANK-NBR        PIC S9(2)V USAGE COMP-3.
+           10 NIPS-ACCT-ID         PIC S9(3)V USAGE COMP-3.
+           10 NIPS-ACCT-NBR        PIC S9(9)V USAGE COMP-3.
+           10 NIPS-ACCT-TYPE       PIC X(2).
+           10 NIPS-SEQ-NBR         PIC S9(7)V USAGE COMP-3.
+           10 NIPS-SHORT-NAME      PIC X(14).
+           10 NIPS-TX-CODE         PIC S9(3)V USAGE COMP-3.
+           10 NIPS-TX-AMT          PIC S9(9)V9(2) USAGE COMP-3.
+           10 NIPS-CURR-BAL        PIC S9(9)V9(2) USAGE COMP-3.
+           10 NIPS-REASON-CODE     PIC S9(2)V USAGE COMP-3.
+           10 NIPS-REASON          PIC X(10).
+           10 NIPS-SERIAL-NBR      PIC S9(9)V USAGE COMP-3.
+           10 NIPS-OPER-ID         PIC S9(5)V USAGE COMP-3.
+           10 NIPS-AUTH-ID         PIC S9(5)V USAGE COMP-3.
+           10 NIPS-PAY-IND         PIC X(1).
+           10 NIPS-CHRG-IND        PIC X(1).
+           10 NIPS-MANUAL-IND      PIC X(1).
+           10 NIPS-PAYEE           PIC X(20).
+           10 NIPS-TX-DESC         PIC X(26).
+           10 NIPS-TX-DATE         PIC X(10).
+           10 NIPS-ENCL-SW         PIC S9(1)V USAGE COMP-3.
+           10 NIPS-SC-ITEM         PIC S9(1)V USAGE COMP-3.
+           10 NIPS-UPDATE-SW       PIC X(1).
+           10 NIPS-REFUND-OPER     PIC S9(5)V USAGE COMP-3.
+           10 NIPS-REFUND-REASON   PIC X(30).
+           10 NIPS-REFUND-DATE     PIC X(10).
+           10 NIPS-REFUND-IND      PIC X(1).
+           10 NIPS-LAST-MAINT      PIC X(10).
+           10 NIPS-TX-FEE          PIC S9(3)V9(2) USAGE COMP-3.
+           10 NIPS-OA-ACCT-IND     PIC X(1).
+           10 NIPS-SEC-TIME-IND    PIC X(1).
+           10 NIPS-EITEM-IND       PIC X(1).
+      ******************************************************************
+      * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 31      *
+      ******************************************************************

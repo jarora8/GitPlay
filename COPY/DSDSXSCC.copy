@@ -1,0 +1,14 @@
+000100*01  EXT-SERV-CHRG-CODE-WORK-AREA.                                00010000
+000200     03  EXT-SERV-CHRG-CODES  OCCURS 250 TIMES.                   00020000
+000300         05  XSCC-TX-CODE        PIC 999.                         00030000
+000400         05  XSCC-HARD-CHRG-CODE PIC 999.                         00040000
+000500         05  XSCC-REPORT-DESC    PIC X(26).                       00050000
+000600         05  XSCC-TX-DESC.                                        00060000
+000700             07  XSCC-DESC-16    PIC X(16).                       00070000
+000800             07  XSCC-DESC-10    PIC X(10).                       00080000
+000900         05  XSCC-EXTEND-AMT-IND PIC X.                           00090000
+001000         05  XSCC-UNIT-PRICED-IND                                 00100000
+001100                                 PIC X.                           00110000
+001200         05  XSCC-OVERRIDE-IND   PIC X.                           00120000
+001300         05  XSCC-AA-AMT-NUM-IND PIC X.                           00130001
+001400         05  XSCC-FILLER         PIC X(18).                       00140001

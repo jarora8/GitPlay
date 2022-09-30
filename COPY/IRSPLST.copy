@@ -1,0 +1,55 @@
+      ******************************************************************
+      * DCLGEN TABLE(IRS.PENDLST)                                      *
+      *        LIBRARY(LMFPROG.APPLDCL.U099548(IRSPLST))               *
+      *        ACTION(REPLACE)                                         *
+      *        LANGUAGE(COBOL)                                         *
+      *        QUOTE                                                   *
+      * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+      ******************************************************************
+           EXEC SQL DECLARE IRS.PENDLST TABLE
+           ( IRSPL_APPL_NBR                 DECIMAL(3, 0) NOT NULL,
+             IRSPL_BANK_NBR                 DECIMAL(3, 0) NOT NULL,
+             IRSPL_RECORD_TYPE              DECIMAL(3, 0) NOT NULL,
+             IRSPL_POST_DATE                DATE NOT NULL,
+             IRSPL_EFF_DATE                 DATE NOT NULL,
+             IRSPL_EXTRACT_DATE             DATE NOT NULL,
+             IRSPL_REQUEST_CODE             DECIMAL(3, 0) NOT NULL,
+             IRSPL_SOURCE_ID                CHAR(8) NOT NULL,
+             IRSPL_GROUP_ID                 DECIMAL(2, 0) NOT NULL,
+             IRSPL_ACCT_NBR                 CHAR(14) NOT NULL,
+             IRSPL_SHORT_NAME               CHAR(16) NOT NULL,
+             IRSPL_EARN_TYPE                CHAR(1) NOT NULL,
+             IRSPL_TX_AMOUNT                DECIMAL(11, 2) NOT NULL,
+             IRSPL_POST_YR_IND              CHAR(1) NOT NULL,
+             IRSPL_ACCT_END_BAL             DECIMAL(11, 2) NOT NULL,
+             IRSPL_FED_WH_AMT               DECIMAL(9, 2) NOT NULL,
+             IRSPL_ALT_BANK_NBR             DECIMAL(3, 0) NOT NULL,
+             IRSPL_REMIT_IND                CHAR(1) NOT NULL,
+             IRSPL_DEPOSIT_DATE             DATE NOT NULL
+           ) END-EXEC.
+      ******************************************************************
+      * COBOL DECLARATION FOR TABLE IRS.PENDLST                        *
+      ******************************************************************
+       01  IRS-PENDLST.
+           10 IRSPL-APPL-NBR       PIC S9(3)V USAGE COMP-3.
+           10 IRSPL-BANK-NBR       PIC S9(3)V USAGE COMP-3.
+           10 IRSPL-RECORD-TYPE    PIC S9(3)V USAGE COMP-3.
+           10 IRSPL-POST-DATE      PIC X(10).
+           10 IRSPL-EFF-DATE       PIC X(10).
+           10 IRSPL-EXTRACT-DATE   PIC X(10).
+           10 IRSPL-REQUEST-CODE   PIC S9(3)V USAGE COMP-3.
+           10 IRSPL-SOURCE-ID      PIC X(8).
+           10 IRSPL-GROUP-ID       PIC S9(2)V USAGE COMP-3.
+           10 IRSPL-ACCT-NBR       PIC X(14).
+           10 IRSPL-SHORT-NAME     PIC X(16).
+           10 IRSPL-EARN-TYPE      PIC X(1).
+           10 IRSPL-TX-AMOUNT      PIC S9(9)V9(2) USAGE COMP-3.
+           10 IRSPL-POST-YR-IND    PIC X(1).
+           10 IRSPL-ACCT-END-BAL   PIC S9(9)V9(2) USAGE COMP-3.
+           10 IRSPL-FED-WH-AMT     PIC S9(7)V9(2) USAGE COMP-3.
+           10 IRSPL-ALT-BANK-NBR   PIC S9(3)V USAGE COMP-3.
+           10 IRSPL-REMIT-IND      PIC X(1).
+           10 IRSPL-DEPOSIT-DATE   PIC X(10).
+      ******************************************************************
+      * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 19      *
+      ******************************************************************

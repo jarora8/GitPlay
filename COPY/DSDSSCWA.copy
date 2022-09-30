@@ -1,0 +1,161 @@
+000100******************************************************************00010000
+000200*                                                                *00020000
+000300*S E R V I C E   C H A R G E   R O U T I N E   W O R K   A R E A *00030000
+000400*                                                                *00040000
+000500******************************************************************00050000
+000600*01  SC-ROUTINE-WORK-FIELDS.                                      00060000
+000700     02  DOLLAR-ITEMS.                                            00070000
+000800         03  HOLD-AVERAGE    PIC S9(9)       VALUE ZERO  COMP-3.  00080000
+000900         03  HOLD-EARN-BALANCE                                    00090000
+001000                             PIC S9(9)V99    VALUE ZERO  COMP-3.  00100000
+001100         03  HOLD-SC-EARN    PIC S9(9)V99    VALUE ZERO  COMP-3.  00110000
+001200         03  HOLD-CHARGES    PIC S9(9)V99    VALUE ZERO  COMP-3.  00120000
+001300         03  HOLD-CALC-AMT   PIC S9(9)V99    VALUE ZERO  COMP-3.  00130000
+001400         03  HOLD-SC-PLUS    PIC S9(9)V99    VALUE ZERO  COMP-3.  00140000
+001500         03  HOLD-SC-CALC    PIC S9(9)V99    VALUE ZERO  COMP-3.  00150000
+001600         03  HOLD-NON-SAFEKEEP-FEE                                00160008
+001700                             PIC S9(5)V99    VALUE ZERO  COMP-3.  00170008
+001800         03  HOLD-NET-CHG    PIC S9(5)V99    VALUE ZERO  COMP-3.  00180000
+001900         03  HOLD-MAINT-FEE  PIC S9(5)V99    VALUE ZERO  COMP-3.  00190000
+002000         03  HOLD-DEBIT-CHG  PIC S9(5)V99    VALUE ZERO  COMP-3.  00200000
+002100         03  HOLD-CREDIT-CHG PIC S9(5)V99    VALUE ZERO  COMP-3.  00210000
+002200         03  HOLD-ITEM-CHG   PIC S9(5)V99    VALUE ZERO  COMP-3.  00220000
+002300         03  HOLD-DORMANT-FEE-HC                                  00230023
+002400                             PIC S9(5)V99    VALUE ZERO  COMP-3.  00240000
+002500         03  HOLD-ADDL-MIN-FEE                                    00250001
+002600                             PIC S9(5)V99    VALUE ZERO  COMP-3.  00260000
+002700         03  HOLD-IMAGE-FEE  PIC S9(5)V99    VALUE ZERO  COMP-3.  00270007
+002800         03  HOLD-ACH-DEB-FEE                                     00280004
+002900                             PIC S9(5)V99    VALUE ZERO  COMP-3.  00290004
+003000         03  HOLD-FT-DEB-FEE PIC S9(5)V99    VALUE ZERO  COMP-3.  00300004
+003100         03  HOLD-INFOLINE-DEB-FEE                                00310004
+003200                             PIC S9(5)V99    VALUE ZERO  COMP-3.  00320004
+003300         03  HOLD-ATM-DEB-FEE                                     00330004
+003400                             PIC S9(5)V99    VALUE ZERO  COMP-3.  00340004
+003500         03  HOLD-POS-DEB-FEE                                     00350004
+003600                             PIC S9(5)V99    VALUE ZERO  COMP-3.  00360004
+003700         03  HOLD-LIMIT-6-DEB-FEE                                 00370004
+003800                             PIC S9(5)V99    VALUE ZERO  COMP-3.  00380004
+003900         03  HOLD-TELE-DEB-FEE                                    00390006
+004000                             PIC S9(5)V99    VALUE ZERO  COMP-3.  00400004
+004100         03  HOLD-3RD-PARTY-DEB-FEE                               00410004
+004200                             PIC S9(5)V99    VALUE ZERO  COMP-3.  00420004
+004300         03  HOLD-ANNUAL-FEE PIC S9(5)V99    VALUE ZERO  COMP-3.  00430009
+004400         03  HOLD-FOR-ATM-FEE-REFUND                              00440016
+004500                             PIC S9(5)V99    VALUE ZERO  COMP-3.  00450010
+004600         03  DOLLAR-ITEMS-FILLER1                                 00460034
+004700                             PIC S9(5)V99    VALUE ZERO  COMP-3.  00470010
+004800         03  HOLD-INACTIVE-FEE-HC                                 00480023
+004900                             PIC S9(5)V99    VALUE ZERO  COMP-3.  00490010
+005000         03  HOLD-CARD-FEE   PIC S9(5)V99    VALUE ZERO  COMP-3.  00500012
+005100         03  HOLD-CHECK-HANDLING-FEE                              00510014
+005200                             PIC S9(5)V99    VALUE ZERO  COMP-3.  00520014
+005300         03  HOLD-CHECK-HANDLING-FEE-HC                           00530015
+005400                             PIC S9(5)V99    VALUE ZERO  COMP-3.  00540015
+005500         03  HOLD-LOST-CONTACT-FEE                                00550017
+005600                             PIC S9(5)V99    VALUE ZERO  COMP-3.  00560017
+005700         03  HOLD-MEMBERSHIP-FEE                                  00570018
+005800                             PIC S9(5)V99    VALUE ZERO  COMP-3.  00580018
+005900         03  HOLD-CHECK-IMAGING-FEE-HC                            00590019
+006000                             PIC S9(5)V99    VALUE ZERO  COMP-3.  00600019
+006100         03  HOLD-NON-SAFEKEEP-FEE-HC                             00610020
+006200                             PIC S9(5)V99    VALUE ZERO  COMP-3.  00620020
+006300         03  HOLD-IMAGE-STMT-FEE                                  00630021
+006400                             PIC S9(5)V99    VALUE ZERO  COMP-3.  00640021
+006500         03  HOLD-STMT-ENCL-ITEM-FEE                              00650022
+006600                             PIC S9(5)V99    VALUE ZERO  COMP-3.  00660022
+006700         03  HOLD-LOST-CONTACT-FEE-HC                             00670023
+006800                             PIC S9(5)V99    VALUE ZERO  COMP-3.  00680023
+006900         03  HOLD-PLUS-PACKAGE-FEE                                00690023
+007000                             PIC S9(5)V99    VALUE ZERO  COMP-3.  00700023
+007100         03  HOLD-2SIGN-VERIFICATION-FEE                          00710024
+007200                             PIC S9(5)V99    VALUE ZERO  COMP-3.  00720024
+007300         03  HOLD-EXCESS-DEBIT-FEE-HC                             00730025
+007400                             PIC S9(5)V99    VALUE ZERO  COMP-3.  00740025
+007500         03  HOLD-PAPER-STATEMENT-FEE                             00750028
+007600                             PIC S9(5)V99    VALUE ZERO  COMP-3.  00760028
+007700         03  DOLLAR-ITEMS-FILLER                                  00770009
+007800                             PIC X(28)       VALUE SPACES.        00780028
+007900     02  COUNT-ITEMS.                                             00790000
+008000         03  HOLD-CALC-ITEMS PIC S9(7)       VALUE ZERO  COMP-3.  00800000
+008100         03  CALC-ITEMS      PIC S9(7)       VALUE ZERO  COMP-3.  00810000
+008200         03  CALC-DEBITS     PIC S9(7)       VALUE ZERO  COMP-3.  00820000
+008300         03  HOLD-NUM-REG-SC-DEB                                  00830004
+008400                             PIC S9(5)       VALUE ZERO  COMP-3.  00840004
+008500         03  HOLD-NUM-ACH-SC-DEB                                  00850004
+008600                             PIC S9(5)       VALUE ZERO  COMP-3.  00860004
+008700         03  HOLD-NUM-FT-SC-DEB                                   00870004
+008800                             PIC S9(5)       VALUE ZERO  COMP-3.  00880004
+008900         03  HOLD-NUM-INFOLINE-SC-DEB                             00890004
+009000                             PIC S9(5)       VALUE ZERO  COMP-3.  00900004
+009100         03  HOLD-NUM-ATM-SC-DEB                                  00910004
+009200                             PIC S9(5)       VALUE ZERO  COMP-3.  00920004
+009300         03  HOLD-NUM-POS-SC-DEB                                  00930004
+009400                             PIC S9(5)       VALUE ZERO  COMP-3.  00940004
+009500         03  HOLD-NUM-LIMIT-6-DEB                                 00950004
+009600                             PIC S9(5)       VALUE ZERO  COMP-3.  00960004
+009700         03  HOLD-NUM-TELE-SC-DEB                                 00970006
+009800                             PIC S9(5)       VALUE ZERO  COMP-3.  00980004
+009900         03  HOLD-NUM-3RD-PARTY-DEB                               00990004
+010000                             PIC S9(5)       VALUE ZERO  COMP-3.  01000004
+010100         03  HOLD-CHKPLUS-DAYS                                    01010011
+010200                             PIC S9(5)       VALUE ZERO  COMP-3.  01020011
+010300         03  HOLD-PAYLINE-DAYS                                    01030013
+010400                             PIC S9(5)       VALUE ZERO  COMP-3.  01040013
+010500         03  COUNT-ITEMS-FILLER                                   01050009
+010600                             PIC X(54)       VALUE SPACES.        01060029
+010700     02  FEE-ITEMS.                                               01070029
+010800         03  ID-PROTECTION-ONLY-FEE                               01080029
+010900                             PIC S9(3)V99    VALUE ZERO  COMP-3.  01090029
+011000         03  ID-PROTECTION-PLUS-FEE                               01100029
+011100                             PIC S9(3)V99    VALUE ZERO  COMP-3.  01110029
+011200         03  ID-PROTECTION-DISC-FEE                               01120029
+011300                             PIC S9(3)V99    VALUE ZERO  COMP-3.  01130029
+011400         03  ID-PROTECTION-EMPL-FEE                               01140031
+011500                             PIC S9(3)V99    VALUE ZERO  COMP-3.  01150031
+011600         03  FEE-ITEMS-FILLER                                     01160029
+011700                             PIC X(28)       VALUE SPACES.        01170031
+011800     02  RATE-ITEMS.                                              01180000
+011900         03  HOLD-INTEREST-RATE                                   01190000
+012000                             PIC SV9(9)      VALUE ZERO  COMP-3.  01200000
+012100         03  HOLD-EARN-ALLOW PIC SV9(5)      VALUE ZERO  COMP-3.  01210000
+012200         03  HOLD-AVG-INT-RATE REDEFINES HOLD-EARN-ALLOW          01220000
+012300                             PIC SV9(5)                  COMP-3.  01230000
+012400         03  HOLD-RESERVE-REQMNT                                  01240000
+012500                             PIC SV9(5)      VALUE ZERO  COMP-3.  01250000
+012600     02  MISCELLANEOUS-ITEMS.                                     01260000
+012700         03  HOLD-E-STMT-IND PIC XX          VALUE SPACES.        01270027
+012800             88  OSB-NO-STMT                 VALUE 'NN'.          01280027
+012900             88  OSB-PAPER                   VALUE 'YN'.          01290027
+013000             88  OSB-EMAIL-FAX               VALUE 'NY'.          01300027
+013100             88  OSB-PAPER-EMAIL-FAX         VALUE 'YY'.          01310027
+013200         03  FILLER REDEFINES HOLD-E-STMT-IND.                    01320027
+013300             04  HOLD-ESI-PAPER                                   01330027
+013400                             PIC X.                               01340027
+013500             04  HOLD-ESI-ELECTRONIC                              01350027
+013600                             PIC X.                               01360027
+013700         03  MISC-ITEMS-FILLER                                    01370026
+013800                             PIC X(9)        VALUE SPACES.        01380027
+013900         03  HOLD-DISP       PIC X           VALUE SPACE.         01390000
+014000         03  HOLD-NC-DISP    PIC 9           VALUE ZERO.          01400000
+014100         03  HOLD-EARN-DISP  PIC X           VALUE SPACE.         01410000
+014200         03  EXCESS-WD-SW    PIC 9           VALUE ZERO  COMP-3.  01420000
+014300         03  SC-CLOSED-SW    PIC 9           VALUE ZERO  COMP-3.  01430000
+014400         03  SC-RETURN       PIC 9           VALUE ZERO  COMP-3.  01440000
+014500     02  HISTORY-ITEMS.                                           01450000
+014600         03  HOLD-HISTORY    PIC X(69).                           01460000
+014700     02  CONTROL-ITEMS.                                           01470000
+014800         03  HOLD-SC-ROUTINE PIC X(200)      VALUE SPACES.        01480000
+014900******************************************************************01490032
+015000*                                                        COPYBOOK*01500000
+015100*                                                                *01510000
+015200* PURPOSE: DSDS SERVICE CHARGE WORK AREA                         *01520032
+015300*                                                                *01530000
+015400* LENGTH OF COPYBOOK: 209 BYTES                                  *01540033
+015500* LENGTH OF SORT KEY: N/A                                        *01550033
+015600*                                                                *01560000
+015700* USAGE: HOLDS TO BE PASSED IN A LINKAGE AREA                    *01570033
+015800*                                                                *01580000
+015900* FIELD DESCRIPTION/VALUES:                                      *01590000
+016000*                                                                *01600000
+016100******************************************************************01610000

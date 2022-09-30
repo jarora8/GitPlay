@@ -1,0 +1,32 @@
+000100******************************************************************00010000
+000200* EDOC050P                                                       *00020000
+000210*                                                                *00021000
+000220*              E D O C 0 5 0   P A R A M E T E R S               *00022000
+000230*                                                                *00023000
+000240*                   RETURN DELIVERY INFO                         *00024000
+000250******************************************************************00025000
+000260                                                                  00026000
+000400 01  EDOC050-PARAMETERS.                                          00040000
+000500     02  EDOC050-SOURCE-PROG      PIC X(08).                      00050001
+000600     02  EDOC050-USER-ID          PIC S9(05)           COMP-3.    00060001
+000700     02  EDOC050-ACCT-BANK-NBR    PIC S9(03)           COMP-3.    00070001
+000800     02  EDOC050-ACCT-FILE-ID     PIC X(04).                      00080001
+000900     02  EDOC050-ACCT-KEY         PIC X(25).                      00090000
+000910     02  EDOC050-FORM-ID          PIC X(08).                      00091000
+000920     02  EDOC050-DELIVERY-AREA.                                   00092004
+000930         03  EDOC050-DELIVERY                     OCCURS 10 TIMES.00093004
+001000             04  EDOC050-DEL-METHOD   PIC 999              COMP-3.00100004
+001200             04  EDOC050-DEL-DATA     PIC X(70).                  00120004
+001310             04  EDOC050-DEL-LOGO     PIC X(08).                  00131004
+001320             04  EDOC050-DEL-ALT-FAX  PIC X(25).                  00132004
+001330             04  EDOC050-DEL-COV-PG   PIC X.                      00133004
+001340             04  EDOC050-DEL-RETRIES  PIC 9.                      00134004
+001341             04  EDOC050-DEL-COMBINE  PIC X.                      00134104
+001342             04  EDOC050-DEL-INST     PIC X(80).                  00134204
+001343             04  EDOC050-DEL-SUBJECT  PIC X(80).                  00134304
+001344         03  EDOC050-REPLY-TO     PIC X(70).                      00134406
+001345         03  EDOC050-REPLY-FRNDLY PIC X(70).                      00134508
+001346     02  EDOC050-FROM             PIC X(70).                      00134608
+001347     02  EDOC050-NINE-SW          PIC X.                          00134710
+001348     02  FILLER                   PIC X(129).                     00134810
+001848*                                                                 00184800

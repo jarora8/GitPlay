@@ -1,0 +1,26 @@
+000100*01  COLLATERAL-NOTICES.                                          00010000
+000200     02  CN-REPORT-CODE      PIC S999                    COMP-3.  00020000
+000300     02  CN-FILE-ID          PIC XXX.                             00030000
+000400     02  CN-BANK-NO          PIC 99.                              00040000
+000500     02  CN-ACCT-ID          PIC 999                     COMP-3.  00050000
+000600     02  CN-ACCT-NO          PIC 9(9)                    COMP-3.  00060000
+000700     02  CN-CRF-REC-ID       PIC X(11).                           00070000
+000800     02  CN-CONTINUATION     PIC S999                    COMP-3.  00080000
+000900         88  CN-FIRST-RECORD             VALUE +001.              00090000
+001000         88  CN-LAST-RECORD              VALUE +999.              00100000
+001100     02  CN-INV-PLAN         PIC XX.                              00110000
+001200     02  CN-INVEST-AMT       PIC S9(9)V99                COMP-3.  00120000
+001300     02  CN-EARN-RATE        PIC SV9(7)                  COMP-3.  00130000
+001400     02  CN-MATURE-DATE      PIC S9(7)                   COMP-3.  00140002
+001500     02  CN-SECURE-AMT       PIC S9(9)                   COMP-3.  00150000
+001600     02  CN-SECURE-DESC      PIC X(20).                           00160000
+001700     02  CN-INV-TERM         PIC S9(5)                   COMP-3.  00170003
+001800     02  CN-INV-TERM-IND     PIC X.                               00180000
+001900     02  CN-DAILY-INT-AMT    PIC S9(8)V9(5)              COMP-3.  00190000
+002000     02  CN-CUSIP            PIC X(9).                            00200004
+002100     02  CN-COLLAT-NTC-IND   PIC X.                               00210001
+002200     02  FILLER              PIC X(61).                           00220004
+002300*  THIS LAYOUT IS USED FOR REPORT CODE 88 AND 97.                 00230001
+002400*  THIS RECORD IS 150 CHARACTERS                                  00240000
+002500*        88 = COLLATERAL NOTICES (PRINT ONLY)                     00250001
+002600*        97 = COLLATERAL NOTICES (VRDS ONLY)                      00260001

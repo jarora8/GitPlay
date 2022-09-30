@@ -1,0 +1,124 @@
+      ******************************************************************
+      * DCLGEN TABLE(CD.BANKCTL)                                       *
+      *        LIBRARY(LMFPROG.APPLDCL.U099420(CDCNTL))                *
+      *        ACTION(REPLACE)                                         *
+      *        LANGUAGE(COBOL)                                         *
+      *        APOST                                                   *
+      *        LABEL(YES)                                              *
+      *        DBCSDELIM(NO)                                           *
+      * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+      ******************************************************************
+           EXEC SQL DECLARE CD.BANKCTL TABLE
+           ( CDBC_BANK_NBR                  DECIMAL(3, 0) NOT NULL,
+             CDBC_BANK_NAME                 CHAR(40) NOT NULL,
+             CDBC_SET_ID                    CHAR(4) NOT NULL,
+             CDBC_CIF_IND                   DECIMAL(1, 0) NOT NULL,
+             CDBC_CIF_BANK_ID               CHAR(4) NOT NULL,
+             CDBC_SYSTEM_DT                 DATE NOT NULL,
+             CDBC_PRC_DT_LAST               DATE NOT NULL,
+             CDBC_PRC_DT_FIRST              DATE NOT NULL,
+             CDBC_PRC_DAYS                  DECIMAL(3, 0) NOT NULL,
+             CDBC_PRC_THRU_DT               DATE NOT NULL,
+             CDBC_PRC_DT_NEXT               DATE NOT NULL,
+             CDBC_PRC_PERIOD                DECIMAL(3, 0) NOT NULL,
+             CDBC_ACCR_DT_LAST              DATE NOT NULL,
+             CDBC_ACCR_DT_FIRST             DATE NOT NULL,
+             CDBC_ACCR_THRU_DT              DATE NOT NULL,
+             CDBC_ACCR_DAYS_PRV             DECIMAL(3, 0) NOT NULL,
+             CDBC_ACCR_DAYS_CUR             DECIMAL(3, 0) NOT NULL,
+             CDBC_ACCR_DAYS_MEM             DECIMAL(3, 0) NOT NULL,
+             CDBC_LAST_UPDATE               TIMESTAMP NOT NULL,
+             CDBC_SECURITY_CODE             DECIMAL(5, 0) NOT NULL,
+             CDBC_ACCRUAL_BASE              DECIMAL(1, 0) NOT NULL,
+             CDBC_PROCESS_IND               DECIMAL(1, 0) NOT NULL,
+             CDBC_TX_IND                    DECIMAL(1, 0) NOT NULL,
+             CDBC_ACH_IND                   DECIMAL(1, 0) NOT NULL,
+             CDBC_MATURITY_IND              DECIMAL(1, 0) NOT NULL,
+             CDBC_ADM_IND                   DECIMAL(1, 0) NOT NULL,
+             CDBC_CK_ACCT_NBR               DECIMAL(9, 0) NOT NULL,
+             CDBC_INT_RATE_MIN              DECIMAL(9, 9) NOT NULL,
+             CDBC_INT_RATE_MAX              DECIMAL(9, 9) NOT NULL,
+             CDBC_SAV_RATE                  DECIMAL(9, 9) NOT NULL,
+             CDBC_RATE_VARIANCE             DECIMAL(7, 7) NOT NULL,
+             CDBC_1099_MIN_INT              DECIMAL(5, 2) NOT NULL,
+             CDBC_1099_PRT_IND              DECIMAL(1, 0) NOT NULL,
+             CDBC_1099_SORT_IND             DECIMAL(1, 0) NOT NULL,
+             CDBC_PAC_FEE                   DECIMAL(5, 2) NOT NULL,
+             CDBC_EOM_DATE                  DATE NOT NULL,
+             CDBC_PRC_WEEKEND               DECIMAL(1, 0) NOT NULL,
+             CDBC_DDA_ACCT_NBR              DECIMAL(9, 0) NOT NULL,
+             CDBC_ACH_INT_SW                CHAR(1) NOT NULL,
+             CDBC_ACH_PRIN_SW               CHAR(1) NOT NULL,
+             CDBC_ACH_PI_SW                 CHAR(1) NOT NULL,
+             CDBC_ESCHEAT_TAX_WH_PCT        DECIMAL(9, 9) NOT NULL
+           ) END-EXEC.
+      ******************************************************************
+      * COBOL DECLARATION FOR TABLE CD.BANKCTL                         *
+      ******************************************************************
+       01  CD-BANKCTL.
+           10 CDBC-BANK-NBR        PIC S9(3)V USAGE COMP-3.
+           10 CDBC-BANK-NAME       PIC X(40).
+           10 CDBC-SET-ID          PIC X(4).
+           10 CDBC-CIF-IND         PIC S9(1)V USAGE COMP-3.
+              88  CDBC-CRF-BANK               VALUE 1.
+              88  CDBC-NON-CRF-BANK           VALUE 2.
+           10 CDBC-CIF-BANK-ID     PIC X(4).
+           10 CDBC-SYSTEM-DT       PIC X(10).
+           10 CDBC-PRC-DT-LAST     PIC X(10).
+           10 CDBC-PRC-DT-FIRST    PIC X(10).
+           10 CDBC-PRC-DAYS        PIC S9(3)V USAGE COMP-3.
+           10 CDBC-PRC-THRU-DT     PIC X(10).
+           10 CDBC-PRC-DT-NEXT     PIC X(10).
+           10 CDBC-PRC-PERIOD      PIC S9(3)V USAGE COMP-3.
+           10 CDBC-ACCR-DT-LAST    PIC X(10).
+           10 CDBC-ACCR-DT-FIRST   PIC X(10).
+           10 CDBC-ACCR-THRU-DT    PIC X(10).
+           10 CDBC-ACCR-DAYS-PRV   PIC S9(3)V USAGE COMP-3.
+           10 CDBC-ACCR-DAYS-CUR   PIC S9(3)V USAGE COMP-3.
+           10 CDBC-ACCR-DAYS-MEM   PIC S9(3)V USAGE COMP-3.
+           10 CDBC-LAST-UPDATE     PIC X(26).
+           10 CDBC-SECURITY-CODE   PIC S9(5)V USAGE COMP-3.
+           10 CDBC-ACCRUAL-BASE    PIC S9(1)V USAGE COMP-3.
+              88  CDBC-ACCRUAL-365-365        VALUE 1.
+              88  CDBC-ACCRUAL-365-360        VALUE 2.
+           10 CDBC-PROCESS-IND     PIC S9(1)V USAGE COMP-3.
+              88  CDBC-PROCESS                VALUE 1.
+              88  CDBC-DO-NOT-PROCESS         VALUE 2.
+           10 CDBC-TX-IND          PIC S9(1)V USAGE COMP-3.
+              88  CDBC-MATCH-TX               VALUE 1.
+              88  CDBC-NO-MATCH               VALUE 2.
+           10 CDBC-ACH-IND         PIC S9(1)V USAGE COMP-3.
+              88  CDBC-CREATE-ACH             VALUE 1.
+              88  CDBC-NO-ACH                 VALUE 2.
+           10 CDBC-MATURITY-IND    PIC S9(1)V USAGE COMP-3.
+              88  CDBC-MAT-ANY-DAY            VALUE 1.
+              88  CDBC-MAT-BUS-DAY-ONLY       VALUE 2.
+           10 CDBC-ADM-IND         PIC S9(1)V USAGE COMP-3.
+              88  CDBC-ADM-BANK               VALUE 1.
+              88  CDBC-NON-ADM-BANK           VALUE 2.
+           10 CDBC-CK-ACCT-NBR     PIC S9(9)V USAGE COMP-3.
+           10 CDBC-INT-RATE-MIN    PIC SV9(9) USAGE COMP-3.
+           10 CDBC-INT-RATE-MAX    PIC SV9(9) USAGE COMP-3.
+           10 CDBC-SAV-RATE        PIC SV9(9) USAGE COMP-3.
+           10 CDBC-RATE-VARIANCE   PIC SV9(7) USAGE COMP-3.
+           10 CDBC-1099-MIN-INT    PIC S9(3)V9(2) USAGE COMP-3.
+           10 CDBC-1099-PRT-IND    PIC S9(1)V USAGE COMP-3.
+              88  CDBC-1099-PRINT             VALUE 1.
+              88  CDBC-1099-NO-PRINT          VALUE 2.
+           10 CDBC-1099-SORT-IND   PIC S9(1)V USAGE COMP-3.
+              88  CDBC-1099-SSN               VALUE 1.
+              88  CDBC-1099-ACCT-NBR          VALUE 2.
+           10 CDBC-PAC-FEE         PIC S9(3)V9(2) USAGE COMP-3.
+           10 CDBC-EOM-DATE        PIC X(10).
+           10 CDBC-PRC-WEEKEND     PIC S9(1)V USAGE COMP-3.
+              88  CDBC-NOT-WEEKEND            VALUE 0.
+              88  CDBC-WEEKEND                VALUE 1.
+           10 CDBC-DDA-ACCT-NBR    PIC S9(9)V USAGE COMP-3.
+           10 CDBC-ACH-INT-SW      PIC X(1).
+           10 CDBC-ACH-PRIN-SW     PIC X(1).
+           10 CDBC-ACH-PI-SW       PIC X(1).
+           10 CDBC-ESCHEAT-TAX-WH-PCT
+              PIC SV9(9) USAGE COMP-3.
+      ******************************************************************
+      * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 42      *
+      ******************************************************************

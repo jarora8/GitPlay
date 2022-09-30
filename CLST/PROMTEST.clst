@@ -1,0 +1,3 @@
+/* REXX */
+SAY 'PROMTEST'
+EXIT 0

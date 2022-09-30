@@ -1,0 +1,14 @@
+000100 01  COLLATERAL-EXCEPTION-RECORD.                                 00010000
+000200     05  CER-BANK-NBR            PIC 9(3)                COMP-3.  00020000
+000300     05  CER-ACCT-ID             PIC 9(3)                COMP-3.  00030000
+000400     05  CER-ACCT-NBR            PIC 9(9)                COMP-3.  00040000
+000500     05  CER-SHORT-NAME          PIC X(14).                       00050000
+000600     05  CER-INV-PLAN            PIC XX.                          00060000
+000700     05  CER-PROJ-RP-AMT         PIC S9(9)V99            COMP-3.  00070002
+000800     05  CER-PROJ-RP-COLLAT-AMT  PIC S9(9)V99            COMP-3.  00080002
+000900     05  CER-ACTUAL-RP-AMT       PIC S9(9)V99            COMP-3.  00090000
+001000     05  CER-ACTUAL-RP-COLLAT-AMT                                 00100000
+001100                                 PIC S9(9)V99            COMP-3.  00110000
+001200     05  CER-COLLAT-FACTOR       PIC S9V9(4)             COMP-3.  00120000
+001210     05  CER-COLLAT-CODE         PIC X(4).                        00121001
+001300     05  CER-FILLER              PIC X(24).                       00130001

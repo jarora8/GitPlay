@@ -1,0 +1,29 @@
+      ******************************************************************
+      * DCLGEN TABLE(DSDS.OSBXREF)                                     *
+      *        LIBRARY(LMFPROG.APPLDCL.U099073(DSDSOSB))               *
+      *        ACTION(REPLACE)                                         *
+      *        LANGUAGE(COBOL)                                         *
+      *        QUOTE                                                   *
+      * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+      ******************************************************************
+           EXEC SQL DECLARE DSDS.OSBXREF TABLE
+           ( DSXRF_BANK_NBR                 DECIMAL(3, 0) NOT NULL,
+             DSXRF_ACCT_ID                  DECIMAL(3, 0) NOT NULL,
+             DSXRF_ACCT_NBR                 DECIMAL(9, 0) NOT NULL,
+             DSXRF_OSB_BANK_NBR             DECIMAL(3, 0) NOT NULL,
+             DSXRF_OSB_FILE_ID              CHAR(4) NOT NULL,
+             DSXRF_OSB_FILE_KEY             CHAR(25) NOT NULL
+           ) END-EXEC.
+      ******************************************************************
+      * COBOL DECLARATION FOR TABLE DSDS.OSBXREF                       *
+      ******************************************************************
+       01  DSDS-OSBXREF.
+           10 DSXRF-BANK-NBR       PIC S9(3)V USAGE COMP-3.
+           10 DSXRF-ACCT-ID        PIC S9(3)V USAGE COMP-3.
+           10 DSXRF-ACCT-NBR       PIC S9(9)V USAGE COMP-3.
+           10 DSXRF-OSB-BANK-NBR   PIC S9(3)V USAGE COMP-3.
+           10 DSXRF-OSB-FILE-ID    PIC X(4).
+           10 DSXRF-OSB-FILE-KEY   PIC X(25).
+      ******************************************************************
+      * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 6       *
+      ******************************************************************

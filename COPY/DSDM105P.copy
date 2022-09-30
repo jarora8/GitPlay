@@ -1,0 +1,22 @@
+000100 01  DSDM105-PARAMETERS.                                          00010000
+000200     02  DSDM105-OLD-CODE    PIC 99      VALUE ZEROS.             00020003
+000300     02  DSDM105-NEW-CODE    PIC 99      VALUE ZEROS.             00030003
+000400     02  DSDM105-OLD-LIMIT   PIC S9(5)   VALUE ZEROS     COMP-3.  00040003
+000500     02  DSDM105-NEW-LIMIT   PIC S9(5)   VALUE ZEROS     COMP-3.  00050003
+000600     02  DSDM105-AGE-IN-MONTHS                                    00060001
+000700                             PIC 9(5)    VALUE ZEROS     COMP-3.  00070001
+000800     02  DSDM105-AGE-SCORE   PIC S9(5)   VALUE ZEROS     COMP-3.  00080002
+000900     02  DSDM105-90-DAY-AVG-COLL                                  00090001
+001000                             PIC S9(11)  VALUE ZEROS     COMP-3.  00100001
+001100     02  DSDM105-AVG-COLL-SCORE                                   00110002
+001200                             PIC S9(5)   VALUE ZEROS     COMP-3.  00120001
+001300     02  DSDM105-NBR-RETURNS PIC 9(5)    VALUE ZEROS     COMP-3.  00130001
+001400     02  DSDM105-NBR-RET-SCORE                                    00140002
+001500                             PIC S9(5)   VALUE ZEROS     COMP-3.  00150001
+001600     02  DSDM105-DEPOSITS-LAST-30                                 00160001
+001700                             PIC S9(9)V99 VALUE ZEROS     COMP-3. 00170001
+001800     02  DSDM105-DEP-SCORE   PIC S9(5)   VALUE ZEROS     COMP-3.  00180002
+001900     02  DSDM105-DAYS-OD-IN-ROW                                   00190001
+002000                             PIC 9(5)    VALUE ZEROS     COMP-3.  00200001
+002100     02  DSDM105-DAYS-OD-SCORE                                    00210002
+002200                             PIC S9(5)   VALUE ZEROS     COMP-3.  00220001

@@ -1,0 +1,20 @@
+000100*01  INV-ACCT-TRLR.                                               00010000
+000200     02  IAT-BANK-NO         PIC 99.                              00020000
+000300     02  IAT-ACCT-ID         PIC 999                     COMP-3.  00030000
+000400     02  IAT-ACCT-NO         PIC 9(9)                    COMP-3.  00040000
+000500     02  IAT-REPORT-CODE     PIC S999                    COMP-3.  00050000
+000600     02  IAT-GR-INV-BAL      PIC S9(11)V99               COMP-3.  00060000
+000700     02  IAT-DAYS-IN-YEAR    PIC S9(3)                   COMP-3.  00070000
+000800     02  IAT-ACCR-BASIS-IND  PIC X.                               00080000
+000900     02  IAT-FILLER1         PIC X(3).                            00090001
+001000     02  IAT-SORT-KEY        PIC XX.                              00100000
+001100     02  IAT-CURR-PROC-DT    PIC S9(7)                   COMP-3.  00110001
+001200     02  IAT-DAYS-INVESTED   PIC S9(3)                   COMP-3.  00120000
+001300     02  IAT-INT-PAID-CYC    PIC S9(7)V99                COMP-3.  00130000
+001400     02  IAT-INT-PAID-YTD    PIC S9(7)V99                COMP-3.  00140000
+001500     02  IAT-PEGGED-BAL      PIC S9(9)V99                COMP-3.  00150000
+001600     02  IAT-INV-BAL         PIC S9(9)V99                COMP-3.  00160000
+001700     02  IAT-FILLER2         PIC X(171).                          00170001
+001800*  THIS LAYOUT IS USED FOR THE INVESTMENT TRAILER FOR RP'S.       00180000
+001900*  REPORT CODE 994.                                               00190000
+002000*  THIS RECORD IS 225 CHARACTERS.                                 00200000

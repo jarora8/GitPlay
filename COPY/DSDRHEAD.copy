@@ -1,0 +1,35 @@
+000100******************************************************************00010000
+000200*    FIRST 2 HEADING PRINT LINES USED IN THE DSDS SYSTEM         *00020000
+000300*    COPIED BY VARIOUS DSDS PROGRAMS                             *00030000
+000400*                                                                 00040000
+000500*01  DSDS-HEAD-1.                                                 00050000
+000600     02  H-CC1               PIC X       VALUE '1'.               00060000
+000700     02  H-PROGRAM-NAME      PIC X(8)    VALUE SPACES.            00070000
+000800     02  H-MODULE-NO         PIC Z99     VALUE ZERO               00080000
+000900                                               BLANK WHEN ZERO.   00090000
+001000     02  FILLER              PIC X(8)    VALUE SPACES.            00100000
+001100     02  FILLER              PIC X(9)    VALUE 'BANK NO. '.       00110000
+001200     02  H-BK-NO             PIC 99.                              00120000
+001300     02  FILLER              PIC X(9)    VALUE SPACES.            00130000
+001400     02  H-SYSTEM-NAME       PIC X(19)   VALUE 'DEMAND DEPOSIT'.  00140000
+001500     02  FILLER              PIC X       VALUE SPACE.             00150000
+001600     02  H-REPT-NAME         PIC X(46).                           00160000
+001700     02  FILLER              PIC X(16)   VALUE SPACES.            00170001
+001800     02  FILLER              PIC X(5)    VALUE 'PAGE '.           00180000
+001900     02  H-PAGE-NO           PIC ZZ,ZZ9.                          00190001
+002000 01  DSDS-HEAD-2.                                                 00200000
+002100     02  H-CC2               PIC X       VALUE ' '.               00210000
+002200     02  H-SEND-TO           PIC X(10)   VALUE 'SEND TO - '.      00220000
+002300     02  H-DISTRIBUTION      PIC X(15)   VALUE SPACES.            00230000
+002400     02  FILLER              PIC XX      VALUE SPACES.            00240000
+002500     02  H-SORT-KEY          PIC X(25)   VALUE SPACES.            00250000
+002600     02  FILLER              PIC X(7)    VALUE SPACES.            00260000
+002700     02  H-DATETIME          PIC X(26)   VALUE SPACES.            00270000
+002800     02  FILLER              PIC X(14)   VALUE SPACES.            00280000
+002900     02  FILLER              PIC X(5)    VALUE 'DATE '.           00290000
+003000     02  H-DATE              PIC X(8).                            00300000
+003100     02  FILLER              PIC X(4)    VALUE SPACES.            00310000
+003200     02  H-FILE-ID           PIC XXX.                             00320000
+003300     02  FILLER              PIC X       VALUE SPACE.             00330000
+003400     02  H-REPT-ID           PIC X(12)   VALUE SPACES.            00340000
+003500     EJECT                                                        00350000

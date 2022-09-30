@@ -1,0 +1,107 @@
+000100******************************************************************00010000
+000200*            THIS IS THE DSDS ACCOUNT TYPE TABLE                 *00020000
+000300*            USED BY VARIOUS DSDS PROGRAMS.                      *00030000
+000400******************************************************************00040000
+000500*01  DSDS-ACCOUNT-TYPE-TABLE.                                     00050000
+000600     02  ACCOUNT-TYPE-ENTRIES.                                    00060000
+000700         03  TYP-01    PIC X(24) VALUE 'INDIVIDUAL'.              00070007
+000800         03  TYP-02    PIC X(24) VALUE 'JOINT'.                   00080007
+000900         03  TYP-03    PIC X(24) VALUE 'PARTNERSHIP'.             00090007
+001000         03  TYP-04    PIC X(24) VALUE 'SOLE OWNER'.              00100007
+001100         03  TYP-05    PIC X(24) VALUE 'CORPORATION'.             00110007
+001200         03  TYP-06    PIC X(24) VALUE 'BUS-UNCLASSIFIED'.        00120007
+001300         03  TYP-07    PIC X(24) VALUE 'BUS-UNCL SOLE OWNER'.     00130007
+001400         03  TYP-08    PIC X(24) VALUE 'BANKRUPTCY PERSONAL'.     00140007
+001500         03  TYP-09    PIC X(24) VALUE 'BANKRUPTCY NON-PERS'.     00150007
+001600         03  TYP-10    PIC X(24) VALUE 'DEALER RESERVE'.          00160007
+001700         03  TYP-11    PIC X(24) VALUE 'LIMITED LC'.              00170009
+001800         03  TYP-12    PIC X(24) VALUE 'NOT-FOR-PROFIT CORP'.     00180007
+001900         03  TYP-13    PIC X(24) VALUE 'BUS JTROS'.               00190007
+002000         03  TYP-14    PIC X(24) VALUE 'LIMITED LP'.              00200009
+002100         03  TYP-15    PIC X(24) VALUE 'LIMTED PTR'.              00210009
+002200         03  TYP-16    PIC X(24) VALUE 'BUS-FIDUCIARY'.           00220010
+002300         03  TYP-17    PIC X(24) VALUE 'AGENT'.                   00230012
+002400         03  TYP-18    PIC X(24) VALUE SPACES.                    00240007
+002500         03  TYP-19    PIC X(24) VALUE SPACES.                    00250007
+002600         03  TYP-20    PIC X(24) VALUE 'PUBLIC FUND OTHER'.       00260008
+002700         03  TYP-21    PIC X(24) VALUE 'PUB FUND FEDERAL'.        00270007
+002800         03  TYP-22    PIC X(24) VALUE 'PUB FUND STATE'.          00280007
+002900         03  TYP-23    PIC X(24) VALUE 'PUB FUND COUNTY'.         00290007
+003000         03  TYP-24    PIC X(24) VALUE 'PUB FUND CITY'.           00300007
+003100         03  TYP-25    PIC X(24) VALUE SPACES.                    00310007
+003200         03  TYP-26    PIC X(24) VALUE SPACES.                    00320007
+003300         03  TYP-27    PIC X(24) VALUE SPACES.                    00330007
+003400         03  TYP-28    PIC X(24) VALUE SPACES.                    00340007
+003500         03  TYP-29    PIC X(24) VALUE SPACES.                    00350007
+003600         03  TYP-30    PIC X(24) VALUE 'CORRESPONDENT BANK'.      00360007
+003700         03  TYP-31    PIC X(24) VALUE 'OTH DEPOSITORY INST.'.    00370007
+003800         03  TYP-32    PIC X(24) VALUE SPACES.                    00380007
+003900         03  TYP-33    PIC X(24) VALUE SPACES.                    00390007
+004000         03  TYP-34    PIC X(24) VALUE SPACES.                    00400007
+004100         03  TYP-35    PIC X(24) VALUE SPACES.                    00410007
+004200         03  TYP-36    PIC X(24) VALUE SPACES.                    00420007
+004300         03  TYP-37    PIC X(24) VALUE SPACES.                    00430007
+004400         03  TYP-38    PIC X(24) VALUE SPACES.                    00440007
+004500         03  TYP-39    PIC X(24) VALUE SPACES.                    00450007
+004600         03  TYP-40    PIC X(24) VALUE 'TRUST FUND PERSONAL'.     00460007
+004700         03  TYP-41    PIC X(24) VALUE 'TRUST FUND NON-PERS'.     00470007
+004800         03  TYP-42    PIC X(24) VALUE SPACES.                    00480007
+004900         03  TYP-43    PIC X(24) VALUE SPACES.                    00490007
+005000         03  TYP-44    PIC X(24) VALUE SPACES.                    00500007
+005100         03  TYP-45    PIC X(24) VALUE SPACES.                    00510007
+005200         03  TYP-46    PIC X(24) VALUE SPACES.                    00520007
+005300         03  TYP-47    PIC X(24) VALUE SPACES.                    00530007
+005400         03  TYP-48    PIC X(24) VALUE SPACES.                    00540007
+005500         03  TYP-49    PIC X(24) VALUE SPACES.                    00550007
+005600         03  TYP-50    PIC X(24) VALUE SPACES.                    00560007
+005700         03  TYP-51    PIC X(24) VALUE SPACES.                    00570007
+005800         03  TYP-52    PIC X(24) VALUE SPACES.                    00580007
+005900         03  TYP-53    PIC X(24) VALUE SPACES.                    00590007
+006000         03  TYP-54    PIC X(24) VALUE SPACES.                    00600007
+006100         03  TYP-55    PIC X(24) VALUE SPACES.                    00610007
+006200         03  TYP-56    PIC X(24) VALUE SPACES.                    00620007
+006300         03  TYP-57    PIC X(24) VALUE SPACES.                    00630007
+006400         03  TYP-58    PIC X(24) VALUE SPACES.                    00640007
+006500         03  TYP-59    PIC X(24) VALUE SPACES.                    00650007
+006600         03  TYP-60    PIC X(24) VALUE SPACES.                    00660007
+006700         03  TYP-61    PIC X(24) VALUE SPACES.                    00670007
+006800         03  TYP-62    PIC X(24) VALUE SPACES.                    00680007
+006900         03  TYP-63    PIC X(24) VALUE SPACES.                    00690007
+007000         03  TYP-64    PIC X(24) VALUE SPACES.                    00700007
+007100         03  TYP-65    PIC X(24) VALUE SPACES.                    00710007
+007200         03  TYP-66    PIC X(24) VALUE SPACES.                    00720007
+007300         03  TYP-67    PIC X(24) VALUE SPACES.                    00730007
+007400         03  TYP-68    PIC X(24) VALUE SPACES.                    00740007
+007500         03  TYP-69    PIC X(24) VALUE SPACES.                    00750007
+007600         03  TYP-70    PIC X(24) VALUE 'ORGANIZATION OTHER'.      00760007
+007700         03  TYP-71    PIC X(24) VALUE 'SPECIAL'.                 00770007
+007800         03  TYP-72    PIC X(24) VALUE 'OTHER'.                   00780007
+007900         03  TYP-73    PIC X(24) VALUE 'ORGANIZATION CIVIC'.      00790007
+008000         03  TYP-74    PIC X(24) VALUE 'ORGANIZATION RELIGIOUS'.  00800007
+008100         03  TYP-75    PIC X(24) VALUE 'ORGANIZATION ASSOCIATION'.00810007
+008200         03  TYP-76    PIC X(24) VALUE SPACES.                    00820007
+008300         03  TYP-77    PIC X(24) VALUE SPACES.                    00830007
+008400         03  TYP-78    PIC X(24) VALUE SPACES.                    00840007
+008500         03  TYP-79    PIC X(24) VALUE 'BENEFICIARY NON-PERS'.    00850011
+008600         03  TYP-80    PIC X(24) VALUE 'FIDUCIARY PERS'.          00860007
+008700         03  TYP-81    PIC X(24) VALUE 'BENEFICIARY'.             00870007
+008800         03  TYP-82    PIC X(24) VALUE 'ESCROW PERSONAL'.         00880007
+008900         03  TYP-83    PIC X(24) VALUE 'ESTATE PERSONAL'.         00890007
+009000         03  TYP-84    PIC X(24) VALUE 'INCOMPETENT'.             00900007
+009100         03  TYP-85    PIC X(24) VALUE 'RECEIVERSHIP'.            00910007
+009200         03  TYP-86    PIC X(24) VALUE 'ESCROW NON-PERS'.         00920007
+009300         03  TYP-87    PIC X(24) VALUE 'ESTATE NON-PERS'.         00930007
+009400         03  TYP-88    PIC X(24) VALUE 'FIDUCIARY NON-PERS'.      00940007
+009500         03  TYP-89    PIC X(24) VALUE 'EMP BENEFIT PLAN ADM'.    00950007
+009600         03  TYP-90    PIC X(24) VALUE 'BANK CONTROL ACCOUNT'.    00960007
+009700         03  TYP-91    PIC X(24) VALUE 'BANK CHECKS'.             00970007
+009800         03  TYP-92    PIC X(24) VALUE 'BANK INCOME'.             00980007
+009900         03  TYP-93    PIC X(24) VALUE 'BANK EXPENSE'.            00990007
+010000         03  TYP-94    PIC X(24) VALUE 'BANK FEES'.               01000007
+010100         03  TYP-95    PIC X(24) VALUE 'BANK SPEC FEES'.          01010007
+010200         03  TYP-96    PIC X(24) VALUE 'BANK SERV CHGS'.          01020007
+010300         03  TYP-97    PIC X(24) VALUE 'BANK UNPOSTED ITEMS'.     01030007
+010400         03  TYP-98    PIC X(24) VALUE SPACES.                    01040007
+010500         03  TYP-99    PIC X(24) VALUE SPACES.                    01050007
+010600     02  THIS REDEFINES ACCOUNT-TYPE-ENTRIES.                     01060000
+010700         03  TYP-DESC  PIC X(24)         OCCURS 99 TIMES.         01070007

@@ -1,0 +1,74 @@
+000100******************************************************************00010000
+000200*                                                                *00020000
+000300*  IRAOSBST RECORD IS 225 CHARACTERS                             *00030001
+000400*                                                                *00040000
+000500******************************************************************00050000
+000600*01  IRA-OSB-STMT-SUMMARY.                                        00060000
+000700     02  IOS-BANK-NBR            PIC 9(03)                COMP-3. 00070000
+000800     02  IOS-ACCT-ID             PIC 9(03)                COMP-3. 00080000
+000900     02  IOS-OSB-NBR             PIC 9(09)                COMP-3. 00090006
+001000     02  IOS-SUMM-TYPE           PIC 9(03)                COMP-3. 00100000
+001100         88  IOS-IRA                     VALUE 010.               00110000
+001110         88  IOS-HSA                     VALUE 030.               00111017
+001200         88  IOS-ESA                     VALUE 050.               00120000
+001220         88  IOS-529                     VALUE 060.               00122017
+001300     02  IOS-SSN                 PIC 9(09)                COMP-3. 00130002
+001400     02  IOS-IRA-CUST-NBR        PIC 9(09)                COMP-3. 00140002
+001500     02  IOS-RECORD-TYPE         PIC 9(03)                COMP-3. 00150000
+001600         88  IOS-SUMMARY                 VALUE 010.               00160000
+001700         88  IOS-BENEFICIARY             VALUE 030.               00170000
+001800         88  IOS-CONTRIBUTION            VALUE 050.               00180000
+001900     02  IOS-ACCT-TYPE           PIC 9(03)                COMP-3. 00190003
+001910         88  IOS-DDA                     VALUE 005.               00191018
+002000         88  IOS-MM                      VALUE 010.               00200000
+002100         88  IOS-CD                      VALUE 020.               00210000
+002110         88  IOS-PAC                     VALUE 025.               00211019
+002200         88  IOS-MF-BANK                 VALUE 030.               00220000
+002300         88  IOS-MM-INSTR                VALUE 040.               00230007
+002400         88  IOS-CD-INSTR                VALUE 050.               00240007
+002500         88  IOS-BOND-GOVT               VALUE 060.               00250007
+002600         88  IOS-BOND-MUNI               VALUE 070.               00260007
+002700         88  IOS-BOND-CORP               VALUE 080.               00270007
+002800         88  IOS-STOCK                   VALUE 090.               00280007
+002900         88  IOS-OPTION                  VALUE 100.               00290007
+003000         88  IOS-RIGHTS-WARR             VALUE 110.               00300007
+003100         88  IOS-MORT-ASSET              VALUE 120.               00310007
+003200         88  IOS-MUTUAL-FUND             VALUE 130.               00320007
+003300         88  IOS-UNIT-INV                VALUE 140.               00330007
+003400         88  IOS-LIMITED-PART            VALUE 150.               00340007
+003500         88  IOS-OTHER-INV               VALUE 160.               00350007
+003600         88  IOS-POS-NOT-HELD            VALUE 170.               00360011
+003700     02  IOS-CNTR-NBR            PIC X(13).                       00370004
+003800     02  IOS-CYCLE-CODE          PIC 9(03)                COMP-3. 00380014
+003900     02  IOS-BNF-NBR             PIC 9(09)                COMP-3. 00390000
+004000     02  IOS-CUST-NAME           PIC X(40).                       00400001
+004100     02  IOS-CNTR-TYPE           PIC 9(03)                COMP-3. 00410004
+004200         88  IOS-CNTR-TRAD               VALUE 001.               00420010
+004300         88  IOS-CNTR-KEOGH              VALUE 002.               00430010
+004400         88  IOS-CNTR-ROLLOVER           VALUE 003.               00440010
+004500         88  IOS-CNTR-401K               VALUE 004.               00450010
+004600         88  IOS-CNTR-SEP                VALUE 005.               00460010
+004700         88  IOS-CNTR-SIMPLE             VALUE 006.               00470010
+004800         88  IOS-CNTR-ROTH               VALUE 007.               00480010
+004900         88  IOS-CNTR-ROTH-CNV           VALUE 008.               00490010
+005000         88  IOS-CNTR-ESA                VALUE 009.               00500010
+005010         88  IOS-CNTR-HSA                VALUE 010.               00501017
+005020         88  IOS-CNTR-529                VALUE 011.               00502017
+005100     02  IOS-ACCT-NBR            PIC X(25).                       00510011
+005200     02  IOS-ACCT-MKT-VALUE      PIC S9(09)V99            COMP-3. 00520001
+005300     02  IOS-CNTR-MKT-VALUE      PIC S9(09)V99            COMP-3. 00530000
+005400     02  IOS-BNF-NAME            PIC X(40).                       00540000
+005500     02  IOS-BNF-PERCENT         PIC S9(03)V99            COMP-3. 00550001
+005600     02  IOS-CNTRIB-TYPE         PIC 9(01)                COMP-3. 00560009
+005700         88  IOS-CT-IRA                  VALUE 1.                 00570009
+005800         88  IOS-CT-SEP                  VALUE 2.                 00580009
+005900         88  IOS-CT-SIMPLE               VALUE 3.                 00590009
+006000         88  IOS-CT-ESA                  VALUE 4.                 00600009
+006010         88  IOS-CT-HSA                  VALUE 5.                 00601017
+006020         88  IOS-CT-529                  VALUE 6.                 00602017
+006100     02  IOS-CNTRIB-YEAR         PIC 9(04).                       00610009
+006200     02  IOS-CNTRIB-YTD          PIC S9(07)V99            COMP-3. 00620000
+006300     02  IOS-OWNER-SW            PIC 9(01)                COMP-3. 00630016
+006400         88  IOS-IRA-OWNER               VALUE 1.                 00640016
+006500         88  IOS-IRA-INHERITED           VALUE 2.                 00650016
+006600     02  FILLER                  PIC X(47).                       00660016

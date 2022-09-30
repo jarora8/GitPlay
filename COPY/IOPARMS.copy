@@ -1,0 +1,31 @@
+000100 01  IO-PARAMETERS.                                               00010000
+000200     02  IO-FUNCTION         PIC XX.                              00020002
+000300         88  OPEN-INPUT                  VALUE 'OI'.              00030002
+000400         88  OPEN-IO                     VALUE 'IO'.              00040002
+000500         88  CLOSE-INPUT                 VALUE 'CI'.              00050002
+000600         88  OPEN-OUTPUT                 VALUE 'OO'.              00060002
+000700         88  CLOSE-OUTPUT                VALUE 'CO'.              00070002
+000800         88  READ-NEXT                   VALUE 'RN'.              00080002
+000900         88  READ-RANDOM                 VALUE 'RR'.              00090002
+001000         88  WRITE-RECORD                VALUE 'WR'.              00100002
+001100         88  REWRITE-RECORD              VALUE 'RW'.              00110002
+001200     02  IO-FILE-STATUS      PIC 999.                             00120005
+001300         88  IO-SUCCESSFUL               VALUE 000  004.          00130005
+001400         88  IO-SUCCESSFUL-DUPLICATE     VALUE 002.               00140005
+001500         88  IO-SUCCESSFUL-RECSIZE       VALUE 004.               00150005
+001600         88  IO-SUCCESSFUL-EMPTY         VALUE 005.               00160005
+001700         88  IO-SUCCESSFUL-UNIT          VALUE 007.               00170005
+001800         88  IO-END-OF-FILE              VALUE 010.               00180005
+001900         88  IO-END-OF-FILE-KEYMATCH     VALUE 014.               00190005
+002000         88  IO-INVALID-KEY              VALUE 020 THRU 024.      00200005
+002100         88  IO-SEQUENCE-ERROR           VALUE 021.               00210005
+002200         88  IO-DUPLICATE-RECORD         VALUE 022.               00220005
+002300         88  IO-RECORD-NOT-FOUND         VALUE 023.               00230005
+002400         88  IO-BOUNDARY-ERROR           VALUE 024.               00240005
+002500         88  IO-PERMANENT-ERROR          VALUE 030 THRU 039.      00250005
+002600         88  IO-LOGIC-ERROR              VALUE 040 THRU 049.      00260005
+002700         88  IO-FILE-ERROR               VALUE 090 THRU 097.      00270005
+002800         88  IO-NOT-AVAILABLE            VALUE 093.               00280005
+002900         88  IO-FILE-INTEGRITY-VERIFIED  VALUE 097.               00290005
+003000         88  IO-INVALID-FUNCTION         VALUE 999.               00300006
+003100     02  FILLER              PIC X(95).                           00310002

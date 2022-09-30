@@ -1,0 +1,29 @@
+000100*01  DSDM050P-PARAMETERS.                                         00010001
+000200     02  DSDM050P-BANK             PIC 9(3)               COMP-3. 00020001
+000300     02  DSDM050P-ACCT-ID          PIC 9(3)               COMP-3. 00030001
+000400     02  DSDM050P-ACCT-NBR         PIC 9(9)               COMP-3. 00040001
+000500     02  DSDM050P-RETURN-CODE      PIC X.                         00050001
+000600     02  DSDM050P-RETURN-BANK      PIC 9(3)               COMP-3. 00060001
+000700     02  DSDM050P-RETURN-ACCT-ID   PIC 9(3)               COMP-3. 00070001
+000800     02  DSDM050P-RETURN-ACCT-NBR  PIC 9(9)               COMP-3. 00080001
+000900     02  FILLER                    PIC X(81).                     00090001
+001900                                                                  00190001
+002000******************************************************************00200001
+002100*                                                        COPYBOOK*00210001
+002200*                                                                *00220001
+002300* PURPOSE: REPORT LAYOUT FOR RETURN FT ACCT FOR XMAS CLUB DEPOSIT*00230001
+002400*                                                                *00240001
+002500* LENGTH OF COPYBOOK: 100 BYTES                                  *00250001
+002700*                                                                *00270001
+002800* USAGE: COPIED INTO PROGRAM TO BE AS LINKAGE TO PROGRAM         *00280001
+002900*                                                                *00290001
+003000* FIELD DESCRIPTION/VALUES:                                      *00300001
+003100* DSDM050P-BANK               BANK NUMBER                        *00310001
+003200* DSDM050P-ACCT-ID            ACCOUNT ID                         *00320001
+003300* DSDM050P-ACCT-NBR           ACCOUNT NUMBER                     *00330001
+003400* DSDM050P-RETURN-CODE        G=ACCT FOUND -- B=NO ACCT FOUND    *00340001
+003410* DSDM050P-RETURN-BANK        RETURN BANK NUMBER                 *00341001
+003500* DSDM050P-RETURN-ACCT-ID     RETURN ACCOUNT ID                  *00350001
+003600* DSDM050P-RETURN-ACCT-NBR    RETURN ACCOUNT NUMBER              *00360001
+005000*                                                                *00500001
+005100******************************************************************00510001

@@ -1,0 +1,70 @@
+000100*01  OVERDRAFT-BANKING-HDR.                                       00010000
+000200     02  ODH-BANK-NO         PIC 99.                              00020000
+000300     02  ODH-ACCT-ID         PIC 999                     COMP-3.  00030000
+000400     02  ODH-ACCT-NO         PIC 9(9)                    COMP-3.  00040000
+000500     02  ODH-REPORT-CODE     PIC S999                    COMP-3.  00050000
+000600     02  ODH-ODB-LOAN-BAL    PIC S9(9)V99                COMP-3.  00060000
+000700     02  ODH-AMT-PAST-DUE    PIC S9(9)V99                COMP-3.  00070000
+000800     02  ODH-FILLER1         PIC X.                               00080001
+000900     02  ODH-SORT-KEY        PIC XX.                              00090000
+001000     02  ODH-CURR-PROC-DT    PIC S9(7)                   COMP-3.  00100001
+001100     02  ODH-AUTH-CR-LIMIT   PIC S9(9)V99                COMP-3.  00110000
+001200     02  ODH-YTD-ODB-INT     PIC S9(9)V99                COMP-3.  00120000
+001300     02  ODH-ODB-INT-PR-YR   PIC S9(9)V99                COMP-3.  00130000
+001400     02  ODH-ODB-PLAN        PIC XX.                              00140000
+001500     02  ODH-YTD-ODB-INT-SECURED                                  00150000
+001600                             PIC S9(9)V99                COMP-3.  00160000
+001700     02  ODH-ODB-INT-PR-YR-SECURED                                00170000
+001800                             PIC S9(7)V99                COMP-3.  00180000
+001900     02  ODH-FILLER2         PIC X(6).                            00190001
+002000     02  ODH-ACCT-ID-LINKED-TO-SEC                                00200000
+002100                             PIC 999                     COMP-3.  00210000
+002200     02  ODH-ACCT-NO-LINKED-TO-SEC                                00220000
+002300                             PIC 9(9)                    COMP-3.  00230000
+002400     02  ODH-FEES-CHARGED                                         00240002
+002500                             PIC S9(9)V99                COMP-3.  00250002
+002600     02  ODH-YTD-FEES-CHARGED                                     00260002
+002700                             PIC S9(9)V99                COMP-3.  00270002
+002800     02  ODH-FEES-CHARGED-PR-YR                                   00280002
+002900                             PIC S9(9)V99                COMP-3.  00290002
+003000     02  ODH-INT-CHARGED                                          00300003
+003100                             PIC S9(9)V99                COMP-3.  00310003
+003200     02  ODH-NEXT-STMT-CYCLE PIC S9(7)                   COMP-3.  00320004
+003300     02  ODH-MONTHLY-FEE     PIC S9(3)V99                COMP-3.  00330005
+003400     02  ODH-FILLER3         PIC X(120).                          00340005
+003500                                                                  00350000
+003600******************************************************************00360002
+003700*                                                        COPYBOOK*00370000
+003800*                                                                *00380000
+003900* PURPOSE:  HEADER RECORD LAYOUT FOR OVERDRAFT BANKING           *00390002
+004000*                                                                *00400000
+004100* LENGTH OF COPYBOOK: 225                                        *00410002
+004200* LENGTH OF SORT KEY: 2                                          *00420002
+004300*                                                                *00430000
+004400* USAGE:                                                         *00440000
+004500*                                                                *00450000
+004600* FIELD DESCRIPTION/VALUES:                                      *00460000
+004700*   ODH-BANK-NO                 BANK NUMBER                      *00470002
+004800*   ODH-ACCT-ID                 ACCOUNT ID                       *00480002
+004900*   ODH-ACCT-NO                 ACCOUNT NUMBER                   *00490002
+005000*   ODH-REPORT-CODE             REPORT CODE - 13=ODB             *00500002
+005100*   ODH-ODB-LOAN-BAL            ODB LOAN BALANCE                 *00510002
+005200*   ODH-AMT-PAST-DUE            AMOUNT PAST DUE                  *00520002
+005300*   ODH-SORT-KEY                SORT KEY                         *00530002
+005400*   ODH-CURR-PROC-DT            CURRENT PROCESSING DATE          *00540002
+005500*   ODH-AUTH-CR-LIMIT           AUTHORIZED CREDIT LIMIT          *00550002
+005600*   ODH-YTD-ODB-INT             YEAR-TO-DATE INTEREST            *00560002
+005700*   ODH-ODB-INT-PR-YR           INTEREST PREVIOUS YEAR           *00570002
+005800*   ODH-ODB-PLAN                ODB PLAN TYPE                    *00580002
+005900*   ODH-YTD-ODB-INT-SECURED     YEAR-TO-DATE SECURED INTEREST    *00590002
+006000*   ODH-ODB-INT-PR-YR-SECURED   INTEREST PREVIOUS YEAR SECURED   *00600002
+006100*   ODH-ACCT-ID-LINKED-TO-SEC   ACCOUNT ID LINKED TO             *00610002
+006200*   ODH-ACCT-NO-LINKED-TO-SEC   ACCOUNT NUMBER LINKED TO         *00620002
+006300*   ODH-FEES-CHARGED            FEES CHARGED                     *00630002
+006400*   ODH-YTD-FEES-CHARGED        YEAR-TO-DATE FEES CHARGED        *00640002
+006500*   ODH-FEES-CHARGED-PR-YR      FEES CHARGED PREVIOUS YEAR       *00650002
+006600*   ODH-INT-CHARGED             INTEREST CHARGED THIS CYCLE      *00660006
+006700*   ODH-NEXT-STMT-CYCLE         NEXT STATEMENT CYCLE DATE        *00670006
+006800*   ODH-MONTHLY-FEE             MONTHLY FEE AMOUNT               *00680006
+006900*                                                                *00690002
+007000******************************************************************00700002

@@ -1,0 +1,59 @@
+      ******************************************************************
+      * DCLGEN TABLE(DSDS.PACACTIVITY)                                 *
+      *        LIBRARY(LMFPROG.APPLDCL.U099075(DSDSPACA))              *
+      *        ACTION(REPLACE)                                         *
+      *        LANGUAGE(COBOL)                                         *
+      *        QUOTE                                                   *
+      * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+      ******************************************************************
+           EXEC SQL DECLARE DSDS.PACACTIVITY TABLE
+           ( PACA_BANK_NBR                  DECIMAL(3, 0) NOT NULL,
+             PACA_ACCT_ID                   DECIMAL(3, 0) NOT NULL,
+             PACA_ACCT_NBR                  DECIMAL(9, 0) NOT NULL,
+             PACA_ACCT_CLASS                CHAR(3) NOT NULL,
+             PACA_BEG_BAL                   DECIMAL(11, 2) NOT NULL,
+             PACA_TOT_DEBITS                DECIMAL(11, 2) NOT NULL,
+             PACA_TOT_CREDITS               DECIMAL(11, 2) NOT NULL,
+             PACA_TRNSFR_AMT                DECIMAL(11, 2) NOT NULL,
+             PACA_END_BAL                   DECIMAL(11, 2) NOT NULL,
+             PACA_HOLD_AMT                  DECIMAL(11, 2) NOT NULL,
+             PACA_INT_RATE                  DECIMAL(7, 7) NOT NULL,
+             PACA_TOT_BAL                   DECIMAL(11, 2) NOT NULL,
+             PACA_SEQ_NBR                   DECIMAL(3, 0) NOT NULL,
+             PACA_PAC_BANK_NBR              DECIMAL(3, 0) NOT NULL,
+             PACA_PAC_ACCT_NBR              DECIMAL(9, 0) NOT NULL,
+             PACA_PAC_ACCT_STAT             CHAR(1) NOT NULL,
+             PACA_PAC_BEG_BAL               DECIMAL(11, 2) NOT NULL,
+             PACA_PAC_TRNSFR_AMT            DECIMAL(11, 2) NOT NULL,
+             PACA_PAC_END_BAL               DECIMAL(11, 2) NOT NULL,
+             PACA_PAC_INT_RATE              DECIMAL(7, 7) NOT NULL,
+             PACA_PAC_ACCT_CLASS            CHAR(3) NOT NULL
+           ) END-EXEC.
+      ******************************************************************
+      * COBOL DECLARATION FOR TABLE DSDS.PACACTIVITY                   *
+      ******************************************************************
+       01  DSDS-PACACTIVITY.
+           10 PACA-BANK-NBR        PIC S9(3)V USAGE COMP-3.
+           10 PACA-ACCT-ID         PIC S9(3)V USAGE COMP-3.
+           10 PACA-ACCT-NBR        PIC S9(9)V USAGE COMP-3.
+           10 PACA-ACCT-CLASS      PIC X(3).
+           10 PACA-BEG-BAL         PIC S9(9)V9(2) USAGE COMP-3.
+           10 PACA-TOT-DEBITS      PIC S9(9)V9(2) USAGE COMP-3.
+           10 PACA-TOT-CREDITS     PIC S9(9)V9(2) USAGE COMP-3.
+           10 PACA-TRNSFR-AMT      PIC S9(9)V9(2) USAGE COMP-3.
+           10 PACA-END-BAL         PIC S9(9)V9(2) USAGE COMP-3.
+           10 PACA-HOLD-AMT        PIC S9(9)V9(2) USAGE COMP-3.
+           10 PACA-INT-RATE        PIC SV9(7) USAGE COMP-3.
+           10 PACA-TOT-BAL         PIC S9(9)V9(2) USAGE COMP-3.
+           10 PACA-SEQ-NBR         PIC S9(3)V USAGE COMP-3.
+           10 PACA-PAC-BANK-NBR    PIC S9(3)V USAGE COMP-3.
+           10 PACA-PAC-ACCT-NBR    PIC S9(9)V USAGE COMP-3.
+           10 PACA-PAC-ACCT-STAT   PIC X(1).
+           10 PACA-PAC-BEG-BAL     PIC S9(9)V9(2) USAGE COMP-3.
+           10 PACA-PAC-TRNSFR-AMT  PIC S9(9)V9(2) USAGE COMP-3.
+           10 PACA-PAC-END-BAL     PIC S9(9)V9(2) USAGE COMP-3.
+           10 PACA-PAC-INT-RATE    PIC SV9(7) USAGE COMP-3.
+           10 PACA-PAC-ACCT-CLASS  PIC X(3).
+      ******************************************************************
+      * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 21      *
+      ******************************************************************

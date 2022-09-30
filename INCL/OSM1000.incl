@@ -1,0 +1,32 @@
+ /*'Mail function package : Mail User consumer calls for yySmtp'      */
+                                                               %do skip;
+
+ #osm1_yySmtp_Init
+ #osm1_yySmtp_IsInitialized
+ #osm1_yySmtp_AddTO
+ #osm1_yySmtp_AddCC
+ #osm1_yySmtp_AddBCC
+ #osm1_yySmtp_AddText
+ #osm1_yySmtp_AddReplace
+ #osm1_yySmtp_AddAttachment
+ #osm1_yySmtp_AddAttachmentByBuffer
+ #osm1_yySmtp_SetImportance
+ #osm1_yySmtp_SetSensitivity
+ #osm1_yySmtp_SetBodyType
+ #osm1_yySmtp_SetSubject
+ #osm1_yySmtp_SetSend
+ #osm1_yySmtp_SetSmtpDD
+ #osm1_yySmtp_SetAttachmentDD
+ #osm1_yySmtp_SetTestOptions
+ #osm1_yySmtp_SetRecipientOptions
+ #osm1_yySmtp_SetSender
+ #osm1_yySmtp_Send
+ #osm1_yySmtp_Cleanup
+                                                         %end;
+
+ /*_Variables ________________________________________________________*/
+    dcl osm1000_rc       bin fixed(31);
+    dcl osm1000_rm       char(528);
+
+ /* entries                                                           */
+   %include osm1000e;

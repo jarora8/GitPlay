@@ -1,0 +1,71 @@
+      ******************************************************************
+      * DCLGEN TABLE(FINQ.DEPOSIT)                                     *
+      *        LIBRARY(LMFPROG.APPLDCL.U099244(FINQDEP))               *
+      *        ACTION(REPLACE)                                         *
+      *        LANGUAGE(COBOL)                                         *
+      *        APOST                                                   *
+      *        LABEL(YES)                                              *
+      * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+      ******************************************************************
+           EXEC SQL DECLARE FINQ.DEPOSIT TABLE
+           ( DEP_BANK_NBR                   DECIMAL(3, 0) NOT NULL,
+             DEP_ACCT_ID                    DECIMAL(3, 0) NOT NULL,
+             DEP_ACCT_NBR                   CHAR(9) NOT NULL,
+             DEP_SOURCE_USER                DECIMAL(5, 0) NOT NULL,
+             DEP_SOURCE_PROG                CHAR(8) NOT NULL,
+             DEP_PLACE_DATE                 DECIMAL(7, 0) NOT NULL,
+             DEP_RELEASE_DATE               DECIMAL(7, 0) NOT NULL,
+             DEP_AMOUNT                     DECIMAL(11, 2) NOT NULL,
+             DEP_AMOUNT_AVAIL               DECIMAL(11, 2) NOT NULL,
+             DEP_LAST_UPDATE                TIMESTAMP NOT NULL,
+             DEP_TX_DESC                    VARCHAR(50) NOT NULL,
+             DEP_TYPE                       SMALLINT NOT NULL,
+             DEP_REFERENCE_SOURCE           CHAR(10),
+             DEP_REFERENCE_ID               VARCHAR(25)
+           ) END-EXEC.
+      ******************************************************************
+      * COBOL DECLARATION FOR TABLE FINQ.DEPOSIT                       *
+      ******************************************************************
+       01  FINQ-DEPOSIT.
+      *    *************************************************************
+           10 DEP-BANK-NBR         PIC S9(3)V USAGE COMP-3.
+      *    *************************************************************
+           10 DEP-ACCT-ID          PIC S9(3)V USAGE COMP-3.
+      *    *************************************************************
+           10 DEP-ACCT-NBR         PIC X(9).
+      *    *************************************************************
+           10 DEP-SOURCE-USER      PIC S9(5)V USAGE COMP-3.
+      *    *************************************************************
+           10 DEP-SOURCE-PROG      PIC X(8).
+      *    *************************************************************
+           10 DEP-PLACE-DATE       PIC S9(7)V USAGE COMP-3.
+      *    *************************************************************
+           10 DEP-RELEASE-DATE     PIC S9(7)V USAGE COMP-3.
+      *    *************************************************************
+           10 DEP-AMOUNT           PIC S9(9)V9(2) USAGE COMP-3.
+      *    *************************************************************
+           10 DEP-AMOUNT-AVAIL     PIC S9(9)V9(2) USAGE COMP-3.
+      *    *************************************************************
+           10 DEP-LAST-UPDATE      PIC X(26).
+      *    *************************************************************
+           10 DEP-TX-DESC.
+              49 DEP-TX-DESC-LEN   PIC S9(4) USAGE COMP.
+              49 DEP-TX-DESC-TEXT
+                 PIC X(50).
+      *    *************************************************************
+           10 DEP-TYPE             PIC S9(4) USAGE COMP.
+      *    *************************************************************
+           10 DEP-REFERENCE-SOURCE
+              PIC X(10).
+      *    *************************************************************
+           10 DEP-REFERENCE-ID.
+              49 DEP-REFERENCE-ID-LEN
+                 PIC S9(4) USAGE COMP.
+              49 DEP-REFERENCE-ID-TEXT
+                 PIC X(25).
+      ******************************************************************
+      * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 14      *
+      ******************************************************************
+       01  IND-FINQ-DEPOSIT.
+           10  IND-DEP-REFERENCE-SOURCE          PIC S9(4)   COMP.
+           10  IND-DEP-REFERENCE-ID              PIC S9(4)   COMP.

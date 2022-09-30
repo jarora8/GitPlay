@@ -1,0 +1,6 @@
+000100 01  DSDM104-PARAMETERS.                                          00010000
+000200     02  DSDM104-BANK-NBR    PIC 9(3).                            00020000
+000300     02  DSDM104-FILE-ID     PIC XXX.                             00030000
+000400     02  DSDM104-ACCT-ID     PIC 9(3)                    COMP-3.  00040000
+000500     02  DSDM104-ACCT-NBR    PIC 9(9)                    COMP-3.  00050000
+000600     02  DSDM104-RETURN-CODE PIC X.                               00060000

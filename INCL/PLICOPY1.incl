@@ -1,0 +1,8 @@
+*Process dllinit margins ( 1, 100 ) extern(short);
+*Process default ( ascii ieee) rent display (std);
+000111 %include PLICOPY2;
+       %include PLICOPY3;
+       %include PLICOPY4;
+000112 DCL @SN11_LEN               BIN FIXED(31) INIT (136522);
+       DCL WS_PACKED_FIELD3      CHAR (01) INIT(0);                     00062915
+       DCL WS_PACKED_FIELD4      CHAR (01) INIT(0);aa

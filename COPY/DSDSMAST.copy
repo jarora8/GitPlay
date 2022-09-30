@@ -1,0 +1,897 @@
+000100******************************************************************00010027
+000200*                                                                *00020027
+000300*                 DSDS MASTER VSAM FILE LAYOUT                   *00030027
+000400*                                                                *00040027
+000500******************************************************************00050027
+000600 01 DSDS-MASTER-RECORD.                                           00060027
+000700   02  DSDS-MASTER-RECORD-KEY.                                    00070027
+000800     03  FILLER                  PIC X       VALUE 'B'.           00080027
+000900     03  DSDS-BANK-NO            PIC 9(3)    VALUE ZEROS.         00090027
+001000     03  DSDS-RECORD-ID          PIC X(20)   VALUE SPACES.        00100027
+001100     03  FILLER REDEFINES DSDS-RECORD-ID.                         00110027
+001200         04  DSDS-ACCOUNT-ID     PIC 9(3)           COMP-3.       00120027
+001300         04  DSDS-ACCOUNT-NO     PIC 9(9)           COMP-3.       00130027
+001400         04  DSDS-KEY-FILLER     PIC X(13).                       00140027
+001500   02  DSDS-RECORD-CONTROL       PIC X(40).                       00150027
+001600   02  FILLER REDEFINES DSDS-RECORD-CONTROL.                      00160027
+001700     03  FILLER                  PIC X(4).                        00170027
+001800     03  DSDS-STATUS-CODE        PIC 9(3)                COMP-3.  00180027
+001900         88  DSDS-OPEN                       VALUE 010.           00190027
+002000         88  DSDS-CLOSE                      VALUE 020.           00200027
+002100         88  DSDS-DELETE                     VALUE 255.           00210027
+002200     03  FILLER                  PIC X(34).                       00220027
+002300   02  DDA-SAV-MAST-CONTENTS-001.                                 00230027
+002400     03  DATA-CONTENTS-01.                                        00240027
+002500         04  SHORT-NAME          PIC X(14)   VALUE SPACES.        00250027
+002600         04  ACCOUNT-TYP         PIC XXX.                         00260027
+002700         04  FILLER REDEFINES ACCOUNT-TYP.                        00270027
+002800             05  ACCT-DISP-CODE  PIC X.                           00280027
+002900                 88  FIXED-ACCT              VALUE '0'.           00290027
+003000                 88  AUTO-CLOSE              VALUE '1'.           00300027
+003100                 88  BANK-EMP-PAYROLL        VALUE '8'.           00310027
+003200                 88  BANK-EMPLOYEE           VALUE '8'  '9'.      00320027
+003300             05  ACCT-TYPE-CODE  PIC 99.                          00330027
+003400                 88  INDIVIDUAL              VALUE 01.            00340027
+003500                 88  JOINT                   VALUE 02.            00350027
+003600                 88  PARTNERSHIP             VALUE 03.            00360027
+003700                 88  SOLE-OWNER              VALUE 04.            00370027
+003800                 88  CORPORATION             VALUE 05.            00380027
+003900                 88  BUS-UNCLASSIFIED        VALUE 06.            00390027
+004000                 88  BUS-UNCL-SOLE-OWNER     VALUE 07.            00400027
+004100                 88  BANKRUPTCY              VALUE 08.            00410027
+004200                 88  BANKRUPTCY-NON-PERS     VALUE 09.            00420027
+004300                 88  DEALER-RESERVE          VALUE 10.            00430027
+004400                 88  LIMITED-LC              VALUE 11.            00440027
+004500                 88  NOT-FOR-PROFIT-CORP     VALUE 12.            00450027
+004600                 88  BUS-JTROS               VALUE 13.            00460027
+004700                 88  LIMITED-LP              VALUE 14.            00470027
+004800                 88  LIMTED-PTR              VALUE 15.            00480027
+004900                 88  BUS-FIDUCIARY           VALUE 16.            00490027
+005000                 88  AGENT                   VALUE 17.            00500027
+005100                 88  PUBLIC-FUND             VALUE 20 THRU 24.    00510027
+005200                 88  PUB-FUND-OTHER          VALUE 20.            00520027
+005300                 88  PUB-FUND-FED            VALUE 21.            00530027
+005400                 88  PUB-FUND-STATE          VALUE 22.            00540027
+005500                 88  PUB-FUND-COUNTY         VALUE 23.            00550027
+005600                 88  PUB-FUND-CITY           VALUE 24.            00560027
+005700                 88  CORRESP-BANK            VALUE 30.            00570027
+005800                 88  OTH-DEPOSITORY-INST     VALUE 31.            00580027
+005900                 88  TRUST-FUND-ACCT         VALUE 40.            00590027
+006000                 88  TRUST-FUND-NON-PERS     VALUE 41.            00600027
+006100                 88  ORGANIZATIONS-OTHER     VALUE 70.            00610027
+006200                 88  SPECIAL                 VALUE 71.            00620027
+006300                 88  OTHER-ACCTS             VALUE 72.            00630027
+006400                 88  ORGANIZATIONS-CIVIC     VALUE 73.            00640027
+006500                 88  ORGANIZATIONS-RELIGIOUS VALUE 74.            00650027
+006600                 88  ORGANIZATIONS-ASSOCIATION                    00660027
+006700                                             VALUE 75.            00670027
+006800                 88  FIDUCIARY               VALUE 79 THRU 89.    00680027
+006900                 88  BENEFICIARY-NON-PERS    VALUE 79.            00690027
+007000                 88  BENEFICIARY             VALUE 81.            00700027
+007100                 88  ESCROW                  VALUE 82.            00710027
+007200                 88  ESTATE                  VALUE 83.            00720027
+007300                 88  INCOMPETENT             VALUE 84.            00730027
+007400                 88  RECEIVERSHIP            VALUE 85.            00740027
+007500                 88  ESCROW-NON-PERS         VALUE 86.            00750027
+007600                 88  ESTATE-NON-PERS         VALUE 87.            00760027
+007700                 88  FIDUCIARY-NON-PERS      VALUE 88.            00770027
+007800                 88  EMPL-BENEFIT-PLAN-ADMIN VALUE 89.            00780027
+007900                 88  BANK-CTL-ACCTS          VALUE 90 THRU 97.    00790027
+008000                 88  BANK-CHECKS             VALUE 91.            00800027
+008100                 88  BANK-INCOME             VALUE 92.            00810027
+008200                 88  BANK-EXPENSE            VALUE 93.            00820027
+008300                 88  BANK-FEES               VALUE 94.            00830027
+008400                 88  BANK-SPEC-FEES          VALUE 95.            00840027
+008500                 88  BANK-SERV-CHGS          VALUE 96.            00850027
+008600                 88  BANK-UNPOST-ITEMS       VALUE 97.            00860027
+008700                 88  PERSONAL                VALUE 01  02  08     00870027
+008800                                                   40             00880027
+008900                                                   80 THRU 84.    00890027
+009000         04  STATUS-CODE         PIC 999     VALUE 0.             00900027
+009100         04  FILLER REDEFINES STATUS-CODE.                        00910027
+009200             05  STAT-2X         PIC XX.                          00920027
+009300                 88  OPENED                  VALUE '01'.          00930027
+009400                 88  DORMANT                 VALUE '02'.          00940027
+009500                 88  INACTIVE                VALUE '03'.          00950027
+009600                 88  RESTRICTED              VALUE '04'.          00960027
+009700                 88  GARNISH-LEVY            VALUE '05'.          00970027
+009800                 88  DECEASED                VALUE '06'.          00980027
+009900                 88  LOST-CONTACT            VALUE '07'.          00990027
+010000                 88  ESCHEAT                 VALUE '08'.          01000027
+010100                 88  CLOSED                  VALUE '09'.          01010027
+010200                 88  RESTRICTED-PCO          VALUE '10'.          01020027
+010300                 88  RESTRICTED-PDO          VALUE '11'.          01030027
+010400                 88  WATCHED                 VALUE '12'.          01040027
+010500                 88  COURT-RESTRICT          VALUE '13'.          01050027
+010600                 88  RESTRICTED-ACH          VALUE '14'.          01060027
+010700                 88  WATCHED-ACH             VALUE '15'.          01070027
+010800                 88  DORMANT-DECEASED        VALUE '16'.          01080027
+010900             05  STAT-1X         PIC X.                           01090027
+011000                 88  TODAY                   VALUE '1'.           01100027
+011100                 88  THIS-WEEK               VALUE '2'.           01110027
+011200                 88  THIS-MONTH              VALUE '3'.           01120027
+011300                 88  THIS-QUARTER            VALUE '4'.           01130027
+011400                 88  THIS-YEAR               VALUE '5'.           01140027
+011500                 88  MAINT-CLOSE             VALUE '6'.           01150027
+011600                 88  MAINT-NEW               VALUE '7'.           01160027
+011700                 88  REGULAR                 VALUE '0'.           01170027
+011800                 88  CONVERSION              VALUE '9'.           01180027
+011900                 88  ZERO-BAL                VALUE '8'.           01190027
+012000         04  SERVICE-CHG-CODE    PIC 999     VALUE 0.             01200027
+012100         04  FILLER REDEFINES SERVICE-CHG-CODE.                   01210027
+012200             05  SC-DISP         PIC 9.                           01220027
+012300                 88  SC-DISP-EXEMPT          VALUE 0.             01230027
+012400                 88  SC-DISP-CHARGE          VALUE 1.             01240027
+012500                 88  SC-DISP-ANALYSIS        VALUE 2.             01250027
+012600                 88  SC-DISP-BID             VALUE 3.             01260027
+012700             05  SC-ROUTINE      PIC 99.                          01270027
+012800         04  EARNINGS-CODE       PIC S9(3)   VALUE +0    COMP-3.  01280027
+012900         04  EARNINGS-DISP-CODE  PIC X.                           01290027
+013000             88  ADD-ON                      VALUE '1'.           01300027
+013100             88  CHECK                       VALUE '2'.           01310027
+013200             88  TRANSFER                    VALUE '3'.           01320027
+013300             88  NO-EARN-CREDIT              VALUE '9'.           01330027
+013400         04  SC-EARN-CYCLE-CODE  PIC S9(3)   VALUE +0    COMP-3.  01340027
+013500         04  STMT-CYCLE-CODE     PIC S9(3)   VALUE +0    COMP-3.  01350027
+013600         04  STATEMENT-TYPE      PIC XX.                          01360027
+013700             88  DDA-OSB-STMT                VALUE '01'.          01370027
+013800             88  DDA-SEC-STMT                VALUE '02'.          01380027
+013900             88  REG-SAV-STMT                VALUE '10'.          01390027
+014000             88  SAV-OSB-STMT                VALUE '11'.          01400027
+014100             88  NO-STMT                     VALUE '99'.          01410027
+014200         04  LIST-POST-CODE      PIC S9      VALUE +0    COMP-3.  01420027
+014300         04  OVERDRAFT-LIMIT     PIC S9(9)   VALUE +0    COMP-3.  01430027
+014400         04  CC-CYCLE-CODE       PIC S9(5)   VALUE +0    COMP-3.  01440027
+014500         04  INTEREST-RATE       PIC SV9(7)  VALUE +.0   COMP-3.  01450027
+014600         04  LARGE-ITEM-AMOUNT   PIC S9(3)   VALUE +0    COMP-3.  01460027
+014700         04  STMT-DISP-CODE      PIC X       VALUE SPACES.        01470027
+014800             88  AUDIT                       VALUE 'A'.           01480027
+014900             88  CHECKMATE-STMT              VALUE 'C'.           01490027
+015000             88  DROP-FILE-STMT              VALUE 'D'.           01500027
+015100             88  EMPLOYEE-STMT               VALUE 'E'.           01510027
+015200             88  EMPLOYEE-STMT-MAIL          VALUE 'G'.           01520027
+015300             88  HOLD-DEPT                   VALUE 'H'.           01530027
+015400             88  MAIL-ALL                    VALUE 'M'.           01540027
+015500             88  MAIL-ALWAYS                 VALUE 'X'.           01550027
+015600         04  DISCOUNT-MAINT-IND  PIC X(1)    VALUE SPACES.        01560031
+015700             88 NO-DISCOUNT-MAINT            VALUE 'N'.           01570031
+015800             88 DISOUNT-MAINT                VALUE 'Y'.           01580031
+016000         04  SALE-DATE           PIC S9(7)   VALUE +0    COMP-3.  01600031
+016100         04  SELLER-ID           PIC S9(5)   VALUE +0    COMP-3.  01610031
+016200         04  FILLERA-01          PIC X(2)    VALUE SPACES.        01620031
+016300         04  PRIMARY-OFFICER     PIC X(3)    VALUE SPACES.        01630027
+016400         04  ACCOUNT-CLASS       PIC X(3)    VALUE SPACES.        01640027
+016500             88  DDA-ACCOUNT                 VALUE 'DDA'.         01650027
+016600             88  NOW-ACCOUNT                 VALUE 'NOW'.         01660027
+016700             88  IMM-ACCOUNT                 VALUE 'IMM'  'IMP'   01670027
+016800                                                   'IMT'  'IMA'   01680027
+016900                                                   'IML'.         01690027
+017000             88  IMP-ACCOUNT                 VALUE 'IMP'.         01700027
+017100             88  IMT-ACCOUNT                 VALUE 'IMT'.         01710027
+017200             88  IMA-ACCOUNT                 VALUE 'IMA'.         01720027
+017300             88  IML-ACCOUNT                 VALUE 'IML'.         01730027
+017400             88  CMM-ACCOUNT                 VALUE 'CMM'.         01740027
+017500             88  SAV-ACCOUNT                 VALUE 'SAV'.         01750027
+017600             88  CC-ACCOUNT                  VALUE 'CC '.         01760027
+017700         04  OTHER-BUSINESS-CODE PIC X(3)    VALUE SPACES.        01770027
+017800         04  RELATED-ACCT-CODE   PIC 9(7)    VALUE 0     COMP-3.  01780027
+017900         04  SPEC-REPORT-ID      PIC X       VALUE SPACES.        01790027
+018000         04  BRANCH-CODE         PIC 999     VALUE 0.             01800027
+018100                                                                  01810027
+018200     03  DATA-CONTENTS-02.                                        01820027
+018300         04  OLD-CURR-BAL        PIC S9(9)V99  VALUE +0  COMP-3.  01830027
+018400         04  CURR-NET-COLL-BAL   PIC S9(9)V99  VALUE +0  COMP-3.  01840027
+018500         04  CURR-BAL-ELG-WITH   PIC S9(9)V99  VALUE +0  COMP-3.  01850027
+018600         04  MEMO-ACCR-INTEREST  PIC S9(6)V9(5) VALUE +0 COMP-3.  01860027
+018700         04  ACCRUED-INTEREST    PIC S9(8)V9(5) VALUE +0 COMP-3.  01870027
+018800                                                                  01880027
+018900     03  DATA-CONTENTS-03.                                        01890027
+019000         04  ONE-DAY-FLOAT-AMT   PIC S9(9)     VALUE +0  COMP-3.  01900027
+019100         04  TWO-DAY-FLOAT-AMT   PIC S9(9)     VALUE +0  COMP-3.  01910027
+019200         04  THREE-DAY-FLOAT-AMT PIC S9(9)     VALUE +0  COMP-3.  01920027
+019300         04  FOUR-DAY-FLOAT-AMT  PIC S9(9)     VALUE +0  COMP-3.  01930027
+019400         04  FIVE-DAY-FLOAT-AMT  PIC S9(9)     VALUE +0  COMP-3.  01940027
+019500                                                                  01950027
+019600     03  DATA-CONTENTS-04.                                        01960027
+019700         04  LOW-BALANCE-CYCLE   PIC S9(9)     VALUE +0  COMP-3.  01970027
+019800         04  PREV-AVG-CUR-BAL-LOADED                              01980027
+019900                                 PIC S9(11)    VALUE +0  COMP-3.  01990027
+020000         04  PREV-AVG-COL-BAL-LOADED                              02000027
+020100                                 PIC S9(11)    VALUE +0  COMP-3.  02010027
+020200         04  DAYS-IN-CYCLE       PIC S9(3)     VALUE +0  COMP-3.  02020027
+020300         04  NUM-ENCLOSURES      PIC S9(5)     VALUE +0  COMP-3.  02030027
+020400         04  NUM-SERV-CHG-DEBITS PIC S9(5)     VALUE +0  COMP-3.  02040027
+020500         04  NUM-SERV-CHG-CREDIT PIC S9(5)     VALUE +0  COMP-3.  02050027
+020600         04  NUM-SERV-CHG-ITEMS  PIC S9(7)     VALUE +0  COMP-3.  02060027
+020700         04  NUM-CREDITS         PIC S9(5)     VALUE +0  COMP-3.  02070027
+020800         04  AMT-CREDITS         PIC S9(9)V99  VALUE +0  COMP-3.  02080027
+020900         04  NUM-DEBITS          PIC S9(5)     VALUE +0  COMP-3.  02090027
+021000         04  AMT-DEBITS          PIC S9(9)V99  VALUE +0  COMP-3.  02100027
+021100         04  NUM-KITES           PIC S9(3)     VALUE +0  COMP-3.  02110027
+021200         04  NUM-FOR-ATM-SC-DEBITS                                02120027
+021300                                 PIC S9(5)     VALUE +0  COMP-3.  02130027
+021400         04  AMT-LAST-CYCLE-STMT PIC S9(9)V99  VALUE +0  COMP-3.  02140027
+021500         04  NUM-CHKPLUS-SC-DEBITS                                02150027
+021600                                 PIC S9(5)     VALUE +0  COMP-3.  02160027
+021700         04  AMT-LAST-SPEC-STMT  PIC S9(9)V99  VALUE +0  COMP-3.  02170027
+021800         04  SERV-CHG-FEES       PIC S9(5)V99  VALUE +0  COMP-3.  02180027
+021900         04  ACCUM-SERV-CHGS     PIC S9(5)V99  VALUE +0  COMP-3.  02190027
+022000         04  EXT-SERV-CHG-AMT    PIC S9(5)V99  VALUE +0  COMP-3.  02200027
+022100         04  DISCOUNT-MAINT-FEE  PIC S9(3)V99  VALUE +0  COMP-3.  02210031
+022200         04  DAYS-SINCE-LAST-STMT                                 02220027
+022300                                 PIC S9(5)     VALUE +0  COMP-3.  02230027
+022400                                                                  02240027
+022500     03  DATA-CONTENTS-05.                                        02250027
+022600         04  CURR-MO-SERV-CHRG   PIC S9(9)V99  VALUE +0  COMP-3.  02260027
+022700         04  PREV-MO-SERV-CHRG   PIC S9(9)V99  VALUE +0  COMP-3.  02270027
+022800         04  DAYS-IN-CAL-MONTH   PIC S9(3)     VALUE +0  COMP-3.  02280027
+022900         04  NUM-NSF-CHECKS-MO   PIC S9(5)     VALUE +0  COMP-3.  02290027
+023000         04  NUM-DAYS-OD-MO      PIC S9(3)     VALUE +0  COMP-3.  02300027
+023100         04  UNCOLL-WITHD-MO     PIC S9(3)     VALUE +0  COMP-3.  02310027
+023200         04  NUM-APPR-OD-MO      PIC S9(3)     VALUE +0  COMP-3.  02320027
+023300         04  NUM-TIMES-OD-MO     PIC S9(3)     VALUE +0  COMP-3.  02330027
+023400         04  INSF-PEND-SW        PIC X.                           02340027
+023500             88  NSF-NOT-PENDING               VALUE '0'.         02350027
+023600             88  NSF-PENDING                   VALUE '1'.         02360027
+023700             88  UNPOSTED-PENDING              VALUE '2'.         02370027
+023800         04  STOP-PAY-INDICATOR  PIC X.                           02380027
+023900             88  NO-STOP-PAY                   VALUE '0'.         02390027
+024000             88  STOP-PAY-IN-FORCE             VALUE '1'.         02400027
+024100                                                                  02410027
+024200     03  DATA-CONTENTS-06.                                        02420027
+024300         04  DOLLAR-CUT-2SIG-REQ PIC S9(5)     VALUE +0  COMP-3.  02430027
+024400         04  AMT-LAST-DEPOSIT    PIC S9(9)V99  VALUE +0  COMP-3.  02440027
+024500         04  ITEM-COUNT-2SIG-REQ PIC S9(5)     VALUE +0  COMP-3.  02450027
+024600         04  AMT-LAST-WITHDRAW   PIC S9(9)V99  VALUE +0  COMP-3.  02460027
+024700         04  NEXT-STMT-CYC-CODE  PIC S9(5)     VALUE +0  COMP-3.  02470027
+024800         04  NEXT-SC-ER-CYC-CODE PIC S9(5)     VALUE +0  COMP-3.  02480027
+024900         04  ENCL-CNT-SC-FEE     PIC S9(3)V99  VALUE +0  COMP-3.  02490027
+025000                                                                  02500027
+025100     03  DATA-CONTENTS-07.                                        02510027
+025200         04  INT-PAID-LAST-CYCLE PIC S9(7)V99  VALUE +0  COMP-3.  02520027
+025300         04  INT-PAID-1ST-CYCLE  PIC S9(7)V99  VALUE +0  COMP-3.  02530027
+025400         04  INT-PAID-2ND-CYCLE  PIC S9(7)V99  VALUE +0  COMP-3.  02540027
+025500         04  INT-PAID-3RD-CYCLE  PIC S9(7)V99  VALUE +0  COMP-3.  02550027
+025600         04  INT-PAID-4TH-CYCLE  PIC S9(7)V99  VALUE +0  COMP-3.  02560027
+025700         04  INT-PAID-YTD        PIC S9(7)V99  VALUE +0  COMP-3.  02570027
+025800         04  INT-PAID-PREV-YR    PIC S9(7)V99  VALUE +0  COMP-3.  02580027
+025900         04  OD-FEES-CTD         PIC S9(5)V99  VALUE +0  COMP-3.  02590027
+026000         04  FIXED-SERV-CHRG-AMT PIC S9(5)V99  VALUE +0  COMP-3.  02600027
+026100         04  OD-FEES-YTD         PIC S9(5)V99  VALUE +0  COMP-3.  02610027
+026200                                                                  02620027
+026300     03  DATA-CONTENTS-08.                                        02630027
+026400         04  NUM-FT-ACH-DEBITS   PIC S9(5)     VALUE +0  COMP-3.  02640027
+026500         04  NUM-3RD-PARTY-DEBITS                                 02650027
+026600                                 PIC S9(5)     VALUE +0  COMP-3.  02660027
+026700         04  NUM-TELE-DEBITS     PIC S9(5)     VALUE +0  COMP-3.  02670027
+026800         04  NUM-TELE-CREDIT     PIC S9(5)     VALUE +0  COMP-3.  02680027
+026900         04  CURRENT-BALANCE     PIC S9(11)V99 VALUE +0  COMP-3.  02690027
+027000                                                                  02700027
+027100     03  DATA-CONTENTS-43.                                        02710027
+027200         04  ODB-STATUS-CODE     PIC XX.                          02720027
+027300             88  ODB-NORMAL                    VALUE '01'.        02730027
+027400             88  ODB-CUTOFF                    VALUE '02'.        02740027
+027500             88  ODB-CLOSED-POST-CREDIT        VALUE '03'.        02750027
+027600             88  ODB-CLOSED-DELETE             VALUE '04'.        02760027
+027700             88  ODB-MANUAL-PAY                VALUE '05'.        02770027
+027800             88  ODB-MANUAL-PAY-CUTOFF         VALUE '06'.        02780027
+027900         04  ODB-PLAN            PIC XX.                          02790027
+028000             88  CHECKING-PLUS                 VALUE 'CP'.        02800027
+028100             88  CASH-RESERVE                  VALUE 'CR'.        02810027
+028200             88  BUSINESS-RESERVE              VALUE 'BR'.        02820027
+028300             88  EXECUTIVE-CREDIT              VALUE 'EC'.        02830027
+028400             88  EMPLOYEE-RESERVE              VALUE 'EM'.        02840027
+028500             88  EQUITY-CREDIT                 VALUE 'ER'.        02850027
+028600             88  HOME-EQUITY                   VALUE 'HE'.        02860027
+028700             88  NEW-START-LOAN                VALUE 'NS'.        02870027
+028800             88  PRIORITY-LINE                 VALUE 'PL'.        02880027
+028900             88  SECURITIES-LINE               VALUE 'SL'.        02890027
+029000         04  ODB-FEE-WAIVER-IND  PIC X.                           02900027
+029100             88  ODB-FEE-ANNUAL-CHARGE         VALUE 'A'.         02910027
+029200             88  ODB-FEE-MONTHLY-CHARGE        VALUE 'M'.         02920027
+029300             88  ODB-FEE-GRANDFATHER           VALUE 'G'.         02930027
+029400             88  ODB-FEE-NO-FEE                VALUE 'N'.         02940027
+029500             88  ODB-FEE-WAIVE                 VALUE 'W'.         02950027
+029600         04  2ND-GROSS-LOAN-BAL  PIC S9(09)V99 VALUE +0  COMP-3.  02960027
+029700         04  LOAN-OFFICER-CODE   PIC S9(5)     VALUE +0  COMP-3.  02970027
+029800         04  AUTH-CREDIT-LIMIT   PIC S9(9)V99  VALUE +0  COMP-3.  02980027
+029900         04  FIRST-INT-RATE      PIC SV9(5)    VALUE +.0 COMP-3.  02990027
+030000         04  FIRST-INT-AMT       PIC S9(9)V99  VALUE +0  COMP-3.  03000027
+030100         04  SECOND-INT-RATE     PIC SV9(5)    VALUE +.0 COMP-3.  03010027
+030200         04  ODB-RATE-VARIANCE   PIC SV9(5)    VALUE +.0 COMP-3.  03020027
+030300         04  ODB-RATE-VARI-IND   PIC X.                           03030027
+030400             88  ODB-NO-VARIANCE               VALUE ' '.         03040027
+030500             88  ODB-PLUS-VARIANCE             VALUE '+'.         03050027
+030600             88  ODB-MINUS-VARIANCE            VALUE '-'.         03060027
+030700             88  ODB-FIXED-RATE                VALUE 'F'.         03070027
+030800         04  ODB-ADV-NOTICE-IND  PIC X.                           03080027
+030900             88  NO-ADV-NOTICE                 VALUE '0'.         03090027
+031000             88  SEND-ADV-NOTICE               VALUE '1'.         03100027
+031100         04  ODB-PAY-REMINDER-IND                                 03110027
+031200                                 PIC X.                           03120027
+031300             88  NO-PAY-REMINDER               VALUE '0'.         03130027
+031400             88  SEND-PAY-REMINDER             VALUE '1'.         03140027
+031500         04  HOME-PHONE          PIC S9(7)     VALUE +0  COMP-3.  03150027
+031600         04  BUSINESS-PHONE      PIC S9(7)     VALUE +0  COMP-3.  03160027
+031700         04  EMPLOYER-NAME       PIC X(25)     VALUE SPACES.      03170027
+031800         04  ODB-PEGGED-BAL      PIC S9(9)V99  VALUE +0  COMP-3.  03180027
+031900         04  ODB-PEGGED-BAL-IND  PIC X.                           03190027
+032000             88  NO-ODB-PEG-BAL                VALUE '0'.         03200027
+032100             88  ODB-CURR-PEG-BAL              VALUE '1'.         03210027
+032200             88  ODB-COLL-PEG-BAL              VALUE '2'.         03220027
+032300         04  ODB-PREV-2ND-RATE-IND                                03230027
+032400                                 PIC X.                           03240027
+032500             88  PREV-2ND-RATE-NOT-USED        VALUE '0'.         03250027
+032600             88  PREV-2ND-RATE-USED            VALUE '1'.         03260027
+032700         04  ODB-MAN-MIN-PMNT-DIFF-IND                            03270027
+032800                                 PIC X.                           03280027
+032900             88  MAN-MIN-PMNT-DIFF-NOT-USED    VALUE '0'.         03290027
+033000             88  MAN-MIN-PMNT-DIFF-USED        VALUE '1'.         03300027
+033100         04  ODB-NUM-PYMTS-TO-WAIVE                               03310027
+033200                                 PIC S9        VALUE +0  COMP-3.  03320027
+033300         04  ODB-FEE-MTD         PIC S9(3)V99  VALUE +0  COMP-3.  03330027
+033400         04  CREDIT-LIFE-IND     PIC X.                           03340027
+033500             88  NO-CR-LIFE                    VALUE '0'.         03350027
+033600             88  SINGLE-CR-LIFE                VALUE '1'.         03360027
+033700             88  JOINT-CR-LIFE                 VALUE '2'.         03370027
+033800         04  CRED-LIFE-RATE      PIC SV9(5)    VALUE +.0 COMP-3.  03380027
+033900                                                                  03390027
+034000     03  DATA-CONTENTS-44.                                        03400027
+034100         04  HISTORY-CARD-IND PIC X.                              03410027
+034200             88  NO-HC                         VALUE '0'.         03420027
+034300             88  HC-REVIEW                     VALUE '1'.         03430027
+034400             88  HC-CUTOFF                     VALUE '2'.         03440027
+034500             88  HC-REQUEST                    VALUE '3'.         03450027
+034600             88  HC-CLOSED                     VALUE '4'.         03460027
+034700             88  HC-MATURED                    VALUE '5'.         03470027
+034800             88  HC-PAST-DUE                   VALUE '6'.         03480027
+034900         04  FIRST-NOTICE-SW     PIC X.                           03490027
+035000             88  1ST-NOTICE-NOT-SENT           VALUE '0'.         03500027
+035100             88  1ST-NOTICE-SENT               VALUE '1'.         03510027
+035200         04  SECOND-NOTICE-SW    PIC X.                           03520027
+035300             88  2ND-NOTICE-NOT-SENT           VALUE '0'.         03530027
+035400             88  2ND-NOTICE-SENT               VALUE '1'.         03540027
+035500         04  ODB-LOAN-BAL        PIC S9(9)V99  VALUE +0  COMP-3.  03550027
+035600         04  LAST-TX-CODE        PIC S9(3)     VALUE +0  COMP-3.  03560027
+035700         04  ODB-FEE-YTD         PIC S9(3)V99  VALUE +0  COMP-3.  03570027
+035800         04  LAST-ADV-AMT        PIC S9(9)V99  VALUE +0  COMP-3.  03580027
+035900         04  ODB-FEE-PREV-MO     PIC S9(3)V99  VALUE +0  COMP-3.  03590027
+036000         04  LAST-PMNT-AMT       PIC S9(9)V99  VALUE +0  COMP-3.  03600027
+036100         04  ODB-FEE-PREV-YR     PIC S9(3)V99  VALUE +0  COMP-3.  03610027
+036200         04  LAST-INT-AMT        PIC S9(9)V99  VALUE +0  COMP-3.  03620027
+036300         04  NUM-DAYS-DELQ       PIC S9(3)     VALUE +0  COMP-3.  03630027
+036400         04  NUM-TIMES-DELQ      PIC S9(3)     VALUE +0  COMP-3.  03640027
+036500         04  NUM-PAST-DUE-NTCES  PIC S9(3)     VALUE +0  COMP-3.  03650027
+036600         04  NUM-PAST-DUE-PMNTS  PIC S9(3)     VALUE +0  COMP-3.  03660027
+036700         04  NUM-TIMES-OVER-LINE PIC S9(3)     VALUE +0  COMP-3.  03670027
+036800         04  AMT-PAST-DUE        PIC S9(9)V99  VALUE +0  COMP-3.  03680027
+036900         04  ODB-ACTIVITY-SW     PIC X.                           03690027
+037000             88  NO-ODB-ACT-THIS-PERIOD        VALUE '0'.         03700027
+037100             88  ODB-ACTIVITY-THIS-PERIOD      VALUE '1'.         03710027
+037200         04  GROSS-LOAN-BAL      PIC S9(11)V99 VALUE +0  COMP-3.  03720027
+037300         04  MONTHLY-ACCUM-INT   PIC S9(9)V99  VALUE +0  COMP-3.  03730027
+037400         04  YTD-ODB-INT         PIC S9(9)V99  VALUE +0  COMP-3.  03740027
+037500         04  PREV-STMT-BAL       PIC S9(9)V99  VALUE +0  COMP-3.  03750027
+037600         04  ODB-2ND-RATE-IND    PIC X.                           03760027
+037700             88  2ND-RATE-NOT-USED             VALUE '0'.         03770027
+037800             88  2ND-RATE-USED                 VALUE '1'.         03780027
+037900         04  DAYS-SINCE-CYCLE    PIC S9        VALUE +0  COMP-3.  03790027
+038000         04  YEARLY-BEGIN-BAL    PIC S9(9)V99  VALUE +0  COMP-3.  03800027
+038100         04  NUM-ADVANCES-YTD    PIC S9(3)     VALUE +0  COMP-3.  03810027
+038200         04  AVG-BAL-TO-COMPUTE  PIC S9(9)V99  VALUE +0  COMP-3.  03820027
+038300         04  ODB-ACCUM-CR-LIFE   PIC S9(4)V999 VALUE +0  COMP-3.  03830027
+038400         04  ODB-ACCRUED-F-C     PIC S9(9)V9(6) VALUE +0 COMP-3.  03840027
+038500         04  CR-LIFE-PAID-MTD    PIC S9(3)V99  VALUE +0  COMP-3.  03850027
+038600         04  CR-LIFE-PAID-YTD    PIC S9(3)V99  VALUE +0  COMP-3.  03860027
+038700         04  CR-LIFE-PAID-PREV-YR                                 03870027
+038800                                 PIC S9(3)V99  VALUE +0  COMP-3.  03880027
+038900                                                                  03890027
+039000     03  DATA-CONTENTS-46.                                        03900027
+039100         04  LOW-BALANCE-MONTH   PIC S9(9)V99  VALUE +0  COMP-3.  03910027
+039200         04  NUM-LOCAL-ITEMS     PIC S9(7)     VALUE +0  COMP-3.  03920027
+039300         04  LOCAL-ITEMS-IND     PIC X.                           03930027
+039400             88  NO-LOCAL-ITEMS                VALUE '0'.         03940027
+039500             88  USE-LOCAL-ITEMS               VALUE '1'.         03950027
+039600         04  ACCT-RECON-IND      PIC X.                           03960027
+039700             88  NO-ACCT-RECON                 VALUE '0'.         03970027
+039800             88  DO-ACCT-RECON                 VALUE '1'.         03980027
+039900         04  LOW-BAL-TO-LOAD     PIC S9(9)V99  VALUE +0  COMP-3.  03990027
+040000         04  AVG-CUR-BAL-TO-LOAD PIC S9(9)V99  VALUE +0  COMP-3.  04000027
+040100         04  AVG-COL-BAL-TO-LOAD PIC S9(9)V99  VALUE +0  COMP-3.  04010027
+040200         04  ODB-PREV-YR-INT-SECURED                              04020027
+040300                                 PIC S9(9)V99  VALUE +0  COMP-3.  04030027
+040400                                                                  04040027
+040500     03  DATA-CONTENTS-47.                                        04050027
+040600         04  NUM-ACH-SC-CREDITS  PIC S9(5)     VALUE +0  COMP-3.  04060027
+040700                                                                  04070027
+040800     03  DATA-CONTENTS-48.                                        04080027
+040900         04  ODB-INT-PAID-PREV-YR                                 04090027
+041000                                 PIC S9(7)V99  VALUE +0  COMP-3.  04100027
+041100         04  ODB-ADVANCE-IND     PIC X.                           04110027
+041200             88  ADVANCE-INCRE                 VALUE ' '.         04120027
+041300             88  ADVANCE-EXACT                 VALUE '1'.         04130027
+041400         04  ODB-PAYMENT-IND     PIC X.                           04140027
+041500             88  PAYMENT-AT-CYCLE              VALUE ' '.         04150027
+041600             88  PAYOFF-AT-CYCLE               VALUE '1'.         04160027
+041700             88  PAYOFF-DAILY-ALL              VALUE '2'.         04170027
+041800             88  PAYOFF-DAILY-PARTIAL          VALUE '3'.         04180027
+041900                                                                  04190027
+042000     03  DATA-CONTENTS-50.                                        04200027
+042100         04  INV-STATUS-CODE     PIC XX.                          04210027
+042200             88  INV-NORMAL                    VALUE '01'.        04220027
+042300             88  INV-CUTOFF                    VALUE '02'.        04230027
+042400             88  INV-CLOSED-CYC-STMT           VALUE '08'.        04240027
+042500             88  INV-CLOSED                    VALUE '09'.        04250027
+042600         04  INV-PLAN            PIC XX.                          04260027
+042700             88  REPURCHASE                    VALUE 'RP'.        04270027
+042800             88  T-SHARE                       VALUE 'TS'.        04280027
+042900             88  TERM-REPO                     VALUE 'TR'.        04290027
+043000             88  TAX-EXEMPT-FUND               VALUE 'TE'.        04300027
+043100             88  TREASURY-FUND                 VALUE 'TF'.        04310027
+043200             88  FED-FUNDS                     VALUE 'FF'.        04320027
+043300             88  INTERBANK-TERM-REPO           VALUE 'IR'.        04330027
+043400             88  CASH-MGMT-TRUST-FUND          VALUE 'CF'.        04340027
+043410             88  INSURED-CASH-SWEEP            VALUE 'IC'.        04341034
+043500         04  INV-PEGGED-BAL      PIC S9(9)V99  VALUE +0  COMP-3.  04350027
+043600         04  INV-INCREMENT       PIC S9(7)V99  VALUE +0  COMP-3.  04360027
+043700         04  INV-LIMIT           PIC S9(9)     VALUE +0  COMP-3.  04370027
+043800         04  INV-RATE            PIC SV9(7)    VALUE +.0 COMP-3.  04380027
+043900         04  INV-RATE-VARI-IND   PIC X.                           04390027
+044000             88  INV-NO-VARIANCE               VALUE ' '.         04400027
+044100             88  INV-PLUS-VARIANCE             VALUE '+'.         04410027
+044200             88  INV-MINUS-VARIANCE            VALUE '-'.         04420027
+044300             88  INV-FIXED-RATE                VALUE 'F'.         04430027
+044400         04  INV-RATE-VARIANCE   PIC SV9(7)    VALUE +.0 COMP-3.  04440027
+044500         04  INV-EARNINGS-CODE   PIC S9(3)     VALUE +0  COMP-3.  04450027
+044600         04  INV-TERM-INDICATOR  PIC X.                           04460027
+044700             88  INV-IN-DAYS                   VALUE 'D'.         04470027
+044800             88  INV-IN-WEEKS                  VALUE 'W'.         04480027
+044900             88  INV-IN-MONTHS                 VALUE 'M'.         04490027
+045000             88  INV-IN-YEARS                  VALUE 'Y'.         04500027
+045100         04  FILLERA-50          PIC S9(3)     VALUE +0  COMP-3.  04510027
+045200         04  INV-ODB-ADVANCE-IND PIC X.                           04520027
+045300             88  INV-NO-ODB-ADV                VALUE ' '.         04530027
+045400             88  INV-ODB-ADV                   VALUE '1'.         04540027
+045500         04  INV-ODB-PAYOFF-IND  PIC X.                           04550027
+045600             88  INV-NO-ODB-PAY                VALUE ' '.         04560027
+045700             88  INV-ODB-PAY-TO-PEG            VALUE '1'.         04570027
+045800             88  INV-ODB-PAY-TO-ZERO           VALUE '2'.         04580027
+045900         04  INV-SWEEP-ACCT-DEST PIC 9(9)      VALUE  0  COMP-3.  04590027
+046000         04  INV-RENEWAL-CODE    PIC X.                           04600027
+046100             88  INV-RENEW-DAILY               VALUE ' '.         04610027
+046200             88  INV-NOT-RENEW-RATE-CHNG-MAT   VALUE '1'.         04620027
+046300             88  INV-NOT-RENEW-RATE-CHNG-ACT   VALUE '2'.         04630027
+046400             88  INV-RENEW-RATE-CHNG-MAT       VALUE '3'.         04640027
+046500             88  INV-RENEW-RATE-CHNG-ACT       VALUE '4'.         04650027
+046600                                                                  04660027
+046700     03  DATA-CONTENTS-52.                                        04670027
+046800         04  INV-BALANCE         PIC S9(9)V99  VALUE +0  COMP-3.  04680027
+046900         04  INV-GROSS-BAL       PIC S9(11)V99 VALUE +0  COMP-3.  04690027
+047000         04  INV-DAYS-INVESTED   PIC S9(3)     VALUE +0  COMP-3.  04700027
+047100         04  INV-ACCRUED-INT     PIC S9(8)V9(5) VALUE +0 COMP-3.  04710027
+047200         04  INV-INT-PAID-YTD    PIC S9(7)V99  VALUE +0  COMP-3.  04720027
+047300         04  INV-INT-PAID-PREV-YR                                 04730027
+047400                                 PIC S9(7)V99  VALUE +0  COMP-3.  04740027
+047500         04  INV-INT-PAID-LAST-CYC                                04750027
+047600                                 PIC S9(7)V99  VALUE +0  COMP-3.  04760027
+047700         04  INV-TERM            PIC S9(5)     VALUE +0  COMP-3.  04770027
+047800         04  INV-NEXT-TERM       PIC S9(5)     VALUE +0  COMP-3.  04780027
+047900         04  INV-COLL-ACCT-NUM   PIC 9(9)      VALUE  0  COMP-3.  04790027
+048000         04  INV-COLLATERAL-DESC.                                 04800027
+048100             05  INV-DESC1       PIC X(16).                       04810027
+048200             05  INV-DESC2       PIC X(10).                       04820027
+048300         04  INV-GROSS-BAL-LAST-CYC                               04830027
+048400                                 PIC S9(11)V99 VALUE +0  COMP-3.  04840027
+048500         04  INV-DAYS-INVEST-LAST-CYC                             04850027
+048600                                 PIC S9(3)     VALUE +0  COMP-3.  04860027
+048700         04  INV-LAST-STMT-BAL   PIC S9(9)V99  VALUE +0  COMP-3.  04870027
+048800                                                                  04880027
+048900     03  DATA-CONTENTS-53.                                        04890027
+049000         04  NUM-CHECKS-ON-STMT  PIC S9(5)     VALUE +0  COMP-3.  04900027
+049100         04  AMT-CHECKS-ON-STMT  PIC S9(9)V99  VALUE +0  COMP-3.  04910027
+049200         04  AMT-INV-PUR-ON-STMT PIC S9(9)V99  VALUE +0  COMP-3.  04920027
+049300         04  AMT-INV-MAT-ON-STMT PIC S9(9)V99  VALUE +0  COMP-3.  04930027
+049400         04  AMT-ODB-ADV-ON-STMT PIC S9(9)V99  VALUE +0  COMP-3.  04940027
+049500         04  AMT-ODB-PAY-ON-STMT PIC S9(9)V99  VALUE +0  COMP-3.  04950027
+049600                                                                  04960027
+049700     03  DATA-CONTENTS-54.                                        04970027
+049800         04  BAI-TRANS-ACCT-IND  PIC X         VALUE SPACES.      04980027
+049900             88  NOT-BAI-ACCOUNT               VALUE ' '.         04990027
+049910             88  BAI-INTRADAY-NIGHTLY          VALUE 'B'.         04991029
+049920             88  BAI-NIGHTLY                   VALUE 'Y'.         04992030
+050000             88  BAI-ACCOUNT                   VALUE 'Y' 'B'.     05000029
+050100         04  DEPOSIT-RECON-RPT-IND                                05010027
+050200                                 PIC X         VALUE SPACES.      05020027
+050300             88  NO-DEP-RECON-RPT              VALUE ' '.         05030027
+050400             88  PRINT-DEP-RECON-RPT           VALUE 'Y'.         05040027
+050500         04  TAX-WITHHELD-LAST-CYCLE                              05050027
+050600                                 PIC S9(9)V99  VALUE +0  COMP-3.  05060027
+050700         04  TAX-WITHHELD-YTD    PIC S9(9)V99  VALUE +0  COMP-3.  05070027
+050800         04  TAX-WITHHELD-PREV-YR                                 05080027
+050900                                 PIC S9(9)V99  VALUE +0  COMP-3.  05090027
+051000         04  INV-TAX-WITHHELD-LAST-CYCLE                          05100027
+051100                                 PIC S9(9)V99  VALUE +0  COMP-3.  05110027
+051200         04  INV-TAX-WITHHELD-YTD                                 05120027
+051300                                 PIC S9(9)V99  VALUE +0  COMP-3.  05130027
+051400         04  INV-TAX-WITHHELD-PREV-YR                             05140027
+051500                                 PIC S9(9)V99  VALUE +0  COMP-3.  05150027
+051600                                                                  05160027
+051700     03  DATA-CONTENTS-55.                                        05170027
+051800         04  SERV-CHRG-STMT-IND  PIC X         VALUE SPACES.      05180027
+051900         04  RESUBMITIT-IND      PIC X         VALUE SPACES.      05190027
+052000         04  IBEW-ACCT-CODE      PIC X         VALUE SPACES.      05200027
+052100         04  SC-EXEMPT-CODE      PIC XX        VALUE SPACES.      05210027
+052200         04  ITEM-HANDLING-CODE  PIC X         VALUE SPACES.      05220027
+052300         04  CASH-MGT-ACCT-IND   PIC X         VALUE SPACES.      05230027
+052400         04  ZERO-BAL-ACCT-IND   PIC X         VALUE SPACES.      05240027
+052500         04  BUSINESSLINK-IND    PIC X         VALUE SPACES.      05250027
+052600         04  ACCT-ANAL-ACCT-IND  PIC X         VALUE SPACES.      05260027
+052700         04  ACCT-ANAL-OFFICER   PIC X(20)     VALUE SPACES.      05270027
+052800                                                                  05280027
+052900     03  DATA-CONTENTS-56.                                        05290027
+053000         04  INV-OFFICER-NUM     PIC 9(5)      VALUE  0  COMP-3.  05300027
+053100         04  INV-INT-REPORTABLE  PIC S9(9)V99  VALUE +0  COMP-3.  05310027
+053200         04  INV-PREV-PEGGED-BAL PIC S9(9)V99  VALUE +0  COMP-3.  05320027
+053300         04  INV-SWEEP-FEE       PIC S9(9)V99  VALUE +0  COMP-3.  05330027
+053400         04  INV-SHORT-BAL       PIC S9(9)V99  VALUE +0  COMP-3.  05340027
+053500         04  FILLER-56           PIC XX        VALUE SPACES.      05350027
+053600         04  INV-MAIL-CODE       PIC X         VALUE SPACES.      05360027
+053700         04  INV-INT-PAYMENT-OPT PIC X         VALUE SPACES.      05370027
+053800             88  INV-INT-PAY-DAILY             VALUE 'D'.         05380027
+053900             88  INV-INT-PAY-MONTHLY           VALUE 'M'.         05390027
+054000         04  INV-PEG-BAL-ADJ-CODE                                 05400027
+054100                                 PIC X         VALUE SPACES.      05410027
+054200             88  INV-NO-ADJUSTMENT             VALUE 'A'.         05420027
+054300             88  INV-ADJUST-PEGGED             VALUE 'P'.         05430027
+054400             88  INV-USE-SHORT-BAL             VALUE 'S'.         05440027
+054500             88  INV-ADJ-PEG-USE-SHORT         VALUE 'B'.         05450027
+054600         04  INV-ACCR-BASIS-IND  PIC X         VALUE SPACES.      05460027
+054700             88  INV-INT-ACCR-360              VALUE '0'.         05470027
+054800             88  INV-INT-ACCR-365              VALUE '5'.         05480027
+054900         04  INV-COLLAT-NTC-IND  PIC X         VALUE SPACES.      05490027
+055000             88  INV-COLLAT-NTC-OFF            VALUE '0'.         05500027
+055100             88  INV-COLLAT-NTC-ON             VALUE '1'.         05510027
+055200                                                                  05520027
+055300     03  DATA-CONTENTS-57.                                        05530027
+055400         04  ODB-PYMT-METHOD     PIC X         VALUE SPACES.      05540027
+055500             88  ODB-P-AND-I                   VALUE 'A'.         05550027
+055600             88  ODB-INT-ONLY                  VALUE 'B'.         05560027
+055700             88  ODB-FIX-PYMT-AND-I            VALUE 'C'.         05570027
+055800             88  ODB-FIX-PC-PYMT-AND-I         VALUE 'E'.         05580027
+055900         04  ODB-PYMT-FREQ       PIC X         VALUE SPACES.      05590027
+056000             88  ODB-MONTHLY-PYMT              VALUE 'M'.         05600027
+056100             88  ODB-QUARTERLY-PYMT            VALUE 'Q'.         05610027
+056200             88  ODB-SEMI-ANNUAL-PYMT          VALUE 'S'.         05620027
+056300         04  ODB-MIN-PYMT-AMT    PIC S9(5)V99  VALUE +0  COMP-3.  05630027
+056400         04  ODB-MIN-PYMT-PC     PIC SV9(5)    VALUE +.0 COMP-3.  05640027
+056500         04  ODB-FIXED-PYMT-AMT  PIC S9(5)V99  VALUE +0  COMP-3.  05650027
+056600         04  ODB-FIXED-PYMT-PC   PIC SV9(5)    VALUE +.0 COMP-3.  05660027
+056700         04  ODB-PREV-INT-RATE   PIC SV9(5)    VALUE +.0 COMP-3.  05670027
+056800         04  ODB-MAN-PYMT-ACCUM  PIC S9(9)V99  VALUE +0  COMP-3.  05680027
+056900         04  ODB-YTD-INT-SECURED PIC S9(9)V99  VALUE +0  COMP-3.  05690027
+057000         04  ODB-ACCT-TO-BE-CHRG PIC 9(9)      VALUE 0   COMP-3.  05700027
+057100         04  ODB-COLLATERAL-CODE PIC XXX       VALUE SPACES.      05710027
+057200             88  ODB-SECURED-BY-RE             VALUE 'G73' 'G74'  05720027
+057300                                                     'G75' 'G80'  05730027
+057400                                                     'G81' 'G82'. 05740027
+057500                                                                  05750027
+057600     03  DATA-CONTENTS-58.                                        05760027
+057700         04  INV-SWEEP-TYPE      PIC X         VALUE SPACES.      05770027
+057800             88  INV-SWEEP-FIXED-AMT           VALUE 'F'.         05780027
+057900             88  INV-SWEEP-VARIABLE-AMT        VALUE 'V'.         05790027
+058000         04  INV-DAYS-IN-PREV-CYCLE                               05800027
+058100                                 PIC 9(3)      VALUE 0   COMP-3.  05810027
+058200         04  INV-PEG-BAL-DIFFERENTIAL                             05820027
+058300                                 PIC S9(7)V99  VALUE +0  COMP-3.  05830027
+058400         04  INV-PEG-BAL-ADJ-INCR                                 05840027
+058500                                 PIC 9(5)      VALUE 0   COMP-3.  05850027
+058600         04  FILLERA-58          PIC S9(5)     VALUE +0  COMP-3.  05860027
+058700         04  INV-TARGET-BALANCE  PIC S9(9)V99  VALUE +0  COMP-3.  05870027
+058800         04  INV-RATE-FLOOR      PIC SV9(7)    VALUE +.0 COMP-3.  05880027
+058900         04  INV-RATE-CEILING    PIC SV9(7)    VALUE +.0 COMP-3.  05890027
+059000                                                                  05900027
+059100     03  DATA-CONTENTS-59.                                        05910027
+059200         04  INV-TARGET-BAL-LOW  PIC S9(9)V99  VALUE +0  COMP-3.  05920027
+059300         04  INV-TARGET-BAL-HIGH PIC S9(9)V99  VALUE +0  COMP-3.  05930027
+059400         04  INV-OVERNIGHT-RATE-IND                               05940027
+059500                                 PIC X         VALUE SPACES.      05950027
+059600         04  INV-SHORT-BAL-DAILY-FAC                              05960027
+059700                                 PIC S9(9)V99  VALUE +0  COMP-3.  05970027
+059800         04  INV-PB-ADJ-SF-EARN-IND                               05980027
+059900                                 PIC X         VALUE SPACES.      05990027
+060000         04  INV-AMT-LAST-SPEC-STMT                               06000027
+060100                                 PIC S9(9)V99  VALUE +0  COMP-3.  06010027
+060200         04  INV-COLLATERAL-FACTOR                                06020027
+060300                                 PIC S9V9(4)   VALUE +0  COMP-3.  06030027
+060400         04  INV-ACCR-INT-DAILY-FAC                               06040027
+060500                                 PIC S9(8)V9(5) VALUE +0 COMP-3.  06050027
+060600         04  INV-MEMO-ACCR-INT   PIC S9(8)V9(5) VALUE +0 COMP-3.  06060027
+060700         04  INV-TIERED-RP-RATE-IND                               06070027
+060800                                 PIC X         VALUE SPACES.      06080027
+060900             88  DO-NOT-USE-TIERED-RP-RATES    VALUE ' '.         06090027
+061000             88  USE-TIERED-RP-RATES           VALUE 'Y'.         06100027
+061100         04  INV-COLLATERAL-CODE PIC X(4)      VALUE SPACES.      06110027
+061200         04  FILLER-59           PIC X(2)      VALUE SPACES.      06120027
+061300                                                                  06130027
+061400     03  DATA-CONTENTS-60.                                        06140027
+061500         04  ODB-CL-VARIANCE-PC  PIC S9V9(4)   VALUE +0  COMP-3.  06150027
+061600         04  ODB-MSA-CODE        PIC S9(5)     VALUE +0  COMP-3.  06160027
+061700         04  ODB-PREV-CR-LIMIT   PIC S9(9)V99  VALUE +0  COMP-3.  06170027
+061800         04  ODB-COUNTY-CODE     PIC S9(5)     VALUE +0  COMP-3.  06180027
+061900         04  ODB-AMT-LAST-SPEC-STMT                               06190027
+062000                                 PIC S9(9)V99  VALUE +0  COMP-3.  06200027
+062100         04  ODB-MATURITY-DATE   PIC S9(7)     VALUE +0  COMP-3.  06210027
+062200         04  ODB-MEMO-ACCR-F-C   PIC S9(5)V9(6) VALUE +0 COMP-3.  06220027
+062300         04  ODB-MEMO-ACCR-CR-LIFE                                06230027
+062400                                 PIC S9(4)V9(3) VALUE +0 COMP-3.  06240027
+062500         04  ODB-BILLING-IND     PIC X         VALUE SPACES.      06250027
+062600             88  ODB-CHARGE-AT-CYCLE           VALUE ' '.         06260027
+062700             88  ODB-BILL-AT-CYCLE             VALUE 'B'.         06270027
+062800         04  ODB-CENSUS-TRACT    PIC S9(5)V99  VALUE +0  COMP-3.  06280027
+062900         04  ODB-CALL-CODE       PIC X(3)      VALUE SPACES.      06290027
+063000             88  ODB-SECURED-BY-RE-2           VALUE '1A1' '1A2'  06300027
+063100                                                     '1B0' '1C1'  06310027
+063200                                                     '1C2' '1C3'  06320027
+063300                                                     '1D0' '1E1'  06330027
+063400                                                     '1E2'.       06340027
+063500         04  ODB-GR-ANNUAL-REVENUE                                06350027
+063600                                 PIC S9(9)     VALUE +0  COMP-3.  06360027
+063700         04  ODB-STATE-CODE      PIC 9(2).                        06370027
+063800                                                                  06380027
+063900     03  DATA-CONTENTS-61.                                        06390027
+064000         04  SERV-CHRG-BY-MONTH-INFO OCCURS 12 TIMES.             06400027
+064100             05  SC-BY-MNTH-AMT  PIC S9(5)V99            COMP-3.  06410027
+064200             05  SC-BY-MNTH-CODE PIC S9(3)               COMP-3.  06420027
+064300             05  SC-BY-MNTH-DISP PIC X.                           06430027
+064400                                                                  06440027
+064500     03  DATA-CONTENTS-62.                                        06450027
+064600         04  GROSS-RATE          PIC S99V9(7)  VALUE +0  COMP-3.  06460027
+064700         04  GROSS-RATE-DAYS     PIC S9(3)     VALUE +0  COMP-3.  06470027
+064800         04  PREV-GROSS-RATE     PIC S99V9(7)  VALUE +0  COMP-3.  06480027
+064900         04  PREV-GROSS-RATE-DAYS                                 06490027
+065000                                 PIC S9(3)     VALUE +0  COMP-3.  06500027
+065100                                                                  06510027
+065200     03  DATA-CONTENTS-63.                                        06520027
+065300         04  TIS-GRS-CUR-BAL-CYC PIC S9(11)V99 VALUE +0  COMP-3.  06530027
+065400         04  TIS-GRS-COL-BAL-CYC PIC S9(11)V99 VALUE +0  COMP-3.  06540027
+065500         04  TIS-DAYS-CYC        PIC S9(3)     VALUE +0  COMP-3.  06550027
+065600         04  TIS-GRS-CUR-BAL-PREV-CYC                             06560027
+065700                                 PIC S9(11)V99 VALUE +0  COMP-3.  06570027
+065800         04  TIS-GRS-COL-BAL-PREV-CYC                             06580027
+065900                                 PIC S9(11)V99 VALUE +0  COMP-3.  06590027
+066000         04  TIS-DAYS-PREV-CYC   PIC S9(3)     VALUE +0  COMP-3.  06600027
+066100         04  GROSS-CURR-BAL-CYCL PIC S9(11)V99 VALUE +0  COMP-3.  06610027
+066200         04  GROSS-COLL-BAL-CYCL PIC S9(11)V99 VALUE +0  COMP-3.  06620027
+066300         04  GROSS-CURR-BAL-MNTH PIC S9(11)V99 VALUE +0  COMP-3.  06630027
+066400         04  GROSS-COLL-BAL-MNTH PIC S9(11)V99 VALUE +0  COMP-3.  06640027
+066500         04  GR-CUR-SINCE-LST-STMT                                06650027
+066600                                 PIC S9(11)V99 VALUE +0  COMP-3.  06660027
+066700         04  GR-COL-SINCE-LST-STMT                                06670027
+066800                                 PIC S9(11)V99 VALUE +0  COMP-3.  06680027
+066900         04  AVG-CURR-BAL-LST-12-MO                               06690027
+067000                                 PIC S9(9)     VALUE +0  COMP-3.  06700027
+067100         04  AVG-COLL-BAL-LST-12-MO                               06710027
+067200                                 PIC S9(9)     VALUE +0  COMP-3.  06720027
+067300         04  NUM-NSF-CHKS-LST-12-MO                               06730027
+067400                                 PIC S9(5)     VALUE +0  COMP-3.  06740027
+067500         04  NUM-TIMES-OD-LST-12-MO                               06750027
+067600                                 PIC S9(5)     VALUE +0  COMP-3.  06760027
+067700         04  OD-ACCESS-CODE      PIC 99        VALUE 00.          06770027
+067800             88  OA-NOT-QUALIFIED              VALUE 00.          06780027
+067900             88  OA-PENDING                    VALUE 10.          06790027
+068000             88  OA-REVIEW                     VALUE 20.          06800027
+068100             88  OA-NOT-ALLOWED                VALUE 25.          06810027
+068200             88  OA-CUSTOMER-REFUSAL           VALUE 30.          06820027
+068300             88  OA-FRESH-START                VALUE 35.          06830027
+068400             88  OA-ACTIVE-30-90               VALUE 40.          06840027
+068500             88  OA-ACTIVE-FIXED               VALUE 45.          06850027
+068600             88  OA-ACTIVE                     VALUE 50.          06860027
+068700             88  OA-BANK-PROTECTED             VALUE 60.          06870027
+068800             88  OA-SUSPENDED                  VALUE 70.          06880027
+068900             88  OA-NEW-START-LOAN             VALUE 80.          06890027
+069000             88  OA-CLOSED                     VALUE 90.          06900027
+069100         04  OD-ACCESS-LIMIT     PIC S9(5)     VALUE +0  COMP-3.  06910027
+069200         04  OD-ACCESS-FEES-IN-OD-BAL                             06920027
+069300                                 PIC S9(3)V99  VALUE +0  COMP-3.  06930027
+069400         04  STOP-MONTHS-RELEASE PIC S9(03)    VALUE +0  COMP-3.  06940027
+069500                                                                  06950027
+069600     03  DATA-CONTENTS-64.                                        06960027
+069700         04  NUM-REG-SC-DEBITS   PIC S9(5)     VALUE +0  COMP-3.  06970027
+069800         04  NUM-ACH-SC-DEBITS   PIC S9(5)     VALUE +0  COMP-3.  06980027
+069900         04  NUM-FT-SC-DEBITS    PIC S9(5)     VALUE +0  COMP-3.  06990027
+070000         04  NUM-INFOLINE-SC-DEBITS                               07000027
+070100                                 PIC S9(5)     VALUE +0  COMP-3.  07010027
+070200         04  NUM-ATM-SC-DEBITS   PIC S9(5)     VALUE +0  COMP-3.  07020027
+070300         04  NUM-POS-SC-DEBITS   PIC S9(5)     VALUE +0  COMP-3.  07030027
+070400         04  NUM-LIMIT-OF-6-DEBITS                                07040027
+070500                                 PIC S9(5)     VALUE +0  COMP-3.  07050027
+070600         04  NUM-TELE-SC-DEBITS  PIC S9(5)     VALUE +0  COMP-3.  07060027
+070700         04  NUM-CYCLES-TO-WAIVE-SC                               07070027
+070800                                 PIC S9        VALUE +0  COMP-3.  07080027
+070900         04  STMT-LOCATION-CODE  PIC X         VALUE SPACES.      07090027
+071000         04  RATE-VARIANCE-IND   PIC X         VALUE SPACES.      07100027
+071100         04  RATE-VARIANCE       PIC SV9(7)    VALUE +.0 COMP-3.  07110027
+071200         04  HIGH-BALANCE-CYCLE  PIC S9(9)     VALUE +0  COMP-3.  07120027
+071300         04  STATEMENT-IMAGE-IND PIC X         VALUE SPACES.      07130027
+071400             88  STMT-IMAGED                   VALUE 'I'.         07140027
+071500             88  STMT-TRUNCATED                VALUE 'T'.         07150027
+071600             88  STMT-WITH-CHECKS              VALUE 'C'.         07160027
+071700         04  DEPOSITS-IMAGE-IND  PIC X         VALUE SPACES.      07170027
+071800             88  IMAGE-DEPOSITS                VALUE 'Y'.         07180027
+071900             88  DO-NOT-IMAGE-DEPOSITS         VALUE 'N'.         07190027
+072000         04  CUSTOM-IMAGE-TYPE   PIC X         VALUE SPACES.      07200027
+072100             88  IMAGE-FRONT                   VALUE 'F'.         07210027
+072200             88  IMAGE-DUAL                    VALUE 'D'.         07220027
+072300         04  IMAGES-PER-PAGE     PIC 99        VALUE 00.          07230027
+072400             88  PRINT-12-PER-PAGE             VALUE 00.          07240027
+072500             88  PRINT-6-PER-PAGE              VALUE 06.          07250027
+072600             88  PRINT-18-PER-PAGE             VALUE 18.          07260027
+072700         04  RET-CHK-FEES-CTD    PIC S9(05)V99 VALUE +0 COMP-3.   07270027
+072800         04  RET-CHK-FEES-YTD    PIC S9(05)V99 VALUE +0 COMP-3.   07280027
+072900         04  DEPOSITS-ENCLOSURE-IND                               07290027
+073000                                 PIC 9         VALUE 0.           07300027
+073100             88  DEPOSITS-NOT-ENCLOSED         VALUE 0.           07310027
+073200             88  DEPOSITS-ENCLOSED             VALUE 1.           07320027
+073300         04  ACH-DEB-FILTER-IND  PIC X         VALUE SPACES.      07330035
+073700         04  FILLER-64B          PIC S9(7)     VALUE +0  COMP-3.  07370033
+073800         04  NEXT-STMT-IMAGE-IND PIC X         VALUE SPACES.      07380027
+073900         04  DORMANT-DATE        PIC S9(7)     VALUE +0  COMP-3.  07390027
+074000                                                                  07400027
+074100     03  DATA-CONTENTS-65.                                        07410027
+074200         04  INV-GROSS-BAL-YTD   PIC S9(13)V99 VALUE +0  COMP-3.  07420027
+074300         04  INV-GROSS-BAL-PREV-YR                                07430027
+074400                                 PIC S9(13)V99 VALUE +0  COMP-3.  07440027
+074500         04  INV-GROSS-INT       PIC S9(9)V99  VALUE +0  COMP-3.  07450027
+074600         04  INV-GROSS-INT-LAST-CYC                               07460027
+074700                                 PIC S9(9)V99  VALUE +0  COMP-3.  07470027
+074800         04  INV-GROSS-INT-YTD   PIC S9(11)V99 VALUE +0  COMP-3.  07480027
+074900         04  INV-GROSS-INT-PREV-YR                                07490027
+075000                                 PIC S9(11)V99 VALUE +0  COMP-3.  07500027
+075100         04  INV-GROSS-INT-DAILY-FAC                              07510027
+075200                                 PIC S9(9)V99  VALUE +0  COMP-3.  07520027
+075300         04  INV-NEXT-MAT-DATE   PIC S9(7)     VALUE +0  COMP-3.  07530027
+075400         04  FILLERA-65          PIC X(04)     VALUE SPACES.      07540027
+075500         04  ODB-ACCUM-INT-CHARGED                                07550027
+075600                                 PIC S9(05)V99 VALUE +0  COMP-3.  07560027
+075700                                                                  07570027
+075800     03  DATA-CONTENTS-66.                                        07580027
+075900         04  DSDS-LAST-MAINT-DATE                                 07590027
+076000                                 PIC S9(7)     VALUE +0  COMP-3.  07600027
+076100         04  DATE-OPENED         PIC S9(7)     VALUE +0  COMP-3.  07610027
+076200         04  DATE-CLOSED         PIC S9(7)     VALUE +0  COMP-3.  07620027
+076300         04  DATE-LAST-DEPOSIT   PIC S9(7)     VALUE +0  COMP-3.  07630027
+076400         04  DATE-LAST-WITHDRAW  PIC S9(7)     VALUE +0  COMP-3.  07640027
+076500         04  DATE-LAST-CUST-ACT  PIC S9(7)     VALUE +0  COMP-3.  07650027
+076600         04  DTE-LAST-CYCLE-STMT PIC S9(7)     VALUE +0  COMP-3.  07660027
+076700         04  DTE-LAST-SPEC-STMT  PIC S9(7)     VALUE +0  COMP-3.  07670027
+076800         04  DTE-FIRST-OVERDRAWN PIC S9(7)     VALUE +0  COMP-3.  07680027
+076900         04  DTE-LAST-OVERDRAWN  PIC S9(7)     VALUE +0  COMP-3.  07690027
+077000         04  APPROVAL-DATE       PIC S9(7)     VALUE +0  COMP-3.  07700027
+077100         04  ODB-DATE-OPENED     PIC S9(7)     VALUE +0  COMP-3.  07710027
+077200         04  DATE-CANCELLED      PIC S9(7)     VALUE +0  COMP-3.  07720027
+077300         04  LAST-ADV-DATE       PIC S9(7)     VALUE +0  COMP-3.  07730027
+077400         04  LAST-PMNT-DATE      PIC S9(7)     VALUE +0  COMP-3.  07740027
+077500         04  LAST-INT-DATE       PIC S9(7)     VALUE +0  COMP-3.  07750027
+077600         04  ODB-CR-LIMIT-CHNG-DATE                               07760027
+077700                                 PIC S9(7)     VALUE +0  COMP-3.  07770027
+077800         04  ODB-PLAN-CHNG-DATE  PIC S9(7)     VALUE +0  COMP-3.  07780027
+077900         04  INV-OPEN-DATE       PIC S9(7)     VALUE +0  COMP-3.  07790027
+078000         04  INV-MATURE-DATE     PIC S9(7)     VALUE +0  COMP-3.  07800027
+078100         04  INV-PEG-BAL-CHNG-DATE                                07810027
+078200                                 PIC S9(7)     VALUE +0  COMP-3.  07820027
+078300         04  CASH-MGMT-PEG-BAL-CHNG-DATE                          07830027
+078400                                 PIC S9(7)     VALUE +0  COMP-3.  07840027
+078500         04  ODB-REVIEW-DATE     PIC S9(7)     VALUE +0  COMP-3.  07850027
+078600         04  OD-ACCESS-CODE-CHNG-DATE                             07860027
+078700                                 PIC S9(7)     VALUE +0  COMP-3.  07870027
+078800         04  LOST-CONTACT-DATE   PIC S9(7)     VALUE +0  COMP-3.  07880027
+078900                                                                  07890027
+079000     03  DATA-CONTENTS-67.                                        07900027
+079100         04  SURE-CHECK-IND      PIC X         VALUE SPACES.      07910027
+079200             88  SURE-CHECK-ACCT               VALUE 'Y'.         07920027
+079300         04  CASH-MANAGEMENT-SWEEP-IND                            07930027
+079400                                 PIC X         VALUE SPACES.      07940027
+079500             88 CASH-MANAGEMENT-SWEEP          VALUE 'Y'.         07950027
+079600             88 MASTER-PAC-ACCOUNT             VALUE 'M'.         07960027
+079700             88 PAC-ACCOUNT                    VALUE 'P'.         07970027
+079800         04  CASH-MANAGEMENT-PEGGED-BAL                           07980027
+079900                                 PIC S9(7)     VALUE +0  COMP-3.  07990027
+080000         04  CASH-MANAGEMENT-TRNSFR-INCR                          08000027
+080100                                 PIC S9(5)     VALUE +0  COMP-3.  08010027
+080200         04  CASH-MANAGEMENT-BAL-IN-IMMA                          08020027
+080300                                 PIC S9(9)V99  VALUE +0  COMP-3.  08030027
+080400         04  CASH-MANAGEMENT-TRNSFR-CNT                           08040027
+080500                                 PIC S9        VALUE +0  COMP-3.  08050027
+080600         04  ACCRUED-INTEREST-DAILY-FAC                           08060027
+080700                                 PIC S9(8)V9(5) VALUE +0 COMP-3.  08070027
+080800         04  WAIVE-IMAGE-OR-CHECK-FEE-IND                         08080027
+080900                                 PIC X.                           08090027
+081000             88 CHARGE-IMAGE-OR-CHECKS-FEE     VALUE ' '.         08100027
+081100             88 WAIVE-IMAGE-OR-CHECKS-FEE      VALUE 'W'.         08110027
+081200         04  CASH-MGMT-PEG-BAL-ADJ-IND                            08120027
+081300                                 PIC X         VALUE SPACES.      08130027
+081400             88 ADJUST-CASH-MGMT-PEG-BAL       VALUE 'Y'.         08140027
+081500         04  CASH-MGMT-PEG-BAL-ADJ-DIFF                           08150027
+081600                                 PIC S9(7)     VALUE +0  COMP-3.  08160027
+081700         04  CASH-MGMT-PEG-BAL-ADJ-INCR                           08170027
+081800                                 PIC 9(5)      VALUE 0   COMP-3.  08180027
+081900         04  CASH-MGMT-PB-ADJ-SF-EARN-IND                         08190027
+082000                                 PIC X         VALUE SPACES.      08200027
+082100         04  CASH-MGMT-PREV-PEGGED-BAL                            08210027
+082200                                 PIC S9(7)     VALUE +0  COMP-3.  08220027
+082300         04  EXT-SC-TX-INDICATOR-INFO                             08230027
+082400                                 PIC X(100)    VALUE SPACES.      08240027
+082500         04  FILLER REDEFINES EXT-SC-TX-INDICATOR-INFO.           08250027
+082600             05  EXT-SC-TX-IND   PIC X         OCCURS 100 TIMES.  08260027
+082700         04  MIN-ACCR-INTEREST  PIC S9(6)V9(5) VALUE +0    COMP-3.08270027
+082800         04  NSF-FEES-WVD-LST-STMT                                08280027
+082900                                 PIC S9(5)V99  VALUE +0    COMP-3.08290027
+083000         04  NSF-FEES-WVD-YTD    PIC S9(5)V99  VALUE +0    COMP-3.08300027
+083100         04  NUM-E-DEPOSIT       PIC S9(5)               COMP-3.  08310027
+083200         04  NUM-MOBILE-RDC      PIC S9(5)               COMP-3.  08320027
+083300         04  NUM-DESKTOP-SCAN    PIC S9(5)               COMP-3.  08330027
+083400         04  NUM-E-DEPOSIT-ITEMS PIC S9(5)               COMP-3.  08340027
+083500         04  NUM-MOBILE-RDC-ITEMS PIC S9(5)              COMP-3.  08350027
+083600         04  NUM-DESKTOP-SCAN-ITEMS PIC S9(5)            COMP-3.  08360027
+083700         04  MOB-DEP-HOLD-IND    PIC X(01)     VALUE SPACES.      08370027
+083800         04  ATM-DEP-HOLD-IND    PIC X(01)     VALUE SPACES.      08380027
+083900         04  EXT-ACCT-HOLD-IND   PIC X(01)     VALUE SPACES.      08390028
+083910         04  BR-CLSN-TIED        PIC S9(11)    VALUE +0    COMP-3.08391030
+083920         04  FILLERA-67          PIC X(03)     VALUE SPACES.      08392030
+084100         04  REG-E-ATM-POS-SW    PIC X(01)     VALUE SPACES.      08410027
+084200         04  SAVEUP-AMOUNT       PIC S9V99     VALUE +0    COMP-3.08420027
+084300         04  SAVEUP-NBR-DEBITS   PIC S9(3)     VALUE +0    COMP-3.08430027
+084400         04  SAVEUP-AMT-YTD      PIC S9(3)V99  VALUE +0    COMP-3.08440027
+084500         04  SAVEUP-ACCT-NBR     PIC S9(9)     VALUE +0    COMP-3.08450027
+084600         04  SAVEUP-OFFICER      PIC S9(5)     VALUE +0    COMP-3.08460027
+084700         04  SAVEUP-DATE         PIC S9(7)     VALUE +0    COMP-3.08470027
+084800         04  AMT-LAST-DEPOSIT2   PIC S9(9)V99  VALUE ZEROS COMP-3.08480027
+084900         04  DAILY-OD-FEE        PIC S9(3)V99  VALUE ZEROS COMP-3.08490027
+085000         04  REF-NSF-OD-FEE      PIC S9(5)V99  VALUE ZEROS COMP-3.08500027
+085100         04  RET-DEP-ITEM-AMT    PIC S9(9)V99  VALUE ZEROS COMP-3.08510027
+085200         04  RET-DEP-ITEM-CNT    PIC S9(3)     VALUE ZEROS COMP-3.08520027
+085300         04  SAVEUP-IND          PIC X         VALUE SPACE.       08530027
+085400         04  ID-PROTECT-IND      PIC X         VALUE SPACE.       08540027
+085500             88  NO-ID-PROTECT                 VALUE ' ' 'N'.     08550027
+085600             88  CHARGE-ID-PROTECT             VALUE 'Y'.         08560027
+085700             88  WAIVE-ID-PROTECT              VALUE 'W'.         08570027
+085800             88  OPT-OUT-ID-PROTECT            VALUE 'O'.         08580027
+085900         04  ID-PROTECT-TYPE     PIC X         VALUE SPACE.       08590027
+086000             88  ID-PROTECT-BASIC              VALUE 'B'.         08600027
+086100             88  ID-PROTECT-EXPANDED           VALUE 'E'.         08610027
+086200         04  ID-PROTECT-DT       PIC S9(7)     VALUE +0    COMP-3.08620027
+086300         04  ID-PROTECT-OFFICER  PIC S9(5)     VALUE +0    COMP-3.08630027
+086400         04  OD-FEES-REF-CTD     PIC S9(5)V99  VALUE +0    COMP-3.08640027
+086500         04  OD-FEES-REF-YTD     PIC S9(5)V99  VALUE +0    COMP-3.08650027
+086600         04  RET-CHK-FEES-REF-CTD PIC S9(5)V99 VALUE +0    COMP-3.08660027
+086700         04  RET-CHK-FEES-REF-YTD PIC S9(5)V99 VALUE +0    COMP-3.08670027
+086800         04  SAC-IND             PIC X         VALUE SPACES.      08680027
+086900             88  NOT-HSA-CESA       VALUE ' '.                    08690027
+087000             88  CESA-ACCT          VALUE 'C'.                    08700027
+087100             88  HSA-ACCT           VALUE 'H'.                    08710027
+087200         04  ACCT-ANAL-GRP-IND   PIC X         VALUE SPACES.      08720027
+087300         04  IMM-NTC-SW-INFO     PIC X(12)     VALUE SPACES.      08730027
+087400         04  FILLER REDEFINES IMM-NTC-SW-INFO.                    08740027
+087500             05  IMM-NTC-SW      PIC X         OCCURS 12 TIMES.   08750027
+087600         04  IMM-NTC-NBR         PIC S9(3)     VALUE +0    COMP-3.08760027
+087700         04  IMM-NTC-CTR         PIC S9(5)     VALUE +0    COMP-3.08770027
+087800         04  IMM-NTC-MM-CTR      PIC S9(3)     VALUE +0    COMP-3.08780027
+087900         04  ML-HELOC-NBR        PIC S9(11)    VALUE +0    COMP-3.08790027
+088000         04  FILLERB-67          PIC S9(7)     VALUE +0    COMP-3.08800032
+088100         04  BR-BAL-IND          PIC X         VALUE SPACES.      08810030
+088110         04  BR-SWEEP-PYMT-IND   PIC X         VALUE SPACES.      08811030
+088120         04  BR-PEG-BAL-AMT      PIC S9(09)V99 VALUE +0    COMP-3.08812030
+088200                                                                  08820027
+088300******************************************************************08830027
+088400*                                                        COPYBOOK*08840027
+088500*                                                                *08850027
+088600* PURPOSE: DSDS MASTER FILE LAYOUT                               *08860027
+088700*                                                                *08870027
+088800* LENGTH OF COPYBOOK: 1792                                       *08880027
+088900* LENGTH OF SORT KEY: 24                                         *08890027
+089000*                                                                *08900027
+089100* USAGE: COPIED INTO PROGRAMS TO BE USED AS FILE LAYOUT          *08910027
+089200*                                                                *08920027
+089300* FIELD DESCRIPTION/VALUES: SEE DSDS USER GUIDE ON INTRANET      *08930027
+089400*                                                                *08940027
+089500******************************************************************08950027

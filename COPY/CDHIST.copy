@@ -1,0 +1,70 @@
+      ******************************************************************
+      * DCLGEN TABLE(CD.HISTORY)                                       *
+      *        LIBRARY(LMFPROG.APPLDCL.U099056(CDHIST))                *
+      *        ACTION(REPLACE)                                         *
+      *        LANGUAGE(COBOL)                                         *
+      *        APOST                                                   *
+      *        LABEL(YES)                                              *
+      *        DBCSDELIM(NO)                                           *
+      * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+      ******************************************************************
+           EXEC SQL DECLARE CD.HISTORY TABLE
+           ( CDH_POST_DATE                  DATE NOT NULL,
+             CDH_BANK_NBR                   DECIMAL(3, 0) NOT NULL,
+             CDH_ACCT_NBR                   CHAR(9) NOT NULL,
+             CDH_SEQUENCE                   DECIMAL(3, 0) NOT NULL,
+             CDH_TX_CODE                    DECIMAL(3, 0) NOT NULL,
+             CDH_EFFECTIVE_DATE             DATE NOT NULL,
+             CDH_TX_AMT                     DECIMAL(11, 2) NOT NULL,
+             CDH_REVERSAL_CODE              CHAR(1) NOT NULL,
+             CDH_TAX_WITHHELD               DECIMAL(11, 2) NOT NULL,
+             CDH_WITHDRAW_CODE              DECIMAL(3, 0) NOT NULL,
+             CDH_WITHHOLD_CODE              CHAR(1) NOT NULL,
+             CDH_INT_PENALTY                DECIMAL(11, 2) NOT NULL,
+             CDH_REDEMPTION_INT             DECIMAL(11, 2) NOT NULL,
+             CDH_STOCK_NBR                  CHAR(9) NOT NULL,
+             CDH_IRS_CODE                   CHAR(2) NOT NULL,
+             CDH_TX_DESC                    CHAR(30) NOT NULL,
+             CDH_DR_CR_IND                  CHAR(1) NOT NULL
+           ) END-EXEC.
+      ******************************************************************
+      * COBOL DECLARATION FOR TABLE CD.HISTORY                         *
+      ******************************************************************
+       01  CD-HISTORY.
+      *    *************************************************************
+           10 CDH-POST-DATE        PIC X(10).
+      *    *************************************************************
+           10 CDH-BANK-NBR         PIC S9(3)V USAGE COMP-3.
+      *    *************************************************************
+           10 CDH-ACCT-NBR         PIC X(9).
+      *    *************************************************************
+           10 CDH-SEQUENCE         PIC S9(3)V USAGE COMP-3.
+      *    *************************************************************
+           10 CDH-TX-CODE          PIC S9(3)V USAGE COMP-3.
+      *    *************************************************************
+           10 CDH-EFFECTIVE-DATE   PIC X(10).
+      *    *************************************************************
+           10 CDH-TX-AMT           PIC S9(9)V9(2) USAGE COMP-3.
+      *    *************************************************************
+           10 CDH-REVERSAL-CODE    PIC X(1).
+      *    *************************************************************
+           10 CDH-TAX-WITHHELD     PIC S9(9)V9(2) USAGE COMP-3.
+      *    *************************************************************
+           10 CDH-WITHDRAW-CODE    PIC S9(3)V USAGE COMP-3.
+      *    *************************************************************
+           10 CDH-WITHHOLD-CODE    PIC X(1).
+      *    *************************************************************
+           10 CDH-INT-PENALTY      PIC S9(9)V9(2) USAGE COMP-3.
+      *    *************************************************************
+           10 CDH-REDEMPTION-INT   PIC S9(9)V9(2) USAGE COMP-3.
+      *    *************************************************************
+           10 CDH-STOCK-NBR        PIC X(9).
+      *    *************************************************************
+           10 CDH-IRS-CODE         PIC X(2).
+      *    *************************************************************
+           10 CDH-TX-DESC          PIC X(30).
+      *    *************************************************************
+           10 CDH-DR-CR-IND        PIC X(1).
+      ******************************************************************
+      * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 17      *
+      ******************************************************************

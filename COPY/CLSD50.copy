@@ -1,0 +1,38 @@
+      ******************************************************************
+      * DCLGEN TABLE(CLS.CLST50_USERFIELDS)                            *
+      *        LIBRARY(LMFPROG.APPLDCL.U099074(CLSD50))                *
+      *        ACTION(REPLACE)                                         *
+      *        LANGUAGE(COBOL)                                         *
+      *        APOST                                                   *
+      * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+      ******************************************************************
+           EXEC SQL DECLARE CLS.CLST50_USERFIELDS TABLE
+           ( CL50_BANK_NBR                  DECIMAL(3, 0) NOT NULL,
+             CL50_CUST_NBR                  DECIMAL(7, 0) NOT NULL,
+             CL50_LOAN_NBR                  DECIMAL(4, 0) NOT NULL,
+             CL50_PART_NBR                  DECIMAL(7, 0) NOT NULL,
+             CL50_COLL_FORM                 DECIMAL(6, 0) NOT NULL,
+             CL50_LITERAL_ID                CHAR(15) NOT NULL,
+             CL50_VALUE                     VARCHAR(75) NOT NULL,
+             CL50_LAST_UPDATE_DT            DATE NOT NULL,
+             CL50_LAST_UPDATE_OPER          CHAR(8) NOT NULL
+           ) END-EXEC.
+      ******************************************************************
+      * COBOL DECLARATION FOR TABLE CLS.CLST50_USERFIELDS              *
+      ******************************************************************
+       01  CLS-CLST50-USERFIELDS.
+           10 CL50-BANK-NBR        PIC S9(3)V USAGE COMP-3.
+           10 CL50-CUST-NBR        PIC S9(7)V USAGE COMP-3.
+           10 CL50-LOAN-NBR        PIC S9(4)V USAGE COMP-3.
+           10 CL50-PART-NBR        PIC S9(7)V USAGE COMP-3.
+           10 CL50-COLL-FORM       PIC S9(6)V USAGE COMP-3.
+           10 CL50-LITERAL-ID      PIC X(15).
+           10 CL50-VALUE.
+              49 CL50-VALUE-LEN    PIC S9(4) USAGE COMP.
+              49 CL50-VALUE-TEXT   PIC X(75).
+           10 CL50-LAST-UPDATE-DT  PIC X(10).
+           10 CL50-LAST-UPDATE-OPER
+              PIC X(8).
+      ******************************************************************
+      * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 9       *
+      ******************************************************************

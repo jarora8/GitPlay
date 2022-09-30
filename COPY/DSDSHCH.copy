@@ -1,0 +1,15 @@
+000100*01  PD-HIST-CARD-HDR.                                            00010000
+000200     02  HCH-BANK-NO         PIC 99.                              00020000
+000300     02  HCH-ACCT-ID         PIC 999                     COMP-3.  00030000
+000400     02  HCH-ACCT-NO         PIC 9(9)                    COMP-3.  00040000
+000500     02  HCH-REPORT-CODE     PIC S999                    COMP-3.  00050000
+000600     02  HCH-REVIEW-DT       PIC 9(6).                            00060000
+000700     02  HCH-STMT-BAL        PIC S9(11)V99               COMP-3.  00070000
+000800     02  HCH-REASON          PIC X.                               00080000
+000900     02  HCH-RATE-VARIANCE   PIC SV9(5)                  COMP-3.  00090000
+001000     02  HCH-RATE-VARI-IND   PIC X.                               00100000
+001100     02  HCH-FILLER          PIC X(196).                          00110001
+001200*  THIS LAYOUT IS USED FOR THE HISTORY CARD HEADER ON THE POSTED  00120000
+001300*    DETAIL FILE. THE REPORT CODE WILL BE 446 FOR HISTORY CARD    00130000
+001400*    REQUESTS AND 445 FOR CYCLE HISTORY CARDS.                    00140000
+001500*  THIS RECORD IS 225 CHARACTERS.                                 00150000

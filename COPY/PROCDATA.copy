@@ -1,0 +1,19 @@
+      ***
+      ***  DIFFERENT PROCESSING OCCURS BASED ON EMPLOYEE TYPE.  THERE
+      ***  ARE 3 VALID EMPLOYEE TYPES.  IF A RECORD IS READ CONTAINING
+      ***  A RECORD TYPE OTHER THAN H, S OR M, AN ERROR MESSAGE IS
+      ***  WRITTEN AND PROCESSING CONTINUES.
+      ***
+       1000-PROCESS-DATA.
+           IF HOURLY
+               PERFORM 2000-PROCESS-HOURLY
+           ELSE
+               IF SALES
+                   PERFORM 3000-PROCESS-SALES
+               ELSE
+                   IF MANAGEMENT
+                       PERFORM 4000-PROCESS-MANAGEMENT
+                   ELSE
+                       MOVE ' INVALID EMPLOYEE TYPE ' TO ERROR-LINE
+                       WRITE REPORT-RECORD FROM ERROR-LINE.
+           PERFORM 8000-READ-INPUT.

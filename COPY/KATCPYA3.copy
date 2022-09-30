@@ -1,0 +1,7 @@
+*********************************************************
+      *   COPYBOOK KATCPYA3x2
+      *   THIS IS A TRAINING COPY BOOK
+      *********************************************************
+       01  STAR-LINE-1.
+           05 FILLER                  PIC X(20).
+           05 FILLER                  PIC X(90) VALUE ALL '*'.

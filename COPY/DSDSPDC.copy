@@ -1,0 +1,11 @@
+000100*01  POSTED-DTL-CTL.                                              00010000
+000200     02  PDC-BANK-NO         PIC 99.                              00020000
+000300     02  PDC-ACCT-ID         PIC 999                     COMP-3.  00030000
+000400     02  PDC-ACCT-NO         PIC S9(9)                   COMP-3.  00040000
+000500     02  PDC-FILE-ID         PIC XXX.                             00050000
+000600     02  PDC-CURR-PROC-DT    PIC S9(7)                   COMP-3.  00060000
+000700     02  PDC-REPT-NO         PIC S9(3)                   COMP-3.  00070000
+000800     02  PDC-FILLER          PIC X(207).                          00080001
+000900*  THIS LAYOUT IS USED FOR THE CONTROL RECORD ON THE POSTED       00090000
+001000*    DETAIL FILE. THE BANK-NO AND ACCT-ID FIELDS WILL BE ZEROS.   00100000
+001100*  THIS RECORD IS 225 CHARACTERS                                  00110000

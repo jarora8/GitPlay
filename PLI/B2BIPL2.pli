@@ -1,0 +1,821 @@
+-B2BIPL2:
+
+    PROC OPTIONS(MAIN);
+-/*********************************************************************/00000030
+ /*                                                                   */00000040
+ /*  IP-LOSSES                                                        */00000050
+ /*                                                                   */00000060
+ /*  Ausgabe Meldefiles für IP-LOSSES                                 */00000070
+ /*  Läuft halbjährlich im Juli und Jänner mit Juni und Dezemberdaten */00000070
+ /*                                                                   */00000090
+ /*********************************************************************/00000100
+ /*                                                                   */00000110
+ /*   PROGRAMMIERER : KARNER                                          */00000130
+ /*   ERST.DATUM    : 02/20                                           */00000140
+ /*                                                                   */00000150
+ /*********************************************************************/00000160
+ /*                                                                   */00000170
+ /*   INPUT:   B2KUND           BASEL-II Kundendaten                  */00000180
+ /*            B2IPLOSSES       Ergebnisdaten aus RAY                 */00000180
+ /*                                                                   */00000180
+ /*   OUTPUT:  IPC30            Meldefile C10 und C30 (CSV)           */
+ /*            IPC50            Meldefile C50 (CSV)                   */
+ /*                                                                   */00000240
+ /*********************************************************************/00000250
+ /*********************************************************************/00000250
+ /*                                                                   */00000240
+ /* AENDERUNGEN:                                                      */00000240
+ /*                                                                   */00000240
+ /*                                                                   */
+ /*********************************************************************/00000250
+ allkansdlkn
+
+ %INCLUDE CLINC21;
+ %INCLUDE CLINC31;
+ %INCLUDE T1;
+
+1/*------------------------------------------------------------------*/
+ /*      ALLGEMEINE DCL                                              */
+ /*------------------------------------------------------------------*/
+ %INCLUDE PLIDUMP;
+ %INCLUDE PLIPTIME;
+ %INCLUDE UDATOSIN;
+
+1/*------------------------------------------------------------------*/
+ /*      FILE-VEREINBARUNGEN                                         */
+ /*------------------------------------------------------------------*/
+-DCL C1030KON      OUTPUT SD(,,,4000);
+ DCL C1030UNK      OUTPUT SD(,,,4000);
+ DCL C50KON        OUTPUT SD(,,,4000);
+ DCL C50UNK        OUTPUT SD(,,,4000);
+ DCL KARTE         CARD;
+
+1/*------------------------------------------------------------------*/
+ /*      DCL STRUKTUR DER VORLAUFKARTE KARTE                         */
+ /*------------------------------------------------------------------*/
+-DCL EBKARTE          CHAR( 80) INIT('');
+ DCL 1 EBKARTEB       BASED(ADDR(EBKARTE)),
+       2 VLKENNUNG    CHAR(  6),                 /* /VOR01            */
+       2 LEER_1       CHAR(  1),                 /* BLANK             */
+       2 VLSTRING     CHAR( 73);
+
+ DCL 1 VOR01          BASED(ADDR(VLSTRING)),
+       2 VFIX1        CHAR(13),              /* VERARBEITUNG=         */
+       2 VVA          CHAR(3),               /* ULT/TAG/PNR           */
+       2 LEER_1       CHAR(1),               /* BLANK                 */
+       2 VPNR         CHAR(3),               /* PNR BEI "PNR"         */
+       2 LEER_2       CHAR(1),               /* BLANK                 */
+       2 VGEN         CHAR(2);               /* AW-GENERATION         */
+
+ DCL OUT           CHAR(4000) VAR INIT('');
+
+1/*------------------------------------------------------------------*/
+ /*      DCL FUER DB2-ZUGRIFF                                        */
+ /*------------------------------------------------------------------*/
+
+ %INCLUDE SYINDB2;
+
+-EXEC SQL INCLUDE SQLCA;
+0DCL HSQLCODE      PIC'999-';
+ DCL HSQLCODEC     CHAR(  4) BASED(ADDR(HSQLCODE));
+
+ %INCLUDE B2PARTIT;
+ %INCLUDE B2KUND;
+ %INCLUDE B2SISTAM;
+ %INCLUDE B2IPLOS2;
+ %INCLUDE B2FMTCON;
+ %INCLUDE B2TCDR;
+
+ %INCLUDE DSNTIAR;
+
+1/*------------------------------------------------------------------*/
+ /*      DCL TABEX                                                   */
+ /*------------------------------------------------------------------*/
+
+ %INCLUDE $TABEX2;
+
+ %INCLUDE B2DIVERS;
+
+1/*------------------------------------------------------------------*/
+ /*      EXTERNE UNTERPRORAMME                                       */
+ /*------------------------------------------------------------------*/
+
+-DCL UPCC          EXT ENTRY(CHAR(1),CHAR(60),CHAR(60));
+ DCL MELD1         CHAR( 60) INIT('');
+ DCL MELD2         CHAR( 60) INIT('');
+-DCL UPINSTB       EXT ENTRY(CHAR(3),CHAR(1));
+ DCL INSTITUT      CHAR(  3) INIT('');
+ DCL DART          CHAR(  1) INIT('');
+
+1/*------------------------------------------------------------------*/
+ /*      SONSTIGE DCL                                                */
+ /*------------------------------------------------------------------*/
+-DCL ADDR          BUILTIN;
+ DCL PLIRETV       BUILTIN;
+ DCL VERIFY        BUILTIN;
+ DCL TRIM          BUILTIN;
+ DCL ABS           BUILTIN;
+ DCL DAYS          BUILTIN;
+ DCL TRANSLATE     BUILTIN;
+ DCL ROUND         BUILTIN;
+ /***/
+ DCL EOFCARD       BIT(1) INIT('0'B);     /* 1..ENDE VORLAUFKARTE     */
+ DCL NOVA          BIT(1) INIT('0'B);     /* 1..KEINE VERARBEITUNG    */
+ /***/
+ DCL HEUTE         CHAR(10) INIT('');     /* DURFüHRUNGSDATUM ISO     */
+ DCL AW_DAT        CHAR(10) INIT('');     /* AUSWERTUNGSDATUM         */
+ DCL DATUM_VJ      CHAR(10) INIT('');     /* Vorjahresultimo          */
+ DCL BEGINN_DAT    CHAR(10) INIT('');     /* Beginn Ausfallszeitraum  */
+ DCL ENDE_DAT      CHAR(10) INIT('');     /* Ende Ausfallszeitraum    */
+ DCL VA_ART        CHAR( 3) INIT('');     /* ULT/PNR                  */
+ DCL SON_PNR       CHAR( 3) INIT('');     /* PARTITION-NUMMER BEI PNR */
+ DCL Z             CHAR( 1) INIT(';');    /* Trennzeichen             */
+ DCL INT_RATING_AKT          CHAR( 2) INIT('');
+ DCL INT_RATING_VOR          CHAR( 2) INIT('');
+ DCL PART_KEY_STD_AG_IP      CHAR(12) VAR INIT('');
+ DCL PART_KEY_STD_KONZERN_IP CHAR(12) VAR INIT('');
+ /***/
+ DCL ANZVOR01      BIN FIXED(15) INIT(0); /* ANZAHL KARTE /VOR01      */
+ DCL PNR_VOR       BIN FIXED(15) INIT(0); /* PNR VORPERIODE (VT/VM)   */
+ DCL PNR_AKT       BIN FIXED(15) INIT(0); /* PNR AKT. PERIODE (LT/LM) */
+ /***/
+ DCL C50_KON       DEC FIXED(21,2) INIT(0); /* EAD_PRE_CCF C50 konsol */
+ DCL C50_UNKON     DEC FIXED(21,2) INIT(0); /* EAD_PRE_CCF C50 unkon  */
+
+1/*------------------------------------------------------------------*/
+ /*      CURSOR DEKLARATIONEN                                        */
+ /*------------------------------------------------------------------*/
+-EXEC SQL
+    DECLARE C_DETAIL CURSOR FOR
+    SELECT
+       AUSFALLDAT,
+       PERSONNR,
+       SINR,
+       DEALBOOK,
+       BIS_PRODUKT,
+       RATING_AUSFALL,
+       LILAND,
+       C10_KON,
+       C10_UNKON,
+       C30_KON,
+       C30_UNKON
+    FROM
+       B2IPLOSSES
+    WHERE
+       MANDANT=:INSTITUT AND
+       AUSFALLDAT BETWEEN :BEGINN_DAT AND :ENDE_DAT
+    WITH UR;
+
+-EXEC SQL
+    DECLARE C_SUMME CURSOR FOR
+       SELECT
+          X.COLLATERAL_BIS_PRODUCT,
+          X.DEALBOOK,
+          X.LILAND,
+          SUM(X.WERT1),
+          SUM(X.WERT2)
+       FROM (
+          SELECT
+             COLLATERAL_BIS_PRODUCT,
+             DEALBOOK,
+             LILAND,
+             EAD_PRE_CCF AS WERT1,
+             0 AS WERT2
+          FROM
+             B2T_CDR A,
+             B2SISTAMM B
+          WHERE
+             A.PNR=:PNR_AKT AND
+             A.MANDANT=:INSTITUT AND
+             A.PARTITION_KEY=:PART_KEY_STD_AG_IP AND
+             A.COLLATERAL_BIS_PRODUCT IN ('CRE_COL','RRE_COL') AND
+             A.COUNTERPARTY_ORIGINAL NOT IN(
+                SELECT
+                   PERSONNR
+                FROM
+                   B2IPLOSSES
+                WHERE
+                   MANDANT=:INSTITUT AND
+                   AUSFALLDAT BETWEEN :BEGINN_DAT AND :ENDE_DAT) AND
+             B.PNR=:PNR_AKT AND
+             B.MANDANT=:INSTITUT AND
+             B.SINR=CAST(A.COLLATERAL_REFERENCE AS INT)
+       UNION ALL
+          SELECT
+             COLLATERAL_BIS_PRODUCT,
+             DEALBOOK,
+             LILAND,
+             0 AS WERT1,
+             EAD_PRE_CCF AS WERT2
+          FROM
+             B2T_CDR A,
+             B2SISTAMM B
+          WHERE
+             A.PNR=:PNR_AKT AND
+             A.MANDANT=:INSTITUT AND
+             A.PARTITION_KEY=:PART_KEY_STD_KONZERN_IP AND
+             A.COLLATERAL_BIS_PRODUCT IN ('CRE_COL','RRE_COL') AND
+             A.COUNTERPARTY_ORIGINAL NOT IN(
+                SELECT
+                   PERSONNR
+                FROM
+                   B2IPLOSSES
+                WHERE
+                   MANDANT=:INSTITUT AND
+                   AUSFALLDAT BETWEEN :BEGINN_DAT AND :ENDE_DAT) AND
+             B.PNR=:PNR_AKT AND
+             B.MANDANT=:INSTITUT AND
+             B.SINR=CAST(A.COLLATERAL_REFERENCE AS INT)
+          )X
+       GROUP BY
+          X.COLLATERAL_BIS_PRODUCT,
+          X.DEALBOOK,
+          X.LILAND
+       WITH UR;
+
+
+1/*------------------------------------------------------------------*/
+ /*      ON BEDINGUNGEN                                              */
+ /*------------------------------------------------------------------*/
+ ON ENDFILE(KARTE)  EOFCARD='1'B;
+
+1/*------------------------------------------------------------------*/
+ /*      VERARBEITUNGSSTEUERUNG                                      */
+ /*------------------------------------------------------------------*/
+
+       CALL ANFVA;
+
+       CALL DETAIL;
+
+1/*------------------------------------------------------------------*/
+ /*       ANFANGSVERARBEITUNG                                        */
+ /*------------------------------------------------------------------*/
+-ANFVA:
+    PROC;
+0      /*** ERMITTELN INSTITUT ***/
+       CALL UPINSTB(INSTITUT,DART);
+0      /*** LESEN TAGESDATUM ***/
+       CALL UDATOS;
+       IF UFEHL ^= '0' THEN
+          CALL ABBR(1);
+       $TABEX2(INIT,BATCH);
+
+0      /*** OPEN FILES ***/
+       OPEN FILE(C1030KON),
+            FILE(C1030UNK),
+            FILE(C50KON),
+            FILE(C50UNK),
+            FILE(KARTE);
+
+       CALL READ_CARD;
+
+       HEUTE=BAUPDAT1(UDAT5);
+       AW_DAT=BAUPDAMA(HEUTE,0,-1,0,'U');
+
+       /*** STARTEN DB2-DATENBANK ***/
+       CALL SYDB2('START','B2BTIPL2',DB2OWNER,SQLCA);
+       IF PLIRETV > 0 THEN
+          CALL ABBR(30);
+
+       CALL ERM_PARTITION;
+       CALL LESEN_B2FMTCONTEXT;
+
+       ENDE_DAT=AW_DAT;
+       BEGINN_DAT=SUBSTR(AW_DAT,1,5) !! '01-01';
+
+       CALL AUSGABE_HEADER;
+
+0   END; /* ANFVA */
+
+1/*------------------------------------------------------------------*/
+ /*      LESEN VORLAUFKARTEN                                         */
+ /*------------------------------------------------------------------*/
+
+-READ_CARD:
+    PROC;
+0      DO WHILE(^EOFCARD);
+          READ FILE(KARTE) INTO(EBKARTE);
+          IF ^EOFCARD THEN
+          DO;
+             IF VLKENNUNG='/VOR01' THEN
+             DO;
+                ANZVOR01=ANZVOR01+1;
+                IF ANZVOR01 > 1 THEN
+                   CALL ABBR(3);
+                VA_ART=VVA;
+                SON_PNR=VPNR;
+             END;
+             ELSE
+                CALL ABBR(4);
+         END;
+      END;
+
+      IF ANZVOR01=0 THEN
+         VA_ART='ULT';
+
+0   END; /* READ_CARD */
+
+1/*------------------------------------------------------------------*/
+ /*       ERMITTELN PARTITION-NUMMERN                                */
+ /*------------------------------------------------------------------*/
+-ERM_PARTITION:
+    PROC;
+
+        B2PARTITION.DURCHF_ART='M';
+        IF VA_ART='PNR' THEN
+        DO;
+          PNR_AKT=SON_PNR;
+          EXEC SQL
+             SELECT
+                DATUM
+             INTO
+                :B2PARTITION.DATUM
+             FROM
+                B2PARTITION
+             WHERE
+             MANDANT   =:INSTITUT AND
+             PNR       =:PNR_AKT;
+
+          IF SQLCODE ^= 0 THEN
+             CALL DB2ERROR('J','SELECT','B2PARTITION','PNR=' !!
+                            TRIM(B2PARTITION.PNR));
+          AW_DAT=B2PARTITION.DATUM;
+       END;
+       ELSE
+       DO;
+          EXEC SQL
+             SELECT
+                PNR
+             INTO
+                :PNR_AKT
+             FROM
+                B2PARTITION
+             WHERE
+             MANDANT=:INSTITUT AND
+             DATUM=:AW_DAT AND
+             DURCHF_ART=:B2PARTITION.DURCHF_ART;
+
+          IF SQLCODE ^= 0 THEN
+             CALL DB2ERROR('J','SELECT','B2PARTITION','DATUM=' !!
+                           AW_DAT);
+       END;
+
+       /* Ermitteln PNR Vorjahresultimo */
+       DATUM_VJ=BAUPDAMA(AW_DAT,0,0,-1,'');
+       DATUM_VJ=SUBSTR(DATUM_VJ,1,4) !! '-12-31';
+       EXEC SQL
+          SELECT
+             PNR
+          INTO
+             :PNR_VOR
+          FROM
+             B2PARTITION
+          WHERE
+          MANDANT=:INSTITUT AND
+          DATUM=:DATUM_VJ AND
+          DURCHF_ART=:B2PARTITION.DURCHF_ART;
+
+          IF SQLCODE ^= 0 THEN
+             CALL DB2ERROR('J','SELECT','B2PARTITION_VJ','DATUM=' !!
+                           DATUM_VJ);
+
+0   END; /* ERM_PARTITION */
+
+1/*------------------------------------------------------------------*/
+ /*       LESEN_B2FMTCONTEXT                                         */
+ /*------------------------------------------------------------------*/
+-LESEN_B2FMTCONTEXT:
+    PROC;
+
+       IF INSTITUT='BTV' THEN
+          B2FMTCONTEXT.WORKSPACE='BTV_PILLAR1_UNKONSOLIDIERT_IP';
+       ELSE
+          B2FMTCONTEXT.WORKSPACE=INSTITUT !! '_STD_IP';
+
+       EXEC SQL
+          SELECT
+             PK_RD_WS
+          INTO
+             :PART_KEY_STD_AG_IP
+          FROM
+             B2FMTCONTEXT
+          WHERE
+             PNR=:PNR_AKT AND
+             REPORTING_DATE=:AW_DAT AND
+             WORKSPACE=:B2FMTCONTEXT.WORKSPACE;
+
+       IF SQLCODE ^= 0 &
+          SQLCODE ^= 100 THEN
+          CALL DB2ERROR('J','SELECT','B2FMTCONTEXT STD_AG_IP',
+                        'PNR=' !! PNR_VOR !! ' DATUM=' !! DATUM_VJ !!
+                        ' WORKSPACE=' !! B2FMTCONTEXT.WORKSPACE);
+
+       IF INSTITUT='BTV' THEN
+          B2FMTCONTEXT.WORKSPACE='BTV_PILLAR1_KONSOLIDIERT_IP';
+       ELSE
+          B2FMTCONTEXT.WORKSPACE=INSTITUT !! '_STD_KONZERN_IP';
+
+       EXEC SQL
+          SELECT
+             PK_RD_WS
+          INTO
+             :PART_KEY_STD_KONZERN_IP
+          FROM
+             B2FMTCONTEXT
+          WHERE
+             PNR=:PNR_AKT AND
+             REPORTING_DATE=:AW_DAT AND
+             WORKSPACE=:B2FMTCONTEXT.WORKSPACE;
+
+       IF SQLCODE ^= 0 &
+          SQLCODE ^= 100 THEN
+          CALL DB2ERROR('J','SELECT','B2FMTCONTEXT STD_KONZERN_IP',
+                        'PNR=' !! PNR_VOR !! ' DATUM=' !! DATUM_VJ !!
+                        ' WORKSPACE=' !! B2FMTCONTEXT.WORKSPACE);
+
+       IF PART_KEY_STD_AG_IP=' ' !
+          PART_KEY_STD_KONZERN_IP=' ' THEN
+       DO;
+          PUT SKIP LIST('Contexte fehlen auf B2FMTCONTEXT' !!
+                        ' AG_IP=' !! PART_KEY_STD_AG_IP !!
+                        ' KONZERN_IP=' !! PART_KEY_STD_KONZERN_IP);
+          IF DART='P' THEN
+             CALL ABBR(31);
+       END;
+
+0   END; /* LESEN_B2FMTCONTEXT */
+
+1/*------------------------------------------------------------------*/
+ /*       DETAILVERARBEITUNG                                         */
+ /*------------------------------------------------------------------*/
+-DETAIL:
+    PROC;
+
+       EXEC SQL
+          OPEN C_DETAIL;
+       IF SQLCODE ^= 0 THEN
+          CALL DB2ERROR('J','OPEN','C_DETAIL','');
+
+       CALL FETCH_C_DETAIL;
+
+       DO WHILE(SQLCODE=0);
+
+          CALL LESEN_B2KUND;
+
+          IF ^NOVA THEN
+             CALL AUSGABE_C10_C30;
+
+          CALL FETCH_C_DETAIL;
+
+       END;
+
+       EXEC SQL
+          CLOSE C_DETAIL;
+       IF SQLCODE ^= 0 THEN
+          CALL DB2ERROR('J','CLOSE','C_DETAIL','');
+
+       EXEC SQL
+          OPEN C_SUMME;
+       IF SQLCODE ^= 0 THEN
+          CALL DB2ERROR('J','OPEN','C_SUMME','');
+
+       CALL FETCH_C_SUMME;
+
+       DO WHILE(SQLCODE=0);
+
+          CALL LESEN_B2IPLOSSES;
+
+          C50_UNKON=C50_UNKON + B2IPLOSSES.C30_UNKON;
+          C50_KON=C50_KON + B2IPLOSSES.C30_KON;
+
+          CALL AUSGABE_C50;
+
+          CALL FETCH_C_SUMME;
+
+       END;
+
+       EXEC SQL
+          CLOSE C_SUMME;
+       IF SQLCODE ^= 0 THEN
+          CALL DB2ERROR('J','CLOSE','C_SUMME','');
+
+0   END; /* DETAIL */
+
+1/*------------------------------------------------------------------*/
+ /*       Lesen B2KUND                                               */
+ /*------------------------------------------------------------------*/
+-LESEN_B2KUND:
+    PROC;
+
+       B2KUND='';
+       INT_RATING_AKT='';
+       INT_RATING_VOR='';
+       B2KUND.PERSONNR=B2IPLOSSES.PERSONNR;
+
+       EXEC SQL
+          SELECT
+             STELLE_S,
+             INT_RATING
+          INTO
+             :B2KUND.STELLE_S,
+             :INT_RATING_AKT
+          FROM
+             B2KUND
+          WHERE
+             PNR=:PNR_AKT AND
+             MANDANT=:INSTITUT AND
+             PERSONNR=:B2KUND.PERSONNR
+          WITH UR;
+
+       IF SQLCODE ^= 0 THEN
+          CALL DB2ERROR('J','SELECT','B2KUND_AKT','Personnr=' !!
+                         B2KUND.PERSONNR);
+
+       EXEC SQL
+          SELECT
+             INT_RATING
+          INTO
+             :INT_RATING_VOR
+          FROM
+             B2KUND
+          WHERE
+             PNR=:PNR_VOR AND
+             MANDANT=:INSTITUT AND
+             PERSONNR=:B2KUND.PERSONNR
+          WITH UR;
+
+       IF SQLCODE=100 THEN
+          INT_RATING_VOR='NR';
+       ELSE
+       IF SQLCODE ^= 0 THEN
+          CALL DB2ERROR('J','SELECT','B2KUND_VOR','Personnr=' !!
+                         B2KUND.PERSONNR);
+
+0   END; /* LESEN_B2KUND */
+
+1/*------------------------------------------------------------------*/
+ /*       Lesen B2IPLOSSES                                           */
+ /*------------------------------------------------------------------*/
+-LESEN_B2IPLOSSES:
+    PROC;
+
+       B2IPLOSSES='';
+
+       EXEC SQL
+          SELECT
+             COALESCE(SUM(C30_UNKON),0),
+             COALESCE(SUM(C30_KON),0)
+          INTO
+             :B2IPLOSSES.C30_UNKON,
+             :B2IPLOSSES.C30_KON
+          FROM
+             B2IPLOSSES
+          WHERE
+             MANDANT=:INSTITUT AND
+             AUSFALLDAT BETWEEN :BEGINN_DAT AND :ENDE_DAT AND
+             DEALBOOK=:B2T_CDR.DEALBOOK AND
+             LILAND=:B2SISTAMM.LILAND
+          WITH UR;
+
+       IF SQLCODE ^= 0 &
+          SQLCODE ^= 100 THEN
+          CALL DB2ERROR('J','SELECT','B2IPLOSSES','DEALBOOK=' !!
+                         B2T_CDR.DEALBOOK !! ' LILAND=' !!
+                         B2SISTAMM.LILAND);
+
+0   END; /* LESEN_B2IPLOSSES */
+
+1/*------------------------------------------------------------------*/
+ /*       Ausgabe Header für CSV-Files                               */
+ /*------------------------------------------------------------------*/
+-AUSGABE_HEADER:
+    PROC;
+
+       OUT='SINR;' !!
+           'PRODUKT;' !!
+           'LILAND;' !!
+           'DEALBOOK;' !!
+           'ULT_VOR_AUSFALL;' !!
+           'RATING_BEI_AUSFALL;' !!
+           'RATING_AKTUELL;' !!
+           'RATING_VOR_ZEITRAUM;' !!
+           'PERSONNR;' !!
+           'STELLE;' !!
+           'C10;' !!
+           'C30';
+
+       WRITE FILE(C1030UNK) FROM(OUT);
+       WRITE FILE(C1030KON) FROM(OUT);
+
+       OUT='PRODUKT;' !!
+           'LILAND;' !!
+           'DEALBOOK;' !!
+           'C50';
+
+       WRITE FILE(C50UNK) FROM(OUT);
+       WRITE FILE(C50KON) FROM(OUT);
+
+0   END; /* AUSGABE_HEADER */
+
+1/*------------------------------------------------------------------*/
+ /*       Ausgabe Ladefile CSV-File C10 u. C30                       */
+ /*------------------------------------------------------------------*/
+-AUSGABE_C10_C30:
+    PROC;
+
+       OUT=TRIM(B2IPLOSSES.SINR) !! Z !!             /* SINR          */
+           TRIM(B2IPLOSSES.BIS_PRODUKT) !! Z !!      /* RRE/CRE       */
+           TRIM(B2IPLOSSES.LILAND) !! Z !!           /* LiegenschaftLA*/
+           TRIM(B2IPLOSSES.DEALBOOK) !! Z !!         /* Dealbook      */
+           TRIM(BAUPDAMA(B2IPLOSSES.AUSFALLDAT,0,-1,0,'U')) !! Z !!
+           TRIM(B2IPLOSSES.RATING_AUSFALL) !! Z !!   /* Ausfallrating */
+           TRIM(INT_RATING_AKT) !! Z !!              /* akt. Rating   */
+           TRIM(INT_RATING_VOR) !! Z !!              /* Vorjahresult  */
+           TRIM(B2IPLOSSES.PERSONNR) !! Z !!         /* Personnr      */
+           TRIM(B2KUND.STELLE_S) !! Z !!             /* Stelle_S      */
+           TRIM(B2IPLOSSES.C10_UNKON) !! Z !!        /* C10 unkonsol. */
+           TRIM(B2IPLOSSES.C30_UNKON);               /* C30 unkonsol  */
+
+       WRITE FILE(C1030UNK) FROM(OUT);
+       OUT='';
+
+       OUT=TRIM(B2IPLOSSES.SINR) !! Z !!             /* SINR          */
+           TRIM(B2IPLOSSES.BIS_PRODUKT) !! Z !!      /* RRE/CRE       */
+           TRIM(B2IPLOSSES.LILAND) !! Z !!           /* LiegenschaftLA*/
+           TRIM(B2IPLOSSES.DEALBOOK) !! Z !!         /* Dealbook      */
+           TRIM(BAUPDAMA(B2IPLOSSES.AUSFALLDAT,0,-1,0,'U')) !! Z !!
+           TRIM(B2IPLOSSES.RATING_AUSFALL) !! Z !!   /* Ausfallrating */
+           TRIM(INT_RATING_AKT) !! Z !!              /* akt. Rating   */
+           TRIM(INT_RATING_VOR) !! Z !!              /* Vorjahresult  */
+           TRIM(B2IPLOSSES.PERSONNR) !! Z !!         /* Personnr      */
+           TRIM(B2KUND.STELLE_S) !! Z !!             /* Stelle_S      */
+           TRIM(B2IPLOSSES.C10_KON) !! Z !!          /* C10 unkonsol. */
+           TRIM(B2IPLOSSES.C30_KON);                 /* C30 unkonsol  */
+
+       WRITE FILE(C1030KON) FROM(OUT);
+       OUT='';
+
+0   END; /* AUSGABE_C10_C30 */
+
+1/*------------------------------------------------------------------*/
+ /*       Ausgabe Ladefile CSV-File C50                              */
+ /*------------------------------------------------------------------*/
+-AUSGABE_C50:
+    PROC;
+
+       OUT=TRIM(B2T_CDR.COLLATERAL_BIS_PRODUCT) !!Z!!/* RRE/CRE       */
+           TRIM(B2SISTAMM.LILAND) !! Z !!            /* LiegenschaftLA*/
+           TRIM(B2T_CDR.DEALBOOK) !! Z !!            /* Dealbook      */
+           TRIM(C50_UNKON);                          /* C50 unkonsol  */
+
+       WRITE FILE(C50UNK) FROM(OUT);
+       OUT='';
+
+       OUT=TRIM(B2T_CDR.COLLATERAL_BIS_PRODUCT) !!Z!!/* RRE/CRE       */
+           TRIM(B2SISTAMM.LILAND) !! Z !!            /* LiegenschaftLA*/
+           TRIM(B2T_CDR.DEALBOOK) !! Z !!            /* Dealbook      */
+           TRIM(C50_KON);                            /* C50 konsolid. */
+
+       WRITE FILE(C50KON) FROM(OUT);
+       OUT='';
+
+0   END; /* AUSGABE_C50 */
+
+1/*------------------------------------------------------------------*/
+ /*       Lesen Curcor C_DETAIL                                      */
+ /*------------------------------------------------------------------*/
+-FETCH_C_DETAIL:
+    PROC;
+       EXEC SQL
+          FETCH
+             C_DETAIL
+          INTO
+             :B2IPLOSSES.AUSFALLDAT,
+             :B2IPLOSSES.PERSONNR,
+             :B2IPLOSSES.SINR,
+             :B2IPLOSSES.DEALBOOK,
+             :B2IPLOSSES.BIS_PRODUKT,
+             :B2IPLOSSES.RATING_AUSFALL,
+             :B2IPLOSSES.LILAND,
+             :B2IPLOSSES.C10_KON,
+             :B2IPLOSSES.C10_UNKON,
+             :B2IPLOSSES.C30_KON,
+             :B2IPLOSSES.C30_UNKON;
+
+       IF SQLCODE ^= 100 &
+          SQLCODE ^= 0 THEN
+          CALL DB2ERROR('J','FETCH','C_DETAIL','');
+
+0   END; /* FETCH_C_DETAIL */
+
+1/*------------------------------------------------------------------*/
+ /*       Lesen Curcor SUMME                                         */
+ /*------------------------------------------------------------------*/
+-FETCH_C_SUMME:
+    PROC;
+       EXEC SQL
+          FETCH
+             C_SUMME
+          INTO
+             :B2T_CDR.COLLATERAL_BIS_PRODUCT,
+             :B2T_CDR.DEALBOOK,
+             :B2SISTAMM.LILAND,
+             :C50_UNKON,
+             :C50_KON;
+
+       IF SQLCODE ^= 100 &
+          SQLCODE ^= 0 THEN
+          CALL DB2ERROR('J','FETCH','C_SUMME','');
+
+0   END; /* FETCH_C_SUMME */
+
+1/*------------------------------------------------------------------*/
+ /*       ABBRUCHPROGRAMME                                           */
+ /*------------------------------------------------------------------*/
+-DB2ERROR:                                                              00017240
+    PROC(FEHL,F,T,K);                                                   00017250
+                                                                        00017260
+    DCL FEHL       CHAR(1);                 /* ABBRUCH J/N            */00017270
+    DCL F          CHAR(*);                 /* FUNKTION               */00017280
+    DCL T          CHAR(*);                 /* TABELLE                */00017290
+    DCL K          CHAR(*);                 /* KEY                    */00017300
+    DCL I          BIN FIXED(15) INIT(0);                               00017320
+                                                                        00017330
+       HSQLCODE=SQLCODE;                                                00017340
+
+       IF FEHL='N' THEN                                                 00017350
+          PUT SKIP LIST('DB2-FEHLER BEIM ' !! F !! ' ' !! T !! ' ' !!   00017380
+                         K !! ' SQLCODE=' !! HSQLCODEC);                00017390
+
+       IF FEHL='J' THEN                                                 00017410
+       DO;                                                              00017420
+          MESSAGE.MESSAGEL=10*MSGDATAL;                                 00017430
+          MESSAGE.MESSAGET='';                                          00017440
+          CALL DSNTIAR(SQLCA,MESSAGE,MSGDATAL);                         00017450
+          IF PLIRETV=0 THEN                                             00017460
+          DO;                                                           00017470
+             DO I=1 TO HBOUND(MESSAGET,1) WHILE(MESSAGET(I) ^= ' ');    00017480
+                PUT SKIP EDIT('****',MESSAGET(I)) (A);                  00017490
+             END;                                                       00017500
+          END;                                                          00017510
+          ELSE                                                          00017520
+          DO;                                                           00017530
+             PUT SKIP EDIT('*** RETURNCODE: ',PLIRETV,' VON DSNTIAR')   00017540
+                          (A,F(8),A);                                   00017550
+          END;                                                          00017560
+          MELD1='FEHLER BEIM ' !! F !! ' ' !! T;
+          MELD2='SQLCODE=' !! HSQLCODEC !! ' ' !! K;
+          CALL ABBR(34);                                                00017580
+       END;                                                             00017590
+       ELSE                                                             00017600
+          SQLCODE=0;                                                    00017610
+
+    END; /* DB2ERROR */                                                 00017620
+-ABBR:                                                                  00004200
+    PROC(NR);                                                           00004210
+
+    DCL NR      BIN FIXED(15);                                          00004220
+
+       IF NR > 30 THEN
+          CALL SYDB2('STOP','ABRT',DB2OWNER,SQLCA);
+
+       SELECT(NR);                                                      00004230
+          WHEN(1) DO;                                                   00004240
+             MELD1='FEHLER AUS UDATOS';                                 00004250
+             MELD2='UFEHL=' !! UFEHL;                                   00004260
+          END;                                                          00004270
+          WHEN(3) DO;                                                   00004240
+             MELD1='NUR EINE VORLAUFKARTE /VOR01 ERLAUBT';              00004250
+             MELD2='';                                                  00004260
+          END;                                                          00004270
+          WHEN(4) DO;
+             MELD1='VORLAUFKARTE HAT FALSCHE KENNUNG';
+             MELD2='/VOR01 =>' !! VLKENNUNG;
+          END;
+          WHEN(30) DO;
+             MELD1='FEHLER BEI START DB2-DATENBANK';
+             MELD2='PLIRETV=' !! PLIRETV;
+          END;
+          WHEN(31) DO;
+             MELD1='Nicht alle Kontexte auf B2FMTCONTEXT vorhanden';
+             MELD2='STD_AG/STD_AG_IP/STD_KONZERN/STD_KONZERN_IP';
+          END;
+          WHEN(34);
+          OTHERWISE DO;                                                 00004360
+             MELD1='FEHLERNUMMER UNBEKANNT';                            00004370
+             MELD2='NR=' !! NR;                                         00004380
+          END;                                                          00004390
+       END;                                                             00004400
+
+       CALL UPCC('J',MELD1,MELD2);                                      00004410
+
+0   END; /* ABBR */                                                     00004420
+
+1/*------------------------------------------------------------------*/
+ /*       INCLUDE UNTERPROGRAMME                                     */
+ /*------------------------------------------------------------------*/
+
+ %INCLUDE BAUPDAMA;
+ %INCLUDE BAUPDAT1;
+                                                                        00003420
+ END; /* B 2 B T I P L 2 */

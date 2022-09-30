@@ -1,0 +1,61 @@
+      ******************************************************************
+      * DCLGEN TABLE(CD.PEND)                                          *
+      *        LIBRARY(LMFPROG.APPLDCL.U099056(CDPEND))                *
+      *        ACTION(REPLACE)                                         *
+      *        LANGUAGE(COBOL)                                         *
+      *        APOST                                                   *
+      *        LABEL(YES)                                              *
+      *        DBCSDELIM(NO)                                           *
+      * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+      ******************************************************************
+           EXEC SQL DECLARE CD.PEND TABLE
+           ( CDP_BANK_NBR                   DECIMAL(3, 0) NOT NULL,
+             CDP_ACCT_NBR                   CHAR(9) NOT NULL,
+             CDP_TX_CODE                    DECIMAL(3, 0) NOT NULL,
+             CDP_TX_AMOUNT                  DECIMAL(11, 2) NOT NULL,
+             CDP_EFFECT_DATE                DATE NOT NULL,
+             CDP_DEP_WTD_CODE               DECIMAL(3, 0) NOT NULL,
+             CDP_REVERSAL_CODE              CHAR(1) NOT NULL,
+             CDP_WITHHOLD_CODE              CHAR(1) NOT NULL,
+             CDP_STOCK_NBR                  CHAR(9) NOT NULL,
+             CDP_TAX_WITHHELD               DECIMAL(9, 2) NOT NULL,
+             CDP_SOURCE_PROG                CHAR(8) NOT NULL,
+             CDP_ENTRY_DATE                 DATE NOT NULL,
+             CDP_ALTERNATE_ID               CHAR(25) NOT NULL,
+             CDP_TX_DESC                    CHAR(30) NOT NULL
+           ) END-EXEC.
+      ******************************************************************
+      * COBOL DECLARATION FOR TABLE CD.PEND                            *
+      ******************************************************************
+       01  CD-PEND.
+      *    *************************************************************
+           10 CDP-BANK-NBR         PIC S9(3)V USAGE COMP-3.
+      *    *************************************************************
+           10 CDP-ACCT-NBR         PIC X(9).
+      *    *************************************************************
+           10 CDP-TX-CODE          PIC S9(3)V USAGE COMP-3.
+      *    *************************************************************
+           10 CDP-TX-AMOUNT        PIC S9(9)V9(2) USAGE COMP-3.
+      *    *************************************************************
+           10 CDP-EFFECT-DATE      PIC X(10).
+      *    *************************************************************
+           10 CDP-DEP-WTD-CODE     PIC S9(3)V USAGE COMP-3.
+      *    *************************************************************
+           10 CDP-REVERSAL-CODE    PIC X(1).
+      *    *************************************************************
+           10 CDP-WITHHOLD-CODE    PIC X(1).
+      *    *************************************************************
+           10 CDP-STOCK-NBR        PIC X(9).
+      *    *************************************************************
+           10 CDP-TAX-WITHHELD     PIC S9(7)V9(2) USAGE COMP-3.
+      *    *************************************************************
+           10 CDP-SOURCE-PROG      PIC X(8).
+      *    *************************************************************
+           10 CDP-ENTRY-DATE       PIC X(10).
+      *    *************************************************************
+           10 CDP-ALTERNATE-ID     PIC X(25).
+      *    *************************************************************
+           10 CDP-TX-DESC          PIC X(30).
+      ******************************************************************
+      * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 14      *
+      ******************************************************************

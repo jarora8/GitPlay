@@ -1,0 +1,1598 @@
+*process case(asIs);
+*process default(nonAssignable(static inOnly));
+*process default(connected);
+*process deprecate(stmt(stop,exit));
+*process limits(extname(50));
+*process maxStmt(32k,64k);
+*process optimize(3);
+*process prefix(size stringRange stringSize subscriptRange);
+*process rules(noComplex(all));
+*process rules(noElseIf);
+*process rules(noEvenDec);
+*process rules(noGlobal(all));
+*process rules(noGlobalDo);
+*process rules(noGoTo(strict));
+*process rules(noLaxConv(all));
+*process rules(noLaxEntry(strict));
+*process rules(noLaxNested(all));
+*process rules(noLaxPackage);
+*process rules(noLaxParms(all));
+*process rules(noLaxQual(strict,all));
+*process rules(noLaxReturn);
+*process rules(noLaxScale(strict,all));
+*process rules(noLaxStg);
+*process rules(noMultiEntry(all));
+*process rules(noMultiExit(all));
+*process rules(noMultiSemi(all));
+*process rules(noPadding(all));
+*process rules(noProcEndOnly(all));
+*process rules(noUnRef(all));
+*process rules(noUnRefBased(all));
+*process rules(noUnRefCtl(all));
+*process rules(noUnRefDefined(all));
+*process rules(noUnRefEntry(all));
+*process rules(noUnRefFile(all));
+*process rules(noUnRefStatic(all));
+*process rules(noYY);
+ /**********************************************************************
+
+ Date   : May 2019
+ Author : Christian Hirschi
+ Purpose: YTSCALC is for the tax calculation
+
+ DESCRIPTION
+ -----------
+ DBB: TS
+
+ ||Attention||
+ All rates has to come as percenatge value. That means an
+ percentage value of 15% has to be delivered as 15.
+
+ EXCEPTIONS1 (ReturnCode/ReasonCode)
+ ----------------------------------
+
+ YTSCALC
+   none
+
+ YTSCALC#distributionAmount
+   16/0 wrong version
+   12/2 invalid calculationBasis
+   8/1003 grossAmount missing
+   8/1004 value of eligible position is not available
+   8/1005 value of distributed securities is not available
+   8/1007 no payRate or payAmount
+   8/1009 Incorrect distribution amount type code
+   4/1109 distribution currency defers to transaction currency
+   4/1111 payRate and payAmount present
+
+ YTSCALC#taxAmounts
+   16/0 wrong version
+
+ YTSCALC#reportableAmount
+   16/0 wrong version
+
+ YTSCALC#taxableAmount
+   16/0 wrong version
+
+ YTSCALC#localReportableAmount
+   16/0 wrong version
+
+ YTSCALC#distributionComponentTotal
+   16/0 wrong version
+   12/3 no taxable gross amount found
+   8/1017 Different Textblock codes on component level
+   8/1018 Distributions are taxed with different tax rates
+   8/1020 Different distribution currencies available
+
+ YTSCALC#freeDistributionComponentTotal
+   16/0 wrong version
+
+ YTSCALC#calculateEtrAmount
+   16/0 wrong version
+
+ -----------------------------------------------------------------------
+ MODIFICATION
+ ------------
+ CH: Christian Hirschi          (A336712)
+ RB: Roger Begert               (A727870)
+ YL: Yasmin Luetzelschwab       (A722485)
+ GS: Gert Schneider             (A375068)
+ MP: Michael Guenther Ploentzke (A918962)
+ NF: Nicola Fusco               (A481211)
+ -----------------------------------------------------------------------
+ TASS000020:  DC 4/2020  13.11.2020
+ -----------------------------------------------------------------------
+ 08.09.2020 ¨ CH ¨ complete refactor (UC19)
+ -----------------------------------------------------------------------
+ TASS000015:  DC 3/2020  07.05.2020
+ -----------------------------------------------------------------------
+ 07.07.2020 ¨ CH ¨ fix replaceAtrWithEtr
+ 16.06.2020 ¨ GS ¨ taxBaseAmount with taxAmountTypeCd = 7 instead 0
+ 10.06.2020 ¨ NF ¨ BR18_04/05 Recalculate ROC rate and amount  @TAS-5298
+ 22.05.2020 ¨ MP ¨ DEV - SLB - UC42 Replace ATR with ETR       @TAS-5148
+ 27.05.2020 ¨ NF ¨ BR17_24 Accumulate ETR-Taxamount            @TAS-5104
+ 20.05.2020 ¨ NF ¨ BR24_01 Calculate ETR-Taxamount             @TAS-5104
+ -----------------------------------------------------------------------
+ TASS000014:  DC 2/2020  08.05.2020
+ -----------------------------------------------------------------------
+ 21.05.2020 ¨ GS ¨ - BR004_013 - Suppress checking BESLs against rates
+            ¨    ¨   between DCs when tax rate = 0
+            ¨    ¨   - Change indicated by @@001
+            ¨    ¨ - BR004_004 A short position must have an AMK
+            ¨    ¨   starting with 17*, a long position not
+            ¨    ¨   - New orderType = 5 (SLB SHort)
+            ¨    ¨   - Change indicated by @@001
+            ¨    ¨ - Check amounts to 0.00
+            ¨    ¨   - eligible input missing
+            ¨    ¨   - distributed securities missing
+            ¨    ¨   - Change indicated by @@001
+ -----------------------------------------------------------------------
+ TASS000009:  DC 1/2020  14.02.2020
+ -----------------------------------------------------------------------
+ 19.11.2019 ¨ YL ¨ update @YTSEXLG PP, add requestId
+ -----------------------------------------------------------------------
+ TASS000007:  DC 4/2019  08.11.2019
+ -----------------------------------------------------------------------
+ 10.10.2019 ¨ CH ¨ remove BR004_007, change BR004_019
+ 19.09.2019 ¨ CH ¨ implement calc changes
+ 03.09.2019 ¨ YL ¨ create new procedure YTSCALC#taxableGrossAmount CW04
+ -----------------------------------------------------------------------
+ TASS000006:  FP 3/2019  13.09.2019
+ -----------------------------------------------------------------------
+ 22.08.2019 ¨ YL ¨ remove determination logic for IC/EC
+ -----------------------------------------------------------------------
+ TASS000005:  DC 3/2019  09.08.2019
+ -----------------------------------------------------------------------
+ 13.05.2019 ¨ CH ¨ update calculateTaxableGrossAmount
+ 27.05.2019 ¨ YL ¨ add procedure YTSCALC#freeDistributionComponentTotal
+            ¨    ¨ add IC/EC Validation
+ -----------------------------------------------------------------------
+ TASS000002:  DC 2/2019  10.05.2019
+ -----------------------------------------------------------------------
+ 10.05.2019 ¨ RB ¨ Initial version
+ -----------------------------------------------------------------------
+
+ **********************************************************************/
+ ytscalc:
+   package exports(YTSCALC
+                  ,YTSCALC#distributionAmount
+                  ,YTSCALC#taxAmounts
+                  ,YTSCALC#reportableAmount
+                  ,YTSCALC#taxableAmount
+                  ,YTSCALC#localReportableAmount
+                  ,YTSCALC#distributionComponentTotal
+                  ,YTSCALC#freeDistributionComponentTotal
+                  ,YTSCALC#calculateEtrAmount
+                  ,YTSCALC#isAmountTypeCdInArray
+                  );
+
+ /*--- built-in ------------------------------------------------------*/
+ dcl (abs
+     ,add
+     ,addr
+     ,char
+     ,divide
+     ,getSysWord
+     ,hBound
+     ,hex
+     ,lBound
+     ,length
+     ,low
+     ,mainName
+     ,minVal
+     ,multiply
+     ,null
+     ,packageName
+     ,plifree
+     ,procName
+     ,quicksortX
+     ,size
+     ,sourceLine
+     ,subtract
+     ,trim
+     )builtin;
+
+ /*--- gernally TASS inlcudes - Framework ----------------------------*/
+ %include TSDEFS;                      /* generall definitions        */
+ %include TSCONS;                      /* Business TASS Constant      */
+ %include YTSTRAC;                     /* trace facility              */
+ %include YTSTOOL;                     /* standard method collection  */
+ %include YTSEXLG;                     /* exception log               */
+
+ /*--- definition ----------------------------------------------------*/
+ %include YTSCALCD;
+
+ /*--- entries -------------------------------------------------------*/
+ //%include YTSCALC;
+
+ /*********************************************************************/
+ /* export Procedures                                                 */
+ /*********************************************************************/
+ /*---------------------------------------------------------------------
+   dummy procedure for linking
+ ---------------------------------------------------------------------*/
+ YTSCALC:
+   proc()
+   ;
+ end YTSCALC;
+
+ /*---------------------------------------------------------------------
+ free a allocated result from a previous call.
+
+ input:  allElements
+ output: allElements is set to allArea and inUse is 0
+
+ returnCode:  0 = okay
+             16 = PGM-Error --> wrong version
+
+ reasonCode: always 0
+ ---------------------------------------------------------------------*/
+ YTSCALC#freeDistributionComponentTotal:
+   proc($comm
+       ,$return
+       )
+   ;
+   dcl $comm   type YTSCALC#commDistributionComponentTotal_T
+                 inOut    asgn byAddr;
+   dcl $return type TSDEFS#return_T
+               outonly    asgn byAddr;
+
+   @TRACE_MAIN_START @$tracebits($comm.commHeader.trace);
+
+   dcl allHeader type TSDEFS#tabHeader_T
+                 based($comm.output.pTaxAmountTab);
+
+   @TSDEFS#INIT_RETURN @$return($return);
+
+   @TSDEFS#VERSION_CHECK @$version($comm.version)
+                         @$vName(YTSCALC#V_NAME)
+                         @$vNumber(YTSCALC#V_NUMBER)
+                         @$return($return)
+                         ;
+
+   if $comm.output.pTaxAmountTab ^=
+        addr($comm.output.taxAmountTabArea) then do;
+     if $comm.output.pTaxAmountTab ^= null() then do;
+         @TRACE_DEBUG @$param(¢f!allHeader.version.fullVersion
+                             ,¢t!allHeader.inUse
+                             ,¢t!allHeader.tabSize
+                             ,   allHeader.isAllocated
+                             ,   allHeader.isObject
+                             );
+
+         if allHeader.isAllocated
+           then call plifree($comm.output.pTaxAmountTab);
+     end;
+     $comm.output.pTaxAmountTab = addr($comm.output.taxAmountTabArea);
+   end;
+
+   allHeader.inUse = 0;
+
+   @TRACE_PROC_END;
+
+ end YTSCALC#freeDistributionComponentTotal;
+
+ /*---------------------------------------------------------------------
+ UC21: Calculate distribution amount
+ ---------------------------------------------------------------------*/
+ YTSCALC#distributionAmount:
+   proc($comm
+       ,$return
+       )
+   ;
+
+   dcl $comm   type YTSCALC#commDistributionAmount_T
+                                      inOut    asgn byAddr;
+   dcl $return type TSDEFS#return_T outOnly    asgn byAddr;
+
+   @TRACE_MAIN_START @$tracebits($comm.commHeader.trace);
+
+   @TSDEFS#INIT_RETURN @$return($return);
+
+   @TSDEFS#VERSION_CHECK @$version($comm.version)
+                         @$vName(YTSCALC#V_NAME)
+                         @$vNumber(YTSCALC#V_NUMBER)
+                         @$return($return)
+                         ;
+
+   $comm.output.distributionAmount.taxAmountTypeCode = 5;
+   $comm.output.distributionAmount.taxformulaNumber = 0;
+   $comm.output.distributionAmount.taxFormulaNumberInd = -1;
+   $comm.output.distributionAmount.secAmountKey = '';
+   $comm.output.distributionAmount.secAmountKeyInd = -1;
+   $comm.output.distributionAmount.taxRate = 100;
+
+   call calculateDistributionAmount
+          ($comm.input.amountTypeCd
+          ,$comm.input.trxCurrency
+          ,$comm.input.grossAmountCurrency
+          ,$comm.input.grossAmountIsPresent
+          ,$comm.input.grossAmount
+          ,$comm.input.calculationBasis
+          ,$comm.input.eligiblePositionIsPresent
+          ,$comm.input.eligiblePosition
+          ,$comm.input.distributedSecuritiesIsPresent
+          ,$comm.input.distributedSecurities
+          ,$comm.input.payRateIsPresent
+          ,$comm.input.payRate
+          ,$comm.input.payAmountIsPresent
+          ,$comm.input.payAmount
+          ,$comm.commHeader.requestId
+          ,@TRACE_MAIN_POINTER
+          ,$comm.output.distributionAmount.taxAmountCcyIso
+          ,$comm.output.distributionAmount.taxAmount
+          ,$return
+          );
+
+   @TRACE_PROC_END;
+
+ end YTSCALC#distributionAmount;
+
+ /*---------------------------------------------------------------------
+ UC23: Calculate Tax amounts
+ ---------------------------------------------------------------------*/
+ YTSCALC#taxAmounts:
+   proc($comm
+       ,$return
+       )
+   ;
+
+   dcl $comm   type YTSCALC#commTaxAmounts_T
+                                      inOut    asgn byAddr;
+   dcl $return type TSDEFS#return_T outOnly    asgn byAddr;
+
+   @TRACE_MAIN_START @$tracebits($comm.commHeader.trace);
+
+   @TSDEFS#INIT_RETURN @$return($return);
+
+   @TSDEFS#VERSION_CHECK @$version($comm.version)
+                         @$vName(YTSCALC#V_NAME)
+                         @$vNumber(YTSCALC#V_NUMBER)
+                         @$return($return)
+                         ;
+
+   dcl INVALID_INDEX bin(31) fixed value(-1);
+   dcl i bin(31) fixed;
+   dcl iTaxAmount1 bin(31) fixed init(INVALID_INDEX);
+   dcl tariffExpressionTab type YTSCALC#tariffExpressionTab_T
+                           based($comm.input.pTariffExpressionTab);
+   dcl taxAmountTab        type YTSCALC#taxAmountTab_T
+                           based($comm.output.pTaxAmountTab);
+
+   dcl sortArray(tariffExpressionTab.header.inUse)
+       type YTSCALC#tariffExpression_T
+       based(addr(tariffExpressionTab.tab))
+       ;
+
+   brBlock: do;
+
+     call quickSortX(sortArray
+                    ,tariffExpressionTabSortCompare
+                    );
+
+     do i = lBound(tariffExpressionTab.tab)
+         to tariffExpressionTab.header.inUse;
+       taxAmountTab.header.inUse += 1;
+       taxAmountTab.tab(taxAmountTab.header.inUse).taxAmountTypeCode
+         = tariffExpressionTab.tab(i).taxAmountTypeCode;
+       taxAmountTab.tab(taxAmountTab.header.inUse).taxFormulaNumberInd
+         = 0;
+       taxAmountTab.tab(taxAmountTab.header.inUse).taxFormulaNumber
+         = tariffExpressionTab.tab(i).formulaNumber;
+       taxAmountTab.tab(taxAmountTab.header.inUse).secAmountKeyInd
+         = 0;
+       taxAmountTab.tab(taxAmountTab.header.inUse).secAmountKey
+         = tariffExpressionTab.tab(i).besl;
+       taxAmountTab.tab(taxAmountTab.header.inUse).taxAmountCcyIso
+         = $comm.input.distributionAmount.taxAmountCcyIso;
+
+       select(taxAmountTab.tab(taxAmountTab.header.inUse).
+              taxAmountTypeCode
+             );
+         when(1) //has 1605 is first in array
+         do;
+           iTaxAmount1 = taxAmountTab.header.inUse;
+           taxAmountTab.tab(taxAmountTab.header.inUse).taxRate = 0;
+           taxAmountTab.tab(taxAmountTab.header.inUse).taxAmount
+             = 0;
+         end;
+         when(2,3)
+         do;
+           taxAmountTab.tab(taxAmountTab.header.inUse).taxRate
+             = tariffExpressionTab.tab(i).flatRateAmount;
+           taxAmountTab.tab(taxAmountTab.header.inUse).taxAmount
+             = multiply($comm.input.distributionAmount.taxAmount
+                       ,divide(tariffExpressionTab.tab(i).flatRateAmount
+                              ,100
+                              ,31,8
+                              )
+                       ,31,8
+                       );
+           if iTaxAmount1 ^= INVALID_INDEX then
+           do;
+             taxAmountTab.tab(iTaxAmount1).taxRate =
+               add(taxAmountTab.tab(iTaxAmount1).taxRate
+                  ,taxAmountTab.tab(taxAmountTab.header.inUse).taxRate
+                  ,31,8
+                  );
+             taxAmountTab.tab(iTaxAmount1).taxAmount =
+               add(taxAmountTab.tab(iTaxAmount1).taxAmount
+                  ,taxAmountTab.tab(taxAmountTab.header.inUse).taxAmount
+                  ,31,8
+                  );
+           end;
+         end;
+         other; //ignore
+       end;
+     end;
+
+   end brBlock;
+
+   @TRACE_PROC_END;
+
+ end YTSCALC#taxAmounts;
+
+ /*---------------------------------------------------------------------
+ UC36: Calculate reportable IRS gross amount
+ ---------------------------------------------------------------------*/
+ YTSCALC#reportableAmount:
+   proc($comm
+       ,$return
+       )
+   ;
+
+   dcl $comm   type YTSCALC#commReportableAmount_T
+                                      inOut    asgn byAddr;
+   dcl $return type TSDEFS#return_T outOnly    asgn byAddr;
+
+   @TRACE_MAIN_START @$tracebits($comm.commHeader.trace);
+
+   @TSDEFS#INIT_RETURN @$return($return);
+
+   @TSDEFS#VERSION_CHECK @$version($comm.version)
+                         @$vName(YTSCALC#V_NAME)
+                         @$vNumber(YTSCALC#V_NUMBER)
+                         @$return($return)
+                         ;
+
+   $comm.output.reportableAmount.taxAmountTypeCode = 6;
+   $comm.output.reportableAmount.taxformulaNumber = 0;
+   $comm.output.reportableAmount.taxFormulaNumberInd = -1;
+   $comm.output.reportableAmount.secAmountKey = '';
+   $comm.output.reportableAmount.secAmountKeyInd = -1;
+   $comm.output.reportableAmount.taxAmountCcyIso =
+     $comm.input.distributionAmount.taxAmountCcyIso;
+
+   if $comm.input.incomeCode = '900' then //blank
+   do;
+     $comm.output.reportableAmount.taxRate = 0;
+     $comm.output.reportableAmount.taxAmount = 0;
+   end;
+   else
+   do;
+     $comm.output.reportableAmount.taxRate =
+       $comm.input.distributionAmount.taxRate;
+     $comm.output.reportableAmount.taxAmount =
+       $comm.input.distributionAmount.taxAmount;
+   end;
+
+   @TRACE_PROC_END;
+
+ end YTSCALC#reportableAmount;
+
+ /*---------------------------------------------------------------------
+ UC49: Calculate taxable and reportable EStV gross rate/amount
+       for Swiss Tax Report
+ BR49_05: Determine EStV Taxable Amount (Besl 1567)
+ BR49_06: Determine availability of total tax rate
+ ---------------------------------------------------------------------*/
+ YTSCALC#taxableAmount:
+   proc($comm
+       ,$return
+       )
+   ;
+
+   dcl $comm   type YTSCALC#commTaxableAmount_T
+                                      inOut    asgn byAddr;
+   dcl $return type TSDEFS#return_T outOnly    asgn byAddr;
+
+   @TRACE_MAIN_START @$tracebits($comm.commHeader.trace);
+
+   @TSDEFS#INIT_RETURN @$return($return);
+
+   @TSDEFS#VERSION_CHECK @$version($comm.version)
+                         @$vName(YTSCALC#V_NAME)
+                         @$vNumber(YTSCALC#V_NUMBER)
+                         @$return($return)
+                         ;
+
+   $comm.output.present = '0'b;
+   if $comm.input.totalTaxAmountPresent then
+   do;
+     if abs($comm.input.totalTaxAmount.taxRate) > 0 then
+     do;
+       $comm.output.present = '1'b;
+       $comm.output.taxableAmount.taxAmount =
+         $comm.input.distributionAmount.taxAmount;
+       $comm.output.taxableAmount.taxRate = 100;
+       $comm.output.taxableAmount.taxAmountTypeCode = 7;
+       $comm.output.taxableAmount.taxformulaNumber = 0;
+       $comm.output.taxableAmount.taxFormulaNumberInd = -1;
+       $comm.output.taxableAmount.secAmountKey = '1567';
+       $comm.output.taxableAmount.secAmountKeyInd = 0;
+       $comm.output.taxableAmount.taxAmountCcyIso =
+         $comm.input.distributionAmount.taxAmountCcyIso;
+     end;
+   end;
+
+   @TRACE_PROC_END;
+
+ end YTSCALC#taxableAmount;
+
+ /*---------------------------------------------------------------------
+ UC49: Calculate taxable and reportable EStV gross rate/amount
+       for Swiss Tax Report
+ BR49_01: Check client tax domicile
+ BR49_02: Check tax relevance (BESL 1655)
+ BR49_03: Derive reportable tax gross
+ BR49_04: Calculate reportable tax gross
+ ---------------------------------------------------------------------*/
+ YTSCALC#localReportableAmount:
+   proc($comm
+       ,$return
+       )
+   ;
+
+   dcl $comm   type YTSCALC#commlocalReportableAmount_T
+                                      inOut    asgn byAddr;
+   dcl $return type TSDEFS#return_T outOnly    asgn byAddr;
+
+   @TRACE_MAIN_START @$tracebits($comm.commHeader.trace);
+
+   @TSDEFS#INIT_RETURN @$return($return);
+
+   @TSDEFS#VERSION_CHECK @$version($comm.version)
+                         @$vName(YTSCALC#V_NAME)
+                         @$vNumber(YTSCALC#V_NUMBER)
+                         @$return($return)
+                         ;
+
+   brBlock: do;
+
+     dcl taxAmountTab type YTSCALC#taxAmountTab_T
+                      based($comm.input.pTaxAmountTab);
+     dcl i fixed bin(31);
+
+     $comm.output.localReportableAmount.taxAmountTypeCode = 4;
+     $comm.output.localReportableAmount.taxformulaNumber = 0;
+     $comm.output.localReportableAmount.taxFormulaNumberInd = -1;
+     $comm.output.localReportableAmount.secAmountKey = '1585';
+     $comm.output.localReportableAmount.secAmountKeyInd = 0;
+     $comm.output.localReportableAmount.taxRate = 100;
+     $comm.output.localReportableAmount.taxAmountCcyIso =
+       $comm.input.distributionAmount.taxAmountCcyIso;
+     $comm.output.localReportableAmount.taxAmount =
+       $comm.input.distributionAmount.taxAmount;
+
+     if $comm.input.isSwissInfected then
+     do;
+       do i = lBound(taxAmountTab.tab) to taxAmountTab.header.inUse;
+         if taxAmountTab.tab(i).secAmountKey = '1655' then
+         do;
+           $comm.output.localReportableAmount.taxAmount =
+             subtract($comm.input.distributionAmount.taxAmount
+                     ,taxAmountTab.tab(i).taxAmount
+                     ,31,8);
+           $comm.output.localReportableAmount.taxRate =
+             subtract($comm.input.distributionAmount.taxRate
+                     ,taxAmountTab.tab(i).taxRate
+                     ,31,8);
+           leave brBlock;
+         end;
+       end;
+     end;
+
+   end brBlock;
+
+   @TRACE_PROC_END;
+
+ end YTSCALC#localReportableAmount;
+
+
+ /*---------------------------------------------------------------------
+ BR24_01: Calculate ETR amount and set all attributes of the
+          amount list record
+ ---------------------------------------------------------------------*/
+ YTSCALC#calculateEtrAmount:
+   proc($comm
+       ,$return
+       )
+   ;
+
+   dcl $comm   type YTSCALC#commEtrAmount_T
+                                      inOut    asgn byAddr;
+   dcl $return type TSDEFS#return_T outOnly    asgn byAddr;
+
+   @TRACE_MAIN_START @$tracebits($comm.commHeader.trace);
+
+   @TSDEFS#INIT_RETURN @$return($return);
+
+   @TSDEFS#VERSION_CHECK @$version($comm.version)
+                         @$vName(YTSCALC#V_NAME)
+                         @$vNumber(YTSCALC#V_NUMBER)
+                         @$return($return)
+                         ;
+
+   brBlock: do;
+
+     /* set ETR-specific attributes */
+     $comm.output.etrTaxAmount.taxFormulaNumberInd = -1;
+     $comm.output.etrTaxAmount.secAmountKeyInd     = -1;
+
+     $comm.output.etrTaxAmount.taxAmountTypeCode = 8;
+     $comm.output.etrTaxAmount.taxformulaNumber  = 0;
+     $comm.output.etrTaxAmount.taxRate           = $comm.input.
+                                                   etrTaxRate;
+     $comm.output.etrTaxAmount.taxAmount         =
+        multiply($comm.input.taxableAmount
+                ,divide($comm.input.etrTaxRate
+                       ,100
+                       ,31,8
+                       )
+                ,31,8
+                );
+     $comm.output.etrTaxAmount.secAmountKey      = '';
+     $comm.output.etrTaxAmount.taxAmountCcyIso   = $comm.input.
+                                                   trxCurrency;
+
+   end brBlock;
+
+   @TRACE_PROC_END;
+
+ end YTSCALC#calculateEtrAmount;
+
+ /*---------------------------------------------------------------------
+ UC17: Accumulate tax amounts
+ ---------------------------------------------------------------------*/
+ YTSCALC#distributionComponentTotal:
+   proc($comm
+       ,$return
+       )
+   ;
+
+   dcl $comm   type YTSCALC#commDistributionComponentTotal_T
+                                      inOut    asgn byAddr;
+   dcl $return type TSDEFS#return_T outOnly    asgn byAddr;
+
+   @TRACE_MAIN_START @$tracebits($comm.commHeader.trace);
+
+   @TSDEFS#INIT_RETURN @$return($return);
+
+   @TSDEFS#VERSION_CHECK @$version($comm.version)
+                         @$vName(YTSCALC#V_NAME)
+                         @$vNumber(YTSCALC#V_NUMBER)
+                         @$return($return)
+                         ;
+
+   dcl distrCompTab type YTSCALC#distrCompTab_T
+                    based($comm.input.pDistrCompTab);
+   dcl (i,j) fixed bin(31);
+   dcl currency char(3) init('');
+
+   $comm.output.orderTaxResult = value(:YTSCALC#orderTaxResult_T:);
+
+   brBlock: do;
+     do i = lBound(distrCompTab.tab)
+         to distrCompTab.header.inUse;
+       do j = lBound(distrCompTab.tab(i).amount)
+           to distrCompTab.tab(i).inUse;
+         if currency = '' then
+           currency =
+             distrCompTab.tab(i).amount(j).taxAmountCcyIso;
+         if currency ^= distrCompTab.tab(i).amount(j).taxAmountCcyIso
+         then
+         do;
+           @YTSTOOL#setReturn @$returnStruc($return)
+                              @$returnCode(8)
+                              @$reasonCode(1020)
+                              @$reasonTxt('diffrent currency '
+                                        ¨¨'on total'
+                                         )
+                              ;
+           @YTSEXLG#LogEx @$requestId($comm.commHeader.requestId)
+                          @$returnStruc($return)
+                          ;
+           leave brBlock;
+         end;
+         call sumUpTaxAmount($comm.output.pTaxAmountTab
+                            ,distrCompTab.tab(i).amount(j)
+                            ,$comm.commHeader.requestId
+                            ,@TRACE_MAIN_POINTER
+                            ,$return
+                            );
+         if $return.returnCode ^= 0
+         then leave brBlock;
+       end;
+       call addTextCode
+              (distrCompTab.tab(i).taxResult.orderValues
+              ,$comm.output.orderTaxResult
+              ,$comm.commHeader.requestId
+              ,@TRACE_MAIN_POINTER
+              ,$return
+              );
+       if $return.returnCode ^= 0
+       then leave brBlock;
+       call addRoc
+              (distrCompTab.tab(i).taxResult.orderValues
+              ,$comm.output.orderTaxResult
+              ,@TRACE_MAIN_POINTER
+              );
+     end;
+
+     call setReceiptOfCoverRate($comm.output.pTaxAmountTab
+                                     ,$comm.output.orderTaxResult
+                                     ,$comm.commHeader.requestId
+                                     ,@TRACE_MAIN_POINTER
+                                     ,$return
+                                     );
+     if $return.returnCode ^= 0
+     then leave brBlock;
+
+   end brBlock;
+
+   @TRACE_PROC_END;
+
+ end YTSCALC#distributionComponentTotal;
+
+ /*********************************************************************/
+ /* interne procedures                                                */
+ /*********************************************************************/
+ /*---------------------------------------------------------------------
+ UC21: Calculate distribution amount
+ BR21_03: System determines distribution type
+ ---------------------------------------------------------------------*/
+ calculateDistributionAmount:
+   proc($amountTypeCd
+       ,$trxCurrency
+       ,$grossAmountCurrency
+       ,$grossAmountIsPresent
+       ,$grossAmount
+       ,$calculationBasis
+       ,$eligiblePositionIsPresent
+       ,$eligiblePosition
+       ,$distributedSecuritiesIsPresent
+       ,$distributedSecurities
+       ,$payRateIsPresent
+       ,$payRate
+       ,$payAmountIsPresent
+       ,$payAmount
+       ,$requestId
+       ,$pTrace
+       ,$distributionCcyIso
+       ,$distributionAmount
+       ,$return
+       )
+   options(inline
+           noDescriptor
+          )
+   ;
+   dcl $amountTypeCd              char(3)         inOnly nonAsgn byAddr;
+   dcl $trxCurrency               char(3)         inOnly nonAsgn byAddr;
+   dcl $grossAmountCurrency       char(3)         inOnly nonAsgn byAddr;
+   dcl $grossAmountIsPresent      bit(1) aligned inOnly nonAsgn byValue;
+   dcl $grossAmount               fixed dec(31,8) inOnly nonAsgn byAddr;
+   dcl $calculationBasis          fixed bin(15)  inOnly nonAsgn byValue;
+   dcl $eligiblePositionIsPresent bit(1) aligned inOnly nonAsgn byValue;
+   dcl $eligiblePosition          fixed dec(31,8) inOnly nonAsgn byAddr;
+   dcl $distributedSecuritiesIsPresent bit(1) aligned
+                                                 inOnly nonAsgn byValue;
+   dcl $distributedSecurities     fixed dec(31,8) inOnly nonAsgn byAddr;
+   dcl $payRateIsPresent          bit(1) aligned inOnly nonAsgn byValue;
+   dcl $payRate                   fixed dec(31,8) inOnly nonAsgn byAddr;
+   dcl $payAmountIsPresent        bit(1) aligned inOnly nonAsgn byValue;
+   dcl $payAmount                 fixed dec(31,8) inOnly nonAsgn byAddr;
+   dcl $requestId                 char(80)        inOnly nonAsgn byAddr;
+   dcl $pTrace                    ptr            inOnly nonAsgn byValue;
+   dcl $distributionCcyIso        char(3)        outOnly    asgn byAddr;
+   dcl $distributionAmount       fixed dec(31,8) outOnly    asgn byAddr;
+   dcl $return                    type TSDEFS#return_T
+                                                 outOnly    asgn byAddr;
+
+   @TRACE_PROC_START @$mainPtr($pTrace);
+
+   $distributionAmount = minVal($distributionAmount);
+
+   select;
+     /*Cash*/
+     when(YTSCALC#isAmountTypeCdInArray
+            ($amountTypeCd
+            ,TSCONS#amountTypeCdCashDistribution
+            ,$pTrace
+            )
+         )
+     do;
+       $distributionCcyIso = $grossAmountCurrency;
+       $distributionAmount =
+         calculateDistributionAmountForCashDistribution
+           ($grossAmountIsPresent
+           ,$grossAmount
+           ,$trxCurrency
+           ,$grossAmountCurrency
+           ,$requestId
+           ,$pTrace
+           ,$return
+           );
+     end;
+     /*Securities*/
+     when(YTSCALC#isAmountTypeCdInArray
+            ($amountTypeCd
+            ,TSCONS#amountTypeCdSecuritiesDistributions
+            ,$pTrace
+            )
+         )
+     do;
+       $distributionCcyIso = $trxCurrency;
+       $distributionAmount =
+         calculateDistributionAmountSecuritiesDistributions
+           ($calculationBasis
+           ,$eligiblePositionIsPresent
+           ,$eligiblePosition
+           ,$distributedSecuritiesIsPresent
+           ,$distributedSecurities
+           ,$payRateIsPresent
+           ,$payRate
+           ,$payAmountIsPresent
+           ,$payAmount
+           ,$requestId
+           ,$pTrace
+           ,$return
+           );
+     end;
+     /*neither Cash or Securities*/
+     other
+     do;
+       @YTSTOOL#setReturn @$returnStruc($return)
+                          @$returnCode(8)
+                          @$reasonCode(1009)
+                          @$reasonTxt ('Incorrect distribution '
+                                    ¨¨'amount type code:'
+                                    ¨¨$amountTypeCd
+                                     )
+                          ;
+       @YTSEXLG#LogEx @$requestId($requestId)
+                      @$returnStruc($return)
+                      ;
+     end;
+   end;
+
+   @TRACE_PROC_END @$param($distributionAmount);
+
+ end calculateDistributionAmount;
+
+ /*---------------------------------------------------------------------
+ BR21_04: System checks gross and calculates distribution amounts
+ BR21_05: System checks currency
+ ---------------------------------------------------------------------*/
+ calculateDistributionAmountForCashDistribution:
+   proc($grossAmountIsPresent
+       ,$grossAmount
+       ,$trxCurrency
+       ,$grossAmountCurrency
+       ,$requestId
+       ,$pTrace
+       ,$return
+       )
+   returns(fixed dec(31,8))
+   options(inline
+           noDescriptor
+          )
+   ;
+   dcl $grossAmountIsPresent bit(1) aligned      inOnly nonAsgn byValue;
+   dcl $grossAmount          fixed dec(31,8)     inOnly nonAsgn byAddr;
+   dcl $trxCurrency          char(3)             inOnly nonAsgn byAddr;
+   dcl $grossAmountCurrency  char(3)             inOnly nonAsgn byAddr;
+   dcl $requestId            char(80)            inOnly nonAsgn byAddr;
+   dcl $pTrace               ptr                 inOnly nonAsgn byValue;
+   dcl $return               type TSDEFS#return_T outOnly   asgn byAddr;
+
+   @TRACE_PROC_START @$mainPtr($pTrace)
+                     @$param($grossAmountIsPresent
+                            ,$grossAmount
+                            );
+
+   dcl distributionAmount fixed dec(31,8);
+
+   brBlock: do;
+
+     distributionAmount = minVal(distributionAmount);
+
+     if ^$grossAmountIsPresent
+       ¨$grossAmount = 0
+     then
+     do;
+       @YTSTOOL#setReturn @$returnStruc($return)
+                          @$returnCode(8)
+                          @$reasonCode(1003)
+                          @$reasonTxt ('grossAmount missing')
+                          ;
+       @YTSEXLG#LogEx @$requestId($requestId)
+                      @$returnStruc($return)
+                      ;
+       leave brBlock;
+     end;
+
+     distributionAmount = $grossAmount;
+
+     if $grossAmountCurrency ^= $trxCurrency then
+     do;
+       @YTSTOOL#setReturn @$returnStruc($return)
+                          @$returnCode(4)
+                          @$reasonCode(1109)
+                          @$reasonTxt('grossAmountCurrency('
+                                    ¨¨trim($grossAmountCurrency)¨¨') '
+                                    ¨¨'do not match with the '
+                                    ¨¨'trxCurrency('
+                                    ¨¨trim($trxCurrency)¨¨')'
+                                     )
+                          ;
+       @YTSEXLG#LogEx @$requestId($requestId)
+                      @$returnStruc($return)
+                      ;
+     end;
+
+   end brBlock;
+
+   @TRACE_PROC_END;
+
+   return(distributionAmount);
+
+ end calculateDistributionAmountForCashDistribution;
+
+ /*---------------------------------------------------------------------
+ BR21_10: System detects calculation basis
+ BR21_11: System checks validity of eligible position
+ BR21_12: System checks rate/amount and calculates distributed amounts
+          for eligible position
+ BR21_22: System checks validity of distributed securities
+ BR21_23: System checks rate/amount and calculates distribution amount
+          for distributed securities
+ ---------------------------------------------------------------------*/
+ calculateDistributionAmountSecuritiesDistributions:
+   proc($calculationBasis
+       ,$eligiblePositionIsPresent
+       ,$eligiblePosition
+       ,$distributedSecuritiesIsPresent
+       ,$distributedSecurities
+       ,$payRateIsPresent
+       ,$payRate
+       ,$payAmountIsPresent
+       ,$payAmount
+       ,$requestId
+       ,$pTrace
+       ,$return
+       )
+   returns(fixed dec(31,8))
+   options(inline
+           noDescriptor
+          )
+   ;
+   dcl $calculationBasis          fixed bin(15)  inOnly nonAsgn byValue;
+   dcl $eligiblePositionIsPresent bit(1) aligned inOnly nonAsgn byValue;
+   dcl $eligiblePosition          fixed dec(31,8) inOnly nonAsgn byAddr;
+   dcl $distributedSecuritiesIsPresent bit(1) aligned
+                                                 inOnly nonAsgn byValue;
+   dcl $distributedSecurities     fixed dec(31,8) inOnly nonAsgn byAddr;
+   dcl $payRateIsPresent          bit(1) aligned inOnly nonAsgn byValue;
+   dcl $payRate                   fixed dec(31,8) inOnly nonAsgn byAddr;
+   dcl $payAmountIsPresent        bit(1) aligned inOnly nonAsgn byValue;
+   dcl $payAmount                 fixed dec(31,8) inOnly nonAsgn byAddr;
+   dcl $requestId                 char(80) inOnly nonAsgn byAddr;
+   dcl $pTrace                    ptr inOnly nonAsgn byValue;
+   dcl $return                    type TSDEFS#return_T
+                                                outOnly    asgn byAddr;
+
+   @TRACE_PROC_START @$mainPtr($pTrace)
+                     @$param($calculationBasis
+                            ,$eligiblePositionIsPresent
+                            ,$distributedSecuritiesIsPresent
+                            ,$payRateIsPresent
+                            ,$payAmountIsPresent
+                            );
+
+   dcl distributionAmount fixed dec(31,8);
+
+   brBlock: do;
+
+     distributionAmount = minVal(distributionAmount);
+
+     /*payRate and payAmount missing*/
+     if (^$payRateIsPresent & ^$payAmountIsPresent) then
+     do;
+       @YTSTOOL#setReturn @$returnStruc($return)
+                          @$returnCode(8)
+                          @$reasonCode(1007)
+                          @$reasonTxt('no payRate or payAmount')
+                          ;
+       @YTSEXLG#LogEx @$requestId($requestId)
+                      @$returnStruc($return)
+                      ;
+
+       leave brBlock;
+     end;
+
+     /*payRate and payAmount present*/
+     if ($payRateIsPresent & $payAmountIsPresent) then
+     do;
+       @YTSTOOL#setReturn @$returnStruc($return)
+                          @$returnCode(4)
+                          @$reasonCode(1111)
+                          @$reasonTxt('payRate and payAmount present')
+                          ;
+       @YTSEXLG#LogEx @$requestId($requestId)
+                      @$returnStruc($return)
+                      ;
+
+     end;
+
+     if @TRACE_BIT_DATA then
+     do;
+       if $payRateIsPresent then
+         @TRACE_ALWAYS @$param($payRate);
+       if $payAmountIsPresent then
+         @TRACE_ALWAYS @$param($payAmount);
+     end;
+
+     select($calculationBasis);
+       /*$eligiblePosition*/
+       when(0)
+       do;
+         if ^$eligiblePositionIsPresent then
+         do;
+           @YTSTOOL#setReturn @$returnStruc($return)
+                              @$returnCode(8)
+                              @$reasonCode(1004)
+                              @$reasonTxt ('eligiblePosition must '
+                                        ¨¨'be present under '
+                                        ¨¨'calculationBasis 0'
+                                         )
+                              ;
+           @YTSEXLG#LogEx @$requestId($requestId)
+                          @$returnStruc($return)
+                          ;
+
+           leave brBlock;
+         end;
+         @TRACE_DATA @$param($eligiblePosition);
+         select;
+           when($payAmountIsPresent)
+             distributionAmount = multiply($eligiblePosition
+                                          ,$payAmount
+                                          ,31,8);
+           when($payRateIsPresent)
+             distributionAmount = multiply($eligiblePosition
+                                          ,divide($payRate
+                                                 ,100
+                                                 ,31,8
+                                                 )
+                                          ,31,8);
+           other; //neither exists handled previously
+         end;
+       end;
+       /*distributedSecurities*/
+       when(1)
+       do;
+         if ^$distributedSecuritiesIsPresent then
+         do;
+           @YTSTOOL#setReturn @$returnStruc($return)
+                              @$returnCode(8)
+                              @$reasonCode(1005)
+                              @$reasonTxt ('distributedSecurities must '
+                                        ¨¨'be present under '
+                                        ¨¨'calculationBasis 1'
+                                         )
+                              ;
+           @YTSEXLG#LogEx @$requestId($requestId)
+                          @$returnStruc($return)
+                          ;
+
+           leave brBlock;
+         end;
+         @TRACE_DATA @$param($distributedSecurities);
+         select;
+           when($payAmountIsPresent)
+             distributionAmount = multiply($distributedSecurities
+                                          ,$payAmount
+                                          ,31,8);
+           when($payRateIsPresent)
+             distributionAmount = multiply($distributedSecurities
+                                          ,divide($payRate
+                                                 ,100
+                                                 ,31,8
+                                                 )
+                                          ,31,8);
+           other; //neither exists handled previously
+         end;
+       end;
+       other
+       do;
+         @YTSTOOL#setReturn @$returnStruc($return)
+                            @$returnCode(12)
+                            @$reasonCode(2)
+                            @$reasonTxt ('calculationBasis '
+                                      ¨¨trim(char($calculationBasis))
+                                      ¨¨' is not handled'
+                                       )
+                            ;
+         @YTSEXLG#LogEx @$requestId($requestId)
+                        @$returnStruc($return)
+                        ;
+
+         leave brBlock;
+       end;
+     end;
+
+   end brBlock;
+
+   @TRACE_PROC_END;
+
+   return(distributionAmount);
+
+ end calculateDistributionAmountSecuritiesDistributions;
+
+ /*---------------------------------------------------------------------
+ ---------------------------------------------------------------------*/
+ YTSCALC#isAmountTypeCdInArray:
+   proc($amountTypeCd
+       ,$array
+       ,$pTrace
+       )
+   returns(bit(1) aligned)
+   options(inLine)
+   ;
+   dcl $amountTypeCd char(3) inOnly nonAsgn byAddr;
+   dcl $array(*)     char(3) inOnly nonAsgn byAddr;
+   dcl $pTrace       ptr     inOnly nonAsgn byValue;
+
+   @TRACE_PROC_START @$mainPtr($pTrace)
+                     @$param(¢f!$amountTypeCd)
+                     ;
+
+   dcl itIs bit(1) aligned init('0'b);
+   dcl i fixed bin(31);
+
+   searchLoop: do i = lBound($array) to hBound($array);
+     if $amountTypeCd = $array(i) then
+     do;
+       itIs = '1'b;
+       leave searchLoop;
+     end;
+   end searchLoop;
+
+   @TRACE_PROC_END @$param(itIs);
+
+   return(itIs);
+
+ end YTSCALC#isAmountTypeCdInArray;
+
+ /*---------------------------------------------------------------------
+ BR17_13 Check of consistent structure of tax tariffs between
+         distribution components
+ BR17_14 Accumulate tax base amounts
+ BR17_15 Accumulate total withheld tax amounts
+ BR17_16 Accumulate US reportable amounts
+ BR17_17 Accumulate Swiss Retention Tax (STRUSA)
+ BR17_20 Accumulate Gross Taxable Yield
+ BR17_21 Accumulate Distribution Amounts
+ BR17_22 Accumulate US Reportable Amounts
+ BR17_23 Accumulation structure
+ BR17_24 Accumulate ETR amounts
+ ---------------------------------------------------------------------*/
+ sumUpTaxAmount:
+   proc($pOutTaxAmountTab
+       ,$inTaxAmount
+       ,$requestId
+       ,$pTrace
+       ,$return
+       )
+   options(inLine
+           noDescriptor
+          )
+   ;
+   dcl $pOutTaxAmountTab ptr                      inOut    asgn byAddr;
+   dcl $inTaxAmount      type YTSCALC#taxAmount_T inOnly nonAsgn byAddr;
+   dcl $requestId        char(80)                inOnly nonAsgn byAddr;
+   dcl $pTrace           ptr                     inOnly nonAsgn byValue;
+   dcl $return           type TSDEFS#return_T   outOnly    asgn byAddr;
+
+   @TRACE_PROC_START @$mainPtr($pTrace);
+
+   dcl outTaxAmountTab type YTSCALC#taxAmountTab_T
+                         based($pOutTaxAmountTab);
+   dcl index fixed bin(31);
+
+   brBlock: do;
+
+     index = indexTaxAmount($pOutTaxAmountTab
+                           ,$inTaxAmount
+                           ,$pTrace
+                           );
+
+     if index > 0 then
+     do;
+       if $inTaxAmount.taxRate ^= outTaxAmountTab.tab(index).taxRate
+         &$inTaxAmount.taxRate ^= 0
+         &outTaxAmountTab.tab(index).taxRate ^= 0
+       then
+       do;
+         @YTSTOOL#setReturn @$returnStruc($return)
+                            @$returnCode(8)
+                            @$reasonCode(1018)
+                            @$reasonTxt ('Different AMK tax rates on '
+                                      ¨¨'component level'
+                                       )
+                            ;
+         @YTSEXLG#LogEx @$requestId($requestId)
+                        @$returnStruc($return)
+                        ;
+
+         leave brBlock;
+       end;
+
+       if $inTaxAmount.taxRate ^= 0 then do;
+         outTaxAmountTab.tab(index).
+           taxRate = $inTaxAmount.taxRate;
+       end;
+
+       outTaxAmountTab.tab(index).taxAmount =
+         add(outTaxAmountTab.tab(index).taxAmount
+            ,$inTaxAmount.taxAmount
+            ,31,8);
+     end;
+     else
+     do;
+       outTaxAmountTab.header.inUse += 1;
+       @TRACE_DEBUG @$list('new i',outTaxAmountTab.header.inUse);
+       if outTaxAmountTab.header.inUse >= outTaxAmountTab.header.tabSize
+         then call YTSTOOL#resizeTab($pOutTaxAmountTab
+                                    ,size(outTaxAmountTab.tab(1))
+                                    ,YTSCALC#TAX_AMOUNT_TAB_SIZE
+                                    ,$pTrace
+                                    );
+       outTaxAmountTab.tab(outTaxAmountTab.header.inUse).
+         taxFormulaNumberInd = $inTaxAmount.taxFormulaNumberInd;
+       outTaxAmountTab.tab(outTaxAmountTab.header.inUse).
+         secAmountKeyInd     = $inTaxAmount.secAmountKeyInd;
+
+       outTaxAmountTab.tab(outTaxAmountTab.header.inUse).
+         taxAmountTypeCode = $inTaxAmount.taxAmountTypeCode;
+       outTaxAmountTab.tab(outTaxAmountTab.header.inUse).
+         taxformulaNumber  = 0;
+       outTaxAmountTab.tab(outTaxAmountTab.header.inUse).
+         taxRate           = $inTaxAmount.taxRate;
+       outTaxAmountTab.tab(outTaxAmountTab.header.inUse).
+         taxAmount         = $inTaxAmount.taxAmount;
+       outTaxAmountTab.tab(outTaxAmountTab.header.inUse).
+         secAmountKey      = $inTaxAmount.secAmountKey;
+       outTaxAmountTab.tab(outTaxAmountTab.header.inUse).
+         taxAmountCcyIso   = $inTaxAmount.taxAmountCcyIso;
+     end;
+
+   end brBlock;
+
+   @TRACE_PROC_END;
+
+ end sumUpTaxAmount;
+
+ /*---------------------------------------------------------------------
+ BR17_14 Accumulate tax base amounts
+ BR17_15 Accumulate total withheld tax amounts
+ BR17_16 Accumulate US reportable amounts
+ BR17_17 Accumulate Swiss Retention Tax (STRUSA)
+ BR17_20 Accumulate Gross Taxable Yield
+ BR17_21 Accumulate Distribution Amounts
+ BR17_22 Accumulate US Reportable Amounts
+ BR17_24 Accumulate ETR amounts
+ ---------------------------------------------------------------------*/
+ indexTaxAmount:
+   proc($pOutTaxAmountTab
+       ,$inTaxAmount
+       ,$pTrace
+       )
+   returns(fixed bin(31))
+   options(inLine
+           noDescriptor
+          )
+   ;
+   dcl $pOutTaxAmountTab ptr                     inOnly nonAsgn byValue;
+   dcl $inTaxAmount      type YTSCALC#taxAmount_T inOnly nonAsgn byAddr;
+   dcl $pTrace           ptr                     inOnly nonAsgn byValue;
+
+   @TRACE_PROC_START @$mainPtr($pTrace)
+                     @$param(   $inTaxAmount.taxAmountTypeCode
+                            ,¢f!$inTaxAmount.secAmountKey
+                            ,   $inTaxAmount.taxRate
+                            )
+                     @$levels(1)
+                     ;
+
+   dcl outTaxAmountTab type YTSCALC#taxAmountTab_T
+                         based($pOutTaxAmountTab);
+   dcl i fixed bin(31);
+
+   searchBlock: do;
+     do i = lBound(outTaxAmountTab.tab)
+         to outTaxAmountTab.header.inUse;
+       if($inTaxAmount.taxAmountTypeCode = 1
+         &outTaxAmountTab.tab(i).taxAmountTypeCode =
+            $inTaxAmount.taxAmountTypeCode
+         )
+        ¨($inTaxAmount.taxAmountTypeCode = 2
+         &outTaxAmountTab.tab(i).taxAmountTypeCode =
+            $inTaxAmount.taxAmountTypeCode
+         &outTaxAmountTab.tab(i).secAmountKey =
+            $inTaxAmount.secAmountKey
+         )
+        ¨($inTaxAmount.taxAmountTypeCode = 3
+         &outTaxAmountTab.tab(i).taxAmountTypeCode =
+            $inTaxAmount.taxAmountTypeCode
+         &outTaxAmountTab.tab(i).secAmountKey =
+            $inTaxAmount.secAmountKey
+         )
+        ¨($inTaxAmount.taxAmountTypeCode = 4
+         &outTaxAmountTab.tab(i).taxAmountTypeCode =
+            $inTaxAmount.taxAmountTypeCode
+         )
+        ¨($inTaxAmount.taxAmountTypeCode = 5
+         &outTaxAmountTab.tab(i).taxAmountTypeCode =
+            $inTaxAmount.taxAmountTypeCode
+         )
+        ¨($inTaxAmount.taxAmountTypeCode = 6
+         &outTaxAmountTab.tab(i).taxAmountTypeCode =
+            $inTaxAmount.taxAmountTypeCode
+         )
+        ¨($inTaxAmount.taxAmountTypeCode = 7
+         &outTaxAmountTab.tab(i).taxAmountTypeCode =
+            $inTaxAmount.taxAmountTypeCode
+         )
+        ¨($inTaxAmount.taxAmountTypeCode = 8
+         &outTaxAmountTab.tab(i).taxAmountTypeCode =
+            $inTaxAmount.taxAmountTypeCode
+         )
+       then leave searchBlock;
+     end;
+     i = 0;
+   end searchBlock;
+
+   @TRACE_PROC_END @$param(¢t!i);
+
+   return(i);
+
+ end indexTaxAmount;
+
+ /*---------------------------------------------------------------------
+ BR17_18 Accumulate Receipt of Cover
+ ---------------------------------------------------------------------*/
+ addRoc:
+   proc($orderValuesIn
+       ,$orderValuesOut
+       ,$pTrace
+       )
+   options(inLine
+           noDescriptor
+          )
+   ;
+   dcl $orderValuesIn   type YTSCALC#orderTaxResult_T
+                                        inOnly  nonAsgn byAddr;
+   dcl $orderValuesOut  type YTSCALC#orderTaxResult_T
+                                        outOnly    asgn byAddr;
+   dcl $pTrace          ptr             inOnly  nonAsgn byValue;
+
+   @TRACE_PROC_START @$mainPtr($pTrace);
+
+   $orderValuesOut.receiptOfCoverAmount =
+     add($orderValuesOut.receiptOfCoverAmount
+        ,$orderValuesIn.receiptOfCoverAmount
+        ,31,8);
+   $orderValuesOut.receiptOfCoverBesl   =
+     $orderValuesIn.receiptOfCoverBesl;
+   $orderValuesOut.receiptOfCoverCcyIso =
+     $orderValuesIn.receiptOfCoverCcyIso;
+
+   @TRACE_PROC_END;
+
+ end addRoc;
+
+ /*---------------------------------------------------------------------
+ UC37: Prepare over all client advice text for tax
+ BR37_02: Prepare client advice DDT text information
+ BR37_04: Prepare client advice section 3 text
+ ---------------------------------------------------------------------*/
+ addTextCode:
+   proc($orderValuesIn
+       ,$orderValuesOut
+       ,$requestId
+       ,$pTrace
+       ,$return
+       )
+   options(inLine
+           noDescriptor
+          )
+   ;
+   dcl $orderValuesIn    type YTSCALC#orderTaxResult_T
+                                               inOnly nonAsgn byAddr;
+   dcl $orderValuesOut   type YTSCALC#orderTaxResult_T
+                                              outOnly    asgn byAddr;
+   dcl $requestId        char(80)              inOnly nonAsgn byAddr;
+   dcl $pTrace           ptr                   inOnly nonAsgn byValue;
+   dcl $return           type TSDEFS#return_T outOnly    asgn byAddr;
+
+   @TRACE_PROC_START @$mainPtr($pTrace)
+                     @$param(¢p!$orderValuesIn.textCode
+                            ,¢p!$orderValuesOut.textCode
+                            )
+                     ;
+
+   /*BR37_02*/
+   select($orderValuesOut.textCode);
+     when('','00')
+     do;
+       $orderValuesOut.textCode = $orderValuesIn.textCode;
+       $orderValuesOut.textCodeCount = $orderValuesIn.textCodeCount;
+     end;
+     when($orderValuesIn.textCode); //equal, nothing to do
+     other
+     do;
+       if $orderValuesIn.textCode ^= '00' then
+       do;
+         @YTSTOOL#setReturn @$returnStruc($return)
+                            @$returnCode(8)
+                            @$reasonCode(1017)
+                           @$reasonTxt ('Different text block codes on '
+                                      ¨¨'component level'
+                                       )
+                            ;
+         @YTSEXLG#LogEx @$requestId($requestId)
+                        @$returnStruc($return)
+                        ;
+       end;
+     end;
+   end;
+
+   /*BR37_04*/
+   select($orderValuesOut.addTextCode);
+     when('','00')
+     do;
+       $orderValuesOut.addTextCode = $orderValuesIn.addTextCode;
+       $orderValuesOut.addTextCodeCount =
+         $orderValuesIn.addTextCodeCount;
+     end;
+     when($orderValuesIn.addTextCode); //equal, nothing to do
+     other
+     do;
+       if $orderValuesIn.addTextCode ^= '00' then
+       do;
+         $orderValuesOut.addTextCode = $orderValuesIn.addTextCode;
+         $orderValuesOut.addTextCodeCount =
+           $orderValuesIn.addTextCodeCount;
+       end;
+     end;
+   end;
+
+   @TRACE_PROC_END;
+
+ end addTextCode;
+
+ /*---------------------------------------------------------------------
+ BR17_18 Accumulate Receipt of Cover
+ ---------------------------------------------------------------------*/
+ setReceiptOfCoverRate:
+   proc($pTaxAmountTab
+       ,$receiptOfCoverOut
+       ,$requestId
+       ,$pTrace
+       ,$return
+       )
+   options(inLine
+           noDescriptor
+          )
+   ;
+   dcl $pTaxAmountTab     ptr                   inOnly nonAsgn byValue;
+   dcl $receiptOfCoverOut type YTSCALC#orderTaxResult_T
+                                               outOnly    asgn byAddr;
+   dcl $requestId         char(80)              inOnly nonAsgn byAddr;
+   dcl $pTrace            ptr                   inOnly nonAsgn byValue;
+   dcl $return            type TSDEFS#return_T outOnly    asgn byAddr;
+
+   @TRACE_PROC_START @$mainPtr($pTrace);
+
+   brBlock: do;
+
+     dcl taxAmountTab             type YTSCALC#taxAmountTab_T
+                                    based($pTaxAmountTab);
+     dcl totalGrossSearchCriteria type YTSCALC#taxAmount_T;
+     dcl totalGrossIndex          fixed bin(31);
+
+     totalGrossSearchCriteria = value(:YTSCALC#taxAmount_T:);
+     totalGrossSearchCriteria.taxAmountTypeCode = 5;
+     totalGrossIndex = indexTaxAmount($pTaxAmountTab
+                                     ,totalGrossSearchCriteria
+                                     ,@TRACE_MAIN_POINTER
+                                     );
+     if totalGrossIndex <= 0 then
+     do;
+       @YTSTOOL#setReturn @$returnStruc($return)
+                          @$returnCode(12)
+                          @$reasonCode(3)
+                          @$reasonTxt ('no taxable gross amount found')
+                          ;
+       @YTSEXLG#LogEx @$requestId($requestId)
+                      @$returnStruc($return)
+                      ;
+
+       leave brBlock;
+     end;
+
+     if taxAmountTab.tab(totalGrossIndex).taxAmount ^= 0 then
+     do;
+       $receiptOfCoverOut.receiptOfCoverRate =
+         divide(multiply(100
+                        ,$receiptOfCoverOut.receiptOfCoverAmount
+                        ,31,8
+                        )
+               ,taxAmountTab.tab(totalGrossIndex).taxAmount
+               ,31,8
+               );
+     end;
+     else
+     do;
+       $receiptOfCoverOut.receiptOfCoverRate = 100;
+     end;
+
+
+     @TRACE_DEBUG @$param($receiptOfCoverOut.receiptOfCoverRate
+                         ,$receiptOfCoverOut.receiptOfCoverAmount
+                         ,taxAmountTab.tab(totalGrossIndex).taxAmount
+                         );
+
+   end brBlock;
+
+   @TRACE_PROC_END;
+
+ end setReceiptOfCoverRate;
+
+ /*-------------------------------------------------------------------*/
+ tariffExpressionTabSortCompare:
+   proc($p1
+       ,$p2
+       )
+   returns(fixed bin(31) byValue)
+   ;
+
+   dcl $p1                        ptr byValue;
+   dcl $p2                        ptr byValue;
+
+   dcl result                     fixed bin(31);
+   dcl tariffExpression           type YTSCALC#tariffExpression_T based;
+
+   //ascending
+   select;
+     when($p1->tariffExpression.formulaNumber
+         <$p2->tariffExpression.formulaNumber
+         )
+       result = -1;
+     when($p1->tariffExpression.formulaNumber
+         >$p2->tariffExpression.formulaNumber
+         )
+       result = 1;
+     when($p1->tariffExpression.formulaNumber
+         =$p2->tariffExpression.formulaNumber
+         )
+       result = 0;
+     other; //impossible
+   end;
+
+   return(result);
+
+ end tariffExpressionTabSortCompare;
+
+ end ytscalc;

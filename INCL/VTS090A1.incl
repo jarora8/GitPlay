@@ -1,0 +1,43 @@
+ /**********************************************************************
+
+ DATE   : April 2019
+ AUTHOR : Roger Begert
+ PURPOSE: TTS090A1 - PL/1 Table structure
+
+ -----------------------------------------------------------------------
+ MODIFICATION
+ ------------
+ RB: Roger Begert
+ -----------------------------------------------------------------------
+
+ -----------------------------------------------------------------------
+ TASS000002:  DC 2/2019
+ -----------------------------------------------------------------------
+ 12.04.2019 | RB | Initial version
+ -----------------------------------------------------------------------
+ **********************************************************************/
+
+ /*--- generally TASS definitions ------------------------------------*/
+ %xinclude TSDEFS;
+
+ define structure
+ 1 VTS090D#record_T
+ ,2 SOURCE_LINE            BIN FIXED(31)
+ ,2 RETURN_CODE            BIN FIXED(31)
+ ,2 REASON_CODE            BIN FIXED(31)
+ ,2 REQUEST_SUB_ID_IND     type TSDEFS#indicatorVariable
+ ,2 *                      char(2)
+ ,2 SYSTEM_TIMESTAMP       type TSDEFS#timestamp12_T
+ ,2 REQUEST_ID             CHAR(80)
+ ,2 REQUEST_SUB_ID         CHAR(40)
+ ,2 MAIN_NAME              CHAR(8)
+ ,2 PACKAGE_NAME           CHAR(8)
+ ,2 PROC_NAME              CHAR(50)
+ ,2 JOB_NAME               CHAR(8)
+ ,2 JOB_NR                 CHAR(8)
+ ,2 JES_NODE               CHAR(3)
+ ,2 PID                    CHAR(8)
+ ,2 IFMS_SERVICE_EXCEPTION CHAR(8)
+ ,2 ERROR_MESSAGE          CHAR(32000) VAR
+ ,2 *                      char(1)
+ ;

@@ -1,0 +1,21 @@
+000100*01  DSDS-COLLATERAL-RECORD.                                      00010000
+000200     03  COLLAT-RECORD-ID.                                        00020000
+000300         05  COLLAT-BK-NO    PIC 999                     COMP-3.  00030001
+000310         05  COLLAT-RATE     PIC 9V99                    COMP-3.  00031001
+000400         05  COLLAT-SEQ-NO   PIC 9(5)                    COMP-3.  00040001
+000500     03  COLLAT-ESCROW-CODE  PIC X(04).                           00050003
+000600     03  COLLAT-LOCATION     PIC X(04).                           00060003
+000700     03  COLLAT-CURR-DATE    PIC 9(7)                    COMP-3.  00070000
+000800     03  COLLAT-DESC         PIC X(26).                           00080000
+000900     03  FILLER REDEFINES COLLAT-DESC.                            00090000
+001000         05  COL-DESC1       PIC X(16).                           00100000
+001100         05  COL-DESC2       PIC X(10).                           00110000
+001200     03  COLLAT-PAR-VALUE    PIC S9(9)V99                COMP-3.  00120000
+001300     03  COLLAT-MARKET-VALUE PIC S9(9)V99                COMP-3.  00130000
+001400     03  COLLAT-AVAIL-BAL    PIC S9(9)V99                COMP-3.  00140000
+001500     03  COLLAT-RATIO        PIC S99V9(9)                COMP-3.  00150005
+001800     03  COLLAT-CUSIP        PIC X(9).                            00180000
+001810     03  COLLAT-BAP-SECURITY PIC X(10).                           00181004
+001820     03  COLLAT-PLG-SECURITY PIC X(10).                           00182004
+001900     03  FILLER              PIC X(02).                           00190004
+002000     EJECT                                                        00200000

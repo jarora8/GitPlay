@@ -1,0 +1,112 @@
+      ******************************************************************
+      * DCLGEN TABLE(CIF.ACCOUNT)                                      *
+      *        LIBRARY(LMFPROG.APPLDCL.U099257(CIFACCT))               *
+      *        ACTION(REPLACE)                                         *
+      *        LANGUAGE(COBOL)                                         *
+      *        QUOTE                                                   *
+      * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+      ******************************************************************
+           EXEC SQL DECLARE CIF.ACCOUNT TABLE
+           ( ACCT_BANK_NBR                  DECIMAL(3, 0) NOT NULL,
+             ACCT_FILE_ID                   CHAR(4) NOT NULL,
+             ACCT_KEY                       CHAR(25) NOT NULL,
+             ACCT_ADDRESS_ID                DECIMAL(9, 0) NOT NULL,
+             ACCT_MAIL_CODE                 CHAR(1) NOT NULL,
+             ACCT_OPEN_DATE                 DATE NOT NULL,
+             ACCT_CLOSE_DATE                DATE NOT NULL,
+             ACCT_STATUS                    CHAR(1) NOT NULL,
+             ACCT_PROG_MAINT_DT             TIMESTAMP NOT NULL,
+             ACCT_BALANCE                   DECIMAL(13, 2) NOT NULL,
+             ACCT_PROMO_CODE                DECIMAL(5, 0) NOT NULL,
+             ACCT_DESC_CODE                 SMALLINT NOT NULL,
+             ACCT_NAME_RPL                  VARCHAR(40) NOT NULL,
+             ACCT_NAME_EXT_RPL              VARCHAR(40) NOT NULL,
+             ACCT_NAME_ADD1                 VARCHAR(40) NOT NULL,
+             ACCT_NAME_ADD2                 VARCHAR(40) NOT NULL,
+             ACCT_NAME_ADD3                 VARCHAR(40) NOT NULL,
+             ACCT_TITLE                     VARCHAR(40) NOT NULL,
+             ACCT_OPENED_BY_OPERATOR        DECIMAL(5, 0) NOT NULL
+           ) END-EXEC.
+      ******************************************************************
+      * COBOL DECLARATION FOR TABLE CIF.ACCOUNT                        *
+      ******************************************************************
+       01  CIF-ACCOUNT.
+           10 ACCT-BANK-NBR        PIC S9(3)V USAGE COMP-3.
+           10 ACCT-FILE-ID         PIC X(4).
+           10 ACCT-KEY             PIC X(25).
+           10 ACCT-ADDRESS-ID      PIC S9(9)V USAGE COMP-3.
+           10 ACCT-MAIL-CODE       PIC X(1).
+              88  ACCT-MAIL-CODE-AUDIT         VALUE 'A'.
+              88  ACCT-MAIL-CODE-BYPASS        VALUE 'B'.
+              88  ACCT-MAIL-CODE-CHECKMATE     VALUE 'C'.
+              88  ACCT-MAIL-CODE-EMPLOYEE      VALUE 'E'.
+              88  ACCT-MAIL-CODE-EMPLOYEE-MAIL VALUE 'G'.
+              88  ACCT-MAIL-CODE-HOLD          VALUE 'H'.
+              88  ACCT-MAIL-CODE-MAIL-ALL      VALUE 'M'.
+              88  ACCT-MAIL-CODE-MAIL-ALWAYS   VALUE 'X'.
+              88  ACCT-MAIL-CODE-ONE-STMT      VALUE '1'.
+              88  ACCT-MAIL-CODE-VALID         VALUE 'A' 'B' 'C'
+                                                     'E' 'G' 'H'
+                                                     'M' 'X' '1'.
+           10  ACCT-OPEN-DATE-X.
+               15  ACCT-OPEN-DATE         PIC X(10).
+           10  FILLER REDEFINES ACCT-OPEN-DATE-X.
+               15  ACCT-OPEN-DATE-YR      PIC 9(4).
+               15  ACCT-OPEN-DATE-D1      PIC X.
+               15  ACCT-OPEN-DATE-MO      PIC 9(2).
+               15  ACCT-OPEN-DATE-D2      PIC X.
+               15  ACCT-OPEN-DATE-DY      PIC 9(2).
+           10  ACCT-CLOSE-DATE-X.
+               15  ACCT-CLOSE-DATE        PIC X(10).
+           10  FILLER REDEFINES ACCT-CLOSE-DATE-X.
+               15  ACCT-CLOSE-DATE-YR     PIC 9(4).
+               15  ACCT-CLOSE-DATE-D1     PIC X.
+               15  ACCT-CLOSE-DATE-MO     PIC 9(2).
+               15  ACCT-CLOSE-DATE-D2     PIC X.
+               15  ACCT-CLOSE-DATE-DY     PIC 9(2).
+           10 ACCT-STATUS          PIC X(1).
+              88  ACCT-STATUS-OPEN            VALUE 'O'.
+              88  ACCT-STATUS-CLOSED          VALUE 'C'.
+              88  ACCT-STATUS-VALID           VALUE 'O' 'C'.
+           10  ACCT-PROG-MAINT-DT-X.
+               15  ACCT-PROG-MAINT-DT     PIC X(26).
+           10  FILLER REDEFINES ACCT-PROG-MAINT-DT-X.
+               15  ACCT-PROG-MAINT-YR     PIC 9(4).
+               15  ACCT-PROG-MAINT-D1     PIC X.
+               15  ACCT-PROG-MAINT-MO     PIC 9(2).
+               15  ACCT-PROG-MAINT-D2     PIC X.
+               15  ACCT-PROG-MAINT-DY     PIC 9(2).
+               15  ACCT-PROG-MAINT-D3     PIC X.
+               15  ACCT-PROG-MAINT-HR     PIC 9(2).
+               15  ACCT-PROG-MAINT-P1     PIC X.
+               15  ACCT-PROG-MAINT-MI     PIC 9(2).
+               15  ACCT-PROG-MAINT-P2     PIC X.
+               15  ACCT-PROG-MAINT-SE     PIC 9(2).
+               15  ACCT-PROG-MAINT-P3     PIC X.
+               15  ACCT-PROG-MAINT-MS     PIC 9(6).
+           10 ACCT-BALANCE                PIC S9(11)V99   COMP-3.
+           10 ACCT-PROMO-CODE             PIC S9(5)       COMP-3.
+           10 ACCT-DESC-CODE              PIC S9(4)       COMP.
+           10 ACCT-NAME-RPL.
+              49 ACCT-NAME-RPL-LEN        PIC S9(4)       COMP.
+              49 ACCT-NAME-RPL-TEXT       PIC X(40).
+           10 ACCT-NAME-EXT-RPL.
+              49 ACCT-NAME-EXT-RPL-LEN    PIC S9(4)       COMP.
+              49 ACCT-NAME-EXT-RPL-TEXT   PIC X(40).
+           10 ACCT-NAME-ADD1.
+              49 ACCT-NAME-ADD1-LEN       PIC S9(4)       COMP.
+              49 ACCT-NAME-ADD1-TEXT      PIC X(40).
+           10 ACCT-NAME-ADD2.
+              49 ACCT-NAME-ADD2-LEN       PIC S9(4)       COMP.
+              49 ACCT-NAME-ADD2-TEXT      PIC X(40).
+           10 ACCT-NAME-ADD3.
+              49 ACCT-NAME-ADD3-LEN       PIC S9(4)       COMP.
+              49 ACCT-NAME-ADD3-TEXT      PIC X(40).
+           10 ACCT-TITLE.
+              49 ACCT-TITLE-LEN           PIC S9(4)       COMP.
+              49 ACCT-TITLE-TEXT          PIC X(40).
+           10 ACCT-OPENED-BY-OPERATOR
+              PIC S9(5)V USAGE COMP-3.
+      ******************************************************************
+      * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 19      *
+      ******************************************************************

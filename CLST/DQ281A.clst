@@ -1,0 +1,1394 @@
+      ************************************************************
+      *    I D E N T I F I C A T I O N    D I V I S I O N
+      ************************************************************
+       IDENTIFICATION DIVISION.
+
+       PROGRAM-ID.    DQ281A.
+
+      ************************************************************
+      * PROGRAMME LOG
+      ************************************************************
+      *
+      * PROGRAM  DATE        AUTHOR      CHANGE DESCRIPTION
+      *  VER #
+      * -------- ----------- ----------- -------------------------
+      * 001      10/07/2012  INFOSYS     INITIAL VERSION
+      *
+      ************************************************************
+      * FUNCTION    : THIS MODULE WILL READ THE INPUT FILE AND
+      *               GENERATE OUTPUT XML FILE
+      *
+      * INPUT       : FILE NAME             COPYBOOK
+      *               ------------------    --------
+      *               1) INPUT DATA FILE   -  DQ281I01
+      *
+      * OUTPUT      : FILE NAME             COPYBOOK
+      *               ------------------    --------
+      *               1) OUTPUT XML FILE   -  DQ281O01
+      *
+      * CALLS       : UT804   ==> ERROR MODULE
+      *
+      ************************************************************
+      * ENVIRONMENT DIVISION
+      ************************************************************
+       ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+       SPECIAL-NAMES.
+           DECIMAL-POINT IS COMMA.
+      *
+      *****************************************************************
+       INPUT-OUTPUT SECTION.
+      *****************************************************************
+       FILE-CONTROL.
+
+           SELECT I01-DATA-FILE     ASSIGN  TO DQ281I01
+              FILE STATUS IS WS-INPUT-FILE-STATUS.
+
+           SELECT I02-LEVR-DATA     ASSIGN  TO DQ281I02
+              FILE STATUS IS WS-LEV-FILE-STATUS.
+
+           SELECT I03-CNTR-FILE     ASSIGN  TO DQ281I03
+              FILE STATUS IS WS-CNTRL-FILE-STATUS.
+
+           SELECT XML-FILE          ASSIGN  TO DQ281O01
+              FILE STATUS IS WS-XMLFILE-STATUS.
+
+      ************************************************************
+      * DATA DIVISION
+      ************************************************************
+       DATA DIVISION.
+      *****************************************************************
+       FILE SECTION.
+      *****************************************************************
+
+       FD  I01-DATA-FILE
+           BLOCK CONTAINS 0.
+       COPY A0041672.
+       COPY A0041673.
+       COPY A0041674.
+       COPY A0041675.
+       COPY A0041676.
+       COPY A0064691.
+       COPY RE000301
+                     REPLACING ==RE-RUBRIEKNAAM==
+                     BY ==RE-RUBRIEKNAAM1==.
+       COPY RE515A01.
+       COPY RE000302
+                     REPLACING ==RE-RUBRIEKNAAM==
+                     BY ==RE-RUBRIEKNAAM2==.
+       COPY RE000303
+                     REPLACING ==RE-RUBRIEKNAAM==
+                     BY ==RE-RUBRIEKNAAM3==.
+       COPY RE000304
+                     REPLACING ==RE-RUBRIEKNAAM==
+                     BY ==RE-RUBRIEKNAAM4==.
+       COPY RE000305
+                     REPLACING ==RE-RUBRIEKNAAM==
+                     BY ==RE-RUBRIEKNAAM5==.
+       COPY A0043433.
+       COPY A0041678.
+
+       FD  I02-LEVR-STRKRT
+           BLOCK CONTAINS 0.
+       01  DQ-LEV-DATA.
+           05  DQ-NAAMBRON                  PIC  X(50).
+           05  DQ-KVKNUMMERBRON             PIC  X(08).
+           05  DQ-ADRESBRON                 PIC  X(22).
+           05  DQ-PLATSBRON                 PIC  X(22).
+           05  DQ-NAAMBERICHT               PIC  X(50).
+           05  DQ-KVKNUMMERBRCT             PIC  X(08).
+           05  DQ-ADRESBERICHT              PIC  X(22).
+           05  DQ-VASTBERICHT               PIC  X(22).
+
+       FD  I03-CNTR-FILE
+           BLOCK CONTAINS 0.
+       01  CONTROL-RECORD.
+           05  VERSION-NO                   PIC  X(07).
+           05  RELATION-NO                  PIC  X(08).
+           05  SW-PACKAGE                   PIC  X(27).
+           05  FILLER                       PIC  X(38).
+
+       FD  XML-FILE
+           RECORD IS VARYING IN SIZE
+           FROM 1 TO 32752 CHARACTERS
+           DEPENDING ON XML-DATA-LEN.
+       01  XML-DATA-RECORD                  PIC  X(32752).
+      *
+      ******************************************************************
+      * WORKING STORAGE SECTION                                        *
+      ******************************************************************
+       WORKING-STORAGE SECTION.
+
+       01  OVSSTAMP                                     VALUE
+               'OVSSTAMP=DQ281V0100'.
+           05  FILLER                       PIC  X(09).
+           05  OVS-PROGID.
+               10  OVS-PROG-ID-NAAM         PIC  X(05).
+               10  OVS-MODULELETTER         PIC  X(01).
+               10  OVS-VERSIENR             PIC  X(02).
+               10  OVS-IT-NR                PIC  X(02).
+
+       01  WS-PROGNAAM                      PIC  X(06)  VALUE 'DQ281A'.
+       01  XML-DATA-LEN                     PIC  9(05).
+      ******************************************************************
+      * SWITCH VARIABLES                                               *
+      ******************************************************************
+       01  SWITCHES.
+           05  SW-EOF-INPUT-FILE            PIC  X(01)  VALUE 'N'.
+               88 EOF-INPUT-FILE                        VALUE 'Y'.
+           05  SW-EOF-CNTRL-FILE            PIC  X(01)  VALUE 'N'.
+               88 EOF-CNTRL-FILE                        VALUE 'Y'.
+           05  SW-EOF-CHKP-FREQ-CARD        PIC  X(01)  VALUE 'N'.
+               88  WS-EOF-CHKP-FREQ-CARD                VALUE 'Y'.
+           05  SW-RESTART                   PIC  X(01)  VALUE SPACES.
+               88  WS-NORMAL                            VALUE 'Y'.
+       01  WS-FILE-STATUS.
+           05  WS-INPUT-FILE-STATUS         PIC  X(02).
+           05  WS-CNTRL-FILE-STATUS         PIC  X(02).
+           05  WS-XMLFILE-STATUS            PIC  X(02).
+           05  WS-LEV-FILE-STATUS           PIC  X(02).
+               88  SW-CHK-STATUS-OK                     VALUE '00','10'.
+
+       01  WS-NUMCHARS                      PIC  9(08).
+       01  WS-COUNT1                        PIC  9(08).
+
+      ******************************************************************
+      * HELP VARIABLES                                                 *
+      ******************************************************************
+       01  HULPVELDEN.
+           05  POS-VANAF                    PIC  9(04) USAGE COMP-5.
+           05  AANT-POS                     PIC  9(04) USAGE COMP-5.
+           05  SCAN-POS                     PIC  9(04) USAGE COMP-5.
+           05  EXTRA-POS                    PIC  9(04) USAGE COMP-5.
+
+           05  HULPVELD                     PIC  X(500).
+           05  POSITIE REDEFINES HULPVELD.
+               10  POS                      PIC  X(01) OCCURS 500.
+
+           05  HULPVELD-GESCAND             PIC  X(500).
+           05  POSITIE-G REDEFINES HULPVELD-GESCAND.
+               10  POS-G                    PIC  X(01) OCCURS 500.
+
+       01  WS-BANKGEG                       PIC  X(32756).
+       01  WS-REKENING                      PIC  X(32756).
+       01  WS-LEVERANCIER                   PIC  X(32756).
+       01  WS-CONTROLE                      PIC  X(32756).
+       01  WS-BANKGEG                       PIC  X(32756).
+       01  WS-ACTCHARS                      PIC  9(08).  .
+       01  WS-NUMCHARS                      PIC  9(08).
+      *
+      ******************************************************************
+      * LITERALS
+      ******************************************************************
+      *
+       01  LITERALS.
+           05  H-XML-TAG                    PIC  X(45)  VALUE
+            '<?xml version="1.0" encoding="UTF-8"?>'.
+           05  H-XML-TAG-L                  PIC S9(04) COMP-5
+                                                        VALUE +38.
+           05  H-HEADER1                    PIC  X(24)  VALUE
+            '<Bankgegevens version = '
+           05  H-HEADER1-L                  PIC S9(04) COMP-5
+                                                        VALUE +24.
+           05  H-HEADER1-CONT               PIC  X(98)  VALUE
+            'xmlns:xs="http://www.w3.org/2001/XMLSchema"xmlns:xs_1="http
+      -     '://xml.belastingdienst.nl/schemas/IVGB/'.
+           05  H-HEADER1-CONT-L             PIC S9(04) COMP-5
+                                                        VALUE +98.
+           05  H-HEADER1-CONT2              PIC  X(02)  VALUE
+            '">'.
+           05  H-HEADER1-CONT2-L            PIC S9(04) COMP-5
+                                                       VALUE +02.
+           05  H-XS                         PIC  X(05) VALUE 'xs_1:'
+      *
+      ******************************************************************
+      * ERROR MESSAGES                                                 *
+      ******************************************************************
+       01  WS-ERROR-MSG.
+           05  WS-ERR-MSG-FAILURE           PIC  X(63)  VALUE
+               'ERROR OCCURRED IN PROGRAM VL402A.'.
+           05  WS-ERR-MSG-01                PIC  X(70)  VALUE
+               'VERSION NO. IN CONTROL CARD IS SPACES'.
+           05  WS-ERR-MSG-02                PIC  X(70)  VALUE
+               'RELATION NO. IN CONTROL CARD IS SPACES'.
+           05  WS-ERR-MSG-03                PIC  X(70)  VALUE
+               'SOFTWARE PACKAGE TO CREATE THE XML MESSAGE IS SPACES'.
+           05  WS-ERR-MSG-04                PIC  X(70) VALUE
+               'VORLOOP RECORD IS MISSING IN THE DATA RECORD.'.
+           05  WS-ERR-MSG-05                PIC  X(120) VALUE
+               'THE TAX REPORTING STREAM HAS TO BE EITHER RENSAGEG, LENS
+      -        'AGEG, DIVIDWEP and BESRRGEG AND NOTHING ELSE.'.
+           05  WS-ERR-MSG-06                PIC  X(70)  VALUE
+               'DELIVERY NO. IS NOT NUMERIC OR NOT GREATER THEAN ZERO.'
+           05  WS-ERR-MSG-09                PIC  X(70)  VALUE
+               'CHECKPOINT FREQUENCY IN VL402I02 IS NOT NUMERIC'.
+           05  WS-ERR-MSG-10                PIC  X(70)  VALUE
+               'BRONNAAM HAS SPACES'.
+           05  WS-ERR-MSG-11                PIC  X(50)  VALUE
+               'EMPTY CHECKPOINT FILE'.
+           05  WS-ERR-MSG-12                PIC  X(50)  VALUE
+               'CHECKPOINT CARD HAS WRONG PROGRAM NAME.'.
+           05  WS-ERR-MSG-13                PIC  X(70)  VALUE
+               'CHECKPOINT CARD HAS MORE THAN ONE RECORD.'.
+      ******************************************************************
+      * PARAMETERS                                                     *
+      ******************************************************************
+       01  WS-CALL-PARAMETERS.
+           05  WS-UT804-LOAD                PIC  X(08)  VALUE
+                                                          'UT804   '.
+      *
+      ******************************************************************
+      * XML DATA LAYOUTS
+      ******************************************************************
+      *
+      *PAGE AND INDEX DTLS GENERATED USING XML-GENERATE FUNCTION
+       01  HEADER2.
+           05  SoortBestand                 PIC  X(08).
+           05  valutajaar                   PIC  X(04).
+           05  aanleveringnummer            PIC  X(10).
+           05  volgnummerDeellevering       PIC  9(02).
+           05  aantalDeelleveringen         PIC  9(02).
+           05  relNr                        PIC  9(02).
+           05  gebrSwPakket
+           OCCURS 0 TO 1 TIMES DEPENDING ON NR-gebrSwPakket
+                                            PIC X(27).
+
+      *INFORMATION ABOUT THE SOURCE GENERATED USING XML-GENERATE FUNCT
+       01  leverancier.
+           05  naamBron                     PIC  X(50).
+           05  KvkNummerBron                PIC  9(08).
+           05  adresInstellingBron          PIC  X(22).
+           05  plaatsInstellingBron         PIC  X(22).
+           05  naamBerichtgever             PIC  X(50).
+           05  KvkNummerBerichtgever        PIC  X(08).
+           05  adresInstellingBerichtgever  PIC  X(22).
+           05  vestigingsplaatsInstellingBerichtgever
+                                            PIC  X(22).
+
+      *INFO ABOUT CLIENT AND PRODUCT GENERATED USING XMLGENERATE FUNCT
+       01  rekening.
+           05  rekeningnummer               PIC  X(34).
+           05  labe1                        PIC  X(50).
+           05  indicatieIntrekking          PIC  9(01).
+           05  gezamenlijkBelang            PIC  9(01).
+           05  rekeninghouder OCCURS 0 TO 10 DEPENDING ON
+                   NR-rekeninghouder.
+               10  bSNSofinummer OCCURS 0 TO 1  DEPENDING ON
+                   NR-bSNSofinummer         PIC X(09).
+               10  KVKNummer OCCURS 0 TO 1 DEPENDING ON
+                   NR-kvknummer             PIC X(08).
+               10  naam                     PIC X(70).
+               10  voorletters OCCURS 0 TO 1 DEPENDING ON
+                   NR-voorletters           PIC X(06).
+               10  voorvoegsels OCCURS 0 TO 1 DEPENDING ON
+                   NR-voorvoegsels          PIC X(10).
+               10  geboortedatum OCCURS 0 TO 1 DEPENDING ON
+                   NR-geboortedatum         PIC 9(08).
+               10  indicatieOverleden OCCURS 0 TO 1 DEPENDING ON
+                   NR-indicatieOverleden    PIC 9(01).
+               10  rechtsvorm               PIC 9(01).
+               10  landcodeIngezeten        PIC X(02).
+               10  nietIngezetene OCCURS 0 TO 1 DEPENDING ON
+                   NR-nietIngezetene.
+                   15  adres                 PIC X(35).
+                   15  postcode OCCURS 0 TO 1 DEPENDING ON
+                   NR-postcode              PIC X(09).
+                   15  plaats               PIC X(35).
+                   15  landcodeAdres        PIC X(02).
+                   15  geboorteplaats OCCURS 0 TO 1 DEPENDING ON
+                   NR-geboorteplaats        PIC X(35).
+                   15  landcodeGeboorte OCCURS 0 TO 1 DEPENDING ON
+                   NR-landcodeGeboorte      PIC X(02).
+                   15  tIN              OCCURS 0 TO 1 DEPENDING ON
+                   NR-tIN                   PIC X(20).
+      *PRODUCT DETAILS
+           05  Rente OCCURS 0 TO 500 DEPENDING ON NR-Rente.
+               10  bedraghoogte             PIC S9(13).
+               10  valuta                   PIC  X(03).
+               10  soortRente               PIC  X(02).
+           05 Saldo OCCURS 0 TO 500 DEPENDING ON NR-Saldo.
+               10  bedraghoogte             PIC S9(16).
+               10  valuta                   PIC  X(03).
+               10  soortsaldo               PIC  X(02).
+           05  Bronbelasting OCCURS 0 TO 500
+                 DEPENDING ON NR-Bronbelasting.
+               10  bedraghoogte             PIC S9(12).
+               10  valuta                   PIC  X(03).
+               10  soortBronbelasting       PIC  X(02).
+      *TRAILER XML
+       01  Controle.
+           05  aantalGegevensrecords        PIC  9(08).
+           05  totaalbedragRente            PIC S9(18).
+           05  totaalbedragSaldo            PIC S9(18).
+           05  totaalbedragBronbelasting    PIC S9(17).
+      *
+      ******************************************************************
+      * COUNTS FOR XML DATA TAGS
+      ******************************************************************
+      *
+       01  WS-COUNTERS.
+           05  NR-gebrSwPakket              PIC  9(01).
+           05  NR-rekeninghouder            PIC  9(02).
+           05  NR-BSNSofinummer             PIC  9(01).
+           05  NR-kvknummer                 PIC  9(01).
+           05  NR-voorletters               PIC  9(01).
+           05  NR-voorvoegsels              PIC  9(01).
+           05  NR-geboortedatum             PIC  9(01).
+           05  NR-indicatieOverleden        PIC  9(01).
+           05  NR-nietIngezetene            PIC  9(01).
+           05  NR-postcode                  PIC  9(01).
+           05  NR-geboorteplaats            PIC  9(01).
+           05  NR-landcodeGeboorte          PIC  9(01).
+           05  NR-tIN                       PIC  9(01).
+           05  NR-Rente                     PIC  9(03).
+           05  NR-Saldo                     PIC  9(01).
+           05  NR-Bronbelasting             PIC  9(01).
+
+       01  INDICES.
+           05  IND-CLIENT                   PIC 9999.
+           05  IND-BRON                     PIC 9999.
+           05  IND-RENTE                    PIC 9999.
+           05  IND-WEP                      PIC 9999.
+           05  IND-CNT-CLI                  PIC 9999.
+           05  IND-CNT-BRON                 PIC 9999.
+           05  IND-CNT-CON                  PIC 9999.
+           05  IND-CNT-RENTE                PIC 9999.
+           05  IND-CNT-SALDO                PIC 9999.
+
+       01  WS-COUNT-CONTRACT.
+           05  WS-BRONCNT1                  PIC 9(2).
+           05  WS-RENTECNT1                 PIC 9(2).
+           05  WS-SALDOCNT1                 PIC 9(2).
+           05  WS-BRONCNT                   PIC 9(2).
+           05  WS-RENTECNT                  PIC 9(2).
+           05  WS-SALDOCNT                  PIC 9(2).
+
+       01 VARIABLES.
+           05  WS-COUNT OCCURS 99 TIMES.
+               10  WS-SOFINUMCNT            PIC  9(02).
+               10  WS-KVKCNT                PIC  9(02).
+               10  WS-LETTERCNT             PIC  9(02).
+               10  WS-VOESGELCNT            PIC  9(02).
+               10  WS-GEBCNT                PIC  9(02).
+               10  WS-OVERLEDCNT            PIC  9(02).
+               10  WS-NIETCNT               PIC  9(02).
+               10  WS-POSTCODE              PIC  9(02).
+               10  WS-GEBOORT               PIC  9(02).
+               10  WS-GEBLNCD               PIC  9(02).
+               10  WS-TIN                   PIC  9(02).
+               10  WS-SOFINUMCNT1           PIC  9(02).
+               10  WS-KVKCNT1               PIC  9(02).
+               10  WS-LETTERCNT1            PIC  9(02).
+               10  WS-VOESGELCNT1           PIC  9(02).
+               10  WS-GEBCNT1               PIC  9(02).
+               10  WS-OVERLEDCNT1           PIC  9(02).
+       01  H-REKENING-WRK                   PIC  9(09).
+       01  WS-CLIENT-COUNT                  PIC  9(02).
+       01  H-REKENINGNUMMER                 PIC  X(34).
+       01  H-LABEL-DEPOT                    PIC  X(50).
+
+       01 H-CLIENT-GROUP.
+          05 H-CLIENT-VAR    OCCURS 10 TIMES.
+            10  H-RECORD-TYPE               PIC 9(02).
+            10  H-CORRECTIE                 PIC 9(01).
+            10  H-VALUTA-JAAR               PIC 9(04).
+            10  H-SOFI-NUMMER               PIC 9(09).
+            10  H-KVK-NUMMER                PIC 9(10).
+            10  H-NAAM                      PIC X(70).
+            10  H-VOORLETTERS               PIC X(06).
+            10  H-VOORVOEGSELS              PIC X(10).
+            10  H-GEBOORTE-DATUM.
+                15  H-GEBOORTE-EEUW         PIC 9(02).
+                15  H-GEBOORTE-JAAR         PIC 9(02).
+                15  H-GEBOORTE-MAAND        PIC 9(02).
+                15  H-GEBOORTE-DAG          PIC 9(02).
+            10  H-INDICAT-OVERLEDEN         PIC 9(01).
+            10  H-RECHTSVORM-CODE           PIC 9(02).
+            10  H-LANDCODE                  PIC X(02).
+            10  H-GEZAM-BELANG-BD           PIC X(02).
+            10  H-ADRES                     PIC X(35).
+            10  H-POSTCODE                  PIC X(09).
+            10  H-PLAATS                    PIC X(35).
+            10  H-LANDADRES                 PIC X(02).
+            10  H-GEBOORT                   PIC X(35).
+            10  H-GEBLNCD                   PIC X(02).
+            10  H-TIN                       PIC X(20).
+            10  FILLER                      PIC X(47) VALUE SPACES.
+            10  DQ-GERESERVEERD             PIC X(02) VALUE SPACES.
+          05 H-BRONBELASTING OCCURS 500 TIMES.
+            10  H-BEDRAG-BRON               PIC S9(12).
+            10  H-VALUTA-BRON               PIC X(3).
+            10  H-SOORT-BRON                PIC X(2).
+          05 H-RENTE OCCURS 500 TIMES.
+            10  H-BEDRAG-RENTE              PIC S9(13).
+            10  H-VALUTA-RENTE              PIC X(3).
+            10  H-SOORT-RENTE               PIC X(2).
+          05 H-SALDO OCCURS 500 TIMES.
+            10  H-BEDRAG-SALDO              PIC S9(16).
+            10  H-VALUTA-SALDO              PIC X(3).
+            10  H-SOORT-SALDO               PIC X(2).
+
+       01  H-COUNT.
+           05  H-TOTAL-RECORD               PIC  9(08).
+           05  H-TOTAL-BRON                 PIC  9(18).
+           05  H-TOTAL-RENTE                PIC  9(18).
+           05  H-TOTAL-SALDO                PIC  9(18).
+
+       01  CONSTANTS.
+           05  C-XXXEOD                     PIC  X(10)
+                                                    VALUE 'XXXEOD0011'.
+           05  C-R000005                    PIC  X(10)
+                                                    VALUE 'RE-R000005'.
+           05  C-R000011                    PIC  X(10)
+                                                    VALUE 'RE-R000011'.
+           05  C-DOC415C                    PIC  X(10)
+                                                    VALUE 'RE-DOC415C'.
+      ******************************************************************
+      * LINKAGE SECTION                                                *
+      ******************************************************************
+       LINKAGE SECTION.
+      ******************************************************************
+      * PROCEDURE DIVISION
+      ******************************************************************
+       PROCEDURE DIVISION.
+
+      ******************************************************************
+      * THIS IS MAIN SECTION
+      ******************************************************************
+       0000-DQ281A.
+      *------------*
+      *
+           PERFORM A-INIT-DQ281A
+           PERFORM B-GENERATE-REKENING UNTIL EOF-INPUT-FILE
+           PERFORM C-INFORM-CONTROL
+           PERFORM D-GENERATE-CONTROL
+           GOBACK
+           .
+      *                                                                *
+      ******************************************************************
+      * THIS IS INTIALIZATION SECTION. BELOW FUNCTIONS ARE DONE        *
+      * > INTIALIZATION OF VARIABLES                                   *
+      ******************************************************************
+       A-INIT-DQ281A.
+      *--------------*
+      *
+      *
+           DISPLAY OVSSTAMP
+
+           MOVE LENGTH OF WS-AREA-1         TO WS-AREA-L-1
+           MOVE 1                           TO POS-VANAF
+
+           MOVE ZEROS TO OPGCNT
+                         NR-rekeninghouder
+                         NR-bSNSofinummer
+                         NR-kvknummer
+                         NR-voorletters
+                         NR-voorvoegsels
+                         NR-geboortedatum
+                         NR-indicatieOverleden
+                         NR-Bronbelasting
+                         NR-Rente
+                         NR-Saldo
+                         H-TOTAL-RECORD
+                         H-TOTAL-BRON
+                         H-TOTAL-RENTE
+                         H-TOTAL-SALDO
+                         IND1
+
+           MOVE SPACES   TO XMLVAR
+                            OVRVAR
+                            WS-REKENING
+                            WS-LEVERANCIER
+                            WS-CONTROLE
+                            WS-BANKGEG
+
+
+           INITIALIZE H-CLIENT-GROUP
+                      VARIABLES
+
+           PERFORM A1-OPEN-FILES
+           PERFORM V2-READ-CNTR-FILE
+           PERFORM A2-VALIDATE-CONTROL-CARD
+           PERFORM V1-READ-DATA-FILE
+           PERFORM A3-VALIDATE-INPUT-FILE
+
+
+           PERFORM A4-WRITE-XML-HEADER
+           PERFORM A5-WRITE-LEVERANCIER
+           .
+      ******************************************************************
+      * THIS SECTION OPENS THE INPUT AND OUTPUT FILES
+      ******************************************************************
+       A1-OPEN-FILES.
+      *----------------*
+      *
+           OPEN INPUT I01-DATA-FILE
+
+           IF WS-INPUT-FILE-STATUS   NOT = '00'
+              DISPLAY 'FILE OPEN ERROR - I01-DATA-FILE'
+              DISPLAY 'FILE STATUS CODE ' WS-INPUT-FILE-STATUS
+              PERFORM Z99-ABEND-DQ281A
+           END-IF
+
+           OPEN INPUT I03-CNTR-FILE
+
+           IF WS-CNTRL-FILE-STATUS   NOT = '00'
+              DISPLAY 'FILE OPEN ERROR - I01-DATA-FILE'
+              DISPLAY 'FILE STATUS CODE ' WS-INPUT-FILE-STATUS
+              PERFORM Z99-ABEND-DQ281A
+           END-IF
+
+           OPEN OUTPUT XML-FILE
+
+           IF WS-XMLFILE-STATUS   NOT = '00'
+              DISPLAY 'FILE OPEN ERROR - OUTPUT-XMLFILE'
+              DISPLAY 'FILE STATUS CODE ' WS-XMLFILE-STATUS
+              PERFORM Z99-ABEND-DQ281A
+           END-IF
+           .
+      ******************************************************************
+      * THIS SECTION VALIDATES THE DATA IN THE CONTROL CARD
+      ******************************************************************
+       A2-VALIDATE-CONTROL-CARD.
+      *-------------------------*
+      *
+           IF VERSION-NO                    IN CONTROL-RECORD = SPACES
+              DISPLAY WS-ERR-MSG-01
+              PERFORM Z99-ABEND-DQ281A
+           END-IF
+
+           IF RELATION-NO                   IN CONTROL-RECORD = SPACES
+              DISPLAY WS-ERR-MSG-02
+              PERFORM Z99-ABEND-DQ281A
+           END-IF
+
+           IF SW-PACKAGE                    IN CONTROL-RECORD = SPACES
+              DISPLAY WS-ERR-MSG-03
+              PERFORM Z99-ABEND-DQ281A
+           END-IF
+           .
+      ******************************************************************
+      * THIS SECTION VALIDATES THE DATA IN THE INPUT FILE
+      ******************************************************************
+       A3-VALIDATE-INPUT-FILE.
+      *-----------------------*
+      *
+           IF DQ-RECORD-TYPE                IN DQAANL-VOORLOOP = '00'
+              CONTINUE
+           ELSE
+              DISPLAY WS-ERR-MSG-04
+              PERFORM Z99-ABEND-DQ281A
+           END-IF
+
+           IF  DQ-AANLEVER-OMS(1:8) IN DQAANL-VOORLOOP = 'RENSAGEG'
+               OR 'LENSAGEG' OR 'DIVIDWEP' OR 'BESRRGEG'
+               CONTINUE
+           ELSE
+               DISPLAY WS-ERR-MSG-05
+               PERFORM Z99-ABEND-DQ281A
+           END-IF
+
+           IF  DQ-AANLEVER-OMS(10:10) IN DQAANL-VOORLOOP IS NUMERIC
+               AND DQ-AANLEVER-OMS(10:10) IN DQAANL-VOORLOOP > 0
+               CONTINUE
+           ELSE
+               DISPLAY WS-ERR-MSG-06
+               PERFORM Z99-ABEND-DQ281A
+           END-IF
+           .
+      ******************************************************************
+      * THIS SECTION WRITES THE XML VERSION TAGS
+      ******************************************************************
+       A4-WRITE-XML-HEADER.
+      *--------------------*
+      *
+           MOVE H-XML-TAG                   TO XML-DATA-RECORD
+                                         (POS-VANAF:H-XML-TAG-L)
+           ADD H-XML-TAG-L                  TO POS-VANAF
+
+           MOVE H-HEADER1                   TO XML-DATA-RECORD
+                                         (POS-VANAF:H-HEADER1-L)
+           ADD H-HEADER1-L                  TO POS-VANAF
+
+           MOVE VERSION-NO                  TO XML-DATA-RECORD
+                                         (POS-VANAF:7)
+           ADD 7                            TO POS-VANAF
+
+           MOVE H-HEADER1-CONT              TO XML-DATA-RECORD
+                                         (POS-VANAF:H-HEADER1-CONT-L)
+           ADD H-HEADER1-CONT-L             TO POS-VANAF
+
+           MOVE VERSION-NO                  TO XML-DATA-RECORD
+                                         (POS-VANAF:7)
+           ADD 7                            TO POS-VANAF
+
+           MOVE H-HEADER1-CONT2             TO XML-DATA-RECORD
+                                         (POS-VANAF:H-HEADER1-CONT2-L)
+           ADD H-HEADER1-CONT2-L            TO POS-VANAF
+
+           MOVE DQ-AANLEVER-OMS(1:8)        IN DQAANL-VOORLOOP
+                                            TO SoortBestand
+                                            IN HEADER2
+           MOVE '2012'                      TO valutajaar
+                                            IN HEADER2
+           MOVE DQ-AANLEVER-OMS(10:10)      TO aanleveringnummer
+                                            IN HEADER2
+           MOVE RELATION-NO                 TO relNr
+                                            IN HEADER2
+           MOVE SW-PACKAGE                  TO gebrSwPakket
+                                            IN HEADER2
+           PERFORM A41-GENERATE-HEADER
+           .
+      ******************************************************************
+      * THIS SECTION GENERATES THE XML HEADER TAGS
+      ******************************************************************
+       A41-GENERATE-HEADER.
+      *--------------------*
+      *
+           XML GENERATE WS-BANKGEG
+              FROM HEADER2
+              NAMESPACE-PREFIX IS H-XS
+              COUNT IN WS-NUMCHARS
+           END-XML
+
+           SUBTRACT 10 FROM WS-NUMCHARS GIVING WS-ACTCHARS
+
+           MOVE WS-BANKGEG(10:WS-ACTCHARS)  TO XML-DATA-RECORD
+                                              (POS-VANAF:WS-ACTCHARS)
+
+           ADD WS-NUMCHARS                  TO POS-VANAF
+           .
+      ******************************************************************
+      * THIS SECTION WRITES THE LEVERANCIER TAGS
+      ******************************************************************
+       A5-WRITE-LEVERANCIER.
+      *---------------------*
+      *
+           MOVE DQ-NAAMBRON                 TO naamBron
+           MOVE DQ-KVKNUMMERBRON            TO KvkNummerBron
+           MOVE DQ-ADRESBRON                TO adresInstellingBron
+           MOVE DQ-PLATSBRON                TO plaatsInstellingBron
+           MOVE DQ-NAAMBERICHT              TO naamBerichtgever
+           MOVE DQ-KVKNUMMERBRCT            TO KvkNummerBerichtgever
+           MOVE DQ-ADRESBERICHT             TO
+                                           adresInstellingBerichtgever
+           MOVE DQ-VASTBERICHT              TO
+                                vestigingsplaatsInstellingBerichtgever
+
+           PERFORM A51-GENERATE-LEVERANCIER
+
+           SUBTRACT 1 FROM POS-VANAF GIVING XML-DATA-LEN
+
+           PERFORM W1-XRITE-XML
+           .
+      ******************************************************************
+      * THIS SECTION GENERATES THE XML FOR LEVERANCIER
+      ******************************************************************
+       A51-GENERATE-LEVERANCIER.
+      *-------------------------*
+      *
+           XML GENERATE WS-LEVERANCIER
+              FROM leverancier
+              NAMESPACE-PREFIX IS H-XS
+              COUNT IN WS-NUMCHARS
+           END-XML
+
+           MOVE WS-LEVERANCIER(1:WS-NUMCHARS)
+                                            TO XML-DATA-RECORD
+                                              (POS-VANAF:WS-NUMCHARS)
+
+           ADD WS-NUMCHARS                  TO POS-VANAF
+           .
+      *                                                                *
+      ******************************************************************
+      * THIS PARA GENERATES THE REKENING TAG FOR EACH DOCUMENT         *
+      ******************************************************************
+       B-GENERATE-REKENING.
+      *--------------------*
+      *
+           MOVE 0       TO WS-BRONCNT
+                           WS-SALDOCNT
+                           WS-RENTECNT
+                           WS-CLIENT-COUNT
+           MOVE 0       TO IND-BRON
+                           IND-RENTE
+                           IND-WEP
+                           IND-CLIENT
+                           IND-CNT-CLI
+                           IND-CNT-BRON
+                           IND-CNT-RENTE
+                           IND-CNT-SALDO
+
+           PERFORM UNTIL DQ-DOC1-KEY IN DQAANL-NAW
+                                 = C-XXXEOD OR EOF-INPUT-FILE
+
+      * POPULATING LABEL-DEPOT FIELDS
+              IF DQ-DOC1-KEY IN DQAANL-NAW
+                             = C-DOC415C
+                 MOVE SPACES                TO H-LABEL-DEPOT
+
+              END-IF
+
+              MOVE RE-LABEL                 IN RE-RUBRIEKNAAM1
+                                            TO H-LABEL-DEPOT
+      * POPULATING GENERAL DATA
+              IF DQ-DOC1-KEY IN DQAANL-NAW
+                  = 'RE-V000001'
+                  MOVE ZEROS                TO H-REKENING-WRK
+                  MOVE SPACES               TO H-REKENINGNUMMER
+                  IF RE-REKENINGNUMMER-IBAN IN RE-VARIABELE-GEGEVENS
+                                         NOT = SPACES
+                     MOVE RE-REKENINGNUMMER-IBAN
+                                        IN RE-VARIABELE-GEGEVENS
+                                        TO H-REKENING-WRK
+                  ELSE
+                     MOVE RE-REKENINGNUMMER-BBAN
+                                        IN RE-VARIABELE-GEGEVENS
+                                        TO H-REKENING-WRK
+                  END-IF
+
+                  MOVE RE-INTREKKING    IN RE-RUBRIEKNAAM1
+                                        TO indicatieIntrekking
+                  MOVE H-REKENING-WRK   TO H-REKENINGNUMMER
+              END-IF
+
+      * POPULATING CLIENT FIELDS
+              IF DQ-DOC1-KEY IN DQAANL-NAW
+                  = C-R000005
+                 PERFORM B1-INFORM-CLIENT
+              END-IF
+
+      * POPULATING CONTRACT FIELDS
+              IF DQ-DOC1-KEY IN DQAANL-NAW
+                 = 'RE-R000001' OR 'RE-R000002' OR 'RE-R000003'
+                 PERFORM B2-INFORM-CONTRACT
+              END-IF
+
+              PERFORM V1-READ-DATA-FILE
+
+           END-PERFORM
+      * GENERATING XML
+           IF DQ-DOC1-KEY IN DQAANL-NAW
+           = C-XXXEOD
+              MOVE WS-OPGCNT            TO OPGCNT
+              MOVE WS-CLIENT-COUNT      TO NR-rekeninghouder
+
+
+              PERFORM B3-XML-CLIENT
+              PERFORM B4-XML-CONTRACT
+              PERFORM B5-GENERATE-REKENING
+
+              MOVE ZEROS TO OPGCNT
+                            NR-rekeninghouder
+                            NR-bSNSofinummer
+                            NR-kvknummer
+                            NR-voorletters
+                            NR-voorvoegsels
+                            NR-geboortedatum
+                            NR-indicatieOverleden
+                            NR-Bronbelasting
+                            NR-Rente
+                            NR-Saldo
+              MOVE SPACES TO Rekening
+
+              PERFORM V1-READ-DATA-FILE
+           END-IF
+           .
+      *----------------------------------------------------------------*
+      *  INFORM CLIENT DETAILS
+      *----------------------------------------------------------------*
+       B1-INFORM-CLIENT.
+      *-----------------*
+
+           ADD 1                            TO WS-CLIENT-COUNT
+                                               IND-CLIENT
+
+           IF DQ-SOFI-NUMMER IN BRON-AANLEVER-CLIENT-RENSA NOT = SPACES
+              MOVE 1                        TO WS-SOFINUMCNT(IND-CLIENT)
+              MOVE DQ-SOFI-NUMMER         IN BRON-AANLEVER-CLIENT-RENSA
+                                            TO H-SOFI-NUMMER(IND-CLIENT)
+           ELSE
+              MOVE ZERO                     TO WS-SOFINUMCNT(IND-CLIENT)
+           END-IF
+
+           IF DQ-KVK-NUMMER IN BRON-AANLEVER-CLIENT-RENSA  NOT = SPACES
+              MOVE  1                       TO WS-KVKCNT(IND-CLIENT)
+              MOVE DQ-KVK-NUMMER     IN BRON-AANLEVER-CLIENT-RENSA
+                                            TO H-KVK-NUMMER(IND-CLIENT)
+           ELSE
+              MOVE ZERO                     TO WS-KVKCNT(IND-CLIENT)
+           END-IF
+
+           MOVE DQ-NAAM IN BRON-AANLEVER-CLIENT-RENSA
+                        TO H-NAAM(IND-CLIENT)
+
+           IF DQ-VOORLETTERS IN BRON-AANLEVER-CLIENT-RENSA NOT = SPACES
+              MOVE 1                        TO WS-LETTERCNT(IND-CLIENT)
+              MOVE DQ-VOORLETTERS    IN BRON-AANLEVER-CLIENT-RENSA
+                                            TO H-VOORLETTERS(IND-CLIENT)
+           ELSE
+              MOVE ZERO                     TO WS-LETTERCNT(IND-CLIENT)
+              MOVE SPACES                   TO H-VOORLETTERS(IND-CLIENT)
+           END-IF
+
+           IF DQ-VOORVOEGSELS IN BRON-AANLEVER-CLIENT-RENSA NOT = SPACES
+              MOVE 1                        TO WS-VOESGELCNT(IND-CLIENT)
+              MOVE DQ-VOORVOEGSELS   IN BRON-AANLEVER-CLIENT-RENSA
+                                            TO
+                                              H-VOORVOEGSELS(IND-CLIENT)
+           ELSE
+              MOVE ZERO                     TO WS-VOESGELCNT(IND-CLIENT)
+              MOVE SPACES                   TO
+                                              H-VOORVOEGSELS(IND-CLIENT)
+           END-IF
+
+           IF DQ-GEBOORTE-DAG   IN BRON-AANLEVER-CLIENT-RENSA
+                        NOT = ZEROS AND
+              DQ-GEBOORTE-MAAND IN BRON-AANLEVER-CLIENT-RENSA
+                        NOT = ZEROS AND
+              DQ-GEBOORTE-EEUW  IN BRON-AANLEVER-CLIENT-RENSA
+                        NOT = ZEROS AND
+              DQ-GEBOORTE-JAAR  IN BRON-AANLEVER-CLIENT-RENSA
+                        NOT = ZEROS
+              MOVE 1                        TO WS-GEBCNT(IND-CLIENT)
+              MOVE DQ-GEBOORTE-DAG      IN BRON-AANLEVER-CLIENT-RENSA
+                                            TO
+                                              H-GEBOORTE-DAG(IND-CLIENT)
+              MOVE DQ-GEBOORTE-MAAND    IN BRON-AANLEVER-CLIENT-RENSA
+                                            TO
+                                            H-GEBOORTE-MAAND(IND-CLIENT)
+              MOVE DQ-GEBOORTE-EEUW     IN BRON-AANLEVER-CLIENT-RENSA
+                                            TO
+                                             H-GEBOORTE-EEUW(IND-CLIENT)
+              MOVE DQ-GEBOORTE-JAAR     IN BRON-AANLEVER-CLIENT-RENSA
+                                            TO
+                                             H-GEBOORTE-JAAR(IND-CLIENT)
+           ELSE
+              MOVE 0                        TO WS-GEBCNT(IND-CLIENT)
+              MOVE ZEROS                    TO
+                                            H-GEBOORTE-DATUM(IND-CLIENT)
+           END-IF
+
+           IF DQ-INDICAT-OVERLEDEN IN BRON-AANLEVER-CLIENT-RENSA
+                                   NOT = SPACES
+              MOVE 1                        TO WS-OVERLEDCNT(IND-CLIENT)
+              MOVE DQ-INDICAT-OVERLEDEN IN BRON-AANLEVER-CLIENT-RENSA
+                                            TO
+                                         H-INDICAT-OVERLEDEN(IND-CLIENT)
+           ELSE
+              MOVE 0                        TO WS-OVERLEDCNT(IND-CLIENT)
+              MOVE ZEROS                    TO
+                                         H-INDICAT-OVERLEDEN(IND-CLIENT)
+           END-IF
+
+           MOVE DQ-RECHTSVORM-CODE          IN
+                                             BRON-AANLEVER-CLIENT-RENSA
+                                            TO
+                                           H-RECHTSVORM-CODE(IND-CLIENT)
+
+           MOVE DQ-LANDCODE-INGEZETENSCHAP  IN
+                                             BRON-AANLEVER-CLIENT-RENSA
+                                            TO H-LANDCODE(IND-CLIENT)
+
+           IF H-LANDCODE(IND-CLIENT) NOT = 'NL'
+              PERFORM B10-INFORM-NIETINGEZETENE
+              MOVE 1                        TO WS-NIETCNT(IND-CLIENT)
+           END-IF
+
+           IF DQ-GEZAM-BELANG-BD  IN BRON-AANLEVER-CLIENT-RENSA
+              NOT = SPACES AND ZEROS AND LOW-VALUES
+              MOVE SPACES                   TO
+                                           H-GEZAM-BELANG-BD(IND-CLIENT)
+              MOVE DQ-GEZAM-BELANG-BD  IN BRON-AANLEVER-CLIENT-RENSA
+                                            TO
+                                           H-GEZAM-BELANG-BD(IND-CLIENT)
+           ELSE
+             MOVE SPACES                    TO
+                                           H-GEZAM-BELANG-BD(IND-CLIENT)
+           END-IF
+           .
+      *----------------------------------------------------------------*
+      *  INFORM NIETINGEZETENE DETAILS
+      *----------------------------------------------------------------*
+       B10-INFORM-NIETINGEZETENE.
+      *--------------------------*
+
+           MOVE DQ-ADRES                    IN
+                                             BRON-AANLEVER-CLIENT-RENSA
+                                            TO H-ADRES(IND-CLIENT)
+
+           IF  DQ-POSTCODE IN BRON-AANLEVER-CLIENT-RENSA NOT = SPACES
+               MOVE DQ-POSTCODE             IN
+                                             BRON-AANLEVER-CLIENT-RENSA
+                                            TO H-POSTCODE(IND-CLIENT)
+               MOVE 1                       TO WS-POSTCODE(IND-CLIENT)
+           ELSE
+               MOVE ZERO                    TO WS-POSTCODE(IND-CLIENT)
+           END-IF
+
+           MOVE DQ-PLAATS IN BRON-AANLEVER-CLIENT-RENSA
+                                            TO H-PLAATS(IND-CLIENT)
+
+           MOVE DQ-LANDCODE-ADRES           IN
+                                             BRON-AANLEVER-CLIENT-RENSA
+                                            TO H-LANDADRES(IND-CLIENT)
+
+           IF  DQ-GEBOORTEPLAATS
+                     IN BRON-AANLEVER-CLIENT-RENSA NOT = SPACES
+               MOVE DQ-GEBOORTEPLAATS       IN
+                                             BRON-AANLEVER-CLIENT-RENSA
+                                            TO H-GEBOORT(IND-CLIENT)
+               MOVE 1                       TO WS-GEBOORT(IND-CLIENT)
+           ELSE
+               MOVE ZERO                    TO WS-GEBOORT(IND-CLIENT)
+           END-IF
+
+           IF  DQ-GEBOORTELANDCODE
+                     IN BRON-AANLEVER-CLIENT-RENSA NOT = SPACES
+               MOVE DQ-GEBOORTELANDCODE     IN
+                                             BRON-AANLEVER-CLIENT-RENSA
+                                            TO H-GEBLNCD(IND-CLIENT)
+               MOVE 1                       TO WS-GEBLNCD(IND-CLIENT)
+           ELSE
+               MOVE ZERO                    TO WS-GEBLNCD(IND-CLIENT)
+           END-IF
+
+           IF  DQ-TIN IN BRON-AANLEVER-CLIENT-RENSA NOT = SPACES
+               MOVE DQ-TIN                  IN
+                                             BRON-AANLEVER-CLIENT-RENSA
+                                            TO H-TIN(IND-CLIENT)
+               MOVE 1                       TO WS-TIN(IND-CLIENT)
+           ELSE
+               MOVE ZERO                    TO WS-TIN(IND-CLIENT)
+           END-IF
+           .
+      *----------------------------------------------------------------*
+      *  INFORM CONTRACT DETAILS
+      *----------------------------------------------------------------*
+       B2-INFORM-CONTRACT.
+      *-------------------*
+
+           IF RE-BEDRAG-BRONBELASTING NOT = ZEROS AND LOW-VALUES
+              AND RE-DOC1-KEY IN RE-RUBRIEKNAAM5 = 'RE-R000003'
+              ADD 1                         TO WS-BRONCNT
+                                               IND-BRON
+              IF RE-BEDRAG-BRONBELASTING    IN RE-RUBRIEKNAAM
+                 NOT = ZEROS AND SPACES AND LOW-VALUES
+                 MOVE RE-BEDRAG-BRONBELASTING
+                                            IN RE-RUBRIEKNAAM
+                                            TO H-BEDRAG-BRON(IND-BRON)
+              END-IF
+
+              IF RE-MUNTCODE-BRONBELASTING IN RE-RUBRIEKNAAM5
+                 NOT = ZEROS AND SPACES AND LOW-VALUES
+                 MOVE RE-MUNTCODE-BRONBELASTING
+                                            IN RE-RUBRIEKNAAM5
+                                            TO H-VALUTA-BRON(IND-BRON)
+              END-IF
+
+              IF RE-SOORT-BRONBELASTING   IN RE-RUBRIEKNAAM5
+                 NOT = ZEROS AND SPACES AND LOW-VALUES
+                MOVE RE-MUNTCODE-BRONBELASTING
+                                            IN RE-RUBRIEKNAAM5
+                                            TO H-SOORT-BRON(IND-BRON)
+              END-IF
+           END-IF
+
+           IF RE-RENTE-BEDRAG NOT = ZEROS AND SPACES AND LOW-VALUES
+              AND RE-DOC1-KEY IN RE-RUBRIEKNAAM4 = 'RE-R000002'
+              ADD 1                         TO WS-RENTECNT
+                                               IND-RENTE
+              IF RE-SOORT-RENTE             IN RE-RUBRIEKNAAM4
+                 NOT = ZEROS AND SPACES AND LOW-VALUES
+                 MOVE RE-SOORT-RENTE        IN RE-RUBRIEKNAAM4
+                                            TO H-SOORT-RENTE(IND-RENTE)
+              END-IF
+
+              IF RE-RENTE-BEDRAG IN RE-RUBRIEKNAAM4
+                 NOT = ZEROS AND SPACES AND LOW-VALUES
+                 MOVE RE-RENTE-BEDRAG       IN RE-RUBRIEKNAAM4
+                                            TO H-BEDRAG-RENTE(IND-RENTE)
+              END-IF
+
+              IF RE-ISO-RENTE-BEDRAG IN RE-RUBRIEKNAAM4
+                 NOT = ZEROS AND SPACES AND LOW-VALUES
+                 MOVE RE-ISO-RENTE-BEDRAG   IN RE-RUBRIEKNAAM4
+                                            TO H-VALUTA-RENTE(IND-RENTE)
+              END-IF
+           END-IF
+
+           IF RE-SALDO-BEDRAG NOT = ZEROES AND SPACES AND LOW-VALUES
+              AND RE-DOC1-KEY IN RE-RUBRIEKNAAM3 = 'RE-R000001'
+              ADD 1                         TO WS-SALDOCNT
+                                            IND-WEP
+              IF RE-SOORT-SALDO IN RE-RUBRIEKNAAM3
+                 NOT = SPACES AND ZEROS AND LOW-VALUES
+                 MOVE RE-SOORT-SALDO        IN RE-RUBRIEKNAAM3
+                                            TO H-SOORT-SALDO(IND-WEP)
+              ELSE
+                 MOVE SPACES                TO H-SOORT-SALDO(IND-WEP)
+              END-IF
+
+              IF RE-SALDO-BEDRAG IN RE-RUBRIEKNAAM3
+                 NOT = ZEROS AND LOW-VALUES
+                 MOVE RE-SALDO-BEDRAG       IN RE-RUBRIEKNAAM3
+                                            TO H-BEDRAG-SALDO(IND-WEP)
+              ELSE
+                 MOVE ZEROS                 TO H-BEDRAG-SALDO(IND-WEP)
+              END-IF
+
+              IF RE-ISO-SALDO-BEDRAG IN RE-RUBRIEKNAAM3
+                 NOT = ZEROS AND LOW-VALUES
+                 MOVE RE-ISO-SALDO-BEDRAG   IN RE-RUBRIEKNAAM3
+                                            TO H-VALUTA-SALDO(IND-WEP)
+              ELSE
+                 MOVE SPACES                TO H-VALUTA-SALDO(IND-WEP)
+              END-IF
+           END-IF
+           .
+      *----------------------------------------------------------------*
+      *  INFORM CLIENT DETAILS TO XML CLIENT VARIABLES
+      *----------------------------------------------------------------*
+       B3-XML-CLIENT.
+      *--------------*
+
+           PERFORM UNTIL IND-CNT-CLI >= WS-CLIENT-COUNT
+              ADD 1                         TO IND-CNT-CLI
+              MOVE IND-CNT-CLI              TO REKHOUDCNT1
+
+              IF WS-SOFINUMCNT(IND-CNT-CLI) NOT = ZERO
+                 MOVE WS-SOFINUMCNT(IND-CNT-CLI)
+                                            TO NR-bSNSofinummer
+                 MOVE H-SOFI-NUMMER(IND-CNT-CLI)
+                                            TO bSNSofinummer IN
+                          rekeninghouder(REKHOUDCNT1,NR-bSNSofinummer)
+              ELSE
+                 MOVE ZERO                  TO NR-bSNSofinummer
+              END-IF
+
+              IF WS-KVKCNT(IND-CNT-CLI) NOT = ZERO
+                 MOVE WS-KVKCNT(IND-CNT-CLI)
+                                            TO NR-kvknummer
+                 MOVE H-KVK-NUMMER(IND-CNT-CLI)
+                                            TO KVKNummer IN
+                      rekeninghouder(REKHOUDCNT1,NR-kvknummer)
+              ELSE
+                 MOVE ZERO                  TO NR-kvknummer
+              END-IF
+
+              MOVE SPACES                   TO naam(REKHOUDCNT1)
+              MOVE H-NAAM(IND-CNT-CLI)      TO naam(REKHOUDCNT1)
+
+              IF H-VOORLETTERS(IND-CNT-CLI) NOT = SPACES
+                 MOVE WS-LETTERCNT(IND-CNT-CLI)
+                                            TO NR-voorletters
+                 MOVE H-VOORLETTERS(IND-CNT-CLI)
+                                            TO voorletters
+                    IN rekeninghouder(REKHOUDCNT1,NR-voorletters)
+              ELSE
+                 MOVE ZERO                  TO NR-voorletters
+              END-IF
+
+              IF H-VOORVOEGSELS(IND-CNT-CLI) NOT = SPACES
+                MOVE WS-VOESGELCNT(IND-CNT-CLI)
+                                            TO NR-voorvoegsels
+                MOVE H-VOORVOEGSELS(IND-CNT-CLI)
+                                            TO voorvoegsels
+                  IN rekeninghouder(REKHOUDCNT1,NR-voorvoegsels)
+              ELSE
+                MOVE ZERO                   TO NR-voorvoegsels
+              END-IF
+
+              IF H-GEBOORTE-DATUM(IND-CNT-CLI) NOT = ZERO
+                 MOVE WS-GEBCNT(IND-CNT-CLI)
+                                            TO NR-geboortedatum
+                 MOVE H-GEBOORTE-DATUM(IND-CNT-CLI)
+                                            TO geboortedatum
+                   IN rekeninghouder(REKHOUDCNT1,NR-geboortedatum)
+              ELSE
+                 MOVE ZEROS                 TO NR-geboortedatum
+              END-IF
+
+              IF WS-OVERLEDCNT(IND-CNT-CLI) NOT = ZERO
+                 MOVE WS-OVERLEDCNT(IND-CNT-CLI)
+                                            TO NR-indicatieOverleden
+                 MOVE H-INDICAT-OVERLEDEN(IND-CNT-CLI)
+                                            TO indicatieOverleden
+                 IN rekeninghouder(REKHOUDCNT1,NR-indicatieOverleden)
+              END-IF
+
+              MOVE H-RECHTSVORM-CODE(IND-CNT-CLI)
+                                            TO rechtsvorm
+                         IN rekeninghouder(REKHOUDCNT1)
+
+              MOVE H-LANDCODE(IND-CNT-CLI)  TO landcodeIngezeten
+                         IN rekeninghouder(REKHOUDCNT1)
+
+              IF  H-LANDCODE(IND-CNT-CLI) NOT = 'NL'
+                  MOVE 1                    TO NR-nietIngezetene
+                  PERFORM B31-XML-NIETINGEZETENE
+              END-IF
+
+           END-PERFORM
+
+           COMPUTE H-TOTAL-RECORD = H-TOTAL-RECORD + 1
+           .
+      *----------------------------------------------------------------*
+      *  INFORM NIETINGEZETENE   TO XML NIETINGEZETENE DETAILS
+      *----------------------------------------------------------------*
+       B31-XML-NIETINGEZETENE.
+      *-----------------------*
+
+           MOVE H-ADRES(IND-CNT-CLI)        TO adres IN nietIngezetene
+                 IN rekeninghouder(REKHOUDCNT1,NR-nietIngezetene,
+                                                 NR-adres)
+
+           IF WS-POSTCODE(IND-CNT-CLI) NOT = ZERO
+              MOVE WS-POSTCODE(IND-CNT-CLI) TO NR-postcode
+              MOVE H-POSTCODE(IND-CNT-CLI)  TO postcode
+                 IN nietIngezetene IN rekeninghouder(REKHOUDCNT1,
+                 ,NR-nietIngezetene,NR-postcode)
+           END-IF
+
+           MOVE H-PLAATS(IND-CNT-CLI)       TO plaats IN nietIngezetene
+                 IN rekeninghouder(REKHOUDCNT1,NR-nietIngezetene,
+                                                 NR-plaats)
+
+           MOVE H-LANDADRES(IND-CNT-CLI)    TO landcodeAdres
+                                            IN nietIngezetene
+                 IN rekeninghouder(REKHOUDCNT1,NR-nietIngezetene,
+                                                 NR-landcodeAdres)
+
+           IF WS-GEBOORT(IND-CNT-CLI) NOT = ZERO
+              MOVE WS-GEBOORT(IND-CNT-CLI)  TO NR-geboorteplaats
+              MOVE H-GEBOORT(IND-CNT-CLI)   TO geboorteplaats
+                 IN nietIngezetene IN rekeninghouder(REKHOUDCNT1,
+                 ,NR-nietIngezetene,NR-geboorteplaats)
+           END-IF
+
+           IF WS-GEBLNCD(IND-CNT-CLI) NOT = ZERO
+              MOVE WS-GEBLNCD(IND-CNT-CLI)  TO NR-landcodeGeboorte
+              MOVE H-GEBLNCD(IND-CNT-CLI)   TO landcodeGeboorte
+                 IN nietIngezetene IN rekeninghouder(REKHOUDCNT1,
+                 ,NR-nietIngezetene,NR-landcodeGeboorte)
+           END-IF
+
+           IF WS-TIN(IND-CNT-CLI) NOT = ZERO
+              MOVE WS-TIN(IND-CNT-CLI)      TO NR-tIN
+              MOVE H-TIN(IND-CNT-CLI)       TO tIN
+                 IN nietIngezetene IN rekeninghouder(REKHOUDCNT1,
+                 ,NR-nietIngezetene,NR-tIN)
+           END-IF
+           .
+      *----------------------------------------------------------------*
+      *  INFORM CONTRACT DETAILS TO XML CONTRACT DETAILS
+      *----------------------------------------------------------------*
+       B4-XML-CONTRACT.
+      *----------------*
+
+           MOVE ZEROS TO NR-Bronbelasting
+                         NR-Rente
+                         NR-Saldo
+
+           MOVE WS-BRONCNT                  TO NR-Bronbelasting
+
+           PERFORM UNTIL IND-CNT-BRON >= WS-BRONCNT
+              ADD 1                         TO IND-CNT-BRON
+              MOVE IND-CNT-BRON             TO BRONCNT1
+
+              MOVE ZEROS                    TO
+              bedraghoogte OF bronbelasting(BRONCNT1)
+              MOVE SPACES                   TO
+              valuta OF bronbelasting(BRONCNT1)
+              soortBronbelasting OF bronbelasting(BRONCNT1)
+
+              MOVE H-BEDRAG-BRON(IND-CNT-BRON)
+                                            TO
+                 bedraghoogte OF bronbelasting(BRONCNT1)
+              MOVE H-VALUTA-BRON(IND-CNT-BRON)
+                                            TO
+              valuta OF bronbelasting(BRONCNT1)
+              MOVE H-SOORT-BRON(IND-CNT-BRON)
+                                            TO
+              soortBronbelasting OF bronbelasting(BRONCNT1)
+
+              COMPUTE H-TOTAL-BRON = H-TOTAL-BRON +
+                                     H-BEDRAG-BRON(IND-CNT-BRON)
+           END-PERFORM
+
+           MOVE WS-RENTECNT                 TO NR-Rente
+
+           PERFORM UNTIL IND-CNT-RENTE >= WS-RENTECNT
+              ADD 1                         TO IND-CNT-RENTE
+
+              MOVE IND-CNT-RENTE            TO RENTECNT1
+
+              MOVE ZEROS                    TO
+                                       bedraghoogte OF Rente(RENTECNT1)
+              MOVE SPACES                   TO
+                                       valuta OF Rente(RENTECNT1)
+                                       soortRente of Rente(RENTECNT1)
+
+              MOVE H-BEDRAG-RENTE(IND-CNT-RENTE)
+                                            TO
+                                       bedraghoogte of Rente(RENTECNT1)
+              MOVE H-VALUTA-RENTE(IND-CNT-RENTE)
+                                            TO
+                                       valuta of Rente(RENTECNT1)
+              MOVE H-SOORT-RENTE(IND-CNT-RENTE)
+                                            TO
+                                   soortRente of Rente(RENTECNT1)
+              COMPUTE H-TOTAL-RENTE = H-TOTAL-RENTE +
+                                     H-BEDRAG-RENTE(IND-CNT-RENTE)
+           END-PERFORM
+
+           MOVE WS-SALDOCNT                 TO NR-Saldo
+
+           PERFORM UNTIL IND-CNT-SALDO >= WS-SALDOCNT
+              ADD 1                         TO IND-CNT-SALDO
+              MOVE IND-CNT-SALDO            TO SALDOCNT1
+
+              MOVE ZEROS                    TO
+                             bedraghoogte OF Saldo(SALDOCNT1)
+              MOVE SPACES                   TO
+                             valuta OF Saldo(SALDOCNT1)
+                             soortSaldo of Saldo(SALDOCNT1)
+
+              MOVE H-BEDRAG-SALDO(IND-CNT-SALDO)
+                                            TO
+                             bedraghoogte OF Saldo(SALDOCNT1)
+              MOVE H-VALUTA-SALDO(IND-CNT-SALDO)
+                                            TO
+                             valuta OF Saldo(SALDOCNT1)
+              MOVE H-SOORT-SALDO(IND-CNT-SALDO)
+                                            TO
+                             soortsaldo OF Saldo(SALDOCNT1)
+              COMPUTE H-TOTAL-SALDO = H-TOTAL-SALDO +
+                                      H-BEDRAG-SALDO(IND-CNT-SALDO)
+           END-PERFORM
+           .
+      ****************************************************************
+      * THIS SECTION GENERATES THE REKENING XML
+      ****************************************************************
+       B5-GENERATE-REKENING.
+      *---------------------*
+
+           MOVE SPACES                       TO Labe1
+           MOVE H-LABEL-DEPOT                TO Labe1
+
+           MOVE SPACES                       TO rekeningnummer
+           MOVE H-REKENINGNUMMER             TO rekeningnummer
+
+           MOVE SPACES                       TO gezamenlijkBelang
+           MOVE H-GEZAM-BELANG-BD(IND-CNT-CLI)
+                                             TO gezamenlijkBelang
+
+           XML GENERATE WS-REKENING
+              FROM Rekening
+              NAMESPACE-PREFIX IS H-XS
+              COUNT IN WS-NUMCHARS
+           END-XML
+
+           MOVE SPACES                       TO XML-DATA-RECORD
+           MOVE WS-NUMCHARS                  TO XML-DATA-LEN
+           MOVE WS-REKENING                  TO XML-DATA-RECORD
+
+           COMPUTE IND1 = XML-DATA-LEN - 8
+
+           PERFORM UNTIL XML-MAX-RECORD(IND1:8) = '</Labe1>'
+              SUBTRACT 1 FROM IND1
+           END-PERFORM
+
+           MOVE '</Label>' TO XML-MAX-RECORD(IND1:8)
+
+           COMPUTE IND1 = IND1 - 7
+
+           PERFORM UNTIL XML-MAX-RECORD(IND1:7) = '<Labe1>'
+              SUBTRACT 1 FROM IND1
+           END-PERFORM
+
+           MOVE '<Label>' TO XML-MAX-RECORD(IND1:7)
+           MOVE ZEROS TO IND1
+           PERFORM W1-XRITE-XML
+           .
+      ****************************************************************
+      * THIS SECTION INFORMS THE CONTROLE FILEDS OF THE XML          *
+      ****************************************************************
+       C-INFORM-CONTROL.
+      *-----------------*
+
+           MOVE H-TOTAL-RECORD       TO aantalgegevensrecords
+           MOVE H-TOTAL-BRON         TO totaalbedragBronbelasting
+           MOVE H-TOTAL-RENTE        TO totaalbedragRente
+           MOVE H-TOTAL-SALDO        TO totaalbedragsaldo
+           .
+      ****************************************************************
+      * THIS SECTION GENERATES THE CONTROLE FIELDS OF THE XML        *
+      ****************************************************************
+       D-GENERATE-CONTROL.
+      *----------------------*
+           XML GENERATE WS-CONTROLE
+              FROM Controle
+              NAMESPACE-PREFIX IS H-XS
+              COUNT IN WS-NUMCHARS
+           END-XML
+
+           MOVE SPACES      TO XML-DATA-RECORD
+           MOVE WS-NUMCHARS TO XML-DATA-LEN
+           MOVE WS-CONTROLE TO XML-DATA-RECORD
+           PERFORM W1-XRITE-XML
+           .
+      ******************************************************************
+      * THIS SECTION WRITES THE XML TO THE DATA RECORD
+      ******************************************************************
+       W1-XRITE-XML.
+      *-------------*
+      *
+           WRITE XML-DATA-RECORD
+
+           MOVE  SPACES                     TO XML-DATA-RECORD
+           MOVE  1                          TO POS-VANAF
+           .
+      ******************************************************************
+      * THIS SECTION READS THE INPUT FILE
+      ******************************************************************
+       V1-READ-DATA-FILE.
+      *-------------------*
+      *
+           READ I01-DATA-FILE
+              AT END
+                 SET EOF-INPUT-FILE         TO TRUE
+           END-READ
+           .
+      ******************************************************************
+      * THIS SECTION READS THE CONTROL CARD FILE
+      ******************************************************************
+       V2-READ-CNTR-FILE.
+      *-------------------*
+      *
+           READ I03-CNTR-FILE
+              AT END
+                 SET EOF-CNTRL-FILE        TO TRUE
+           END-READ
+           .
+      *
+      ******************************************************************
+      * THIS SECION CALLS THE ABEND ROUTINE UT804                      *
+      ***********************************************************B******
+       Z99-ABEND-DQ281A.
+      *-----------------*
+      *
+           DISPLAY '                                   '
+           DISPLAY '***********************************'
+           DISPLAY '*** DQ281A ABNORMAL TERMINATION ***'
+           DISPLAY '*** PROGRAM ABENDED VIA UT804   ***'
+           DISPLAY '***********************************'
+           DISPLAY '         ABNORMAL END              '
+           DISPLAY '                                   '
+
+           CALL WS-UT804-LOAD
+           .
+      *
+      ****************** EINDE SOURCE DQ281A ***************************
+       END PROGRAM DQ281A.
+

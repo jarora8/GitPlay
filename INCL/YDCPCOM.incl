@@ -1,0 +1,147 @@
+ /*-------------------------------------------------------------------+ 00000010
+  &                                                                   & 00000020
+  &  Author......: mainframe devlopment team                          & 00000030
+  &  Date........: 23/03/2019                                         & 00000040
+  &                                                                   & 00000041
+  + ----------------------------------------------------------------- + 00000042
+  &  Description :                                                    & 00000043
+  &   This copy book contains the common procedures, variables and    & 00000052
+  &   definations which are most frequently used E2ET PL1 programs.   & 00000053
+  &                                                                   & 00000054
+  &   The SelectEnv Proc get the current mainframe datacenter info    & 00000055
+  &   and sets the DB2 appropiate DB2 sub system.                     & 00000056
+  &                                                                   & 00000057
+  &   The InitiateProgram sets value in some common variable and      & 00000058
+  &   used to display a formatted message in spool.                   & 00000059
+  &                                                                   & 00000060
+  &   The LogTrace used to diaplay in spool in a formatted manner.    & 00000061
+  &                                                                   & 00000062
+  + -----------------------------------------------------------------*/ 00000063
+ default  range(*) label;                                               00000070
+                                                                        00000080
+ /*-------------------------------------------------------------------*/00000100
+ /* PL1 BUILT IN FUNCTIONS                                            */00000200
+ /*-------------------------------------------------------------------*/00000300
+   dcl (addr,char,cstg,length,substr,index,pliretc,trim,bin) builtin;   00000400
+                                                                        00000500
+ /*-------------------------------------------------------------------*/00000600
+ /* Includes                                                          */00000700
+ /*-------------------------------------------------------------------*/00000800
+ %INCLUDE YXJOBN;                                 /* Get Job Name     */00000900
+ %INCLUDE YNIJOBN;                                /* Get Environment  */00001000
+ %INCLUDE YXTS;                                   /* Get Timestamp    */00001200
+ /*-------------------------------------------------------------------*/00001300
+ /* Common Variables                                                  */00001400
+ /*-------------------------------------------------------------------*/00001500
+ dcl DB2_Current_Timestamp  char(26)       init ('');                   00001600
+ dcl DB2_Current_Date       char(10)       init ('');                   00001700
+ dcl PL1_Current_Date       char(08)       init ('');                   00001800
+ dcl CommitSeqNumber        bin fixed(31)  init(0);                     00001900
+ dcl YXRRSAF_rc             bin fixed(31)  init(0);                     00002000
+ dcl @True                  bit(1)         aligned   init('1'B);        00002100
+ dcl @False                 bit(1)         aligned   init('0'B);        00002200
+ dcl @Force                 bit(1)         aligned   init('1'B);        00002300
+ dcl @Dflt                  bit(1)         aligned   init('0'B);        00002400
+ dcl @Trace                 bit(1)         aligned   init('0'B);        00002500
+ dcl @PgmName               char(08)       init(procedurename());       00002600
+ dcl @JobName               char(08)       init('');                    00002601
+ dcl @JobNumber             char(08)       init('');                    00002602
+ dcl @Db2ssid               char(04)       init('');                    00002610
+                                                                        00002620
+ /*-------------------------------------------------------------------*/00002700
+ /* SelectEnv: Get environment details                                */00002800
+ /*-------------------------------------------------------------------*/00002900
+ SelectEnv: proc();                                                     00003000
+                                                                        00003100
+   call ynijobn(ynijobnk);                                              00003200
+                                                                        00003300
+   put skip data (ynijobn);                                             00003400
+                                                                        00003500
+   select (ynijobnk.msgcode);                                           00003600
+     when ('00', '06');                                                 00003700
+     other do;                                                          00003800
+       put skip list('ynjobn was unsuccessfull with rc: '               00003900
+               !!ynijobnk.msgcode ,sourceline());                       00004000
+     end;                                                               00004100
+   end;                                                                 00004200
+                                                                        00004300
+   select (ynijobnk.jesnode);                                           00004400
+     when ('RZX') @Db2ssid = 'DE0G';          /* 'ut'   */              00004500
+     when ('RZY') @Db2ssid = 'DE0G';          /* 'st'   */              00004600
+     when ('RZZ') @Db2ssid = 'DE0G';          /* 'sit'  */              00004700
+     when ('RR1') @Db2ssid = 'DE0G';          /* 'it'   */              00004800
+     when ('RR2') @Db2ssid = 'DE0G';          /* 'pta'  */              00004900
+     when ('RZ0') @Db2ssid = 'DBIA';          /* 'rz0'  */              00005000
+     when ('RZ2') @Db2ssid = 'DE0G';          /* 'prod' */              00005100
+     other do;                                                          00005200
+          put skip list('invalid jesnode: '!!                           00005300
+           ynijobnk.jesnode ,sourceline());                             00005500
+     end;                                                               00005600
+   end;                                                                 00005700
+                                                                        00006000
+ END SelectEnv;                                                         00006100
+ /*===================================================================*/00006200
+ /*      InitiateProgram                                              */00006300
+ /*===================================================================*/00006400
+ InitiateProgram: Proc($PgmDesc);                                       00006500
+    dcl $PgmDesc                char(90)       varying;                 00006600
+                                                                        00006700
+    /*---------------------------------------------------------------*/ 00006800
+    /*  Compile DateTime                                             */ 00006900
+    /*---------------------------------------------------------------*/ 00007000
+    %CompDate: proc returns(char);                                      00007100
+      dcl in char;                                                      00007200
+      dcl out char;                                                     00007300
+      in=compiledate;                                                   00007400
+      out=substr(in,1,15);                                              00007500
+      return(out);                                                      00007600
+    %end;                                                               00007700
+    %activate CompDate;                                                 00007800
+    dcl @CompileTS              char(20)  static init(CompDate);        00007900
+    @CompileTS  = trim(@CompileTS);                                     00008000
+                                                                        00008100
+    /*---------------------------------------------------------------*/ 00008200
+    /*  Program Information                                          */ 00008300
+    /*---------------------------------------------------------------*/ 00008400
+    call LogTrace('1'b,'####',(90)' ');                                 00008500
+    call LogTrace('1'b,'####',(90)'*');                                 00008600
+    call LogTrace('1'b,'####','Program Name        : ' !! @PgmName);    00008700
+    call LogTrace('1'b,'####','Program Description : ' !! $PgmDesc);    00008800
+    call LogTrace('1'b,'####','Last Compiled       : ' !! @CompileTS);  00008900
+    call LogTrace('1'b,'####','Run Time            : ' !! datetime());  00009000
+    call LogTrace('1'b,'####',(90)'*');                                 00009100
+    call LogTrace('1'b,'####',(90)' ');                                 00009200
+                                                                        00009300
+    /*---------------------------------------------------------------*/ 00009400
+    /*  DB2 Current Date and Timestamp                               */ 00009500
+    /*---------------------------------------------------------------*/ 00009600
+    DB2_Current_Timestamp = TIMESTAMP();                                00009700
+    DB2_Current_Date      = repattern(DB2_Current_Timestamp             00009800
+                                     ,'DD.MM.YYYY'                      00009900
+                                     ,'YYYY-MM-DD-HH.MI.SS.999999');    00010000
+    PL1_Current_Date      = repattern(DB2_Current_Timestamp             00010100
+                                     ,'YYYYMMDD'                        00010200
+                                     ,'YYYY-MM-DD-HH.MI.SS.999999');    00010300
+                                                                        00010400
+    /*---------------------------------------------------------------*/ 00010500
+    /*  Get Job Related Information                                  */ 00010600
+    /*---------------------------------------------------------------*/ 00010700
+    call ynijobn(ynijobnk);                                             00010800
+                                                                        00010900
+    @JobName  = YNIJOBNK.JobName;                                       00011100
+    @JobNumber= YNIJOBNK.JobNumber;                                     00011110
+                                                                        00011130
+ End InitiateProgram;                                                   00011200
+ /*-------------------------------------------------------------------*/00011300
+ /*    Display Routine                                                */00011400
+ /*-------------------------------------------------------------------*/00011500
+ LogTrace: Proc($Force,$Tag,$Msg);                                      00011600
+    dcl $Force                  bit(1)         aligned;                 00011700
+    dcl $Tag                    char(04);                               00011800
+    dcl $Msg                    char(*);                                00011900
+    If @Trace ! $Force then                                             00012000
+       Put Skip List(@PgmName       !!' '  !!                           00012100
+                     time()         !!' '  !!                           00012200
+                     $Tag           !!' - '!!                           00012300
+                     trim($Msg));                                       00012400
+ End LogTrace;                                                          00012500

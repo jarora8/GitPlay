@@ -1,0 +1,306 @@
+000100 01  FILLER                  PIC X(16)   VALUE 'DESC FOR DSDS040'.00010048
+000200 01  DSDS040-TX-DESCRIPTION-WORK.                                 00020048
+000300     02  DSDS040-TX-DESCRIPTION.                                  00030048
+000400         03  DSDS040-PART-1  PIC X(16).                           00040048
+000500         03  DSDS040-CHK-NO  pic z(10).                           00050048
+000600     02  DSDS040-0001-A      PIC X(16)   VALUE 'Correction Cred.'.00060048
+000700     02  DSDS040-0001-B      PIC X(10)   VALUE SPACES.            00070048
+000800     02  DSDS040-0002-A      PIC X(16)   VALUE 'Correction Deb. '.00080048
+000900     02  DSDS040-0002-B      PIC X(10)   VALUE SPACES.            00090048
+001000     02  DSDS040-0003-A      PIC X(16)   VALUE 'Return Item     '.00100048
+001100     02  DSDS040-0003-B      PIC X(10)   VALUE SPACES.            00110048
+001200                                                                  00120048
+001300 01  FILLER                  PIC X(16)   VALUE 'DESC FOR DSDS080'.00130048
+001400 01  DSDS080-TX-DESCRIPTION-WORK.                                 00140048
+001500     02  DSDS080-TX-DESCRIPTION.                                  00150048
+001600         03  FILLER          PIC X(9)    VALUE 'Trnsfr - '.       00160048
+001700         03  FILLER          PIC X(08)   VALUE 'Acct No '.        00170048
+001800         03  DSDS080-TX-DESC-ACCT-NO                              00180048
+001900                             PIC Z(9).                            00190048
+002000     02  FILLER REDEFINES DSDS080-TX-DESCRIPTION.                 00200048
+002100         03  DSDS080-TX-DESC-16                                   00210048
+002200                             PIC X(16).                           00220048
+002300         03  DSDS080-TX-DESC-10                                   00230048
+002400                             PIC X(10).                           00240048
+002500     02  DSDS080-0001-A      PIC X(16)   VALUE 'Transfer to Mone'.00250048
+002600     02  DSDS080-0001-B      PIC X(10)   VALUE 'y Market  '.      00260048
+002700     02  DSDS080-0002-A      PIC X(16)   VALUE 'Transfer from Mo'.00270048
+002800     02  DSDS080-0002-B      PIC X(10)   VALUE 'ney Market'.      00280048
+002900     02  DSDS080-0003-A      PIC X(16)   VALUE 'Transfer to Cash'.00290048
+003000     02  DSDS080-0003-B      PIC X(10)   VALUE ' Mgmt     '.      00300048
+003100     02  DSDS080-0004-A      PIC X(16)   VALUE 'Transfer from Ca'.00310048
+003200     02  DSDS080-0004-B      PIC X(10)   VALUE 'sh Mgmt   '.      00320048
+003300     02  DSDS080-0005-A      PIC X(16)   VALUE 'Interest from Mo'.00330048
+003400     02  DSDS080-0005-B      PIC X(10)   VALUE 'ney Market'.      00340048
+003500     02  DSDS080-0006-A      PIC X(16)   VALUE 'Interest to Cash'.00350048
+003600     02  DSDS080-0006-B      PIC X(10)   VALUE ' Mgmt     '.      00360048
+003700                                                                  00370048
+003800                                                                  00380048
+003900 01  FILLER                  PIC X(16)   VALUE 'DESC FOR DSDS100'.00390048
+004000 01  ODB-TX-DESC-WORK.                                            00400048
+004100     02  ODB-ADV-DESC        PIC X(26)   VALUE 'Automatic Adv '.  00410048
+004200     02  FILLER REDEFINES ODB-ADV-DESC.                           00420048
+004300         03  FILLER          PIC X(14).                           00430048
+004400         03  ODB-ADV-DESC-PLAN                                    00440048
+004500                             PIC X(12).                           00450048
+004600     02  FILLER REDEFINES ODB-ADV-DESC.                           00460048
+004700         03  ODB-ADV-DESC-1  PIC X(16).                           00470048
+004800         03  ODB-ADV-DESC-2  PIC X(10).                           00480048
+004900                                                                  00490048
+005000     02  ODB-M-FEE-DESC      PIC X(26)   VALUE 'Monthly Fee '.    00500048
+005100     02  FILLER REDEFINES ODB-M-FEE-DESC.                         00510048
+005200         03  FILLER          PIC X(12).                           00520048
+005300         03  ODB-M-FEE-DESC-PLAN                                  00530048
+005400                             PIC X(14).                           00540048
+005500     02  FILLER REDEFINES ODB-M-FEE-DESC.                         00550048
+005600         03  ODB-M-FEE-DESC-1 PIC X(16).                          00560048
+005700         03  ODB-M-FEE-DESC-2 PIC X(10).                          00570048
+005800                                                                  00580048
+005900     02  ODB-A-FEE-DESC      PIC X(26)   VALUE 'Annual Fee '.     00590048
+006000     02  FILLER REDEFINES ODB-A-FEE-DESC.                         00600048
+006100         03  FILLER          PIC X(11).                           00610048
+006200         03  ODB-A-FEE-DESC-PLAN                                  00620048
+006300                             PIC X(15).                           00630048
+006400     02  FILLER REDEFINES ODB-A-FEE-DESC.                         00640048
+006500         03  ODB-A-FEE-DESC-1 PIC X(16).                          00650048
+006600         03  ODB-A-FEE-DESC-2 PIC X(10).                          00660048
+006700                                                                  00670048
+006800 01  INV-TX-DESC-WORK.                                            00680048
+006900     02  INV-TX-DESC         PIC X(26)   VALUE SPACES.            00690048
+007000     02  FILLER REDEFINES INV-TX-DESC.                            00700048
+007100         03  INV-MAT-DESC-1  PIC X(8).                            00710048
+007200         03  INV-MAT-DESC-2  PIC X(18).                           00720048
+007300     02  FILLER REDEFINES INV-TX-DESC.                            00730048
+007400         03  INV-PUR-DESC-1  PIC X(10).                           00740048
+007500         03  INV-PUR-DESC-2  PIC X(16).                           00750048
+007600     02  FILLER REDEFINES INV-TX-DESC.                            00760048
+007700         03  INV-TX-DESC-16  PIC X(16).                           00770048
+007800         03  INV-TX-DESC-10  PIC X(10).                           00780048
+007900                                                                  00790048
+008000 01  MISCELLANEOUS-OSB-DESCRIPTIONS.                              00800048
+008100     02  OSB-DESC-0001-A     PIC X(16)   VALUE 'Tax Wthld Debit '.00810048
+008200     02  OSB-DESC-0001-B     PIC X(10)   VALUE 'Adjustment'.      00820048
+008300     02  OSB-DESC-0002-A     PIC X(16)   VALUE 'Tax Withheld Int'.00830048
+008400     02  OSB-DESC-0002-B     PIC X(10)   VALUE ' Transfer '.      00840048
+008500     02  OSB-DESC-0003-A     PIC X(16)   VALUE 'Tax Wthld Inv In'.00850048
+008600     02  OSB-DESC-0003-B     PIC X(10)   VALUE 't Transfer'.      00860048
+008700     02  OSB-DESC-0004-A     PIC X(16)   VALUE 'Return Check Cha'.00870048
+008800     02  OSB-DESC-0004-B     PIC X(10)   VALUE 'rge       '.      00880048
+008900     02  OSB-DESC-0005-A     PIC X(16)   VALUE 'Tax Wthld Cred A'.00890048
+009000     02  OSB-DESC-0005-B     PIC X(10)   VALUE 'djustment '.      00900048
+009100     02  OSB-DESC-0006-A     PIC X(16)   VALUE 'Overdraft Charge'.00910048
+009200     02  OSB-DESC-0006-B     PIC X(10)   VALUE SPACES.            00920048
+009300     02  OSB-DESC-0007-A     PIC X(16)   VALUE 'Request Advance '.00930048
+009400     02  OSB-DESC-0007-B     PIC X(10)   VALUE SPACES.            00940048
+009500     02  OSB-DESC-0008-A     PIC X(16)   VALUE 'Overline Advance'.00950048
+009600     02  OSB-DESC-0008-B     PIC X(10)   VALUE SPACES.            00960048
+009700     02  OSB-DESC-0009-A     PIC X(16)   VALUE 'Debit Memo      '.00970048
+009800     02  OSB-DESC-0009-B     PIC X(10)   VALUE SPACES.            00980048
+009900     02  OSB-DESC-0010-A     PIC X(16)   VALUE 'Payment         '.00990048
+010000     02  OSB-DESC-0010-B     PIC X(10)   VALUE SPACES.            01000048
+010100     02  OSB-DESC-0011-A     PIC X(16)   VALUE 'Credit Memo     '.01010048
+010200     02  OSB-DESC-0011-B     PIC X(10)   VALUE SPACES.            01020048
+010300     02  OSB-DESC-0012-A     PIC X(16)   VALUE 'Automatic Advanc'.01030048
+010400     02  OSB-DESC-0012-B     PIC X(10)   VALUE 'e         '.      01040048
+010500     02  OSB-DESC-0013-A     PIC X(16)   VALUE 'Pegged Balance A'.01050048
+010600     02  OSB-DESC-0013-B     PIC X(10)   VALUE 'dvance    '.      01060048
+010700     02  OSB-DESC-0014-A     PIC X(16)   VALUE 'Payment         '.01070048
+010800     02  OSB-DESC-0014-B     PIC X(10)   VALUE SPACES.            01080048
+010900     02  OSB-DESC-0015-A     PIC X(16)   VALUE 'Automatic Payoff'.01090048
+011000     02  OSB-DESC-0015-B     PIC X(10)   VALUE SPACES.            01100048
+011100     02  OSB-DESC-0016-A     PIC X(16)   VALUE 'Minimum Automati'.01110048
+011200     02  OSB-DESC-0016-B     PIC X(10)   VALUE 'c Payment '.      01120048
+011300     02  OSB-DESC-0017-A     PIC X(16)   VALUE 'Pegged Balance P'.01130048
+011400     02  OSB-DESC-0017-B     PIC X(10)   VALUE 'ayment    '.      01140048
+011500     02  OSB-DESC-0018-A     PIC X(16)   VALUE 'Automatic Paymen'.01150048
+011600     02  OSB-DESC-0018-B     PIC X(10)   VALUE 't         '.      01160048
+011700     02  OSB-DESC-0019-A     PIC X(16)   VALUE 'Finance Charge  '.01170048
+011800     02  OSB-DESC-0019-B     PIC X(10)   VALUE SPACES.            01180048
+011900     02  OSB-DESC-0020-A     PIC X(16)   VALUE 'Insurance Charge'.01190048
+012000     02  OSB-DESC-0020-B     PIC X(10)   VALUE SPACES.            01200048
+012100     02  OSB-DESC-0021-A     PIC X(16)   VALUE 'Matured         '.01210048
+012200     02  OSB-DESC-0021-B     PIC X(10)   VALUE SPACES.            01220048
+012300     02  OSB-DESC-0022-A     PIC X(16)   VALUE 'Purchased       '.01230048
+012400     02  OSB-DESC-0022-B     PIC X(10)   VALUE SPACES.            01240048
+012500     02  OSB-DESC-0023-A     PIC X(16)   VALUE 'Multiple Collate'.01250048
+012600     02  OSB-DESC-0023-B     PIC X(10)   VALUE 'ral       '.      01260048
+012700     02  OSB-DESC-0024-A     PIC X(16)   VALUE 'Interest Paid   '.01270048
+012800     02  OSB-DESC-0024-B     PIC X(10)   VALUE SPACES.            01280048
+012900     02  OSB-DESC-0025-A     PIC X(16)   VALUE 'Investment Inter'.01290048
+013000     02  OSB-DESC-0025-B     PIC X(10)   VALUE 'est       '.      01300048
+013100     02  OSB-DESC-0026-A     PIC X(16)   VALUE 'Tax Withheld    '.01310048
+013200     02  OSB-DESC-0026-B     PIC X(10)   VALUE SPACES.            01320048
+013300     02  OSB-DESC-0027-A     PIC X(16)   VALUE 'Tax Withheld - I'.01330048
+013400     02  OSB-DESC-0027-B     PIC X(10)   VALUE 'nv. Int.  '.      01340048
+013500     02  OSB-DESC-0028-A     PIC X(16)   VALUE 'NSF Charge      '.01350048
+013600     02  OSB-DESC-0028-B     PIC X(10)   VALUE SPACES.            01360048
+013700     02  OSB-DESC-0029-A     PIC X(16)   VALUE 'Overdraft Charge'.01370048
+013800     02  OSB-DESC-0029-B     PIC X(10)   VALUE SPACES.            01380048
+013900     02  OSB-DESC-0030-A     PIC X(16)   VALUE 'Xmas Club Check '.01390048
+014000     02  OSB-DESC-0030-B     PIC X(10)   VALUE SPACES.            01400048
+014100     02  OSB-DESC-0031-A     PIC X(16)   VALUE 'Fraud Package   '.01410048
+014200     02  OSB-DESC-0031-B     PIC X(10)   VALUE SPACES.            01420048
+014300     02  OSB-DESC-0032-A     PIC X(16)   VALUE 'Electronic Funds'.01430048
+014400     02  OSB-DESC-0032-B     PIC X(10)   VALUE ' Tran Chrg'.      01440048
+014500     02  OSB-DESC-0033-A     PIC X(16)   VALUE 'Excess Withdrawa'.01450048
+014600     02  OSB-DESC-0033-B     PIC X(10)   VALUE 'l Charge  '.      01460048
+014700     02  OSB-DESC-0034-A     PIC X(16)   VALUE 'Service Charge  '.01470048
+014800     02  OSB-DESC-0034-B     PIC X(10)   VALUE SPACES.            01480048
+014900     02  OSB-DESC-0035-A     PIC X(16)   VALUE 'Unposted Credits'.01490048
+015000     02  OSB-DESC-0035-B     PIC X(10)   VALUE SPACES.            01500048
+015100     02  OSB-DESC-0036-A     PIC X(16)   VALUE 'Unposted Debits '.01510048
+015200     02  OSB-DESC-0036-B     PIC X(10)   VALUE SPACES.            01520048
+015300     02  OSB-DESC-0037-A     PIC X(16)   VALUE 'ODB Payments    '.01530048
+015400     02  OSB-DESC-0037-B     PIC X(10)   VALUE SPACES.            01540048
+015500     02  OSB-DESC-0038-A     PIC X(16)   VALUE 'S.C. Income Gen.'.01550048
+015600     02  OSB-DESC-0038-B     PIC X(10)   VALUE ' Credit   '.      01560048
+015700     02  OSB-DESC-0039-A     PIC X(16)   VALUE 'Interest Expense'.01570048
+015800     02  OSB-DESC-0039-B     PIC X(10)   VALUE ' Gen.Debit'.      01580048
+015900     02  OSB-DESC-0040-A     PIC X(16)   VALUE 'Tax Withheld Gen'.01590048
+016000     02  OSB-DESC-0040-B     PIC X(10)   VALUE '. Credit  '.      01600048
+016100     02  OSB-DESC-0041-A     PIC X(16)   VALUE 'Tax Withheld Gen'.01610048
+016200     02  OSB-DESC-0041-B     PIC X(10)   VALUE '. Debit   '.      01620048
+016300     02  OSB-DESC-0042-A     PIC X(16)   VALUE 'Fee Income      '.01630048
+016400     02  OSB-DESC-0042-B     PIC X(10)   VALUE SPACES.            01640048
+016500     02  OSB-DESC-0043-A     PIC X(16)   VALUE 'External Fee Inc'.01650048
+016600     02  OSB-DESC-0043-B     PIC X(10)   VALUE 'ome       '.      01660048
+016700     02  OSB-DESC-0044-A     PIC X(16)   VALUE 'Special Fee Inc '.01670048
+016800     02  OSB-DESC-0044-B     PIC X(10)   VALUE 'Gen. Cred.'.      01680048
+016900     02  OSB-DESC-0045-A     PIC X(16)   VALUE 'Interest Expense'.01690048
+017000     02  OSB-DESC-0045-B     PIC X(10)   VALUE ' Gen. Deb.'.      01700048
+017100     02  OSB-DESC-0046-A     PIC X(16)   VALUE 'Invest Int Exp. '.01710048
+017200     02  OSB-DESC-0046-B     PIC X(10)   VALUE 'Gen. Debit'.      01720048
+017300     02  OSB-DESC-0047-A     PIC X(16)   VALUE 'IMM Interest Exp'.01730048
+017400     02  OSB-DESC-0047-B     PIC X(10)   VALUE ' Gen. Deb.'.      01740048
+017500     02  OSB-DESC-0048-A     PIC X(16)   VALUE 'CMM Interest Exp'.01750048
+017600     02  OSB-DESC-0048-B     PIC X(10)   VALUE ' Gen. Deb.'.      01760048
+017700     02  OSB-DESC-0049-A     PIC X(16)   VALUE 'Tax Withheld - G'.01770048
+017800     02  OSB-DESC-0049-B     PIC X(10)   VALUE 'en. Credit'.      01780048
+017900     02  OSB-DESC-0050-A     PIC X(16)   VALUE 'Invest Tax Wthld'.01790048
+018000     02  OSB-DESC-0050-B     PIC X(10)   VALUE ' Gen. Cred'.      01800048
+018100     02  OSB-DESC-0051-A     PIC X(16)   VALUE 'Reverse Tax Wthl'.01810048
+018200     02  OSB-DESC-0051-B     PIC X(10)   VALUE 'd Gen. Deb'.      01820048
+018300     02  OSB-DESC-0052-A     PIC X(16)   VALUE 'Fee Income - Gen'.01830048
+018400     02  OSB-DESC-0052-B     PIC X(10)   VALUE '. Credit  '.      01840048
+018500     02  OSB-DESC-0053-A     PIC X(16)   VALUE 'Interest Earned '.01850048
+018600     02  OSB-DESC-0053-B     PIC X(10)   VALUE SPACES.            01860048
+018700     02  OSB-DESC-0054-A     PIC X(16)   VALUE 'Tax Withheld    '.01870048
+018800     02  OSB-DESC-0054-B     PIC X(10)   VALUE SPACES.            01880048
+018900     02  OSB-DESC-0055-A     PIC X(16)   VALUE 'List            '.01890048
+019000     02  OSB-DESC-0055-B     PIC X(10)   VALUE SPACES.            01900048
+019100     02  OSB-DESC-0056-A     PIC X(16)   VALUE 'Tax Exempt Fund '.01910048
+019200     02  OSB-DESC-0056-B     PIC X(10)   VALUE SPACES.            01920048
+019300     02  OSB-DESC-0057-A     PIC X(16)   VALUE 'Daily Treasury F'.01930048
+019400     02  OSB-DESC-0057-B     PIC X(10)   VALUE 'und       '.      01940048
+019500     02  OSB-DESC-0058-A     PIC X(16)   VALUE 'Fed Funds       '.01950048
+019600     02  OSB-DESC-0058-B     PIC X(10)   VALUE SPACES.            01960048
+019700     02  OSB-DESC-0059-A     PIC X(16)   VALUE 'Govt/Agency Issu'.01970048
+019800     02  OSB-DESC-0059-B     PIC X(10)   VALUE 'es        '.      01980048
+019900     02  OSB-DESC-0060-A     PIC X(16)   VALUE 'ODB Payments Off'.01990048
+020000     02  OSB-DESC-0060-B     PIC X(10)   VALUE 'set       '.      02000048
+020100     02  OSB-DESC-0061-A     PIC X(16)   VALUE 'Cash Management '.02010048
+020200     02  OSB-DESC-0061-B     PIC X(10)   VALUE 'Trust Fund'.      02020048
+020300     02  OSB-DESC-0062-A     PIC X(16)   VALUE 'Overdraft Bankin'.02030048
+020400     02  OSB-DESC-0062-B     PIC X(10)   VALUE 'g Overpymt'.      02040048
+020500     02  OSB-DESC-0063-A     PIC X(16)   VALUE 'Maintenance Fee '.02050048
+020600     02  OSB-DESC-0063-B     PIC X(10)   VALUE SPACES.            02060048
+020700     02  OSB-DESC-0064-A     PIC X(16)   VALUE 'Debit Fee       '.02070048
+020800     02  OSB-DESC-0064-B     PIC X(10)   VALUE SPACES.            02080048
+020900     02  OSB-DESC-0065-A     PIC X(16)   VALUE 'Credit Fee      '.02090048
+021000     02  OSB-DESC-0065-B     PIC X(10)   VALUE SPACES.            02100048
+021100     02  OSB-DESC-0066-A     PIC X(16)   VALUE 'Deposited Item F'.02110048
+021200     02  OSB-DESC-0066-B     PIC X(10)   VALUE 'ee'.              02120048
+021300     02  OSB-DESC-0067-A     PIC X(16)   VALUE 'Additional Minim'.02130048
+021400     02  OSB-DESC-0067-B     PIC X(10)   VALUE 'um Fee'.          02140048
+021500     02  OSB-DESC-0068-A     PIC X(16)   VALUE 'Club Acct Cycle '.02150048
+021600     02  OSB-DESC-0068-B     PIC X(10)   VALUE '- Checks  '.      02160048
+021700     02  OSB-DESC-0069-A     PIC X(16)   VALUE 'ACH Debit Fee   '.02170048
+021800     02  OSB-DESC-0069-B     PIC X(10)   VALUE SPACES.            02180048
+021900     02  OSB-DESC-0070-A     PIC X(16)   VALUE 'Funds Transfer D'.02190048
+022000     02  OSB-DESC-0070-B     PIC X(10)   VALUE 'ebit Fee'.        02200048
+022100     02  OSB-DESC-0071-A     PIC X(16)   VALUE 'Infoline Debit F'.02210048
+022200     02  OSB-DESC-0071-B     PIC X(10)   VALUE 'ee'.              02220048
+022300     02  OSB-DESC-0072-A     PIC X(16)   VALUE 'ATM Debit Fee   '.02230048
+022400     02  OSB-DESC-0072-B     PIC X(10)   VALUE SPACES.            02240048
+022500     02  OSB-DESC-0073-A     PIC X(16)   VALUE 'Point-of-Sale De'.02250048
+022600     02  OSB-DESC-0073-B     PIC X(10)   VALUE 'bit Fee'.         02260048
+022700     02  OSB-DESC-0074-A     PIC X(16)   VALUE 'Telephone Trnsfr'.02270048
+022800     02  OSB-DESC-0074-B     PIC X(10)   VALUE ' Debit Fee'.      02280048
+022900     02  OSB-DESC-0075-A     PIC X(16)   VALUE 'Non Safekeeping '.02290048
+023000     02  OSB-DESC-0075-B     PIC X(10)   VALUE 'Fee       '.      02300048
+023100     02  OSB-DESC-0076-A     PIC X(16)   VALUE 'Check Imaging Fe'.02310048
+023200     02  OSB-DESC-0076-B     PIC X(10)   VALUE 'e         '.      02320048
+023300     02  OSB-DESC-0077-A     PIC X(16)   VALUE 'Annual Fee      '.02330048
+023400     02  OSB-DESC-0077-B     PIC X(10)   VALUE SPACES.            02340048
+023500     02  OSB-DESC-0078-A     PIC X(16)   VALUE 'Off-site ATM Usa'.02350048
+023600     02  OSB-DESC-0078-B     PIC X(10)   VALUE 'ge Credit '.      02360048
+023700     02  OSB-DESC-0079-A     PIC X(16)   VALUE 'CheckPlus Monthl'.02370048
+023800     02  OSB-DESC-0079-B     PIC X(10)   VALUE 'y Fee     '.      02380048
+023900     02  OSB-DESC-0080-A     PIC X(16)   VALUE 'Payline Transact'.02390048
+024000     02  OSB-DESC-0080-B     PIC X(10)   VALUE 'ion Fee   '.      02400048
+024100     02  OSB-DESC-0081-A     PIC X(16)   VALUE 'Card Fee        '.02410048
+024200     02  OSB-DESC-0081-B     PIC X(10)   VALUE SPACES.            02420048
+024300     02  OSB-DESC-0082-A     PIC X(16)   VALUE 'Interest on Chec'.02430048
+024400     02  OSB-DESC-0082-B     PIC X(10)   VALUE 'king      '.      02440048
+024500     02  OSB-DESC-0083-A     PIC X(16)   VALUE 'Check Handling F'.02450048
+024600     02  OSB-DESC-0083-B     PIC X(10)   VALUE 'ee        '.      02460048
+024700     02  OSB-DESC-0084-A     PIC X(16)   VALUE 'Lost Contact Fee'.02470048
+024800     02  OSB-DESC-0084-B     PIC X(10)   VALUE SPACES.            02480048
+024900     02  OSB-DESC-0085-A     PIC X(16)   VALUE 'Sprinklers Vacat'.02490048
+025000     02  OSB-DESC-0085-B     PIC X(10)   VALUE 'ion Check '.      02500048
+025100     02  OSB-DESC-0086-A     PIC X(16)   VALUE 'Membership Fee  '.02510048
+025200     02  OSB-DESC-0086-B     PIC X(10)   VALUE SPACES.            02520048
+025300     02  OSB-DESC-0087-A     PIC X(16)   VALUE 'Deposit for No. '.02530048
+025400     02  OSB-DESC-0087-B     PIC X(10)   VALUE SPACES.            02540048
+025500     02  OSB-DESC-0088-A     PIC X(16)   VALUE 'Dormant Fee     '.02550048
+025600     02  OSB-DESC-0088-B     PIC X(10)   VALUE SPACES.            02560048
+025700     02  OSB-DESC-0089-A     PIC X(16)   VALUE 'Inactive Fee    '.02570048
+025800     02  OSB-DESC-0089-B     PIC X(10)   VALUE SPACES.            02580048
+025900     02  OSB-DESC-0090-A     PIC X(16)   VALUE 'Plus Package    '.02590048
+026000     02  OSB-DESC-0090-B     PIC X(10)   VALUE SPACES.            02600048
+026100     02  OSB-DESC-0091-A     PIC X(16)   VALUE 'Escheat Closure '.02610048
+026200     02  OSB-DESC-0091-B     PIC X(10)   VALUE SPACES.            02620048
+026300     02  OSB-DESC-0092-A     PIC X(16)   VALUE 'e-Deposit No.   '.02630048
+026400     02  OSB-DESC-0092-B     PIC X(10)   VALUE SPACES.            02640048
+026500     02  OSB-DESC-0093-A     PIC X(16)   VALUE 'ID Protection   '.02650048
+026600     02  OSB-DESC-0093-B     PIC X(10)   VALUE SPACES.            02660048
+026700     02  OSB-DESC-0094-A     PIC X(16)   VALUE 'Plus Pkg and ID '.02670048
+026800     02  OSB-DESC-0094-B     PIC X(10)   VALUE 'Protection'.      02680048
+026900     02  OSB-DESC-0095-A     PIC X(16)   VALUE 'Dep Corr - Loc  '.02690048
+027000     02  OSB-DESC-0095-B     PIC X(10)   VALUE SPACES.            02700048
+027001     02  OSB-DESC-0096-A     PIC X(16)   VALUE 'Automatic Adv ML'.02700148
+027002     02  OSB-DESC-0096-B     PIC X(10)   VALUE ' HELOC '.         02700248
+027003     02  OSB-DESC-0097-A     PIC X(16)   VALUE 'Xmas Club Transf'.02700348
+027004     02  OSB-DESC-0097-B     PIC X(10)   VALUE 'er     '.         02700448
+027005     02  OSB-DESC-0098-A     PIC X(16)   VALUE 'Club Acct Cycle '.02700548
+027006     02  OSB-DESC-0098-B     PIC X(10)   VALUE '- Transfer'.      02700648
+027007     02  OSB-DESC-0099-A     PIC X(16)   VALUE 'Prepaid Card Mai'.02700748
+027008     02  OSB-DESC-0099-B     PIC X(10)   VALUE 'nt Fee    '.      02700848
+027009     02  OSB-DESC-0100-A     PIC X(16)   VALUE 'Automatic Advanc'.02700948
+027010     02  OSB-DESC-0100-B     PIC X(10)   VALUE 'e Bus Res'.       02701048
+027011     02  OSB-DESC-0101-A     PIC X(16)   VALUE 'Automatic Paymen'.02701148
+027012     02  OSB-DESC-0101-B     PIC X(10)   VALUE 't Bus Res'.       02701248
+027013     02  OSB-DESC-0102-A     PIC X(16)   VALUE 'ICS Sweep Credit'.02701348
+027014     02  OSB-DESC-0102-B     PIC X(10)   VALUE 's        '.       02701448
+027015     02  OSB-DESC-0103-A     PIC X(16)   VALUE 'ICS Sweep Debits'.02701548
+027016     02  OSB-DESC-0103-B     PIC X(10)   VALUE SPACES.            02701648
+027017     02  OSB-DESC-0104-A     PIC X(16)   VALUE 'MaxMoney Benefit'.02701748
+027018     02  OSB-DESC-0104-B     PIC X(10)   VALUE 's         '.      02701848
+027019******************************************************************02701948
+027020*                                                        COPYBOOK*02702048
+027021*                                                                *02702148
+027022* PURPOSE: DSDS TRANSACTION DECRIPTIONS FOR OSB                  *02702248
+027023*                                                                *02702348
+027024* LENGTH OF COPYBOOK: DSDS040-TX-DESCRIPTION-WORK    -  104      *02702448
+027025*                     DSDS080-TX-DESCRIPTION-WORK    -  182      *02702548
+027026*                     ODB-TX-DESC-WORK               -  078      *02702648
+027027*                     INV-TX-DESC-WORK               -  026      *02702748
+027028*                     MISCELLANEOUS-OSB-DESCRIPTIONS - 2704      *02702848
+027029*                                                                *02702948
+027030* LENGTH OF SORT KEY: N/A                                        *02703048
+027031*                                                                *02703148
+027032* USAGE:  COPIED INTO PROGRAM TO GET DESCRIPTION FOR TRANACTIONS *02703248
+027033*                                                                *02703348
+027034* FIELD DESCRIPTION/VALUES: N/A                                  *02703448
+027035*                                                                *02703548
+027036******************************************************************02703648

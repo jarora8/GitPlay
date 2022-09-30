@@ -1,0 +1,279 @@
+000100*01  DSDS-BCF-RECORD.                                             00010044
+000200 01  DSDS-BCF-RECORD.                                             00020044
+000300                                                                  00030044
+000400     05  BCF-RECORD-ID           PIC X(5).                        00040044
+000500     05  FILLER REDEFINES BCF-RECORD-ID.                          00050044
+000600         10  BCF-FILE-ID         PIC XXX.                         00060044
+000700             88  BCF-DSD-REC                   VALUE 'DSD'.       00070044
+000800             88  BCF-DSS-REC                   VALUE 'DSS'.       00080044
+000900         10  BCF-BANK-NO         PIC 99.                          00090044
+001000                                                                  00100044
+001100     05  BCF-CONTENTS-01.                                         00110044
+001200         10  BANK-NAME           PIC X(35).                       00120044
+001300         10  BANK-ADDRESS1       PIC X(35).                       00130044
+001400         10  BANK-ADDRESS2       PIC X(35).                       00140044
+001500         10  BANK-CITY-STATE     PIC X(35).                       00150044
+001600         10  PRE-ACCRUAL-DAYS    PIC S9                  COMP-3.  00160044
+001700         10  MEMO-ACCRUAL-DAYS   PIC S9                  COMP-3.  00170044
+001800         10  ACCRUED-THRU-DATE   PIC S9(7)               COMP-3.  00180044
+001900         10  NEXT-PROCESS-DATE   PIC S9(7)               COMP-3.  00190044
+002000         10  LAST-PROCESS-DATE   PIC S9(7)               COMP-3.  00200044
+002100         10  CURR-ACCRUAL-DAYS   PIC S9                  COMP-3.  00210044
+002200         10  CURR-PROCESS-DATE   PIC S9(7)               COMP-3.  00220044
+002300         10  LAST-MAINT-DATE     PIC S9(7)               COMP-3.  00230044
+002400                                                                  00240044
+002500     05  BCF-CONTENTS-02.                                         00250044
+002600         10  CIF-INDICATOR       PIC X.                           00260044
+002700             88  NON-CIF-BANK                  VALUE '0'.         00270044
+002800             88  CIF-BANK                      VALUE '1'.         00280044
+002900         10  BANK-CIF-ID         PIC X(4).                        00290044
+003000         10  OD-ACCESS-INDICATOR PIC S9                  COMP-3.  00300044
+003100             88  NON-OD-ACCESS-BANK            VALUE +0.          00310044
+003200             88  OD-ACCESS-BANK                VALUE +1.          00320044
+003300         10  ACCT-ANAL-BANK-IND  PIC S9                  COMP-3.  00330044
+003400             88  NON-ACCT-ANAL-BANK            VALUE +0.          00340044
+003500             88  ACCT-ANAL-BANK                VALUE +1.          00350044
+003600             88  ACCT-ANAL-TEST-BANK           VALUE +2.          00360044
+003700         10  FLOAT-AGING-OPTION  PIC X.                           00370044
+003800             88  BUSINESS-DAY                  VALUE 'B'.         00380044
+003900             88  CALENDAR-DAY                  VALUE 'C'.         00390044
+004000         10  ODB-INDICATOR       PIC X.                           00400044
+004100             88  NON-ODB-BANK                  VALUE '0'.         00410044
+004200             88  ODB-BANK                      VALUE '1'.         00420044
+004300         10  DAILY-OD-FEE-IND    PIC X.                           00430044
+004400             88  DAILY-OD-FEE-RETAIL           VALUE 'R'.         00440044
+004500             88  DAILY-OD-FEE-COMMERCIAL       VALUE 'C'.         00450044
+004600             88  DAILY-OD-FEE-BOTH             VALUE 'B'.         00460044
+004700             88  NO-DAILY-OD-FEE               VALUE ' '.         00470044
+004800         10  MAX-KITE-SUSP-NUM   PIC S9(3)               COMP-3.  00480044
+004900         10  OVERDRAFT-METHOD    PIC X.                           00490044
+005000             88  REJECT-OD                     VALUE '0'.         00500044
+005100             88  POST-OD                       VALUE '1'.         00510044
+005200         10  OD-SERV-CHG-TYPE    PIC X.                           00520044
+005300             88  NO-OD-SERV-CHG                VALUE '0'.         00530044
+005400             88  SC-ITEM-CHG                   VALUE '1'.         00540044
+005500             88  FEE-PER-DAY                   VALUE '2'.         00550044
+005600             88  IMM-ITEM-CHG                  VALUE '3'.         00560044
+005700             88  IMM-FEE-PER-DAY               VALUE '4'.         00570044
+005800         10  OD-CHARGE-OR-FEE    PIC S9(3)V99            COMP-3.  00580044
+005900         10  RETURN-CHK-CHARGE   PIC S9(3)V99            COMP-3.  00590044
+006000         10  NUM-FREE-OVERDRAFTS PIC S9                  COMP-3.  00600044
+006100         10  OD-WITH-SC-IND      PIC X.                           00610044
+006200             88  DONT-OD-WITH-SC               VALUE '0'.         00620044
+006300             88  OD-WITH-SC                    VALUE '1'.         00630044
+006400         10  ATJ-INDICATOR       PIC X.                           00640044
+006500             88  NON-ATJ-BANK                  VALUE '0'.         00650044
+006600             88  ATJ-BANK                      VALUE '1'.         00660044
+006700         10  OD-CHARGE-OR-FEE-2  PIC S9(7)V99            COMP-3.  00670044
+006800         10  NO-MO-INACT-STAT    PIC S9(3)               COMP-3.  00680044
+006900         10  NO-MO-INACT-STAT-IMM                                 00690044
+007000                                 PIC S9(3)               COMP-3.  00700044
+007100         10  NSF-ONLINE-OPTION   PIC X.                           00710044
+007200             88  NO-NSF-ONLINE                 VALUE '0'.         00720044
+007300             88  NSF-ONLINE                    VALUE '1'.         00730044
+007400         10  IMAGE-BANK-INDICATOR                                 00740044
+007500                                 PIC X.                           00750044
+007600             88  IMAGE-BANK                    VALUE 'I'.         00760044
+007700             88  NON-IMAGE-BANK                VALUE 'N' ' '.     00770044
+007800             88  TEST-IMAGE-BANK               VALUE 'T'.         00780044
+007900         10  DOLLAR-CUT-2SIG-AMOUNT PIC S9(5)          COMP-3.    00790044
+008000         10  NO-YEARS-ESCHEAT       PIC S9(3)          COMP-3.    00800044
+008100         10  NO-MONTH-DORMANT-1     PIC S9(3)          COMP-3.    00810044
+008200         10  NO-MONTH-DORMANT-2     PIC S9(3)          COMP-3.    00820044
+008300         10  MONTH-ESCHEAT-SUSPECT  PIC 99.                       00830044
+008400         10  MONTH-ESCHEAT-PROCESS  PIC 99.                       00840044
+008500         10  DAILY-OD-FEE-AMT       PIC S9(3)V99       COMP-3.    00850044
+008600                                                                  00860044
+008700     05  BCF-CONTENTS-03.                                         00870044
+008800         10  FED-RESERVE-REQMNT  PIC SV9(5)              COMP-3.  00880044
+008900         10  UST-BILL-RATE       PIC SV9(5)              COMP-3.  00890044
+009000         10  FDIC-INSURANCE-RATE PIC SV9(5)              COMP-3.  00900044
+009100         10  MAINTENANCE-COST    PIC S99V999             COMP-3.  00910044
+009200         10  DEPOSIT-ITEM-COST   PIC SV9(5)              COMP-3.  00920044
+009300         10  DEBIT-ITEM-COST     PIC SV9(5)              COMP-3.  00930044
+009400         10  CREDIT-ITEM-COST    PIC SV9(5)              COMP-3.  00940044
+009500                                                                  00950044
+009600     05  BCF-CONTENTS-04.                                         00960044
+009700         10  BCF-MONTH-END-CALENDAR-DATA OCCURS 12 TIMES.         00970044
+009800             15  MONTH-END-DATE  PIC S9(7)               COMP-3.  00980044
+009900         10  1ST-QTR-END-DATE    PIC S9(7)               COMP-3.  00990044
+010000         10  2ND-QTR-END-DATE    PIC S9(7)               COMP-3.  01000044
+010100         10  3RD-QTR-END-DATE    PIC S9(7)               COMP-3.  01010044
+010200         10  4TH-QTR-END-DATE    PIC S9(7)               COMP-3.  01020044
+010300         10  YEAR-END-DATE       PIC S9(7)               COMP-3.  01030044
+010400         10  CLUB-CHECK-CYCLE-CODE                                01040044
+010500                                 PIC S9(3)               COMP-3.  01050044
+010600         10  CLUB-CHECK-CYCLE-DATE                                01060044
+010700                                 PIC S9(7)               COMP-3.  01070044
+010800         10  OD-PROT-FEE         PIC S9(3)V99            COMP-3.  01080044
+010900         10  OD-PROT-INCREMENT   PIC S9(5)               COMP-3.  01090044
+011000         10  FDIC-INSURANCE-RATE2 PIC SV9(5)             COMP-3.  01100044
+011100         10  ID-PROT-ONLY        PIC S9(3)V99            COMP-3.  01110044
+011200         10  ID-PROT-PLUS        PIC S9(3)V99            COMP-3.  01120044
+011300         10  ID-PROT-DISC        PIC S9(3)V99            COMP-3.  01130044
+011400         10  ID-PROT-EMPL        PIC S9(3)V99            COMP-3.  01140044
+011500         10  SAVEUP-BONUS-MAX    PIC S9(3)               COMP-3.  01150044
+011600         10  SAVEUP-RANGE-FROM   PIC S9(3)V99            COMP-3.  01160044
+011700         10  SAVEUP-RANGE-TO     PIC S9(3)V99            COMP-3.  01170044
+011800         10  FILLER-04           PIC X(03).                       01180044
+011810         10  ZBA-MASTER-FEE      PIC S9(3)V99            COMP-3.  01181044
+011820         10  2-SIGNATURE-FEE     PIC S9(3)V99            COMP-3.  01182044
+011830         10  CLUB-CHECK-EFF-DATE PIC S9(7)               COMP-3.  01183044
+011840                                                                  01184044
+011850     05  BCF-ACCOUNT-ID-INFORMATION.                              01185044
+011860       07  BCF-ACCOUNT-INFORMATION OCCURS 10 TIMES.               01186044
+011870         10  ACCT-ID-CODE        PIC 9(3)                COMP-3.  01187044
+011880         10  MOD-CK-IND          PIC X.                           01188044
+011890             88  NO-MOD-CHK                    VALUE '0'.         01189044
+011900             88  MOD-10                        VALUE '1'.         01190044
+012000             88  MOD-11-ARITH                  VALUE '2'.         01200044
+012100             88  MOD-11-GEOM                   VALUE '3'.         01210044
+012200             88  MOD-11-REM4                   VALUE '4'.         01220044
+012300             88  MOD-11-REM0                   VALUE '5'.         01230044
+012400             88  FNBC-SPEC                     VALUE '6'.         01240044
+012500             88  MOD-11-REM7                   VALUE '7'.         01250044
+012600             88  MOD-11-BYPASS-LAST2           VALUE '8'.         01260044
+012700             88  MOD-11-BYPASS-7TH             VALUE '9'.         01270044
+012800             88  MOD-12-REM6                   VALUE 'A'.         01280044
+012900             88  MOD-11-REM3                   VALUE 'B'.         01290044
+013000             88  MOD-10-STRAIGHT-3-7-1-SUM     VALUE 'C'.         01300044
+013100             88  MOD-10-ARITH                  VALUE 'D'.         01310044
+013200         10  EDIT-CODE           PIC X.                           01320044
+013300*            0 = ZZZ999999999                                     01330044
+013400*            1 = ZZZZZ99-99-9                                     01340044
+013500*            2 = ZZZZZ9-999-9                                     01350044
+013600*            3 = ZZZZ99-999-9                                     01360044
+013700*            4 = ZZZZ9-9999-9                                     01370044
+013800*            5 = ZZZZ999-99-9                                     01380044
+013900*            6 = ZZZ999-999-9                                     01390044
+014000*            7 = ZZZ99-9999-9                                     01400044
+014100*            8 = ZZZ9-99999-9                                     01410044
+014200*            9 = XXXXXXXXXXXX                                     01420044
+014300*            A = ZZZ9-999-999                                     01430044
+014400*            B = ZZZZ99999-99                                     01440044
+014500*            C = ZZZZZ99999-9                                     01450044
+014600*            D = ZZZZZZZZZZZZ                                     01460044
+014700*            E = 9-99-999-999                                     01470044
+014800         10  ACCT-LENGTH         PIC S9                  COMP-3.  01480044
+014900         10  CRF-SUBFILE-ID      PIC X(3).                        01490044
+015000         10  SIG-BAL-CHNG-PCT    PIC SV9(3)              COMP-3.  01500044
+015100         10  SIG-BAL-CHNG-AMT    PIC S9(9)V99            COMP-3.  01510044
+015200         10  NORMAL-INTEREST     PIC SV9(7)              COMP-3.  01520044
+015300         10  QTR-CODE            PIC 9.                           01530044
+015400         10  UNPOST-ACCT-NO      PIC 9(9)                COMP-3.  01540044
+015500         10  MIN-INT-1099        PIC S9(3)V99            COMP-3.  01550044
+015600                                                                  01560044
+015700     05  BCF-CYCLE-INFORMATION.                                   01570044
+015800       07  BCF-CYCLE-INFO OCCURS 98 TIMES.                        01580044
+015900         10  BCF-CYCLE-CODE          PIC S9(3)           COMP-3.  01590044
+016000         10  BCF-BEST-CYCLE-POOL-IND PIC X.                       01600044
+016100             88 IN-BEST-CYCLE-POOL           VALUE 'Y'.           01610044
+016200             88 NOT-IN-BEST-CYCLE-POOL       VALUE 'N'.           01620044
+016300     05  BCF-CONTENTS-05.                                         01630044
+016400         10  COMM-OD-FEE               PIC S9(3)V99      COMP-3.  01640044
+016500         10  COMM-RET-FEE              PIC S9(3)V99      COMP-3.  01650044
+016600         10  COMM-OD-LIMIT-PER-DAY     PIC S9(3)         COMP-3.  01660044
+016700         10  COMM-OD-MIN-AMT           PIC S9(3)V99      COMP-3.  01670044
+016800         10  RETAIL-OD-LIMIT-PER-DAY   PIC S9(3)         COMP-3.  01680044
+016900         10  RETAIL-OD-MIN-AMT         PIC S9(3)V99      COMP-3.  01690044
+017000         10  RETAIL-OD-FEE2            PIC S9(3)V99      COMP-3.  01700044
+017100         10  COMM-OD-FEE2              PIC S9(3)V99      COMP-3.  01710044
+017200         10  FILLER-05                 PIC X(908).                01720044
+017300                                                                  01730044
+017400     05  BCF-EXT-SERV-CHG-INFORMATION.                            01740044
+017500       07  BCF-EXT-SERV-CHG-INFO OCCURS 20 TIMES.                 01750044
+017600         10  EXT-SC-TX-CODE      PIC S9(3)               COMP-3.  01760044
+017700         10  EXT-SC-FEE          PIC S9(5)V99            COMP-3.  01770044
+017800***** EXTERNAL-SERV-CHG-INFO IS USED TO GENERATE AN EXTERNAL     *01780044
+017900*        SERVICE CHARGE TRANSACTION FROM A DEBIT, CREDIT, OR     *01790044
+018000*        REQUEST TRANSACTION.  THE FOLLOWING DEBIT, CREDIT, AND  *01800044
+018100*        REQUEST TRANSACTIONS ARE VALID CODES FOR GENERATING     *01810044
+018200*        THESE EXTERNAL SERVICE CHARGE TRANSACTIONS.             *01820044
+018300*            135 - SERVICE CHARGE STATEMENT                      *01830044
+018400*            398 - SPECIAL STATEMENT REQUEST                     *01840044
+018500*            399 - SPECIAL STATEMENT REQUEST WITHOUT ENCLOSURES  *01850044
+018600*            440 - ENTER STOP PAYMENT                            *01860044
+018700*            556 - SAFEKEEPING INTEREST - INCOME                 *01870044
+018800*            557 - SAFEKEEPING SECURITY - SALE                   *01880044
+018900*            559 - SAFEKEEPING MATURITY - ZERO COUPON            *01890044
+019000*            630 - WIRE TRANSFER IN                              *01900044
+019100*            653 - SECURITIES PUR OR MAT                         *01910044
+019200*            880 - RETURN OF DEPOSITED ITEMS                     *01920044
+019300*            890 - WIRE TRANSFER OUT                             *01930044
+019400*            920 - TELEPHONE TRANSFERS                           *01940044
+019500*            950 - PURCHASE BONDS OR COUPONS                     *01950044
+019600*            983 - SECURITIES PUR OR MAT                         *01960044
+019700******************************************************************01970044
+019800                                                                  01980044
+019810** SERVICE CHARGE ROUTINE INFORMATION WAS MOVED TO DSDS.BCFSCR    01981045
+019900     05  BCF-SERVICE-CHG-INFORMATION.                             01990044
+020000         06  BCF-SERVICE-CHG-INFO PIC X(8000)   VALUE SPACES.     02000046
+020100                                                                  02010045
+029900     05  BCF-EARN-RTN-INFORMATION.                                02990044
+030000       07  BCF-EARN-RTN-INFO OCCURS 99 TIMES.                     03000044
+030100         10  EARN-RTN            PIC 99.                          03010044
+030200         10  EARN-BALANCE-CODE   PIC X.                           03020044
+030300             88  EARN-AVG-CURR                 VALUE '1'.         03030044
+030400             88  EARN-AVG-COLL                 VALUE '2'.         03040044
+030500             88  EARN-LOW-BAL                  VALUE '3'.         03050044
+030600             88  EARN-INVESTABLE-BAL           VALUE '4'.         03060044
+030700         10  MIN-BALANCE-PRIME-INT                                03070044
+030800                                 PIC S9(5)V99            COMP-3.  03080044
+030900         10  BELOW-MIN-INTEREST-RATE                              03090044
+031000                                 PIC SV9(7)              COMP-3.  03100044
+031100         10  EARN-INT-ACCR-RESERVE                                03110044
+031200                                 PIC SV9(5)              COMP-3.  03120044
+031300         10  EARN-DESCRIPTION    PIC X(15).                       03130044
+031400                                                                  03140044
+031500     05  BCF-ODB-INFORMATION.                                     03150044
+031600       07  BCF-OVERDRAFT-BANKING-INFO OCCURS 10 TIMES.            03160044
+031700         10  ODB-PLAN-TYPE       PIC XX.                          03170044
+031800             88  CTL-BUSINESS-RESERVE          VALUE 'BR'.        03180044
+031900             88  CTL-CHECKING-PLUS             VALUE 'CP'.        03190044
+032000             88  CTL-CASH-RESERVE              VALUE 'CR'.        03200044
+032100             88  CTL-EXECUTIVE-CREDIT          VALUE 'EC'.        03210044
+032200             88  CTL-EMPLOYEE-RESERVE          VALUE 'EM'.        03220044
+032300             88  CTL-EQUITY-CREDIT             VALUE 'ER'.        03230044
+032400             88  CTL-HOME-EQUITY               VALUE 'HE'.        03240044
+032500             88  CTL-NEW-START-LOAN            VALUE 'NS'.        03250044
+032600             88  CTL-PRIORITY-LINE             VALUE 'PL'.        03260044
+032700             88  CTL-SECURITIES-LINE           VALUE 'SL'.        03270044
+032800         10  ODB-CL-SINGLE-RATE  PIC SV9(5)              COMP-3.  03280044
+032900         10  ODB-CL-JOINT-RATE   PIC SV9(5)              COMP-3.  03290044
+033000         10  ODB-MINIMUM-PYMT-PC PIC SV9(5)              COMP-3.  03300044
+033100         10  ODB-MINIMUM-PYMT-AMT                                 03310044
+033200                                 PIC S9(5)V99            COMP-3.  03320044
+033300         10  ODB-FEE-FREQUENCY   PIC X.                           03330044
+033400         10  ODB-FEE-AMOUNT      PIC S9(3)V99            COMP-3.  03340044
+033500         10  FILLER-ODB-FEE      PIC X(14).                       03350044
+033600         10  ODB-PAYMENT-FREQUENCY                                03360044
+033700                                 PIC X.                           03370044
+033800             88  CTL-MONTHLY                   VALUE 'M'.         03380044
+033900             88  CTL-QUARTERLY                 VALUE 'Q'.         03390044
+034000             88  CTL-SEMI-ANNUAL               VALUE 'S'.         03400044
+034100         10  ODB-PAYMENT-METHOD  PIC X.                           03410044
+034200             88  CTL-P-AND-I                   VALUE 'A'.         03420044
+034300             88  CTL-INT-ONLY                  VALUE 'B'.         03430044
+034400             88  CTL-FIXED-PYMT-AND-INT        VALUE 'C'.         03440044
+034500             88  CTL-FIXED-PC-PYMT-AND-INT     VALUE 'E'.         03450044
+034600         10  ODB-DESC-IND        PIC X.                           03460044
+034700             88  DONT-PRINT-ODB-DESC           VALUE '0'.         03470044
+034800             88  PRINT-ODB-DESC                VALUE '1'.         03480044
+034900         10  ODB-PLAN-DESC       PIC X(25).                       03490044
+035000                                                                  03500044
+035100**** ALL BCF DATES ARE A MODIFIED JULIAN DATE. FORMAT = YYYYDDD.  03510044
+035200**** THIS RECORD IS 13,470 BYTES LONG.                            03520044
+035300     EJECT                                                        03530044
+035400******************************************************************03540044
+035500*                                                        COPYBOOK*03550044
+035600*                                                                *03560044
+035700* PURPOSE: BANK CONTROL FILE                                     *03570044
+035800*                                                                *03580044
+035900* LENGTH OF COPYBOOK: 13470                                      *03590044
+036000* LENGTH OF SORT KEY: 5                                          *03600044
+036100*                                                                *03610044
+036200* USAGE: COPIED INTO PROGRAMS TO BE USED AS FILE LAYOUT          *03620044
+036300*                                                                *03630044
+036400* FIELD DESCRIPTION/VALUES:SEE DSDS USER GUIDE ON INTRANET       *03640044
+036500*                                                                *03650044
+036600******************************************************************03660044

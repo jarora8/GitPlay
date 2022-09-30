@@ -1,0 +1,115 @@
+ /**********************************************************************
+
+ Date   : 10.05.2019
+ Author : Roger Begert
+ Purpose: YTSCALC Entry Declaration
+
+ -----------------------------------------------------------------------
+ MODIFICATION
+ ------------
+ CO: Christian Ott        (A158147)
+ YL: Yasmin Luetzelschwab (A722485)
+ CH: Christian Hirschi    (A336712)
+ MP: Michael Guenther Ploentzke (A918962)
+ NF: Nicola Fusco         (A481211)
+ -----------------------------------------------------------------------
+ TASS000015:  DC 3/2020  07.05.2020
+ -----------------------------------------------------------------------
+ 22.05.2020 | MP | DEV - SLB - UC42 Replace ATR with ETR       @TAS-5148
+ 20.05.2020 | NF | Calculate ETR-TaxAmount                     @TAS-5104
+ -----------------------------------------------------------------------
+ TASS000007:  DC 4/2019  08.11.2019
+ -----------------------------------------------------------------------
+ 19.09.2019 | CH | implement calc changes
+ 03.09.2019 | YL | Add YTSCALC#taxableGrossAmount method
+ -----------------------------------------------------------------------
+ -----------------------------------------------------------------------
+ TASS000005:  DC 3/2019  09.08.2019
+ -----------------------------------------------------------------------
+ 27.05.2019 | YL | Add YTSCALC#free method
+ -----------------------------------------------------------------------
+ -----------------------------------------------------------------------
+ TASS000004:  DC 2/2019  10.05.2019
+ -----------------------------------------------------------------------
+ 10.05.2019 | RB | Initial version
+ -----------------------------------------------------------------------
+
+ **********************************************************************/
+
+ /*--- generally TASS definitions ------------------------------------*/
+ %xinclude TSDEFS;
+
+ /*--- YTSCALC definitions -------------------------------------------*/
+ %xinclude YTSCALCD;
+
+ dcl YTSCALC
+   entry()
+   abNormal
+   suppress(unref)
+   ;
+
+ dcl YTSCALC#distributionAmount
+   entry(type YTSCALC#commDistributionAmount_T      inOut    asgn byAddr
+        ,type TSDEFS#return_T                     outOnly    asgn byAddr
+        )
+   suppress(unref)
+   ;
+
+ dcl YTSCALC#taxAmounts
+   entry(type YTSCALC#commTaxAmounts_T              inOut    asgn byAddr
+        ,type TSDEFS#return_T                     outOnly    asgn byAddr
+        )
+   suppress(unref)
+   ;
+
+ dcl YTSCALC#reportableAmount
+   entry(type YTSCALC#commReportableAmount_T        inOut    asgn byAddr
+        ,type TSDEFS#return_T                     outOnly    asgn byAddr
+        )
+   suppress(unref)
+   ;
+
+ dcl YTSCALC#taxableAmount
+   entry(type YTSCALC#commTaxableAmount_T           inOut    asgn byAddr
+        ,type TSDEFS#return_T                     outOnly    asgn byAddr
+        )
+   suppress(unref)
+   ;
+
+ dcl YTSCALC#localReportableAmount
+   entry(type YTSCALC#commLocalReportableAmount_T   inOut    asgn byAddr
+        ,type TSDEFS#return_T                     outOnly    asgn byAddr
+        )
+   suppress(unref)
+   ;
+
+ dcl YTSCALC#distributionComponentTotal
+   entry(type YTSCALC#commDistributionComponentTotal_T
+                                                    inOut    asgn byAddr
+        ,type TSDEFS#return_T                     outOnly    asgn byAddr
+        )
+   suppress(unref)
+   ;
+
+ dcl YTSCALC#freeDistributionComponentTotal
+   entry(type YTSCALC#commDistributionComponentTotal_T
+                                                    inOut    asgn byAddr
+        ,type TSDEFS#return_T                     outOnly    asgn byAddr
+        )
+   suppress(unref)
+   ;
+
+ dcl YTSCALC#calculateEtrAmount
+   entry(type YTSCALC#commEtrAmount_T             inOut    asgn byAddr
+        ,type TSDEFS#return_T                     outOnly  asgn byAddr )
+   suppress(unref)
+   ;
+
+ dcl YTSCALC#isAmountTypeCdInArray
+   entry(char(3)        inOnly nonAsgn byAddr
+        ,char(3) dim(*) inOnly nonAsgn byAddr
+        ,ptr            inOnly nonAsgn byValue
+        )
+   returns(bit(1) aligned)
+   suppress(unref)
+   ;

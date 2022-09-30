@@ -1,0 +1,16 @@
+000100*01  PEGGED-BAL-ADJUSTMENT-NOTICES.                               00010000
+000200     02  PN-REPORT-CODE      PIC S999                    COMP-3.  00020000
+000300     02  PN-FILE-ID          PIC XXX.                             00030000
+000400     02  PN-BANK-NO          PIC 99.                              00040000
+000500     02  PN-ACCT-ID          PIC 999                     COMP-3.  00050000
+000600     02  PN-ACCT-NO          PIC 9(9)                    COMP-3.  00060000
+000700     02  PN-CRF-REC-ID       PIC X(11).                           00070000
+000800     02  PN-INV-PLAN         PIC XX.                              00080000
+000900     02  PN-PEGGED-BAL       PIC S9(9)V99                COMP-3.  00090000
+001000     02  PN-PREV-PEG-BAL     PIC S9(9)V99                COMP-3.  00100000
+001100     02  PN-EFFECT-DATE      PIC S9(7)                   COMP-3.  00110001
+001200     02  PN-CMA-IND          PIC XXX.                             00120002
+001300     02  FILLER              PIC X(104).                          00130002
+001400*  THIS LAYOUT IS USED FOR REPORT CODE 87.                        00140000
+001500*  THIS RECORD IS 150 CHARACTERS                                  00150000
+001600*        87 = INVESTMENT PEGGED BALANCE ADJUSTMENT NOTICES        00160000

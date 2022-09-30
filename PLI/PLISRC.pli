@@ -1,0 +1,6 @@
+ plisrc: proc options(main);
+    dcl plisrc entry;
+    put skip list(' CLPLM01 Starting');
+    %include PLICOPY2;
+    put skip list(' CLPLM01 Ending');
+ end plisrc;

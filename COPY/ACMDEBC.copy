@@ -1,0 +1,181 @@
+      ******************************************************************
+      * DCLGEN TABLE(ACM.DEBCARD)                                      *
+      *        LIBRARY(LMFPROG.APPLDCL.U099465(ACMDEBC))               *
+      *        ACTION(REPLACE)                                         *
+      *        LANGUAGE(COBOL)                                         *
+      *        APOST                                                   *
+      *        LABEL(YES)                                              *
+      *        DBCSDELIM(NO)                                           *
+      * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+      ******************************************************************
+           EXEC SQL DECLARE ACM.DEBCARD TABLE
+           ( ADC_BANK_NBR                   DECIMAL(3, 0) NOT NULL,
+             ADC_CARD_NBR                   CHAR(19) NOT NULL,
+             ADC_STATUS                     CHAR(2) NOT NULL,
+             ADC_CARD_TYPE                  CHAR(1) NOT NULL,
+             ADC_TX_TYPE                    CHAR(1) NOT NULL,
+             ADC_PIN_TRY_COUNT              DECIMAL(3, 0) NOT NULL,
+             ADC_PIN_NUMBER                 CHAR(16) NOT NULL,
+             ADC_EXPIRE_DATE                DATE NOT NULL,
+             ADC_ISSUE_DATE                 DATE NOT NULL,
+             ADC_REISSUE_DATE               DATE NOT NULL,
+             ADC_TIMES_REISSUE              DECIMAL(3, 0) NOT NULL,
+             ADC_LST_ACT_DATE               DATE NOT NULL,
+             ADC_DDA_WTHDWL                 DECIMAL(3, 0) NOT NULL,
+             ADC_SAV_WTHDWL                 DECIMAL(3, 0) NOT NULL,
+             ADC_DDA_DEPOSITS               DECIMAL(3, 0) NOT NULL,
+             ADC_SAV_DEPOSITS               DECIMAL(3, 0) NOT NULL,
+             ADC_DDA_BALINQ                 DECIMAL(3, 0) NOT NULL,
+             ADC_SAV_BALINQ                 DECIMAL(3, 0) NOT NULL,
+             ADC_TR_DDA_SAV                 DECIMAL(3, 0) NOT NULL,
+             ADC_TR_SAV_DDA                 DECIMAL(3, 0) NOT NULL,
+             ADC_WTHDWL_ATM                 DECIMAL(9, 2) NOT NULL,
+             ADC_WTHDWL_POS                 DECIMAL(9, 2) NOT NULL,
+             ADC_DAILY_LIM_ATM              DECIMAL(5, 0) NOT NULL,
+             ADC_DAILY_LIM_POS              DECIMAL(5, 0) NOT NULL,
+             ADC_DAILY_LIM_MAX              DECIMAL(5, 0) NOT NULL,
+             ADC_POS_AGG_AMT                DECIMAL(11, 2) NOT NULL,
+             ADC_POS_AGG_CNT                DECIMAL(7, 0) NOT NULL,
+             ADC_CARD_DESIGN                DECIMAL(3, 0) NOT NULL,
+             ADC_PIN_OFFSET                 CHAR(12) NOT NULL,
+             ADC_PIN_LENGTH                 DECIMAL(1, 0) NOT NULL,
+             ADC_OVERRIDE_TX                CHAR(1) NOT NULL,
+             ADC_OVERRIDE_DATE              DATE NOT NULL,
+             ADC_APPL_TX_COUNTER            DECIMAL(4, 0) NOT NULL,
+             ADC_CARD_SEQ_NBR               DECIMAL(3, 0) NOT NULL,
+             ADC_MASTERCARD_CONV_IND        CHAR(1) NOT NULL,
+             ADC_ENCRYPTED_PIN              CHAR(32) NOT NULL,
+             ADC_INSTANT_ISSUE_IND          CHAR(1) NOT NULL,
+             ADC_INSTANT_ISSUE_PRINT_BANK   DECIMAL(3, 0) NOT NULL,
+             ADC_INSTANT_ISSUE_PRINT_BRANCH DECIMAL(3, 0) NOT NULL,
+             ADC_INSTANT_ISSUE_PRINT_OPER   DECIMAL(5, 0) NOT NULL,
+             ADC_INSTANT_ISSUE_PRINT_TS     TIMESTAMP NOT NULL,
+             ADC_CREATION_METHOD            CHAR(1) NOT NULL,
+             ADC_PLASTIC_TYPE               SMALLINT NOT NULL,
+             ADC_INATL_TX_FEE_IND           CHAR(1) NOT NULL,
+             ADC_REPORT_PSEUDO_IND          CHAR(1) NOT NULL,
+             ADC_REPORT_PSEUDO_DATE         DATE NOT NULL
+           ) END-EXEC.
+      ******************************************************************
+      * COBOL DECLARATION FOR TABLE ACM.DEBCARD                        *
+      ******************************************************************
+       01  ACM-DEBCARD.
+           10 ADC-BANK-NBR         PIC S9(3)V USAGE COMP-3.
+           10 ADC-CARD-NBR         PIC X(19).
+           10 ADC-STATUS           PIC X(2).
+              88  ADC-STATUS-ISSUE-CARD      VALUE '10'.
+              88  ADC-STATUS-DONT-REISSUE    VALUE '20'.
+              88  ADC-STATUS-HOT-CARD        VALUE '30'.
+              88  ADC-STATUS-LOST-STOLEN     VALUE '40'.
+              88  ADC-STATUS-OPEN            VALUE '50'.
+              88  ADC-STATUS-PEND-REISSUE    VALUE '60'.
+              88  ADC-STATUS-CLOSE-PEND      VALUE '70'.
+              88  ADC-STATUS-CLOSED          VALUE '90'.
+              88  ADC-STATUS-ACCT-OPEN       VALUE '10' '20' '50'
+                                                   '60' '70'.
+              88  ADC-STATUS-ACCT-CLOSED     VALUE '30' '40' '90'.
+              88  ADC-STATUS-VALID           VALUE '10' '20' '30'
+                                                   '40' '50' '60'
+                                                   '70' '90'.
+           10 ADC-CARD-TYPE        PIC X(1).
+              88  ADC-CARD-TYPE-REGULAR      VALUE 'R'.
+              88  ADC-CARD-TYPE-GOLD         VALUE 'G'.
+              88  ADC-CARD-TYPE-CC           VALUE 'C'.
+              88  ADC-CARD-TYPE-CHKPLUS      VALUE 'P' 'L' 'B' 'D' 'W'
+                                                   'H'.
+              88  ADC-CARD-TYPE-CHKPLUS-REG  VALUE 'P'.
+              88  ADC-CARD-TYPE-CHKPLUS-GOLD VALUE 'L'.
+              88  ADC-CARD-TYPE-CHKPLUS-BUSN VALUE 'B'.
+              88  ADC-CARD-TYPE-CHKPLUS-PRPD VALUE 'D'.
+              88  ADC-CARD-TYPE-CHKPLUS-WRLD VALUE 'W'.
+              88  ADC-CARD-TYPE-HSA-DEBIT    VALUE 'H'.
+              88  ADC-CARD-TYPE-VALID        VALUE 'R' 'G' 'C' 'P' 'H'
+                                                   'L' 'B' 'D' 'W'.
+           10 ADC-TX-TYPE          PIC X(1).
+              88  ADC-TX-TYPE-REGULAR        VALUE 'R'.
+              88  ADC-TX-TYPE-DEPOSIT-ONLY   VALUE 'D'.
+              88  ADC-TX-TYPE-SIGNATURE-ONLY VALUE 'S'.
+              88  ADC-TX-TYPE-VALID          VALUE 'D' 'R' 'S'.
+           10 ADC-PIN-TRY-COUNT    PIC S9(3)V USAGE COMP-3.
+           10 ADC-PIN-NUMBER       PIC X(16).
+           10 ADC-EXPIRE-DATE-X.
+              15  ADC-EXPIRE-DATE       PIC X(10).
+           10 FILLER REDEFINES  ADC-EXPIRE-DATE-X.
+              15  ADC-EXPIRE-DATE-YR    PIC 9(4).
+              15  ADC-EXPIRE-DATE-D1    PIC X.
+              15  ADC-EXPIRE-DATE-MO    PIC 9(2).
+              15  ADC-EXPIRE-DATE-D2    PIC X.
+              15  ADC-EXPIRE-DATE-DY    PIC 9(2).
+           10 ADC-ISSUE-DATE-X.
+              15  ADC-ISSUE-DATE        PIC X(10).
+           10 FILLER REDEFINES  ADC-ISSUE-DATE-X.
+              15  ADC-ISSUE-DATE-YR     PIC 9(4).
+              15  ADC-ISSUE-DATE-D1     PIC X.
+              15  ADC-ISSUE-DATE-MO     PIC 9(2).
+              15  ADC-ISSUE-DATE-D2     PIC X.
+              15  ADC-ISSUE-DATE-DY     PIC 9(2).
+           10 ADC-REISSUE-DATE-X.
+              15  ADC-REISSUE-DATE      PIC X(10).
+           10 FILLER REDEFINES  ADC-REISSUE-DATE-X.
+              15  ADC-REISSUE-DATE-YR   PIC 9(4).
+              15  ADC-REISSUE-DATE-D1   PIC X.
+              15  ADC-REISSUE-DATE-MO   PIC 9(2).
+              15  ADC-REISSUE-DATE-D2   PIC X.
+              15  ADC-REISSUE-DATE-DY   PIC 9(2).
+           10 ADC-TIMES-REISSUE    PIC S9(3)        COMP-3.
+           10 ADC-LST-ACT-DATE-X.
+              15  ADC-LST-ACT-DATE      PIC X(10).
+           10 FILLER REDEFINES  ADC-LST-ACT-DATE-X.
+              15  ADC-LST-ACT-DATE-YR   PIC 9(4).
+              15  ADC-LST-ACT-DATE-D1   PIC X.
+              15  ADC-LST-ACT-DATE-MO   PIC 9(2).
+              15  ADC-LST-ACT-DATE-D2   PIC X.
+              15  ADC-LST-ACT-DATE-DY   PIC 9(2).
+           10 ADC-DDA-WTHDWL       PIC S9(3)V USAGE COMP-3.
+           10 ADC-SAV-WTHDWL       PIC S9(3)V USAGE COMP-3.
+           10 ADC-DDA-DEPOSITS     PIC S9(3)V USAGE COMP-3.
+           10 ADC-SAV-DEPOSITS     PIC S9(3)V USAGE COMP-3.
+           10 ADC-DDA-BALINQ       PIC S9(3)V USAGE COMP-3.
+           10 ADC-SAV-BALINQ       PIC S9(3)V USAGE COMP-3.
+           10 ADC-TR-DDA-SAV       PIC S9(3)V USAGE COMP-3.
+           10 ADC-TR-SAV-DDA       PIC S9(3)V USAGE COMP-3.
+           10 ADC-WTHDWL-ATM       PIC S9(7)V9(2) USAGE COMP-3.
+           10 ADC-WTHDWL-POS       PIC S9(7)V9(2) USAGE COMP-3.
+           10 ADC-DAILY-LIM-ATM    PIC S9(5)V USAGE COMP-3.
+           10 ADC-DAILY-LIM-POS    PIC S9(5)V USAGE COMP-3.
+           10 ADC-DAILY-LIM-MAX    PIC S9(5)V USAGE COMP-3.
+           10 ADC-POS-AGG-AMT      PIC S9(9)V9(2) USAGE COMP-3.
+           10 ADC-POS-AGG-CNT      PIC S9(7)V USAGE COMP-3.
+           10 ADC-CARD-DESIGN      PIC S9(3)V USAGE COMP-3.
+           10 ADC-PIN-OFFSET       PIC X(12).
+           10 ADC-PIN-LENGTH       PIC S9(1)V USAGE COMP-3.
+           10 ADC-OVERRIDE-TX      PIC X(1).
+           10 ADC-OVERRIDE-DATE    PIC X(10).
+           10 ADC-APPL-TX-COUNTER  PIC S9(4)V USAGE COMP-3.
+           10 ADC-CARD-SEQ-NBR     PIC S9(3)V USAGE COMP-3.
+           10 ADC-MASTERCARD-CONV-IND PIC X(1).
+              88  ADC-MASTERCARD-ADD-CARD     VALUE 'A'.
+              88  ADC-MASTERCARD-PENDING-CARD VALUE 'W'.
+              88  ADC-MASTERCARD-DEBIT-CARD   VALUE 'Y'.
+              88  ADC-MASTERCARD-VALID-CARD   VALUE 'A' 'W' 'Y'.
+              88  ADC-MASTERCARD-NOT-CONV     VALUE 'N' ' '.
+           10 ADC-ENCRYPTED-PIN    PIC X(32).
+           10 ADC-INSTANT-ISSUE-IND
+              PIC X(1).
+           10 ADC-INSTANT-ISSUE-PRINT-BANK
+              PIC S9(3)V USAGE COMP-3.
+           10 ADC-INSTANT-ISSUE-PRINT-BRANCH
+              PIC S9(3)V USAGE COMP-3.
+           10 ADC-INSTANT-ISSUE-PRINT-OPER
+              PIC S9(5)V USAGE COMP-3.
+           10 ADC-INSTANT-ISSUE-PRINT-TS
+              PIC X(26).
+           10 ADC-CREATION-METHOD  PIC X(1).
+           10 ADC-PLASTIC-TYPE     PIC S9(4) USAGE COMP.
+           10 ADC-INATL-TX-FEE-IND
+              PIC X(1).
+           10 ADC-REPORT-PSEUDO-IND   PIC X(1).
+           10 ADC-REPORT-PSEUDO-DATE  PIC X(10).
+      ******************************************************************
+      * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 46      *
+      ******************************************************************

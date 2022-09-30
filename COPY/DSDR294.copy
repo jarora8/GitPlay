@@ -1,0 +1,20 @@
+000100*01  INSUFFICIENT-NOTICES.                                        00010000
+000200     02  IN-REPORT-CODE      PIC S999                    COMP-3.  00020000
+000300     02  IN-FILE-ID          PIC XXX.                             00030000
+000400     02  IN-BANK-NO          PIC 99.                              00040000
+000500     02  IN-ACCT-ID          PIC 999                     COMP-3.  00050000
+000600     02  IN-ACCT-NO          PIC 9(9)                    COMP-3.  00060000
+000700     02  IN-CRF-REC-ID       PIC X(11).                           00070000
+000800     02  IN-CONTINUATION     PIC S999                    COMP-3.  00080000
+000900         88  IN-FIRST-RECORD             VALUE +001.              00090000
+001000         88  IN-NEXT-RECORD              VALUE +002.              00100000
+001100         88  IN-BAL-RECORD               VALUE +003.              00110000
+001200     02  IN-TX-AMT           PIC S9(9)V99                COMP-3.  00120000
+001300     02  IN-CURR-BAL         PIC S9(9)V99                COMP-3.  00130000
+001400     02  IN-ITEM-CHARGE      PIC S9(3)V99                COMP-3.  00140000
+001500     02  IN-CHK-NO           PIC S9(5)                   COMP-3.  00150000
+001600     02  IN-HOLD-IND         PIC X.                               00160000
+001700     02  FILLER              PIC X(104).                          00170000
+001800*  THIS LAYOUT IS USED FOR REPORT CODE 94.                        00180000
+001900*        94 = INSUFFICIENT NOTICES                                00190000
+002000*  THIS RECORD IS 150 CHARACTERS                                  00200000

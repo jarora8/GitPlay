@@ -1,0 +1,66 @@
+000100*01  NOW-ACCT-HEADER-RECORD.                                      00010000
+000200     02  NAH-BANK-NO         PIC 99.                              00020000
+000300     02  NAH-ACCT-ID         PIC 999                     COMP-3.  00030000
+000400     02  NAH-ACCT-NO         PIC 9(9)                    COMP-3.  00040000
+000500     02  NAH-REPORT-CODE     PIC S999                    COMP-3.  00050000
+000600     02  NAH-EARN-BALANCE    PIC S9(9)V99                COMP-3.  00060000
+000700     02  NAH-BALANCE-CODE    PIC S9                      COMP-3.  00070000
+000800             88  NAH-AVG-CUR-CYC         VALUE +1.                00080000
+000900             88  NAH-AVG-COL-CYC         VALUE +2.                00090000
+001000             88  NAH-LOW-BAL-CYC         VALUE +3.                00100000
+001100             88  NAH-AVG-COL-LESS-RESRV  VALUE +4.                00110000
+001200     02  NAH-INT-PAID-YTD    PIC S9(7)V99                COMP-3.  00120000
+001300     02  NAH-FILLER1         PIC X.                               00130001
+001400     02  NAH-SORT-KEY        PIC XX.                              00140000
+001500     02  NAH-STMT-LOC-CODE   PIC X.                               00150000
+001600     02  NAH-CURR-PROC-DT    PIC S9(7)                   COMP-3.  00160000
+001700     02  NAH-INT-PAID-PR-YR  PIC S9(7)V99                COMP-3.  00170000
+001800     02  NAH-LOW-BALANCE     PIC S9(9)                   COMP-3.  00180000
+001900     02  NAH-AVG-CUR-BALANCE PIC S9(9)                   COMP-3.  00190000
+002000     02  NAH-AVG-COL-BALANCE PIC S9(9)                   COMP-3.  00200000
+002100     02  NAH-NUM-CHECKS      PIC S9(5)                   COMP-3.  00210000
+002200     02  NAH-AMT-CHECKS      PIC S9(9)V99                COMP-3.  00220000
+002300     02  NAH-ODB-PLAN        PIC XX.                              00230000
+002400             88  NAH-PL                  VALUE 'PL'.              00240000
+002500             88  NAH-ER                  VALUE 'ER'.              00250000
+002600             88  NAH-SL                  VALUE 'SL'.              00260000
+002700             88  NAH-HE                  VALUE 'HE'.              00270000
+002800             88  NAH-EM                  VALUE 'EM'.              00280000
+002900     02  NAH-SC-ROUTINE      PIC 99.                              00290000
+003000     02  NAH-STMT-IMAGE-IND  PIC X.                               00300000
+003100             88  NAH-STMT-IMAGED         VALUE 'I'.               00310000
+003200             88  NAH-STMT-TRUNCATED      VALUE 'T'.               00320000
+003300             88  NAH-STMT-WITH-CHECKS    VALUE 'C'.               00330000
+003400     02  NAH-DEP-IMAGE-IND   PIC X.                               00340000
+003500             88  NAH-IMAGE-DEP           VALUE 'Y'.               00350000
+003600             88  NAH-DO-NOT-IMAGE-DEP    VALUE 'N'.               00360000
+003700     02  NAH-CUST-IMAGE-TYPE PIC X.                               00370000
+003800             88  NAH-IMAGE-FRONT         VALUE 'F'.               00380000
+003900             88  NAH-IMAGE-BACK          VALUE 'B'.               00390000
+004000             88  NAH-IMAGE-DUAL          VALUE 'D'.               00400000
+004100     02  NAH-IMAGES-PER-PAGE PIC 99.                              00410000
+004200             88  NAH-10-PER-PAGE         VALUE 10.                00420006
+004300             88  NAH-04-PER-PAGE         VALUE 04.                00430006
+004400             88  NAH-02-PER-PAGE         VALUE 02.                00440006
+004500     02  NAH-CMA-IND         PIC X.                               00450000
+004600     02  NAH-OA-IND          PIC X.                               00460000
+004700             88  NAH-OD-ACCESS-ACCT      VALUE 'Y'.               00470000
+004800     02  FILLER              PIC X.                               00480010
+005000     02  NAH-OA-LIMIT        PIC S9(5)                   COMP-3.  00500003
+005010     02  NAH-SAC-IND         PIC X(01).                           00501004
+005020             88  NAH-SAV-NA              VALUE ' '.               00502004
+005030             88  NAH-SAV-HSA             VALUE 'H'.               00503004
+005040             88  NAH-SAV-CESA            VALUE 'C'.               00504005
+005050     02  NAH-NUM-POS-SC-DEBITS   PIC S9(5)               COMP-3.  00505007
+005060     02  NAH-NUM-ACH-SC-CREDITS  PIC S9(5)               COMP-3.  00506007
+005070     02  NAH-ESTATEMENT          PIC X.                           00507007
+005080     02  NAH-FREE-INT-SW         PIC X.                           00508008
+005090     02  NAH-NEXT-STMT-DATE      PIC S9(07)              COMP-3.  00509009
+005100     02  NAH-FILLER2         PIC X(137).                          00510009
+005200                                                                  00520000
+005300*                                 TX CODE                         00530000
+005400*        HEADER TYPE           (CYC)   (SPEC)   SORT KEY          00540000
+005500*                                                                 00550000
+005600*    NOW ACCOUNTS               014     014        AD             00560000
+005700*                                                                 00570000
+005800*    THIS RECORD IS 225 CHARACTERS.                               00580000

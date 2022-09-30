@@ -1,0 +1,422 @@
+*********************************************************************** 00000010
+******* (C)COPYRIGHT FIRST DATA RESOURCES, INC.  鿖               ****** 00000020
+******* 1971 - 1990                                              ****** 00000030
+******* ALL RIGHTS RESERVED                                      ****** 00000040
+******* THIS MEDIA CONTAINS UNPUBLISHED, CONFIDENTIAL AND PRO-   ****** 00000050
+******* PRIETARY INFORMATION OF FIRST DATA RESOURCES, INC.       ****** 00000060
+******* NO DISCLOSURE OR USE OF ANY PORTION OF THE CONTENTS OF   ****** 00000070
+******* THESE MATERIALS MAY BE MADE WITHOUT THE EXPRESS WRITTEN  ****** 00000080
+******* CONSENT OF FIRST DATA RESOURCES, INC.                    ****** 00000090
+*********************************************************************** 00000100
+       IDENTIFICATION DIVISION.                                         00000110
+       PROGRAM-ID.             ZDUPDT2D.                                00000120
+       INSTALLATION.           FDR.                                     00000130
+       REMARKS.    THIS PROGRAM UPDATES THE ZD-09, VISA, MASTERCARD     00000140
+                   AND FDR TOTAL RECORDS USING THE NET SETTLEMENT FILE. 00000150
+      ***************************************************************** 00000160
+      ***                                                            ** 00000170
+      ***              P R O G R A M    C H A N G E S                ** 00000180
+      ***------------------------------------------------------------** 00000190
+      ***              ÓÓÓÓÓÓÓÓ   ZDUPDT2D   ÓÓÓÓÓÓÓÓ                ** 00000200
+      ***------------------------------------------------------------** 00000210
+      *** 01.000  W4C015          08/23/85         GERHARDT LAHS     ** 00000220
+      ***         NEW PROGRAM.                                       ** 00000230
+      ***                                                            ** 00000240
+      ***************************************************************** 00000250
+           EJECT                                                        00000260
+       ENVIRONMENT DIVISION.                                            00000270
+       INPUT-OUTPUT SECTION.                                            00000280
+       FILE-CONTROL.                                                    00000290
+           SKIP2                                                        00000300
+           SELECT NET-SETTLEMENT-FILE    ASSIGN TO UT-S-NETSETL.        00000310
+           SELECT RIPRPTS      ASSIGN TO DA-RIPRPTS                     00000320
+                               ACCESS IS DYNAMIC                        00000330
+                               RECORD KEY IS RIP-KEY                    00000340
+                               ORGANIZATION IS INDEXED                  00000350
+                               FILE STATUS IS FILE-STAT.                00000360
+           SELECT RIPRPTS-OUT            ASSIGN TO UT-S-RIPOUT.         00000370
+           SKIP2                                                        00000380
+       DATA DIVISION.                                                   00000390
+       FILE SECTION.                                                    00000400
+           SKIP2                                                        00000410
+                                                 COPY 'NETSLFD'.        00000420
+           SKIP2                                                        00000430
+                                                 COPY 'RIPRPTFD'.       00000440
+               SKIP2                                                    00000450
+                                                 COPY 'RIPOUTFD'.       00000460
+           EJECT                                                        00000470
+       WORKING-STORAGE SECTION.                                         00000480
+       01  START-WORKING-STORAGE                 PIC X(30)              00000490
+           VALUE 'WORKING STORAGE BEGINS HERE-->'.                      00000500
+           SKIP2                                                        00000510
+       01  ILBOABN0            VALUE 'ILBOAN0'   PIC X(8).              00000520
+           SKIP2                                                        00000530
+       01  ABEND-CODE          VALUE +0          PIC S9(4)V COMP SYNC.  00000540
+           SKIP2                                                        00000550
+       01  RELEASE-VERSION-CONTROL               COPY 'RVCONTRL'.       00000560
+           SKIP2                                                        00000570
+      *--------------------------------------------------------------*  00000580
+      *          BSFACT CONTROLS, DATA FIELDS, CLEAR FIELDS          *  00000590
+      *--------------------------------------------------------------*  00000600
+           SKIP2                                                        00000610
+       01  BSFACT-RUN-CONTROLS                   COPY 'BC00CONT'.       00000620
+           SKIP2                                                        00000630
+       01  BSF-KEY-FIELD.                                               00000640
+           02  BSFK-SYSTEM                       PIC 9(4).              00000650
+           02  BSFK-PB                           PIC X(4).              00000660
+           02  BSFK-PB-NUM REDEFINES BSFK-PB     PIC 9(4).              00000670
+           02  BSFK-AGB                          PIC X(4).              00000680
+           02  BSFK-RCD                          PIC X(4).              00000690
+           EJECT                                                        00000700
+      *--------------------------------------------------------------*  00000710
+      *                   MISCELLANEOUS WORK FIELDS                  *  00000720
+      *--------------------------------------------------------------*  00000730
+           SKIP2                                                        00000740
+       01  MISC-WRK-FIELDS.                                             00000750
+           05  FILE-STAT          VALUE '  '          PIC XX.           00000760
+           05  ITEM-PROCESSED     VALUE 'N'           PIC X.            00000770
+           05  NSR-HOLD-NUMBER    VALUE SPACES        PIC X(4).         00000780
+           05  READ-NET-SETTL     VALUE 'Y'           PIC X.            00000790
+           05  BSF-FLAG           VALUE ' '           PIC X.            00000800
+           05  BSFACT-KEY VALUE 'CONTROL     0000'    PIC X(16).        00000810
+           SKIP2                                                        00000820
+       01  DSPLY-09-SYSTEM                       COPY 'ZD09RECC'.       00000830
+           SKIP2                                                        00000840
+       01  NET-SETTLEMENT-RECORD                 COPY 'NETSLREC'.       00000850
+          EJECT                                                         00000860
+       PROCEDURE DIVISION.                                              00000870
+       0000-GLOBAL-CONTROL SECTION.                                     00000880
+      *---------------------------------------------------------------* 00000890
+      *NOTE:                                                          * 00000900
+      *       THIS PROGRAM WAS DEVELOPED WITH THE ASSUMPTION THAT     * 00000910
+      *       THE BASE, INET, AND FDR CONTROL RECORDS CONTAIN ZERO    * 00000920
+      *       AMOUNTS IN THE NET SETTLEMENT FIELDS AND THAT THE       * 00000930
+      *       CURRENT DAYS' NET SETTLEMENT AMOUNT IS IN LINE 2!       * 00000940
+      *       FURTHERMORE, ALL ITEM CODES ARE ASSUMED TO BE 301       * 00000950
+      *       WHICH IS INDICITIVE OF CURRENT DAY NET SETTLEMENT.      * 00000960
+      *       EXAMINATION OF THE BATCH TYPE INDICATOR (NSV/NSM)       * 00000970
+      *       DETERMINES THE TYPE OF PROCESSING TO BE USED.           * 00000980
+      *---------------------------------------------------------------* 00000990
+           SKIP1                                                        00001000
+      *--------------------------------------------------------------*  00001010
+      *            BUILD AND DISPLAY THE VERSION NUMBER              *  00001020
+      *--------------------------------------------------------------*  00001030
+           SKIP1                                                        00001040
+           MOVE 'ZDUPDT2D' TO RVC-PROGRAM-ID.                           00001050
+           MOVE '01'       TO RVC-RELEASE.                              00001060
+           MOVE '000'      TO RVC-VERSION.                              00001070
+           MOVE '08/23/85' TO RVC-DATE.                                 00001080
+           MOVE WHEN-COMPILED TO RVC-WHEN-COMPILED.                     00001090
+           MOVE RVC-COMPILE-TIME TO RVC-COMPILE-TIME-DISPLAY.           00001100
+           MOVE RVC-COMPILE-DATE TO RVC-COMPILE-DATE-DISPLAY.           00001110
+           DISPLAY RELEASE-VERSION-CONTROL.                             00001120
+           OPEN     INPUT    RIPRPTS                                    00001130
+                             NET-SETTLEMENT-FILE                        00001140
+                    OUTPUT   RIPRPTS-OUT.                               00001150
+           SKIP1                                                        00001160
+            CALL 'BSFREAD' USING BSFACT-RUN-CONTROLS                    00001170
+                                 BSFACT-KEY                             00001180
+                                 BSF-FLAG.                              00001190
+            IF BSF-FLAG NOT EQUAL ' '                                   00001200
+                DISPLAY   '****************************'    UPON CONSOLE00001210
+                DISPLAY   '* CONTROL SEGMENT NOT FOUND*'    UPON CONSOLE00001220
+                DISPLAY   '*         ON BSFACT        *'    UPON CONSOLE00001230
+                DISPLAY   '*--------------------------*'    UPON CONSOLE00001240
+                DISPLAY   '* PROGRAM STOPPED  RSN: 107*'    UPON CONSOLE00001250
+                DISPLAY   '****************************'    UPON CONSOLE00001260
+                MOVE +107 TO ABEND-CODE                                 00001270
+                CALL ILBOABN0 USING ABEND-CODE                          00001280
+                STOP RUN.                                               00001290
+           SKIP1                                                        00001300
+      *---------------------------------------------------------------* 00001310
+      *            GET THE VISA CONTROL RECORD                        * 00001320
+      *---------------------------------------------------------------* 00001330
+           SKIP1                                                        00001340
+           MOVE HIGH-VALUES TO RK-SYS-X.                                00001350
+           MOVE    '0001'   TO RK-PRN-X.                                00001360
+           MOVE      09     TO RK-PAG-NO.                               00001370
+           PERFORM 0200-READ-RIPRPTS-KEYED.                             00001380
+           MOVE RIP-DSPLY   TO DSPLY-VS-CONTROL-HOLD.                   00001390
+           SKIP1                                                        00001400
+      *---------------------------------------------------------------* 00001410
+      *            GET THE MASTER CARD CONTROL RECORD                 * 00001420
+      *---------------------------------------------------------------* 00001430
+           SKIP1                                                        00001440
+           MOVE HIGH-VALUES TO RK-SYS-X.                                00001450
+           MOVE    '0002'   TO RK-PRN-X.                                00001460
+           MOVE      09     TO RK-PAG-NO.                               00001470
+           PERFORM 0200-READ-RIPRPTS-KEYED.                             00001480
+           MOVE RIP-DSPLY   TO DSPLY-MC-CONTROL-HOLD.                   00001490
+           SKIP1                                                        00001500
+      *---------------------------------------------------------------* 00001510
+      *             GET THE FDR 09 CONTROL RECORD                     * 00001520
+      *---------------------------------------------------------------* 00001530
+           SKIP1                                                        00001540
+           MOVE HIGH-VALUES TO RK-SYS-X RK-PRN-X.                       00001550
+           MOVE      09     TO RK-PAG-NO.                               00001560
+           PERFORM 0200-READ-RIPRPTS-KEYED.                             00001570
+           MOVE RIP-DSPLY   TO DSPLY-WRK-09-HOLD.                       00001580
+           SKIP1                                                        00001590
+      *---------------------------------------------------------------* 00001600
+      *             GET THE FDR 16 CONTROL RECORD                     * 00001610
+      *---------------------------------------------------------------* 00001620
+           SKIP1                                                        00001630
+           MOVE HIGH-VALUES TO RK-SYS-X RK-PRN-X.                       00001640
+           MOVE      16     TO RK-PAG-NO.                               00001650
+           PERFORM 0200-READ-RIPRPTS-KEYED.                             00001660
+           MOVE RIP-DSPLY   TO DSPLY-16-CONTROL-HOLD.                   00001670
+           SKIP1                                                        00001680
+      *---------------------------------------------------------------* 00001690
+      *  RESET THE CURRENT RECORD POINTER FOR RIPRPTS TO FIRST RECORD * 00001700
+      *---------------------------------------------------------------* 00001710
+           SKIP1                                                        00001720
+           MOVE SPACES TO RIP-KEY.                                      00001730
+           START RIPRPTS                                                00001740
+               KEY NOT LESS THAN RIP-KEY                                00001750
+                   INVALID KEY                                          00001760
+                       DISPLAY   'RIPRPTS FILE IS EMPTY ??'             00001770
+                       MOVE +999 TO ABEND-CODE                          00001780
+                       CALL ILBOABN0 USING ABEND-CODE                   00001790
+                       STOP RUN.                                        00001800
+           SKIP1                                                        00001810
+      *---------------------------------------------------------------* 00001820
+      *  PERFORM THE UPDATE LOOP UNTIL ALL RECORDS UPDATED            * 00001830
+      *---------------------------------------------------------------* 00001840
+           SKIP1                                                        00001850
+           PERFORM 0100-UPDATE-LOOP.                                    00001860
+           SKIP1                                                        00001870
+      *---------------------------------------------------------------* 00001880
+      *            WRITE THE UPDATED VISA CONTROL RECORD              * 00001890
+      *---------------------------------------------------------------* 00001900
+           SKIP1                                                        00001910
+            MOVE HIGH-VALUES TO RK-SYS-X.                               00001920
+            MOVE   '0001'    TO RK-PRN-X.                               00001930
+            MOVE      09     TO RK-PAG-NO.                              00001940
+            MOVE DSPLY-VS-CONTROL-HOLD TO RIP-DSPLY.                    00001950
+            WRITE RIP-OUT-REC FROM RIP-DSPLY-REC.                       00001960
+           SKIP1                                                        00001970
+      *---------------------------------------------------------------* 00001980
+      *            WRITE THE UPDATED MASTER CARD CONTROL RECORD       * 00001990
+      *---------------------------------------------------------------* 00002000
+           SKIP1                                                        00002010
+            MOVE HIGH-VALUES TO RK-SYS-X.                               00002020
+            MOVE   '0002'    TO RK-PRN-X.                               00002030
+            MOVE      09     TO RK-PAG-NO.                              00002040
+            MOVE DSPLY-MC-CONTROL-HOLD TO RIP-DSPLY.                    00002050
+            WRITE RIP-OUT-REC FROM RIP-DSPLY-REC.                       00002060
+           SKIP1                                                        00002070
+      *---------------------------------------------------------------* 00002080
+      *              WRITE THE UPDATED FDR 09 RECORD                  * 00002090
+      *---------------------------------------------------------------* 00002100
+           SKIP1                                                        00002110
+            MOVE HIGH-VALUES TO RK-SYS-X RK-PRN-X.                      00002120
+            MOVE      09     TO RK-PAG-NO.                              00002130
+            MOVE DSPLY-WRK-09-HOLD TO RIP-DSPLY.                        00002140
+            WRITE RIP-OUT-REC FROM RIP-DSPLY-REC.                       00002150
+           SKIP1                                                        00002160
+      *---------------------------------------------------------------* 00002170
+      *         WRITE THE UPDATED FDR 16 CONTROL RECORD               * 00002180
+      *---------------------------------------------------------------* 00002190
+           SKIP1                                                        00002200
+            MOVE HIGH-VALUES TO RK-SYS-X RK-PRN-X.                      00002210
+            MOVE      16     TO RK-PAG-NO.                              00002220
+            MOVE DSPLY-16-CONTROL-HOLD TO RIP-DSPLY.                    00002230
+            WRITE RIP-OUT-REC FROM RIP-DSPLY-REC.                       00002240
+           SKIP1                                                        00002250
+           CLOSE RIPRPTS                                                00002260
+                 NET-SETTLEMENT-FILE                                    00002270
+                 RIPRPTS-OUT.                                           00002280
+           SKIP1                                                        00002290
+           MOVE ZERO TO RETURN-CODE.                                    00002300
+           STOP RUN.                                                    00002310
+           EJECT                                                        00002320
+      *---------------------------------------------------------------* 00002330
+      *           THIS SECTION IS ENTERED AND EXITED ONCE.            * 00002340
+      *---------------------------------------------------------------* 00002350
+      *  NOTE:  THE PROGRAM WILL LOOP WITHIN THIS SECTION UNTIL       * 00002360
+      *         ALL RECORDS IN BOTH THE NET-SETTLEMENT FILE           * 00002370
+      *         AND SCREEN FILE HAVE BEEN PROCESSED.                  * 00002380
+      *---------------------------------------------------------------* 00002390
+           SKIP2                                                        00002400
+       0100-UPDATE-LOOP SECTION.                                        00002410
+           SKIP1                                                        00002420
+      *---------------------------------------------------------------* 00002430
+      *  ONE TIME CLEANING OF SYS-09-SYS DUE TO RESIDE HIGH VALUES    * 00002440
+      *  RESULTANT FROM FDR 16 CONTROL RECORD READ IN INITIALIZATION. * 00002450
+      *---------------------------------------------------------------* 00002460
+           SKIP1                                                        00002470
+           MOVE SPACES TO SYS-09-SYS.                                   00002480
+           SKIP1                                                        00002490
+      *---------------------------------------------------------------* 00002500
+      *               INTERNAL LOOP ENTRANCE POINT                    * 00002510
+      *---------------------------------------------------------------* 00002520
+           SKIP1                                                        00002530
+       0110-READ-RIPRPTS-SEQ.                                           00002540
+           MOVE 'N' TO ITEM-PROCESSED.                                  00002550
+           IF SYS-09-SYS EQUAL HIGH-VALUES                              00002560
+               GO TO 0120-CHECK-IF-ALL-DONE.                            00002570
+           READ RIPRPTS NEXT                                            00002580
+               AT END                                                   00002590
+                   MOVE HIGH-VALUES TO SYS-09-SYS                       00002600
+                   GO TO 0120-CHECK-IF-ALL-DONE.                        00002610
+           IF RK-SYS-X EQUAL HIGH-VALUE                                 00002620
+                 MOVE HIGH-VALUES TO SYS-09-SYS                         00002630
+                 GO TO 0120-CHECK-IF-ALL-DONE.                          00002640
+           SKIP1                                                        00002650
+      *---------------------------------------------------------------* 00002660
+      *     COPY ALL RECORDS THAT ARE NOT SYSTEM 09 SCREENS           * 00002670
+      *---------------------------------------------------------------* 00002680
+           SKIP1                                                        00002690
+           IF RK-PRN-X  EQUAL HIGH-VALUES AND                           00002700
+              RK-PAG-NO EQUAL 9                                         00002710
+                  NEXT SENTENCE                                         00002720
+           ELSE                                                         00002730
+               GO TO 0151-WRITE-RIPRPTS-WO-BUF-MOVE.                    00002740
+           MOVE RIP-DSPLY TO DSPLY-MC-CONTROL.                          00002750
+      *---------------------------------------------------------------* 00002760
+      *  FORCE THE FIRST RECORD TO BE READ FROM NET SETTLEMENT FILE   * 00002770
+      *---------------------------------------------------------------* 00002780
+           ON 1                                                         00002790
+               GO TO 0115-READ-NET-SETTL-FILE.                          00002800
+           GO TO 0120-CHECK-IF-ALL-DONE.                                00002810
+           SKIP1                                                        00002820
+       0115-READ-NET-SETTL-FILE.                                        00002830
+           IF NSR-SYSTEM EQUAL HIGH-VALUES                              00002840
+               GO TO 0120-CHECK-IF-ALL-DONE.                            00002850
+           READ NET-SETTLEMENT-FILE INTO NET-SETTLEMENT-RECORD          00002860
+               AT END                                                   00002870
+                   MOVE HIGH-VALUES TO NSR-SYSTEM                       00002880
+                   GO TO 0120-CHECK-IF-ALL-DONE.                        00002890
+           SKIP1                                                        00002900
+       0120-CHECK-IF-ALL-DONE.                                          00002910
+           IF NSR-SYSTEM EQUAL HIGH-VALUE AND                           00002920
+              SYS-09-SYS EQUAL HIGH-VALUE                               00002930
+                  GO TO 0199-LOOP-EXIT.                                 00002940
+           SKIP1                                                        00002950
+      *---------------------------------------------------------------* 00002960
+      *   DETERMINE IF THIS RECORD SHOULD BE PROCESSED OR ERRORED     * 00002970
+      *---------------------------------------------------------------* 00002980
+           SKIP1                                                        00002990
+      *---------------------------------------------------------------* 00003000
+      *          IF NSR-SYSTEM GREATER - COPY SYS-09-SYS              * 00003010
+      *---------------------------------------------------------------* 00003020
+           SKIP1                                                        00003030
+           IF NSR-SYSTEM GREATER THAN SYS-09-SYS                        00003040
+               GO TO 0150-WRITE-RIPRPTS-OUT-REC.                        00003050
+           SKIP1                                                        00003060
+      *---------------------------------------------------------------* 00003070
+      *          IF NSR-SYSTEM LESS - ERRORED ONLY IF THIS IS THE     * 00003080
+      *          FIRST TIME IT HAS PASSED THROUGH THIS AREA!          * 00003090
+      *---------------------------------------------------------------* 00003100
+           SKIP1                                                        00003110
+           IF NSR-SYSTEM LESS THAN SYS-09-SYS                           00003120
+               IF ITEM-PROCESSED EQUAL 'N'                              00003130
+                   DISPLAY NSR-SYSTEM ' SYSTEM NOT FOUND ON RIPRPTS'    00003140
+                   GO TO 0115-READ-NET-SETTL-FILE                       00003150
+               ELSE                                                     00003160
+                   GO TO 0115-READ-NET-SETTL-FILE.                      00003170
+           MOVE 'Y' TO ITEM-PROCESSED.                                  00003180
+           SKIP1                                                        00003190
+      *---------------------------------------------------------------* 00003200
+      *         SYSTEMS ARE EQUAL   -   POST IF NOT DEFAULT SCREEN    * 00003210
+      *---------------------------------------------------------------* 00003220
+           SKIP1                                                        00003230
+           IF SYS-09-MC-WT-AMT NOT NUMERIC                              00003240
+               DISPLAY 'NET SETTLEMENT UPDATE IGNORED FOR SYSTEM-'      00003250
+                       SYS-09-SYS '- DEFAULT SCREEN UPDATE ILLOGICAL'   00003260
+               GO TO 0151-WRITE-RIPRPTS-WO-BUF-MOVE.                    00003270
+           SKIP1                                                        00003280
+      *---------------------------------------------------------------* 00003290
+      *              POST MASTERCARD NET SETTLEMENT                   * 00003300
+      *---------------------------------------------------------------* 00003310
+           SKIP1                                                        00003320
+           IF NSR-BATCH-IND EQUAL 'M' AND                               00003330
+              NSR-SYSTEM LESS THAN CONTROL-END-FDR1                     00003340
+                  ADD NSR-AMOUNT   TO   SYS-09-MC-AMT(+1)               00003350
+                                        SYS-09-MC-WT-AMT                00003360
+                                        WRK-MC-WT-AMOUNT                00003370
+                                        WRK-MC-NSM-0-AMOUNT             00003380
+                                        WRK-09-INET-AMT(+1)             00003390
+                                        WRK-09-WT-AMT                   00003400
+                  MOVE NSR-BATCH-NO TO SYS-09-MC-BATCH(+1)              00003410
+                                        WRK-MC-NSM-0-BATCH              00003420
+                                        WRK-09-INET-BATCH-1(+1)         00003430
+                  GO TO 0115-READ-NET-SETTL-FILE.                       00003440
+           SKIP1                                                        00003450
+           IF NSR-BATCH-IND EQUAL 'M' AND                               00003460
+              NSR-SYSTEM LESS THAN CONTROL-END-FDR2                     00003470
+                  ADD NSR-AMOUNT   TO   SYS-09-MC-AMT(+1)               00003480
+                                        SYS-09-MC-WT-AMT                00003490
+                                        WRK-MC-WT-AMOUNT                00003500
+                                        WRK-MC-NSM-0-AMOUNT             00003510
+                                        WRK-09-INET-AMT(+1)             00003520
+                                        WRK-09-WT-AMT                   00003530
+                  MOVE NSR-BATCH-NO TO SYS-09-MC-BATCH(+1)              00003540
+                                        WRK-MC-NSM-0-BATCH              00003550
+                                        WRK-09-INET-BATCH-2(+1)         00003560
+                  GO TO 0115-READ-NET-SETTL-FILE.                       00003570
+           SKIP1                                                        00003580
+           IF NSR-BATCH-IND EQUAL 'M'                                   00003590
+                  ADD NSR-AMOUNT   TO   SYS-09-MC-AMT(+1)               00003600
+                                        SYS-09-MC-WT-AMT                00003610
+                                        WRK-MC-WT-AMOUNT                00003620
+                                        WRK-MC-NSM-0-AMOUNT             00003630
+                                        WRK-09-INET-AMT(+1)             00003640
+                                        WRK-09-WT-AMT                   00003650
+                  MOVE NSR-BATCH-NO TO SYS-09-MC-BATCH(+1)              00003660
+                                        WRK-MC-NSM-0-BATCH              00003670
+                                        WRK-09-INET-BATCH-3(+1)         00003680
+                  GO TO 0115-READ-NET-SETTL-FILE.                       00003690
+      *---------------------------------------------------------------* 00003700
+      *              POST VISA NET SETTLEMENT                         * 00003710
+      *---------------------------------------------------------------* 00003720
+           IF NSR-BATCH-IND EQUAL 'V'                                   00003730
+               ADD NSR-AMOUNT   TO    SYS-09-VS-WT-AMT                  00003740
+                                      SYS-09-VS-AMT(+1)                 00003750
+                                      WRK-VS-WT-AMOUNT                  00003760
+                                      WRK-VS-NSV-0-AMOUNT               00003770
+                                      WRK-09-BASE-AMT                   00003780
+                                      WRK-09-WT-AMT                     00003790
+               MOVE NSR-BATCH-NO TO SYS-09-VS-BATCH(+1)                 00003800
+                                    WRK-VS-NSV-0-BATCH                  00003810
+                                    WRK-09-BASE-BATCH-1                 00003820
+               GO TO 0115-READ-NET-SETTL-FILE.                          00003830
+           SKIP1                                                        00003840
+      *---------------------------------------------------------------* 00003850
+      *     PRIVATE LABELS WILL NOT BE UPDATED IN ANY CASE !          * 00003860
+      *---------------------------------------------------------------* 00003870
+           SKIP1                                                        00003880
+           DISPLAY 'NET SETTLEMENT UPDATE FOR PRIVATE LABEL ILLEGAL!'.  00003890
+           GO TO 0150-WRITE-RIPRPTS-OUT-REC.                            00003900
+           SKIP1                                                        00003910
+           SKIP1                                                        00003920
+      *---------------------------------------------------------------* 00003930
+      *           WRITE THE SCREEN RECORD TO THE 'SON' FILE           * 00003940
+      *---------------------------------------------------------------* 00003950
+           SKIP1                                                        00003960
+       0150-WRITE-RIPRPTS-OUT-REC.                                      00003970
+           MOVE DSPLY-09-SYSTEM TO RIP-DSPLY.                           00003980
+       0151-WRITE-RIPRPTS-WO-BUF-MOVE.                                  00003990
+           WRITE RIP-OUT-REC FROM RIP-DSPLY-REC.                        00004000
+           GO TO 0110-READ-RIPRPTS-SEQ.                                 00004010
+           SKIP1                                                        00004020
+       0199-LOOP-EXIT.                                                  00004030
+            EXIT.                                                       00004040
+           EJECT                                                        00004050
+      *---------------------------------------------------------------* 00004060
+      *          IF THIS PROGRAM SHOULD ABEND DUE TO INVALID KEY      * 00004070
+      *          CHECK TO SEE WHY THE RIPRPTS FILE IS EMPTY OR        * 00004080
+      *          WHY IT DOES NOT CONTAIN ANY CONTROL RECORDS          * 00004090
+      *          FOR VISA, MASTERCARD, FDR-09, AND/OR FDR-16.         * 00004100
+      *---------------------------------------------------------------* 00004110
+           SKIP1                                                        00004120
+       0200-READ-RIPRPTS-KEYED SECTION.                                 00004130
+           READ RIPRPTS                                                 00004140
+               INVALID KEY                                              00004150
+                   DISPLAY   '09 CONTROL RECORD NOT FOUND'              00004160
+                   MOVE +009 TO ABEND-CODE                              00004170
+                   CALL ILBOABN0 USING ABEND-CODE                       00004180
+                   STOP RUN.                                            00004190
+       0299-EXIT.                                                       00004200
+            EXIT.                                                       00004210
+           SKIP2                                                        00004220

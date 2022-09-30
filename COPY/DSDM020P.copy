@@ -1,0 +1,26 @@
+000100*01  DSDM020P-PARAMETERS.                                         00010000
+000200     02  DSDM020P-BANK             PIC 9(3)               COMP-3. 00020000
+000300     02  DSDM020P-ACCT-ID          PIC 9(3)               COMP-3. 00030000
+000400     02  DSDM020P-RETURN-CODE      PIC X.                         00040000
+000500     02  DSDM020P-TABLE OCCURS 98 TIMES.                          00050000
+000600         03 DSDM020P-NEXT-CYC-DATE PIC S9(07)             COMP-3. 00060000
+000700     02  FILLER                    PIC X(103).                    00070000
+000800                                                                  00080000
+000900******************************************************************00090000
+001000*                                                        COPYBOOK*00100000
+001100*                                                                *00110000
+001200* PURPOSE: REPORT LAYOUT FOR RETURN THE NEXT STATEMENT CYCLE     *00120001
+001300*          DATE FOR THE STATEMENT CYCLE CODES PROCESSING TODAY   *00130001
+001400*                                                                *00140001
+001500* LENGTH OF COPYBOOK: 500 BYTES                                  *00150000
+001600*                                                                *00160000
+001700* USAGE: COPIED INTO PROGRAM TO BE AS LINKAGE TO PROGRAM         *00170000
+001800*                                                                *00180000
+001900* FIELD DESCRIPTION/VALUES:                                      *00190000
+002000* DSDM020P-BANK               BANK NUMBER                        *00200000
+002100* DSDM020P-ACCT-ID            ACCOUNT ID                         *00210000
+002200* DSDM020P-RETURN-CODE        G=ACCT FOUND -- B=NO ACCT FOUND    *00220000
+002300* DSDM020P-NEXT-CYC-DATE      NEXT CYCLE DATE FOR THAT SUBSCRIPT *00230001
+002400*                             SUBSCRIPT = CYCLE CODE             *00240001
+002500*                                                                *00250001
+002600******************************************************************00260000

@@ -1,0 +1,111 @@
+000100*01  STMT-SUMMARY-RECORD.                                         00010031
+000200     02  SSR-BANK-NO             PIC 99.                          00020031
+000300     02  SSR-ACCT-ID             PIC 9(3)                COMP-3.  00030031
+000400     02  SSR-OSB-NO              PIC 9(9)                COMP-3.  00040031
+000500     02  SSR-ACCT-TYPE           PIC X(03).                       00050031
+000600         88  SSR-DDA                     VALUE '010'.             00060031
+000700         88  SSR-SAVINGS                 VALUE '020'.             00070031
+000800         88  SSR-CD                      VALUE '030'.             00080031
+000900         88  SSR-PAC-CD                  VALUE '040'.             00090031
+001000         88  SSR-IRA-CD                  VALUE '050'.             00100031
+001100         88  SSR-HSA-DDA-AT              VALUE '052'.             00110031
+001200         88  SSR-HSA-CD                  VALUE '053'.             00120031
+001300         88  SSR-ESA-DDA-AT              VALUE '054'.             00130031
+001400         88  SSR-ESA-CD                  VALUE '055'.             00140031
+001500         88  SSR-529-CD                  VALUE '056'.             00150031
+001600         88  SSR-KEOGH                   VALUE '060'.             00160031
+001700         88  SSR-MONEY-MARKET-FUND       VALUE '070'.             00170031
+001800         88  SSR-BOND                    VALUE '080'.             00180031
+001900         88  SSR-SECURITIES              VALUE '085'.             00190031
+002000         88  SSR-MUTUAL-FUND             VALUE '090'.             00200031
+002100         88  SSR-BROKERAGE-ACCT          VALUE '100'.             00210031
+002200         88  SSR-SELF-DIRECTED-IRA       VALUE '110'.             00220031
+002300         88  SSR-SELF-DIRECTED-HSA       VALUE '113'.             00230031
+002400         88  SSR-SELF-DIRECTED-ESA       VALUE '115'.             00240031
+002500         88  SSR-ODB                     VALUE '120'.             00250031
+002600         88  SSR-IL                      VALUE '130'.             00260031
+002700         88  SSR-CL                      VALUE '140'.             00270031
+002800         88  SSR-ML                      VALUE '150'.             00280031
+002810         88  SSR-ML-HELOC                VALUE '155'.             00281032
+002900         88  SSR-CRP                     VALUE '160'.             00290031
+003000         88  SSR-DRID-POOL-BALANCE       VALUE '300'.             00300031
+003100                                                                  00310031
+003200     02  SSR-ACCT-CLASS          PIC X(03).                       00320031
+003300         88  SSR-DDA-CRP                 VALUE '000'.             00330031
+003400         88  SSR-DDA-DDA                 VALUE '005'.             00340031
+003500         88  SSR-DDA-NOW                 VALUE '010'.             00350031
+003600         88  SSR-DDA-CMM                 VALUE '015'.             00360031
+003700         88  SSR-DDA-IMA                 VALUE '020'.             00370031
+003800         88  SSR-DDA-IMM                 VALUE '025'.             00380031
+003900         88  SSR-DDA-IMP                 VALUE '030'.             00390031
+004000         88  SSR-DDA-IMT                 VALUE '035'.             00400031
+004100         88  SSR-DDA-IML                 VALUE '040'.             00410031
+004200         88  SSR-DDA-CMA                 VALUE '045'.             00420031
+004300         88  SSR-DDA-CMA-IMMA            VALUE '046'.             00430031
+004400         88  SSR-DDA-COMM-CMA            VALUE '047'.             00440031
+004500         88  SSR-DDA-COMM-CMA-IMMA       VALUE '048'.             00450031
+004600         88  SSR-DDA-HSA                 VALUE '049'.             00460031
+004700         88  SSR-DDA-ESA                 VALUE '050'.             00470031
+004800         88  SSR-DDA-IAP                 VALUE '060'.             00480031
+004810         88  SSR-DDA-PREPAID-CARD        VALUE '070'.             00481033
+004900         88  SSR-SAV-SAV                 VALUE '100'.             00490031
+005000         88  SSR-SAV-CC                  VALUE '110'.             00500031
+005100         88  SSR-MMF-RP                  VALUE '200'.             00510031
+005200         88  SSR-MMF-TE                  VALUE '210'.             00520031
+005300         88  SSR-MMF-TF                  VALUE '220'.             00530031
+005400         88  SSR-MMF-FF                  VALUE '230'.             00540031
+005500         88  SSR-MMF-TR                  VALUE '240'.             00550031
+005600         88  SSR-MMF-CF                  VALUE '250'.             00560031
+005700         88  SSR-BOND-GOVT-ISSUED        VALUE '300'.             00570031
+005800         88  SSR-BOND-MTG-BACKED         VALUE '310'.             00580031
+005900         88  SSR-BOND-TAXABLE            VALUE '320'.             00590031
+006000         88  SSR-BOND-TAX-EXEMPT         VALUE '330'.             00600031
+006100         88  SSR-MF-FIDELITY             VALUE '400'.             00610031
+006200         88  SSR-MF-FEDERATED            VALUE '410'.             00620031
+006300         88  SSR-MF-AMERICAN             VALUE '420'.             00630031
+006400         88  SSR-MF-PUTNAM               VALUE '430'.             00640031
+006500         88  SSR-BHC-HELD                VALUE '500'.             00650031
+006600         88  SSR-BHC-NOT-HELD            VALUE '510'.             00660031
+006700         88  SSR-IRA-SECURITIES          VALUE '600'.             00670031
+006800         88  SSR-IRA-MUTUAL-FUNDS        VALUE '605'.             00680031
+006900         88  SSR-IRA-BROKERAGE-ACCT      VALUE '610'.             00690031
+007000         88  SSR-IRA-BROK-ACCT-NOT-HELD  VALUE '615'.             00700031
+007100         88  SSR-IRA-BONDS               VALUE '620'.             00710031
+007200                                                                  00720031
+007300     02  SSR-ACCOUNT-NOX         PIC X(11).                       00730031
+007400     02  FILLER REDEFINES SSR-ACCOUNT-NOX.                        00740031
+007500         04  SSR-ACCOUNT-NO      PIC 9(09)               COMP-3.  00750031
+007600         04  FILLER              PIC X(06).                       00760031
+007700     02  SSR-BALANCE             PIC S9(9)V99            COMP-3.  00770031
+007800     02  SSR-CYCLE-CODE          PIC S9(03)              COMP-3.  00780031
+007900                                                                  00790031
+008000     02  SSR-SSN                 PIC S9(09)              COMP-3.  00800031
+008100     02  SSR-ACCOUNT-NAME        PIC X(40).                       00810031
+008200     02  FILLER REDEFINES SSR-ACCOUNT-NAME.                       00820031
+008300         03  SSR-CRP-CPLUS-NBR   PIC X(16).                       00830031
+008400         03  FILLER              PIC X(24).                       00840031
+008500                                                                  00850031
+008600     02  SSR-CL-NOTE-NO          PIC S9(7)               COMP-3.  00860031
+008700     02  SSR-LOAN-NEXT-DUE       PIC S9(7)               COMP-3.  00870031
+008800     02  SSR-ORIG-LOAN-BAL       PIC S9(9)V99            COMP-3.  00880031
+008900     02  FILLER REDEFINES SSR-ORIG-LOAN-BAL.                      00890031
+009000         03  SSR-CRP-CURR-AVAIL  PIC S9(9)V99            COMP-3.  00900031
+009100                                                                  00910031
+009200     02  SSR-LOAN-PMT-AMT        PIC S9(9)V99            COMP-3.  00920031
+009300     02  FILLER REDEFINES SSR-LOAN-PMT-AMT.                       00930031
+009400         03  SSR-CRP-PREV-AVAIL  PIC S9(9)V99            COMP-3.  00940031
+009500                                                                  00950031
+009600     02  SSR-ODB-CREDIT-LIMIT    PIC S9(9)V99            COMP-3.  00960031
+009700     02  FILLER REDEFINES SSR-ODB-CREDIT-LIMIT.                   00970031
+009800         03  SSR-CRP-PREV-MNTH-REDEEMED                           00980031
+009900                                 PIC S9(9)V99            COMP-3.  00990031
+010000                                                                  01000031
+010100     02  SSR-ML-AS-OF-DATE       PIC S9(7)               COMP-3.  01010031
+010200     02  SSR-CONTRACT-TYPE       PIC 9(03)               COMP-3.  01020031
+010300     02  SSR-STATEMENT-TYPE      PIC X(01).                       01030031
+010400                                                                  01040031
+010500     02  SSR-SSN2                PIC 9(9)                COMP-3.  01050031
+010600     02  SSR-SCH-FUND-IND        PIC X(01).                       01060031
+010700     02  SSR-ACCOUNT-NAME2       PIC X(32).                       01070031
+010800                                                                  01080031
+010900*  THIS RECORD IS 150 CHARACTERS.                                 01090031

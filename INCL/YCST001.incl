@@ -1,0 +1,1317 @@
+*PROCESS RENT,LIMITS(EXTNAME(32));
+ /********************************************************************/
+ /* The *PROCESS command is necessary to allow the LLB to be a     */
+ /* DLL and for this PLU to have long named external procedures.   */
+ /******************************************************************/
+ /*                                                                */
+ /* MODULE NAME : YCST001                                          */
+ /* MODULE TYPE : RAM                                              */
+ /* Title       : performAction                                    */
+ /* Version     : Credit Suisse                                    */
+ /*                                                                */
+ /******************************************************************/
+ /*                                                                */
+ /******************************************************************/
+ /* PROGRAM DESCRIPTION                                            */
+ /******************************************************************/
+ /*                                                                */
+ /*                                                                */
+ /* This programm accepts custom parameters and returns custom     */
+ /* return values                                                  */
+ /*                                                                */
+ /* The program takes the custom parameter values, switches        */
+ /* their order and returns them as custom returns.                */
+ /*                                                                */
+ /******************************************************************/
+ /* CHANGE ACTIVITY                                                */
+ /******************************************************************/
+ /*                                                                */
+ /* Date         Developer                                         */
+ /*              Description                                       */
+ /*===========   ================================================= */
+ /* 2019-12-02   Marcel Bischofberger                              */
+ /*              Clone program RDZPL16. removed rdz specific logic */
+ /*              and change the parameter as per topaz user program*/
+ /* 2020-01-27   Biswajeet Mohanty                                 */
+ /*              Cleanup activity and added new test MQ in the list*/
+ /*                                                                */
+ /******************************************************************/
+ YCST001:       proc($reqptr,
+                     $reqLen,
+                     $rspPtr,
+                     $rspLen)
+                     returns(byvalue fixed bin(31));
+
+ dcl $reqPtr             pointer;
+ dcl $reqLen             bin fixed(31);
+ dcl $rspPtr             pointer;
+ dcl $rspLen             bin fixed(31);
+
+ dcl (datetime,addr,substr,pliretv,sysnull,null,trim,length,index,
+      cstg,allocate,plifree) builtin;
+ /*----------------------------------------------------------------*/
+ /*  External Entries                                              */
+ /*----------------------------------------------------------------*/
+ dcl irxexec             external entry options(asm,retcode,fetchable);
+ dcl irxload             external entry options(asm,retcode,fetchable);
+ dcl isplink             external entry options(asm,retcode);
+ dcl cmalloc             external entry (fixed bin(31) byvalue)
+                                  returns( ptr byvalue);
+ dcl rdzxmlp             entry(ptr,ptr,char(8));
+ /*----------------------------------------------------------------*/
+ /* General MQ variables                                           */
+ /*----------------------------------------------------------------*/
+ %include cmqp;
+ %include cmqepp;
+ %include #CSTMQ1;
+ dcl MQ_PUT_MaxLength    bin fixed(31) init(32000);
+ dcl MQ_GET_SAVE_RC      bin fixed(31) init(0);
+ dcl MQ_GET_SAVE_REAS    bin fixed(31) init(0);
+ dcl MQ_FIRST_TIME       char(1) static init('Y');
+ dcl DATE_TIME_NOW       char(17);
+ dcl THIS_PROGRAM        char(07)  init('YCST001');
+ dcl HDR_END_MQ          bin fixed(31);
+ /*----------------------------------------------------------------*/
+ /* FILE DEFINITIONS                                               */
+ /*----------------------------------------------------------------*/
+ dcl sysprint    file print;
+ dcl xmllog      file print;
+ dcl rexxout     file record input external;
+ dcl cmansys     file record input external;
+ /*----------------------------------------------------------------*/
+ /*                                                                */
+ /*----------------------------------------------------------------*/
+ dcl eof_rexxout           bit (1) init ('0'b) aligned;
+
+ on endfile (rexxout) begin;
+   eof_rexxout = '1'b;
+ end;
+
+ dcl eof_cmansys           bit (1) init ('0'b) aligned;
+
+ on endfile (cmansys) begin;
+   eof_cmansys = '1'b;
+ end;
+
+ on undefinedfile (cmansys) begin;
+   eof_cmansys = '1'b;
+ end;
+ /*----------------------------------------------------------------*/
+ dcl rec_cmansys                  char(600);
+ dcl rec_cmansys_1                char(1) static init(' ');
+ dcl rec_cmansys_2                char(5) static;
+ dcl rec_cmansys_3                char(26) static;
+ dcl rec_cmansys_4                char(26) static;
+ dcl rec_cmansys_5                char(5) static init('     ');
+ dcl cman_locn                    char(3) static init('   ');
+ dcl curr_locn                    char(3) static init('   ');
+ dcl cmansys_read                 char(1) static init('N');
+ dcl alloc_done                   char(1) static init('N');
+
+ /******************************************************************/
+ /* pgm-variables                                                  */
+ /* error-codes                                                    */
+ /******************************************************************/
+
+ dcl rec_rexxout                  char(27990) var;
+ dcl rdzlog_tran_name             char(30) varying;
+ dcl post_act_exist               char(4);
+ dcl post_area_exist              char(4);
+ dcl post_prom_exist              char(4);
+ dcl pid_prefix                   char(7) init('ABFGMSY');
+ dcl numbers                      char(10) init('0123456789');
+
+ dcl w_trace                      char(1);
+ dcl w_execblk_ddname             char(7);
+ dcl w_num_bytes                  pic'99999999'
+                                  based(addr(res_header_numberbytes));
+ dcl w_rexxout_tot                pic'99999999';
+ dcl w_num_rows_in                pic'99999999';
+
+ dcl post_area_start              fixed binary(31);
+ dcl post_prom_start              fixed binary(31);
+ dcl env_start                    fixed binary(31);
+ dcl env_end                      fixed binary(31);
+ dcl hdr_start                    fixed binary(31);
+ dcl hdr_end                      fixed binary(31);
+ dcl hdr_rex                      fixed binary(31);
+ dcl hdr_meta                     fixed binary(31);
+ dcl hdr_len                      fixed binary(31);
+ dcl xml_len                      fixed binary(31);
+ dcl xml_ret_len                  fixed bin(31);
+ dcl serv_len                     fixed binary(31);
+ dcl copy_len                     fixed binary(31);
+ dcl rexxout_len                  fixed binary(31);
+ dcl rexxout_tot                  fixed binary(31);
+ dcl num_rows_in                  fixed binary(31);
+ dcl row_start                    fixed binary(31);
+ dcl i2                           fixed binary(31);
+ dcl i3                           fixed binary(31);
+ dcl i4                           fixed binary(31);
+ dcl i5                           fixed binary(31);
+
+ dcl memory_pointer               ptr static;
+ dcl memory_pointer2              ptr static;
+
+ dcl YCST001_msg                  char(40)
+                                  init('** YCST001: V2020.02.11');
+ dcl print_msg                    char(1) static init('Y');
+ dcl w_short_txt                  char(32000) varying;
+ dcl xml_log_72                   char(72);
+ dcl xml_log_72_file              char(72) based(xml_log_ptr);
+ dcl xml_log_ptr                  ptr;
+
+ dcl time_of_day                  char(17); /* yyyymmddhhmiss999 */
+ dcl 01 date_and_time,
+       05 current_day,
+          10  dd                  char(2),
+          10  filler1             char(1) init('/'),
+          10  mm                  char(2),
+          10  filler2             char(1) init('/'),
+          10  yyyy                char(4),
+          10  filler3             char(2) init('  '),
+       05 current_time,
+          10  hh                  char(2),
+          10  filler4             char(1) init(':'),
+          10  mi                  char(2),
+          10  filler5             char(1) init(':'),
+          10  ss                  char(2),
+          10  filler6             char(1) init(' ');
+
+ dcl secs_save                    float bin(53) static;
+ dcl secs_now                     float bin(53);
+ /*----------------------------------------------------------------*/
+ /* attributes to call a rexx-procedure using irxexec              */
+ /*----------------------------------------------------------------*/
+ dcl 01 execblk,
+       05 execblk_acryn           char(8),
+       05 execblk_length          fixed bin(31),
+       05 execblk_reserved        fixed bin(31),
+       05 execblk_member          char(8),
+       05 execblk_ddname          char(8),
+       05 execblk_subcom          char(8),
+       05 execblk_dsnptr          ptr,
+       05 execblk_dsnlen          fixed bin(15);
+
+ dcl 01 evalblk,
+       05 evalblk_evpad1          fixed bin(31),
+       05 evalblk_evsize          fixed bin(31),
+       05 evalblk_evlen           fixed bin(31),
+       05 evalblk_evpad2          fixed bin(31),
+       05 evalblk_evdata          char(4000);
+       /********************************************************/
+       /* evalblk_evsize is size of evalblk in double words    */
+       /*                    = 4 + 4 + 4 + 4 + 4000 / 8 = 502  */
+       /* evalblk_evlen is the actual length of data from rexx */
+       /* evalblk_evdata is the supplied output area for rexx  */
+       /********************************************************/
+
+ /*----------------------------------------------------------------*/
+ /* attributes to load a rexx-procedure using irxload              */
+ /*----------------------------------------------------------------*/
+
+ dcl 01 loadblk,
+       05 loadblk_acryn           char(8),
+       05 loadblk_length          fixed bin(31),
+       05 loadblk_reserved        fixed bin(31),
+       05 loadblk_member          char(8),
+       05 loadblk_ddname          char(8),
+       05 loadblk_subcom          char(8),
+       05 loadblk_dsnptr          ptr,
+       05 loadblk_dsnlen          fixed bin(31),
+       05 loadblk_extptr          ptr,
+       05 loadblk_extlen          fixed bin(31),
+       05 loadblk_reservd2        char(8);
+
+ dcl func_name                    char(8);
+ dcl loadblk_ptr                  ptr;
+ dcl inslblk_ptr                  ptr;
+ dcl envblk_ptr                   ptr;
+ dcl repload_ptr                  ptr;
+ dcl load_done                    char(1) static init('N');
+
+ dcl 1 argtable,
+       05 arguments(1),
+         10 argstring_ptr         ptr,
+         10 argstring_length      fixed binary(31),
+       05 argtable_last           char(8);
+
+ dcl rexx_input_area              char(32000);
+
+ dcl execblk_ptr                  ptr;
+ dcl argtable_ptr                 ptr;
+ dcl instblk_ptr                  ptr;
+ dcl reserved_parm5               ptr;
+ dcl evalblk_ptr                  ptr;
+ dcl reserved_workarea_ptr        ptr;
+ dcl reserved_userfield_ptr       ptr;
+ dcl reserved_envblock_ptr        ptr;
+ dcl rexx_return_code_ptr         ptr;
+ dcl flags                        char(4);
+ dcl rexx_return_code             fixed binary(31);
+ dcl int_rval                     fixed binary(31);
+
+ /*----------------------------------------------------------------*/
+ /* error messages from this program                               */
+ /*----------------------------------------------------------------*/
+
+ dcl xml_error_msg                char(500); /* header is max 457 */
+ dcl service_name_msg             char(30);
+ dcl error_txt_msg                char(200)  init('');
+ dcl error_message                char(200)  init('');
+ /*----------------------------------------------------------------*/
+ /* attributes to parse xml                                        */
+ /*----------------------------------------------------------------*/
+
+ dcl  rdzxmlp_in_ptr              ptr;
+ dcl  rdzxmlp_out_ptr             ptr;
+ dcl  rdzxmlp_req_type            char(8);
+
+ dcl  rdzxmlp_inarea              char(1000);/* current max < 500  */
+ dcl  rdzxmlp_outarea             char(500); /* len of rdzinrqh=319*/
+ %include rdzinrqh;
+
+ /*----------------------------------------------------------------*/
+ /* CARMA Input and output definitions                             */
+ /*----------------------------------------------------------------*/
+ dcl ICP_requestdata              char(32000) based($reqptr);
+
+ dcl ICR_responsedata             char(4000) based($rspptr);
+
+ dcl file_ptr                     ptr;
+ dcl file_record                  char(27990) based(file_ptr);
+ /*----------------------------------------------------------------*/
+ dcl @PgmName               char(08)       init(procedurename());       00002600
+ dcl @True                  bit(1)         aligned   init('1'B);        00002100
+ dcl @False                 bit(1)         aligned   init('0'B);        00002200
+ dcl @Force                 bit(1)         aligned   init('1'B);        00002300
+ dcl @Dflt                  bit(1)         aligned   init('0'B);        00002400
+ dcl @Trace                 bit(1)         aligned   init('0'B);        00002500
+ /*----------------------------------------------------------------*/
+ dcl w_mq_set            char(05) static init('     ');
+ dcl LEN_MQSET           bin fixed(31) static init(5);
+
+ /*===================================================================*/
+ /*                                                                   */
+ /*                 M A I N - P R O C E D U R E                       */
+ /*                                                                   */
+ /*===================================================================*/
+
+ /*@Trace = '1'b;    bm05 delete it later*/
+
+ if print_msg='Y' then do;
+   call logTrace('1'b,'Info',YCST001_MSG);
+ end;
+
+ call getCurrentDateTime;
+ call initialProcess;
+ call processXmlInput;
+ call processServiceName;
+
+ normal_exit:;
+
+ call END_PROCESS;
+
+ call getCurrentDateTime;
+
+ PUT SKIP EDIT('*** END *** ',DATE_AND_TIME)(A);
+ PUT SKIP EDIT(' ')(A);
+ PUT FILE(XMLLOG) SKIP EDIT('*** END *** ',DATE_AND_TIME)(A);
+ PUT FILE(XMLLOG) SKIP EDIT(' ')(A);
+
+ if REQ_HEADER_ServiceName = 'componentSearch' then do;
+   SECS_SAVE = SECS();
+   SECS_SAVE = SECS_SAVE + 5;
+ end;
+
+ /* Don't try to cleanup Data-Buffer - it will cause ABEND !!         */
+ /* It will be freed automatically when the program ends.             */
+ /* call plifree(MQ_PUT_PTR)                                          */
+ /* call plifree(MQ_GET_PTR)                                          */
+
+ RETURN(INT_RVAL);
+
+ /******************************************************************/
+ /* Initial processing                                             */
+ /******************************************************************/
+ initialProcess: PROC;
+   Call LogTrace(@Dflt,'PROC',procedurename());
+
+ /* Previously, we allocated the required amount of storage for    */
+ /* each response back to the RDz plugin. However, there is no     */
+ /* real point because there is no performance difference in the   */
+ /* plugin whether we return 4KB or 1MB. Also, the definition in   */
+ /* CRA.VSAMV.CRADEF for the response to the RDz plugin is 1032060.*/
+ /* Therefore, we now allocate one permanent piece of storage of   */
+ /* 1032064 and use it for long and short responses and also for   */
+ /* MQ-based or local (Rexx-based) responses.                      */
+ /*                                                                */
+ /* Allocating the storage for I/O areas only once, avoids         */
+ /* possible problems with available heap.                         */
+ /*                                                                */
+ /* Note 1: The extra 4 bytes in 1032064 is for the pointer named  */
+ /* ICR_PARAMS.PARM1.                                              */
+ /* Note 2: The total data is:                                     */
+ /* 1) ICR_PARAMS.PARM1                                            */
+ /* 2) Data from Rexx, which is (max) 4000 bytes (ICR_ResponseData)*/
+ /* 3) Data from file REXXOUT, which is defined in W_NUM_BYTES     */
+ /* (which is defined on RES_HEADER_numberBytes - and we limit the */
+ /* size of this to 1000000 later in the program, so we have spare)*/
+
+ int_rval = 0;                            /*Initialize return code */
+
+ if $reqPtr = sysnull() then do;
+   error_txt_msg = 'Pointer to input data (sent by CARMA) is NULL';
+   call CREATE_ERROR_MESSAGE;
+ end;
+
+ rdzxmlp_out_ptr = null;
+ if alloc_done = 'N' then do;
+   memory_pointer = allocate(mq_maxlength);
+   memory_pointer2 = memory_pointer;
+   /* increment pointer to point to the beginning of the data area    */
+   memory_pointer = memory_pointer + 4;
+   mq_get_ptr = memory_pointer;             /* alloc of "get" ioarea  */
+   mq_put_ptr = allocate(mq_put_maxlength); /* alloc of "put" ioarea  */
+   alloc_done = 'Y';
+ end;
+
+ $rspptr = memory_pointer;
+
+ service_name_msg = 'UNKNOWN';
+ rdzxmlp_in_ptr = addr(rdzxmlp_inarea);
+ rdzxmlp_out_ptr = addr(rdzxmlp_outarea);
+ rdzxmlp_outarea = ' ';
+ xml_error_msg = ' ';
+
+ if $rspptr = sysnull() then do;
+   error_txt_msg = 'Pointer to parameter list (sent by carma) is null';
+   call create_error_message;
+ end;
+
+ w_execblk_ddname = 'SYSEXEC';
+
+ end initialprocess;
+
+ /******************************************************************/
+ /* Write XML input to XMLLOG and extract header tags              */
+ /******************************************************************/
+ processXmlInput: PROC;
+   Call LogTrace(@Dflt,'PROC',procedurename());
+
+ W_SHORT_TXT = trim(substr(ICP_RequestData,1,$reqLen));
+
+ if cmansys_read = 'N' then do;
+   call read_cmansys;
+ end;
+
+
+ PUT FILE(XMLLOG) SKIP EDIT('** START ** ',DATE_AND_TIME)(A);
+ PUT FILE(XMLLOG) SKIP EDIT('XML Input Data = ')(A);
+
+ XML_LEN = length(W_SHORT_TXT);
+ COPY_LEN = 72;
+ do while(XML_LEN > 0);
+   if XML_LEN < 72 then COPY_LEN = XML_LEN;
+   XML_LOG_72 = substr(W_SHORT_TXT,1,COPY_LEN);
+   PUT FILE(XMLLOG) SKIP EDIT(XML_LOG_72)(A);
+   if XML_LEN > 72 then W_SHORT_TXT = substr(W_SHORT_TXT,73);
+   XML_LEN = XML_LEN - 72;
+ end;
+ PUT FILE(XMLLOG) SKIP EDIT(' ')(A);
+
+ /* XML input might start with <?xml version="1.0" ?> and in this  */
+ /* case, "<requestEnvelope" will not be in position 1. So remove  */
+ /* data infront of "<requestEnvelope".                            */
+ ENV_START = index(ICP_RequestData,'<requestEnvelope');
+ if ENV_START = 0 then do;
+   ERROR_TXT_MSG = 'XML input does not have a valid header. ' !!
+                   'It does not contain a "requestEnvelope" start-tag.';
+   call CREATE_ERROR_MESSAGE;
+ end;
+
+ ICP_RequestData = substr(ICP_RequestData,ENV_START);
+
+ ENV_END = index(ICP_RequestData,'</requestEnvelope>');
+ if ENV_END = 0 then do;
+   ERROR_TXT_MSG = 'XML input is not complete. ' !!
+                   'It does not contain a "requestEnvelope" end-tag.';
+   call CREATE_ERROR_MESSAGE;
+ end;
+
+ SERV_LEN  = index(ICP_RequestData,'>');
+ HDR_START = index(ICP_RequestData,'<header>');
+ HDR_END   = index(ICP_RequestData,'</header>');
+
+ HDR_LEN   = HDR_END - HDR_START + 9;
+
+ if HDR_START = 0 ! HDR_END = 0 ! HDR_LEN < 9 then do;
+   ERROR_TXT_MSG = 'XML input does not have a valid header ';
+   call CREATE_ERROR_MESSAGE;
+ end;
+
+ RDZXMLP_INAREA = substr(ICP_RequestData,1,SERV_LEN) !!
+                  substr(ICP_RequestData,HDR_START,HDR_LEN) !!
+                  '</requestEnvelope>';
+
+
+ RDZXMLP_REQ_TYPE = 'REQUEST';
+
+ CALL RDZXMLP(RDZXMLP_IN_PTR,RDZXMLP_OUT_PTR,RDZXMLP_REQ_TYPE);
+
+ W_TRACE = REQ_HEADER_Trace;
+
+ if REQ_HEADER_Trace ^= 0 then @Trace = '1'b;        /*bm01*/
+
+ if W_TRACE ^= '0' then do;
+
+   W_SHORT_TXT = trim(RDZXMLP_INAREA);
+
+   call logTrace(@Dflt,'Info','RDZXMLP_INAREA = '!!
+                              W_SHORT_TXT);
+   call logTrace(@Dflt,'Info',(90)' ');
+   call logTrace(@Dflt,'Info','REQ_HEADER_SUBSYS       '!!
+                              REQ_HEADER_SUBSYS);
+   call logTrace(@Dflt,'Info','REQ_HEADER_PID          '!!
+                              REQ_HEADER_PID);
+   call logTrace(@Dflt,'Info','REQ_HEADER_ServiceName  '!!
+                              REQ_HEADER_ServiceName);
+   call logTrace(@Dflt,'Info','REQ_HEADER_Trace        '!!
+                              REQ_HEADER_Trace);
+   call logTrace(@Dflt,'Info','REQ_HEADER_ClientVersion'!!
+                              REQ_HEADER_ClientVersion);
+ end;
+
+ i4 = verify(substr(REQ_HEADER_PID,1,1),PID_PREFIX);
+ i5 = verify(substr(REQ_HEADER_PID,2,6),NUMBERS);
+ if i4 ^= 0 ! i5 ^= 0 then do;
+   ERROR_TXT_MSG = 'PID in XML input message is invalid - ' !!
+                   REQ_HEADER_PID;
+   call CREATE_ERROR_MESSAGE;
+ end;
+
+ SERVICE_NAME_MSG = REQ_HEADER_ServiceName;
+
+ END processXmlInput;
+
+ /******************************************************************/
+ /* Call appropriate Rexx for the XML service                      */
+ /*                                                                */
+ /* If the requested service name is 'ping' or 'componentiSubmit'  */
+ /* then process the request locally irrespective to execution loc */
+ /* For the 1st time execution rexx executed locally for some      */
+ /* housekeeping activity                                          */
+ /******************************************************************/
+ processServiceName: PROC;
+   Call LogTrace(@Dflt,'PROC',procedurename());
+
+ if print_msg='Y' then do;
+   print_msg='N';
+   call logTrace('1'b,'Info','** Plugin version = '!!
+                             req_header_clientversion);
+ end;
+
+ call logTrace('1'b,'Info','** Start processing for '!!
+                           'requested service('!!
+                        trim(REQ_HEADER_ServiceName)!!') '!!
+                             'MetaData('!!
+                             REQ_HEADER_metaDataVersion!!')');
+
+ SECS_NOW = SECS();
+
+ if (REQ_HEADER_ServiceName = 'componentVersionsForArea' !
+  REQ_HEADER_ServiceName = 'componentVersionsForBaseline' !
+  REQ_HEADER_ServiceName = 'componentVersionsForPackage' ) &
+  SECS_NOW < SECS_SAVE then call CREATE_FAKE_OK_MESSAGE;
+
+ if LOAD_DONE = 'N' then call Load_REXX;
+
+ EXECBLK_MEMBER = 'CSTMAIN';
+ REXX_INPUT_AREA = '';                                 /*bm02*/
+ REXX_INPUT_AREA = substr(ICP_RequestData,1,$reqLen);  /*bm02*/
+ /*REXX_INPUT_AREA = ICP_RequestData; */
+
+ /* Work out whether to process transaction locally                */
+ if REQ_HEADER_ServiceName = 'ping' !
+    substr(REQ_HEADER_ServiceName,1,16) = 'componentiSubmit' !
+    CURR_LOCN = CMAN_LOCN then do;
+      call Process_REXX;
+      call Process_REXX_Response;
+ end;
+ else do;
+   /* We need to check some things for first action for offshore   */
+   /* and we need to allocate a file for some transactions.        */
+   if MQ_FIRST_TIME = 'Y' !
+      REQ_HEADER_ServiceName ='componentPreviousLocations' !
+      REQ_HEADER_ServiceName ='componentCreate' then do;
+
+      call Process_REXX;
+      if index(EVALBLK_EVDATA,'<requestedConfirmations>') ^= 0 !
+        index(EVALBLK_EVDATA,'<returnCode>Stop</returnCode>') ^= 0 !
+        index(EVALBLK_EVDATA,'<returnCode>Severe</returnCode>') ^= 0 !
+        index(EVALBLK_EVDATA,'#REBOOT_FLAG') ^= 0 then do;
+
+        call Process_REXX_Response;
+      end;
+      else do;
+        MQ_FIRST_TIME = 'N';
+        call CMAN_VIA_MQ;
+      end;
+   end;
+   else do;
+     call CMAN_VIA_MQ;
+   end;
+ end;
+
+ END processServiceName;
+
+ /******************************************************************/
+ /* Process the response from the called Rexx                      */
+ /******************************************************************/
+ Process_REXX_Response: PROC;
+   Call LogTrace(@Dflt,'PROC',procedurename());
+
+ /* When the transaction returns from CSTMAIN, then the XML return */
+ /* message will contain some tags that we don't want to send to   */
+ /* the PC. Specifically, it might contain tags "rexxout",         */
+ /* "numRecs", "numBytes" and will definitely contain              */
+ /* "needsUpdateMetaData". Of these, only "needsUpdateMetaData"    */
+ /* should be sent back to the PC. CSTLOGX doesn't put any of      */
+ /* these tags in its XML return message. Maybe there will be      */
+ /* other Rexxs in future that are invoked from this program and   */
+ /* their XML return messages might (or might not) contain these   */
+ /* tags. Therefore we should look for the existence of these tags */
+ /* and not do our logic based Rexx names.                         */
+ /* Note: at the moment CSTLOGX doesn't go through this PROC.      */
+
+ /* Set HDR_REX to include end of </rexxVersion> */
+ HDR_REX = HDR_REX + 13;
+
+ if RES_HEADER_UseREXXOUT = 'Y' then do;
+   XML_RET_LEN = W_NUM_BYTES + 4026 + 27990;
+   /* Copy the relevant part of the header from the rexx and       */
+   /* set FILE_PTR to next byte past '<?xml version="1.0" ?>' and  */
+   /* data from Rexx up to end of '</header>'                      */
+   if HDR_META = 0 then do;
+     ICR_ResponseData = '<?xml version="1.0" ?>' !!
+                        substr(EVALBLK_EVDATA,1,HDR_REX) !!
+                        substr(EVALBLK_EVDATA,HDR_END,9);
+     FILE_PTR = MEMORY_POINTER + 22 + HDR_REX + 9;
+   end;
+   else do;
+     ICR_ResponseData = '<?xml version="1.0" ?>' !!
+                        substr(EVALBLK_EVDATA,1,HDR_REX) !!
+                        substr(EVALBLK_EVDATA,HDR_META,44) !!
+                        substr(EVALBLK_EVDATA,HDR_END,9);
+     FILE_PTR = MEMORY_POINTER + 22 + HDR_REX + 44 + 9;
+   end;
+   /* copy in all the data from the records in REXXOUT             */
+   call READ_REXXOUT;
+   /* copy rest of data from Rexx from next byte past '</header>'  */
+   HDR_END = HDR_END + 9;
+   FILE_RECORD = substr(EVALBLK_EVDATA,HDR_END);
+ end;
+
+ else do;
+   if HDR_META = 0 then
+     ICR_ResponseData = '<?xml version="1.0" ?>' !!
+                        substr(EVALBLK_EVDATA,1,HDR_REX) !!
+                        substr(EVALBLK_EVDATA,HDR_END);
+   else
+     ICR_ResponseData = '<?xml version="1.0" ?>' !!
+                        substr(EVALBLK_EVDATA,1,HDR_REX) !!
+                        substr(EVALBLK_EVDATA,HDR_META);
+ end;
+
+ END Process_REXX_Response;
+
+ /******************************************************************/
+ /* Process the Call of a REXX-Procedure                           */
+ /******************************************************************/
+ PROCESS_REXX: PROC;
+   Call LogTrace(@Dflt,'PROC',procedurename());
+
+ PUT SKIP EDIT ('** About to call Rexx: ',EXECBLK_MEMBER)(A);
+ if W_TRACE ^= '0' then do;
+   W_SHORT_TXT = trim(REXX_INPUT_AREA);
+   PUT SKIP EDIT (' ')(A);
+   PUT SKIP EDIT ('REXX input data is: ')(A);
+   PUT SKIP EDIT (trim(W_SHORT_TXT))(A);
+   PUT SKIP EDIT (' ')(A);
+ end;
+
+ /* The following assignments don't change - but set them in case  */
+ /* the control blocks are refreshed after the call to IRXEXEC.    */
+ ARGTABLE_LAST             = 'FFFFFFFFFFFFFFFF'X;
+ ARGTABLE_PTR              = ADDR(ARGSTRING_PTR(1));
+ ARGSTRING_LENGTH(1)       = 32000;   /* length of REXX_INPUT_AREA */
+ ARGSTRING_PTR(1)          = ADDR(REXX_INPUT_AREA);
+ EXECBLK_PTR               = ADDR(EXECBLK);
+ EXECBLK_ACRYN             = 'IRXEXECB';
+ EXECBLK_LENGTH            = 48;
+ EXECBLK_RESERVED          = 0;
+ EXECBLK_DDNAME            = W_EXECBLK_DDNAME;
+ EXECBLK_SUBCOM            = ' ';
+ EXECBLK_DSNPTR            = SYSNULL;
+ EXECBLK_DSNLEN            = 0;
+ EVALBLK_PTR               = ADDR(EVALBLK);
+ EVALBLK_EVPAD1            = 0;
+ EVALBLK_EVPAD2            = 0;
+ EVALBLK_EVSIZE            = 502;
+ /* "flags" contains a fullword of bits, but only bits 0, 1 and 2  */
+ /* are used and are mutually exclusive. Other bits are reserved.  */
+ /* Bit 0 - means that the exec is invoked as a "command".         */
+ /* Bit 1 - means that the exec is invoked as an external function */
+ /*         we use Bit 1, which means that "flag" is x'40000000'   */
+ /* Bit 2 - means that the exec is invoked as a subroutine         */
+ flags                     = '40000000'x;
+ REXX_return_code_ptr      = ADDR(REXX_return_code);
+ INSTBLK_PTR               = SYSNULL;
+ reserved_parm5            = SYSNULL;
+ reserved_workarea_ptr     = SYSNULL;
+ reserved_userfield_ptr    = SYSNULL;
+ reserved_envblock_ptr     = SYSNULL;
+
+ /* EXECBLK_MEMBER is set prior to calling "PROCESS_REXX"          */
+ /* EVALBLK_EVLEN is re-set by IRXEXEC to length of data returned. */
+ EVALBLK_EVLEN             = 0;
+ REXX_return_code          = 0;
+
+ /* close SYSPRINT because CHU0271 (called from CHRBVER) wants to  */
+ /* use it. The next PUT SKIP... will re-open the SYSPRINT.        */
+ /* (can't do this as a general thing because other Rexxs (e.g.    */
+ /* CHRCKOUT) have other requirements on SYSPRINT.                 */
+ if REQ_HEADER_ServiceName = 'componentVersionsForBaseline' then do;
+   PUT SKIP EDIT (' ')(A);
+   PUT SKIP EDIT ('Closing SYSPRINT for CHU0271. It will be re-opened')
+                 (A);
+   close file(sysprint);
+ end;
+
+ CALL IRXEXEC(EXECBLK_PTR,
+              ARGTABLE_PTR,
+              flags,
+              INSTBLK_PTR,
+              reserved_parm5,
+              EVALBLK_PTR,
+              reserved_workarea_ptr,
+              reserved_userfield_ptr,
+              reserved_envblock_ptr,
+              REXX_return_code_ptr);
+
+ if PLIRETV ^= 0 ! REXX_return_code ^= 0 ! W_TRACE ^= '0' then do;
+   W_SHORT_TXT = trim(EVALBLK_EVDATA);
+   PUT SKIP EDIT (' ')(A);
+   PUT SKIP EDIT ('REXX result data is: ')(A);
+   PUT SKIP EDIT (W_SHORT_TXT)(A);
+   PUT SKIP EDIT (' ')(A);
+   PUT SKIP EDIT ('REXX data length is: ',EVALBLK_EVLEN)(A);
+   PUT SKIP EDIT (' ')(A);
+ end;
+
+ if PLIRETV ^= 0 ! REXX_return_code ^= 0 then do;
+   ERROR_TXT_MSG = ' Technical problem calling REXX ' !!
+                   EXECBLK_MEMBER !!
+                   '. PLIRETV is ' !! PLIRETV !!
+                   '. REXX Return Code is ' !! REXX_return_code;
+   PUT SKIP EDIT (ERROR_TXT_MSG)(A);
+   PUT SKIP EDIT (' ')(A);
+   if EXECBLK_MEMBER ^= 'CSTLOGX' then do;
+     call CREATE_ERROR_MESSAGE;
+   end;
+ end;
+
+ call PROCESS_XML_OUTPUT;
+
+ END PROCESS_REXX;
+
+ /******************************************************************/
+ /* Process the Load of a REXX-Procedure                           */
+ /******************************************************************/
+ LOAD_REXX: PROC;
+   Call LogTrace(@Dflt,'PROC',procedurename());
+
+ LOADBLK_ACRYN             = 'IRXEXECB';
+ LOADBLK_LENGTH            = 64;
+ LOADBLK_RESERVED          = 0;
+ LOADBLK_MEMBER            = 'CMNLOGIC';
+ LOADBLK_DDNAME            = W_EXECBLK_DDNAME;
+ LOADBLK_SUBCOM            = ' ';
+ LOADBLK_DSNPTR            = SYSNULL;
+ LOADBLK_DSNLEN            = 0;
+ LOADBLK_EXTPTR            = SYSNULL;
+ LOADBLK_EXTLEN            = 0;
+
+ FUNC_NAME                 = 'LOAD    ';
+ LOADBLK_PTR               = ADDR(LOADBLK);
+ INSLBLK_PTR               = SYSNULL;
+ ENVBLK_PTR                = SYSNULL;
+ REPLOAD_PTR               = SYSNULL;
+
+ PUT SKIP EDIT ('** About to load Rexx: ',LOADBLK_MEMBER)(A);
+
+ CALL IRXLOAD(FUNC_NAME,
+              LOADBLK_PTR,
+              INSLBLK_PTR,
+              ENVBLK_PTR,
+              REPLOAD_PTR);
+
+ if PLIRETV ^= 0 then do;
+   ERROR_TXT_MSG = ' Technical problem loading REXX ' !!
+                   LOADBLK_MEMBER !!
+                   '. PLIRETV is ' !! PLIRETV ;
+   PUT SKIP EDIT (ERROR_TXT_MSG)(A);
+   PUT SKIP EDIT (' ')(A);
+ end;
+
+ LOAD_DONE = 'Y';
+
+ END LOAD_REXX;
+
+ /******************************************************************/
+ /* Extract header tags from XML output from Rexx                  */
+ /******************************************************************/
+ PROCESS_XML_OUTPUT: PROC;
+   Call LogTrace(@Dflt,'PROC',procedurename());
+
+ HDR_START = index(EVALBLK_EVDATA,'<header>');
+ HDR_END   = index(EVALBLK_EVDATA,'</header>');
+ HDR_LEN   = HDR_END - HDR_START + 9;
+ HDR_REX   = index(EVALBLK_EVDATA,'</rexxVersion>');
+ HDR_META  = index(EVALBLK_EVDATA,'<needsUpdateMetaData>');
+
+ if HDR_START = 0 ! HDR_END = 0 ! HDR_LEN < 9 ! HDR_REX = 0 then do;
+   ERROR_TXT_MSG = 'XML output from ' !! trim(EXECBLK_MEMBER) !!
+                   ' does not have a valid header ';
+   if EXECBLK_MEMBER ^= 'CSTLOGX' then do;
+     call CREATE_ERROR_MESSAGE;
+   end;
+   else do;
+     PUT SKIP EDIT (ERROR_TXT_MSG)(A);
+     PUT SKIP EDIT (' ')(A);
+   end;
+ end;
+
+ RDZXMLP_INAREA = substr(EVALBLK_EVDATA,HDR_START,HDR_LEN);
+ RDZXMLP_REQ_TYPE = 'RESPONSE';
+
+ if W_TRACE ^= '0' then do;
+   W_SHORT_TXT = trim(RDZXMLP_INAREA);
+   PUT SKIP EDIT('RDZXMLP_INAREA = ',W_SHORT_TXT)(A);
+   PUT SKIP EDIT (' ')(A);
+ end;
+
+ CALL RDZXMLP(RDZXMLP_IN_PTR,RDZXMLP_OUT_PTR,RDZXMLP_REQ_TYPE);
+
+ PUT SKIP EDIT ('Return code from Rexx = ',RES_HEADER_ReturnCode)(A);
+
+ if W_TRACE ^= '0' then do;
+   W_SHORT_TXT = trim(RES_HEADER_ReturnMessage);
+   PUT SKIP EDIT (' ')(A);
+   PUT SKIP EDIT ('RES_HEADER_RetMsg  ',W_SHORT_TXT)(A);
+   PUT SKIP EDIT ('RES_HEADER_REXXVer ',RES_HEADER_REXXVersion)(A);
+   if EXECBLK_MEMBER ^= 'CSTLOGX' then do;
+     PUT SKIP EDIT ('RES_HEADER_REXXOUT ',RES_HEADER_UseREXXOUT)(A);
+     PUT SKIP EDIT ('RES_HEADER_NumRecs ',RES_HEADER_numberRecords)(A);
+     PUT SKIP EDIT ('RES_HEADER_NumByte ',RES_HEADER_numberBytes)(A);
+   end;
+   PUT SKIP EDIT (' ')(A);
+ end;
+
+ if EXECBLK_MEMBER ^= 'CSTLOGX' &  RES_HEADER_UseREXXOUT = 'Y' &
+    W_NUM_BYTES > '01000000' then do;
+   ERROR_TXT_MSG = 'Output exceeds 1,000,000 bytes';
+   call CREATE_ERROR_MESSAGE;
+ end;
+
+ END PROCESS_XML_OUTPUT;
+
+ /******************************************************************/
+ /* END PROCESS                                                    */
+ /******************************************************************/
+ END_PROCESS: PROC;
+   Call LogTrace(@Dflt,'PROC',procedurename());
+
+ if SERVICE_NAME_MSG ^= 'UNKNOWN' &
+    SERVICE_NAME_MSG ^= 'ping' then call WRITE_RDZ_LOG;
+
+ if W_TRACE = '2' & SERVICE_NAME_MSG = 'ping' then call WRITE_RDZ_LOG;
+
+ call WRITE_XML_OUTPUT;
+
+ END END_PROCESS;
+
+ /********************************************************/
+ /* Write summary data to SCM_RDZ_LOG_TRN                */
+ /********************************************************/
+ WRITE_RDZ_LOG: PROC;
+   Call LogTrace(@Dflt,'PROC',procedurename());
+
+ /* Find out if transaction contains multiple functions  */
+ POST_ACT_EXIST = '';
+ POST_AREA_EXIST = '';
+ POST_PROM_EXIST = '';
+
+ POST_AREA_START=index(ICP_RequestData,'<postActionAreaCheckIn>Y');
+
+ if POST_AREA_START ^= 0 then do;
+   POST_ACT_EXIST = 'Post';
+   POST_AREA_EXIST = 'Area';
+ end;
+
+ POST_PROM_START = index(ICP_RequestData,'<postActionPromote>Y');
+
+ if POST_PROM_START ^= 0 then do;
+   POST_ACT_EXIST = 'Post';
+   POST_PROM_EXIST = 'Prom';
+ end;
+
+ RDZLOG_TRAN_NAME = trim(REQ_HEADER_ServiceName) !!
+                    trim(POST_ACT_EXIST) !!
+                    trim(POST_AREA_EXIST) !!
+                    trim(POST_PROM_EXIST);
+
+ /* Find out if transaction contains multiple occurrences*/
+ NUM_ROWS_IN = 0;
+ W_SHORT_TXT = trim(substr(ICP_RequestData,1,$reqLen));
+
+ ROW_START = index(W_SHORT_TXT,'<row>');
+ do while(ROW_START > 0);
+   NUM_ROWS_IN = NUM_ROWS_IN + 1;
+   ROW_START = ROW_START + 5;
+   W_SHORT_TXT = substr(W_SHORT_TXT,ROW_START);
+   ROW_START = index(W_SHORT_TXT,'<row>');
+ end;
+ W_NUM_ROWS_IN = NUM_ROWS_IN;
+
+ /* IF PL/I pgm has set error, we take this field.
+    Otherwise we take the value from CSTMAIN */
+ if trim(ERROR_TXT_MSG)^=''
+ then ERROR_MESSAGE = trim(ERROR_TXT_MSG);
+ else ERROR_MESSAGE = trim(RES_HEADER_ReturnMessage);
+
+ /* Build interface to CSTLOGX                           */
+ REXX_INPUT_AREA = '<requestEnvelope serviceName="' !!
+ RDZLOG_TRAN_NAME !! '">' !! '<request>' !!
+ '<startTime>' !! TIME_OF_DAY !! '</startTime>' !!
+ '<subsys>' !! REC_CMANSYS_1 !! '</subsys>' !!
+ '<trace>' !! REQ_HEADER_Trace  !! '</trace>' !!
+ '<user>' !! trim(REQ_HEADER_PID)  !! '</user>' !!
+ '<clientVersion>' !! trim(REQ_HEADER_ClientVersion) !!
+ '</clientVersion>' !!
+ '<messageCount>' !! trim(REQ_HEADER_MessageCount) !!
+ '</messageCount>' !!
+ '<numRows>' !! W_NUM_ROWS_IN !! '</numRows>' !!
+ '<rexxVersion>' !! RES_HEADER_REXXVersion !! '</rexxVersion>' !!
+ '<returnCode>' !! trim(RES_HEADER_ReturnCode) !! '</returnCode>' !!
+ '<returnMessage>' !! trim(ERROR_MESSAGE) !! '</returnMessage>' !!
+ '</request></requestEnvelope>';
+
+ if W_TRACE = '2' then do;
+   TIME_OF_DAY = DATETIME(); /* YYYYMMDDHHMISS999 */
+   PUT SKIP EDIT('*** BEFORE CSTLOGX *** ',TIME_OF_DAY)(A);
+ end;
+
+ EXECBLK_MEMBER = 'CSTLOGX';
+ call Process_REXX;
+
+ if W_TRACE = '2' then do;
+   TIME_OF_DAY = DATETIME(); /* YYYYMMDDHHMISS999 */
+   PUT SKIP EDIT('*** AFTER  CSTLOGX *** ',TIME_OF_DAY)(A);
+ end;
+
+ END WRITE_RDZ_LOG;
+
+ /******************************************************************/
+ /* Write XML OUTput to XMLLOG                                     */
+ /******************************************************************/
+ WRITE_XML_OUTPUT: PROC;
+   Call LogTrace(@Dflt,'PROC',procedurename());
+
+ PUT FILE(XMLLOG) SKIP EDIT('XML Output Data = ')(A);
+
+ if RES_HEADER_UseREXXOUT = 'Y' & XML_ERROR_MSG = ' ' then do;
+   XML_LEN = XML_RET_LEN;
+   XML_LOG_PTR = $rspPtr;
+   $rspLen = XML_LEN;
+   COPY_LEN = 72;
+   do while(XML_LEN > 0);
+     if XML_LEN < 72 then COPY_LEN = XML_LEN;
+     XML_LOG_72_FILE = substr(XML_LOG_72_FILE,1,COPY_LEN);
+     PUT FILE(XMLLOG) SKIP EDIT(XML_LOG_72_FILE)(A);
+     XML_LOG_PTR = XML_LOG_PTR + 72;
+     XML_LEN = XML_LEN - 72;
+     if XML_LOG_72_FILE = ' ' then XML_LEN = 0;
+   end;
+ end;
+ else do;
+   W_SHORT_TXT = trim(ICR_ResponseData);
+   XML_LEN = length(W_SHORT_TXT);
+   $rspLen = XML_LEN;
+   COPY_LEN = 72;
+   do while(XML_LEN > 0);
+     if XML_LEN < 72 then COPY_LEN = XML_LEN;
+     XML_LOG_72 = substr(W_SHORT_TXT,1,COPY_LEN);
+     PUT FILE(XMLLOG) SKIP EDIT(XML_LOG_72)(A);
+     if XML_LEN > 72 then W_SHORT_TXT = substr(W_SHORT_TXT,73);
+     XML_LEN = XML_LEN - 72;
+   end;
+ end;
+
+ END WRITE_XML_OUTPUT;
+
+ /******************************************************************/
+ /* Read XML output from Rexx                                      */
+ /******************************************************************/
+ READ_REXXOUT: PROC;
+   Call LogTrace(@Dflt,'PROC',procedurename());
+
+ if W_TRACE = '2' then do;
+    PUT SKIP EDIT ('START READ_REXXOUT')(A);
+ end;
+ REXXOUT_TOT = 0;
+ EOF_REXXOUT = '0'B;
+ OPEN FILE (REXXOUT) INPUT;
+
+ READ FILE (REXXOUT) INTO (REC_REXXOUT);
+
+ DO WHILE (^EOF_REXXOUT);
+   REXXOUT_LEN = length(REC_REXXOUT);
+   if W_TRACE = '2' then do;
+      PUT SKIP EDIT ('READ_RECORD')(A);
+      PUT SKIP EDIT ('REXXOUT_LEN: ',REXXOUT_LEN)(A);
+      PUT SKIP EDIT ('REXXOUT_REC: ',REC_REXXOUT)(A);
+   end;
+   REXXOUT_TOT = REXXOUT_TOT + REXXOUT_LEN;
+   if REXXOUT_TOT > W_NUM_BYTES then do;
+     W_REXXOUT_TOT = REXXOUT_TOT;
+     ERROR_TXT_MSG = 'Actual number of bytes in REXXOUT = ' !!
+                     W_REXXOUT_TOT !!
+                     '. Expected number of bytes = ' !! W_NUM_BYTES ;
+     CLOSE FILE (REXXOUT);
+     call CREATE_ERROR_MESSAGE;
+   end;
+   FILE_RECORD = substr(REC_REXXOUT,1,REXXOUT_LEN);
+   FILE_PTR = FILE_PTR + REXXOUT_LEN;
+   READ FILE (REXXOUT) INTO (REC_REXXOUT);
+ END;
+
+ CLOSE FILE (REXXOUT);
+ if W_TRACE = '2' then do;
+    PUT SKIP EDIT ('CLOSE READ_REXXOUT')(A);
+ end;
+
+ END READ_REXXOUT;
+
+ /******************************************************************/
+ /* Read CMANSYS to find out the Changeman system id and whether   */
+ /* to use SYSEXEC or NEWEXEC.                                     */
+ /* This procedure is only invoked once.                           */
+ /******************************************************************/
+ read_cmansys: proc;
+   Call LogTrace(@Dflt,'PROC',procedurename());
+
+ eof_cmansys = '0'b;
+ open file (cmansys) input;
+
+ if eof_cmansys = '0'b then do;
+   read file (cmansys) into (rec_cmansys);
+   rec_cmansys_1 = substr(rec_cmansys,1,1);
+
+   read file (cmansys) into (rec_cmansys);
+   rec_cmansys_2 = substr(rec_cmansys,1,5);
+
+   read file (cmansys) into (rec_cmansys);
+   rec_cmansys_3 = substr(rec_cmansys,1,26);
+
+   read file (cmansys) into (rec_cmansys);
+   rec_cmansys_4 = substr(rec_cmansys,1,26);
+
+   read file (cmansys) into (rec_cmansys);
+   rec_cmansys_5 = substr(rec_cmansys,1,5);
+
+   read file (cmansys) into (rec_cmansys);
+   cman_locn = substr(rec_cmansys,1,3);
+
+   read file (cmansys) into (rec_cmansys);
+   curr_locn = substr(rec_cmansys,1,3);
+
+   read file (cmansys) into (rec_cmansys);
+   w_mq_set  = substr(rec_cmansys,1,5);
+
+   close file (cmansys);
+ end;
+
+ if eof_cmansys = '1'b then do;
+   ERROR_TXT_MSG = 'The file CMANSYS does not exist in the CRA job ' !!
+                   'or it does not contain all the required data';
+   call create_error_message;
+ end;
+
+ if rec_cmansys_1 = ' ' then do;
+   ERROR_TXT_MSG = 'The Changeman sub-system is not specified in ' !!
+                   'the file CMANSYS';
+   call create_error_message;
+ end;
+
+ if rec_cmansys_5 = '     ' then do;
+   ERROR_TXT_MSG = 'Record 5 (the NEWEXEC info) is missing from ' !!
+                   'the file CMANSYS';
+   call create_error_message;
+ end;
+
+ cmansys_read = 'Y';
+
+ end read_cmansys;
+
+ /******************************************************************/
+ /* CREATE-ERROR-MESSAGE                                           */
+ /******************************************************************/
+ CREATE_ERROR_MESSAGE: PROC;
+   Call LogTrace(@Dflt,'PROC',procedurename());
+
+ XML_ERROR_MSG =
+   '<?xml version="1.0" ?>' !!
+   '<responseEnvelope serviceName="' !! trim(SERVICE_NAME_MSG) !! '">'!!
+   '<header>' !!
+   '<returnCode>Stop</returnCode>' !!
+   '<returnMessage>' !! trim(ERROR_TXT_MSG) !! '</returnMessage>' !!
+   '<rexxVersion>00.00</rexxVersion>' !!
+   '<needsUpdateMetaData>N</needsUpdateMetaData>' !!
+   '</header>' !!
+   '<notifications><notification>' !!
+    trim(ERROR_TXT_MSG) !!
+   '</notification></notifications>' !!
+   '</responseEnvelope>';
+
+ W_SHORT_TXT = trim(XML_ERROR_MSG);
+ PUT SKIP EDIT('ERROR_MESSAGE ',W_SHORT_TXT)(A);
+ ICR_ResponseData = XML_ERROR_MSG;
+
+ go to normal_exit;
+
+ END CREATE_ERROR_MESSAGE;
+
+ /******************************************************************/
+ /* CREATE FAKE OK MESSAGE                                         */
+ /*                                                                */
+ /* There is a bug in the RDz plugin, which we are circumventing   */
+ /* with this PROC.                                                */
+ /*                                                                */
+ /* When a user does a "componentSearch", the Component Location   */
+ /* list is filled in. Then, when the user does another search,    */
+ /* each row of the result of the previous search is removed from  */
+ /* the list (correctly), but the plugin also (incorrectly) sends  */
+ /* a "componentVersionsForBaseline/Package/Area" to the mainframe */
+ /* for each of these rows.                                        */
+ /*                                                                */
+ /* None of these messages have any value as their result is       */
+ /* discarded by the plugin ... and there can be a large number of */
+ /* rows in the result (which can cause a very long response to    */
+ /* the user - for no value).                                      */
+ /*                                                                */
+ /* The solution is to give a fake OK message back to the plugin   */
+ /* for these messages, without doing any processing.  We identify */
+ /* these messages by the fact that they follow the search result  */
+ /* with 5 seconds (we found some cases where 3 seconds was not    */
+ /* long enough for these messages to clear).                      */
+ /*                                                                */
+ /* The drawback of this solution is that someone might do a       */
+ /* search and select an item from the results list within 5       */
+ /* seconds of the results being displayed in the plugin.  In this */
+ /* case, the (valid) request will be ignored and the user would   */
+ /* have to do the selection again.  This is not very likely, but  */
+ /* if it does become a prolem, then the following should be added */
+ /* after the line below conatining </header>                      */
+ /*                                                                */
+ /*'<notifications><notification>' !!                              */
+ /*'Please wait 5 seconds before you select from the ' !!          */
+ /*'Component Locations list.' !!                                  */
+ /*'</notification></notifications>' !!                            */
+ /******************************************************************/
+ CREATE_FAKE_OK_MESSAGE: PROC;
+   Call LogTrace(@Dflt,'PROC',procedurename());
+
+ XML_ERROR_MSG =
+   '<?xml version="1.0" ?>' !!
+   '<responseEnvelope serviceName="' !! trim(SERVICE_NAME_MSG) !! '">'!!
+   '<header>' !!
+   '<returnCode>OK</returnCode>' !!
+   '<returnMessage>Process completed successfully</returnMessage>' !!
+   '<rexxVersion>00.00</rexxVersion>' !!
+   '</header>' !!
+   '</responseEnvelope>';
+
+ RES_HEADER_UseREXXOUT = 'N';
+ SERVICE_NAME_MSG = 'UNKNOWN';
+ ICR_ResponseData = XML_ERROR_MSG;
+
+ go to normal_exit;
+
+ END CREATE_FAKE_OK_MESSAGE;
+
+ /******************************************************************/
+ /* Call ChangeMan via MQ                                          */
+ /******************************************************************/
+ CMAN_VIA_MQ: PROC;
+   Call LogTrace(@Dflt,'PROC',procedurename());
+
+ PUT SKIP EDIT ('** About to call Rexx in remote RZ via MQ')(A);
+
+ call #CSTMQ3_FIND_MQSET('CLIENT',w_mq_set);
+ call PutProc(MQ_inf,'------------------------------' !!
+                     '--------------------------');
+
+ MQ_TRACE = W_TRACE;
+ call MQ_CONNECT;
+
+ call MQ_OPEN_PUT_QUEUE;
+ call MQ_OPEN_GET_QUEUE;
+
+ HDR_END_MQ = index(REXX_INPUT_AREA,'</header>');
+ MQ_PUT_DATA_VAR   = substr(REXX_INPUT_AREA,1,HDR_END_MQ-1) !!
+                     '<subsys>' !! REC_CMANSYS_1 !! '</subsys>' !!
+                     '<rzumg>' !! CURR_LOCN !! '</rzumg>' !!
+                     '<offs>Y</offs><onec>Y</onec>' !!
+                     '<rzrecv>' !! CMAN_LOCN !! '</rzrecv>' !!
+                     substr(REXX_INPUT_AREA,HDR_END_MQ);
+ if REQ_HEADER_ServiceName ='componentCreate' then call ADD_TAGS;
+ MQ_PUT_DATA_VAR   = trim(MQ_PUT_DATA_VAR);
+ MQ_DATAP          = length(MQ_PUT_DATA_VAR);
+ MQ_PUT_DATA       = MQ_PUT_DATA_VAR;
+
+ DATE_TIME_NOW     = datetime();
+ LMQMDP.MSGID      = substr(REQ_HEADER_PID,1,7) !! 'RDZ' !!
+                     substr(DATE_TIME_NOW,5,13);
+ LMQMDP.MSGTYPE    = MQMT_REQUEST;/* Message-Descriptor for a message */
+ LMQMDP.REPLYTOQ   = GET_QUEUE_NAME;
+ call MQ_PUT;
+ call MQ_COMMIT;
+
+ LMQMDG.CORRELID   = MQCI_NONE;           /* specified correlation id */
+ LMQMDG.MSGID      = LMQMDP.MSGID;            /* specified message-id */
+ LMQMOG.MatchOptions  = MQMO_MATCH_MSG_ID;
+ call MQ_GET;
+ MQ_GET_SAVE_RC = MQ_CC;
+ MQ_GET_SAVE_REAS = MQ_RC;
+
+ XML_RET_LEN = MQ_DATAG_RET;
+
+ call MQ_CLOSE_PUT_QUEUE;
+ call MQ_CLOSE_GET_QUEUE;
+ call MQ_DISCONNECT;
+
+ if MQ_GET_SAVE_RC ^= MQCC_OK then do;
+   PUT SKIP EDIT ('Call to ChangeMan via MQ failed. RC=',
+               MQ_GET_SAVE_RC, ', Reason code =',MQ_GET_SAVE_REAS)(A);
+   ERROR_TXT_MSG = 'No Response returned (technical wait ' !!
+               'timeout reached).';
+   call CREATE_ERROR_MESSAGE;
+ end;
+
+ /* Copy data from MQ response so that standard variables can be   */
+ /* extracted for the log in DB2.                                  */
+ /* Note: We want to reuse the logic in PROCESS_XML_OUTPUT, so we  */
+ /* need to jump over <?xml version="1.0" ?> because in the        */
+ /* the pre-PLI/MQ version, this was added later in the process,   */
+ /* whereas this is added in RZ4 in the PLI/MQ version.            */
+
+ i2 = index(ICR_ResponseData,'<responseEnvelope');
+ i3 = index(ICR_ResponseData,'</header>');
+ EVALBLK_EVDATA = substr(ICR_ResponseData,i2,i3-i2+9) !!
+                  '</responseEnvelope>';
+
+ call PROCESS_XML_OUTPUT;
+ /* RES_HEADER_REXXOUT, RES_HEADER_NumRecs and RES_HEADER_NumByte  */
+ /* don't exist in the output from MQ because all the processing   */
+ /* of REXOUT was done in RZ4. The latter 2 aren't needed, but the */
+ /* RES_HEADER_UseREXXOUT is needed for writing the XMLLOG when    */
+ /* the message is longer than 4000 bytes.                         */
+ RES_HEADER_UseREXXOUT = 'Y';
+
+ if MQ_DATAG_RET > '01000000' then do;
+   ERROR_TXT_MSG = 'Output exceeds 1,000,000 bytes';
+   call CREATE_ERROR_MESSAGE;
+ end;
+
+ END CMAN_VIA_MQ;
+
+ /******************************************************************/
+ /* Add <@transfers> tags to componentCreate transaction           */
+ /******************************************************************/
+ ADD_TAGS: PROC;
+   Call LogTrace(@Dflt,'PROC',procedurename());
+
+ dcl LOCN_START          bin fixed(31);
+ dcl LOCN_END            bin fixed(31);
+ dcl TRAN_START          bin fixed(31);
+ dcl TRAN_END            bin fixed(31);
+ dcl TRAN_LEN            bin fixed(31);
+ dcl UPLD_START          bin fixed(31);
+ dcl UPLD_END            bin fixed(31);
+ dcl UPLD_LEN            bin fixed(31);
+ dcl DSN_START           bin fixed(31);
+ dcl DSN_END             bin fixed(31);
+ dcl LEN_PART2           bin fixed(31);
+
+ /* only do this if fromLocation is blank                          */
+ LOCN_START = index(ICP_RequestData,'<fromLocation>');
+ LOCN_END   = index(ICP_RequestData,'</fromLocation>');
+ if LOCN_START = 0 ! LOCN_END = (LOCN_START + 14) then do;
+   TRAN_START = index(EVALBLK_EVDATA,'<@transfers>');
+   TRAN_END   = index(EVALBLK_EVDATA,'</@transfers>');
+   TRAN_LEN   = TRAN_END - TRAN_START + 13;
+   if TRAN_START > 0 & TRAN_LEN > 13 then do;
+
+     UPLD_START = index(EVALBLK_EVDATA,'<fromFile>');
+     UPLD_END   = index(EVALBLK_EVDATA,'</fromFile>');
+     UPLD_LEN   = UPLD_END - UPLD_START - 10;
+
+     HDR_END_MQ = index(MQ_PUT_DATA_VAR,'</header>');
+     DSN_START  = index(MQ_PUT_DATA_VAR,'<fromDsn>');
+     DSN_END    = index(MQ_PUT_DATA_VAR,'</fromDsn>');
+
+     LEN_PART2 = DSN_START + 9 - HDR_END_MQ;
+
+     MQ_PUT_DATA_VAR = substr(MQ_PUT_DATA_VAR,1,HDR_END_MQ-1) !!
+                       substr(EVALBLK_EVDATA,TRAN_START,TRAN_LEN) !!
+                       substr(MQ_PUT_DATA_VAR,HDR_END_MQ,LEN_PART2) !!
+                       substr(EVALBLK_EVDATA,UPLD_START+10,UPLD_LEN)!!
+                       substr(MQ_PUT_DATA_VAR,DSN_END);
+   end;
+ end;
+
+ END ADD_TAGS;
+
+
+ /*-------------------------------------------------------------------*/00011300
+ /*    Display Routine                                                */00011400
+ /*-------------------------------------------------------------------*/00011500
+ LogTrace: Proc($Force,$Tag,$Msg);                                      00011600
+    dcl $Force                  bit(1)         aligned;                 00011700
+    dcl $Tag                    char(04);                               00011800
+    dcl $Msg                    char(*);                                00011900
+    If @Trace ! $Force then                                             00012000
+       Put Skip List(@PgmName       !!' '  !!                           00012100
+                     time()         !!' '  !!                           00012200
+                     $Tag           !!' - '!!                           00012300
+                     trim($Msg));                                       00012400
+ End LogTrace;                                                          00012500
+ /*-------------------------------------------------------------------*/00011300
+ /*                                                                   */00011400
+ /*-------------------------------------------------------------------*/00011500
+ getCurrentDateTime: Proc;                                              00011600
+
+   time_of_day = datetime();                  /* yyyymmddhhmiss999 */
+   current_day.dd   = substr(time_of_day,7,2);
+   current_day.mm   = substr(time_of_day,5,2);
+   current_day.yyyy = substr(time_of_day,1,4);
+   current_time.hh  = substr(time_of_day,9,2);
+   current_time.mi  = substr(time_of_day,11,2);
+   current_time.ss  = substr(time_of_day,13,2);
+
+ end getCurrentDateTime;                                                00012500
+
+ %include #CSTMQ2;
+ %include #CSTMQ3;
+ END YCST001;

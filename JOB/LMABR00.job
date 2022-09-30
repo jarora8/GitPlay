@@ -1,0 +1,104 @@
+)PANEL KEYLIST(ISPSNAB ISP)
+/* edit1
+/*                CHANGE LOG
+/*
+/*  YYYYMMMDD | WHO | CWE#   | DESCRIPTION
+/*******************************************************************|
+/*  2019APR30 | MHW | 147075 | Added PF7/PF8 functionality          |
+/*******************************************************************|
+)ATTR
+    /*
+    /*     Dynamic Area Stuff
+    /*
+30 AREA(DYNAMIC) EXTEND(OFF) SCROLL(OFF)
+01 TYPE(DATAOUT) COLOR(BLUE) INTENS(HIGH)    /* CUADYN(CH)
+02 TYPE(DATAOUT) COLOR(YELLOW) INTENS(HIGH)  /* CUADYN(CT)
+03 TYPE(DATAOUT) COLOR(GREEN) INTENS(LOW)    /* CUADYN(DT)
+04 TYPE(DATAOUT) COLOR(TURQ) INTENS(HIGH)    /* CUADYN(ET)
+05 TYPE(DATAOUT) COLOR(GREEN) INTENS(LOW)    /* CUADYN(FP)
+06 TYPE(DATAOUT) COLOR(WHITE) INTENS(LOW)    /* CUADYN(LI)
+07 TYPE(DATAOUT) COLOR(GREEN) INTENS(LOW)    /* CUADYN(LID)
+08 TYPE(DATAOUT) COLOR(GREEN) INTENS(LOW)    /* CUADYN(NT)
+09 TYPE(DATAOUT) COLOR(GREEN) INTENS(LOW)    /* CUADYN(PIN)
+0A TYPE(DATAOUT) COLOR(BLUE) INTENS(LOW)     /* CUADYN(PT)
+0B TYPE(DATAOUT) COLOR(WHITE) INTENS(LOW)    /* CUADYN(SAC)
+0C TYPE(DATAOUT) COLOR(WHITE) INTENS(HIGH)   /* CUADYN(SI)
+0D TYPE(DATAOUT) COLOR(BLUE) INTENS(LOW)     /* CUADYN(SUC)
+10 TYPE(DATAOUT) COLOR(WHITE) INTENS(HIGH)   /* CUADYN(WT)
+                                             /* CUADYN(CEF)
+20 TYPE(DATAIN) COLOR(TURQ) INTENS(HIGH) HILITE(USCORE) CAPS(ON)
+                                             /* CUADYN(EE)
+21 TYPE(DATAIN) COLOR(YELLOW) INTENS(HIGH) HILITE(REVERSE) CAPS(ON)
+                                             /* CUADYN(LEF)
+22 TYPE(DATAIN) COLOR(TURQ) INTENS(LOW) HILITE(USCORE) CAPS(ON)
+                                             /* CUADYN(NEF)
+23 TYPE(DATAIN) COLOR(TURQ) INTENS(LOW) HILITE(USCORE) CAPS(ON)
+ R  TYPE(CHAR) COLOR(RED)
+ G  TYPE(CHAR) COLOR(GREEN)
+ B  TYPE(CHAR) COLOR(BLUE)
+ W  TYPE(CHAR) COLOR(WHITE)
+ P  TYPE(CHAR) COLOR(PINK)
+ Y  TYPE(CHAR) COLOR(YELLOW)
+ T  TYPE(CHAR) COLOR(TURQ)
+    /*
+    /*     Text Attributes
+    /*
+% TYPE(ET)
+¦ TYPE(PT)
+} TYPE(DT)
++ TYPE(NT) SKIP(ON)
+{ TYPE(WASL)
+@ TYPE(FP)
+$ TYPE(CH)
+    /*
+    /*     Input Attributes
+    /*
+_ TYPE(NEF) CAPS(ON) PADC(USER)
+~ TYPE(CEF) PADC(USER) CAPS(ON)
+^ TYPE(LEF) PADC(USER) CAPS(ON)
+    /*
+    /*     Output Attributes
+    /*
+# TYPE(VOI)
+! TYPE(LI)
+¢ TYPE(LID)
+    /*
+    /*
+    /*
+)BODY EXPAND(``)
+¦`-` Compuware License Management &LMVRM `-`
+@Command ===>_ZCMD ` ` @SCROLL ===>_Z   +
+%
+¦` ` Browse License File ` `
++Process DSN  . :¦&LFCDSN
++
+¦Customer Information
++  Name . . . . . :#CUNM                                                    +
++  Number . . . . :#CUNBR +
++  Cert. Version  :#CUCTVER +
++  Security DSN . :#CUSDSN                                      +
++  SMF Logging  . :#Z+
+鿖DYNAREA                                                                       鿖
+鿖                                                                              鿖
+鿖                                                                              鿖
+鿖                                                                              鿖
+鿖                                                                              鿖
+鿖                                                                              鿖
+鿖                                                                              鿖
+{`-`
+$Select  Site Id   Name
+)MODEL
+  ^Z+     !Z  +   ¢DMNM                                                    +
+)INIT
+.ZVARS = '(ZSCML CUSMF LMSEL DOMID)'
+.HELP = LMTBR00
+IF (&ZSCML = &Z)
+ &ZSCML = &ZSCROLLD
+)REINIT
+IF (.MSG = ' ')
+  &LMSEL = ' '
+  REFRESH(LMSEL)
+)PROC
+&RSP = .RESP
+VER (&LMSEL,LIST,S,/)
+)END

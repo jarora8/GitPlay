@@ -1,0 +1,122 @@
+000100******************************************************************00010000
+000200*                                                                *00020000
+000300*              C I F U 0 1 0   P A R A M E T E R S               *00030009
+000400*                                                                *00040000
+000500******************************************************************00050000
+000600                                                                  00060000
+000700 01  CIFU010-PARAMETERS.                                          00070000
+000800     02  U010-INPUT-PARAMETERS.                                   00080000
+000900         03  U010-BANK-NBR            PIC 9(3).                   00090000
+001000         03  U010-FILE-ID             PIC X(04).                  00100000
+001100         03  U010-FILE-KEY            PIC X(25).                  00110000
+001200         03  U010-PROCESS-IND         PIC X(01).                  00120000
+001300             88  U010-ACCOUNT-ADDRESS             VALUE 'A'.      00130000
+001400             88  U010-CUSTOMER-ADDRESS            VALUE 'C'.      00140000
+001500         03  U010-NUM-OF-LINES-REQUESTED                          00150000
+001600                                      PIC S9(3)   COMP-3.         00160000
+001700     02  U010-RETURN-PARAMETERS.                                  00170000
+001800         03  U010-RETURN-CODE         PIC X.                      00180000
+001900             88  U010-GOOD-RETURN                 VALUE 'G'.      00190000
+002000             88  U010-BAD-RETURN                  VALUE 'B'.      00200000
+002100         03  U010-NAME-ADDRESS-AREA.                              00210000
+002200             05  U010-NAME-ADDRESS    PIC X(40)   OCCURS 8 TIMES. 00220000
+002300         03  U010-CUSTOMER-NAME       PIC X(40).                  00230000
+002400         03  U010-NAME-EXTENSION      PIC X(40).                  00240000
+002500         03  U010-NAME-ADD1           PIC X(40).                  00250000
+002600         03  U010-NAME-ADD2           PIC X(40).                  00260000
+002700         03  U010-NAME-ADD3           PIC X(40).                  00270000
+002800         03  U010-ADDRESS-SUPPL       PIC X(40).                  00280000
+002900         03  U010-STREET-ADDRESS      PIC X(40).                  00290000
+003000         03  U010-CITY                PIC X(40).                  00300000
+003100         03  U010-STATE               PIC X(2).                   00310000
+003200         03  U010-ZIP                 PIC X(5).                   00320000
+003300         03  U010-ZIP4                PIC X(4).                   00330000
+003400         03  U010-MAIL-CODE           PIC X(01).                  00340000
+003500         03  U010-ADDRESS-ID          PIC S9(9)            COMP-3.00350000
+003600         03  U010-CUST-BANK-NBR       PIC S9(3)            COMP-3.00360000
+003700         03  U010-CUST-ID             PIC S9(9)            COMP-3.00370000
+003710         03  U010-DELIVERY-POINT      PIC X(2).                   00371005
+003720         03  U010-ZIP-CHECK-DIGIT     PIC X.                      00372006
+               03  U010-TEMP-RETURN         PIC X.                      00373011
+                   88 U010-TEMP-Y                       VALUE 'Y'.      00374011
+                   88 U010-TEMP-N                       VALUE 'N'.      00375011
+               03  U011-TEMP-ADDRESS        PIC X.                      00376012
+                   88 U010-YES-TEMP-ADDR                VALUE '1'.      00377014
+                   88 U010-NO-TEMP-ADDR                 VALUE '2'.      00378014
+                   88 U010-ACTIVE-TEMP-ADDR             VALUE '3'.      00379014
+003800         03  FILLER                   PIC X(83).                  00380012
+003900                                                                  00390007
+004200* PURPOSE - THIS BATCH MODULE WILL RETURN NAME AND ADDRESS INFORMA00420007
+004300*           INFORMATION GIVIN THE PROPER INPUT PARAMETERS.        00430007
+004400*                                                                 00440007
+004500*       CALL 'CIFU010' USING CIFU010-PARAMETERS.                  00450009
+004600*                                                                 00460007
+004700* CIFU010-PARAMETERS.                                             00470007
+004800* INPUT-PARAMETERS.                                               00480007
+004900*         BANK-NBR               THE BANK NUMBER OF               00490007
+005000*                                CUSTOMER OR ACCOUNT              00500007
+005100*                                                                 00510007
+005200*         FILE-ID                THE FILE ID OF THE               00520007
+005300*                                ACCOUNT OR 'CUST'                00530007
+005400*                                FOR A CUSTOMER.                  00540007
+005500*                                                                 00550007
+005600*         FILE-KEY               THE ACCOUNT OR CUSTOMER          00560007
+005700*                                FORMATTED INTO THE               00570007
+005800*                                CIFXREFK COPYBOOK.               00580007
+005900*                                                                 00590007
+006000*         PROCESS-IND            PROCESS INDICATOR:               00600007
+006100*                                A = RETURN ACCOUNT               00610007
+006200*                                    ADDRESS                      00620007
+006300*                                C = RETURN CUSTOMER              00630007
+006400*                                    ADDRESS                      00640007
+006500*                                                                 00650007
+006600*         NUM-OF-LINES           THE MAXIMUM NUMBER               00660007
+006700*                                OF LINES TO BE PRINTED.          00670007
+006800*                                                                 00680007
+006900*                                                                 00690007
+007000* RETURN-PARAMETERS.                                              00700007
+014000*                                                                 01400007
+014100*         RETURN-CODE                    RETURN CODE:             01410008
+014200*                                        G = GOOD RETURN          01420008
+014300*                                        B = BAD RETURN           01430008
+014400*                                                                 01440008
+014500*         NAME-ADDRESS                   THIS FIELD OCCURS 8 TIMES01450008
+014600*                                        WITH NO INTERMEDIATE     01460008
+014700*                                        SPACE LINES. THE U010-   01470008
+014800*                                        NUM-OF-LINES-REQUESTED   01480008
+014900*                                        IS USED TO DETERMINE     01490008
+015000*                                        WHICH ADDRESS LINES WI   01500008
+015100*                                        BE PLACED IN THIS TABL   01510008
+015200*                                                                 01520008
+015300*         CUSTOMER-NAME                  THE CUSTOMER NAME        01530008
+015400*                                                                 01540008
+015500*         NAME-EXTENSION                 THE CUSTOMER NAME        01550008
+015600*                                        EXTENSION                01560008
+015700*                                                                 01570008
+015800*         NAME-ADD1                      ADDITIONAL NAME 1        01580008
+015900*                                                                 01590008
+016000*         NAME-ADD2                      ADDITIONAL NAME 2        01600008
+016100*                                                                 01610008
+016200*         NAME-ADD3                      ADDITIONAL NAME 3        01620008
+016300*                                                                 01630008
+016400*         ADDRESS-SUPPL                  ADDRESS SUPPLEMENT       01640008
+016500*                                                                 01650008
+016600*         STREET-ADDRESS                 STREET ADDRESS           01660008
+016700*                                                                 01670008
+016800*         CITY                           CITY NAME                01680008
+016900*                                                                 01690008
+017000*         STATE                          STATE ABBRIVATION        01700008
+017100*                                                                 01710008
+017200*         ZIP                            ZIP CODE                 01720008
+017300*                                                                 01730008
+017400*         ZIP4                           ZIP PLUS FOUR CODE       01740008
+017500*                                                                 01750007
+017600*         MAIL-CODE                      MAIL CODE                01760008
+017700*                                                                 01770008
+017800*         ADDRESS-ID                     THE INTERNAL ADDRESS ID  01780008
+017900*                                                                 01790008
+018000*         CUST-BANK-NBR                  THE NUMBER OF THE        01800008
+018100*                                        CUSTOMER                 01810008
+018200*                                                                 01820008
+018300*         CUST-ID                        THE CUSTOMER ID          01830008
+018400*                                                                 01840008

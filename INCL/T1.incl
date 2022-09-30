@@ -1,0 +1,4 @@
+
+T1: proc options(main);
+%include T2;
+end T1;

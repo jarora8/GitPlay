@@ -1,0 +1,126 @@
+000100******************************************************************00010001
+000200* ML02003P                                                       *00020006
+000300*                                                                *00030001
+000400*                D S D S T S T 5   C O P Y B O O K               *00040003
+000500*                                                                *00050001
+000600*         RECORD LAYOUT FOR PASSING LINKAGE DATA TO ML02003P     *00060006
+000610*                                                                *00061001
+000611******************************************************************00061101
+000612* RECORD LENGTH 1500                                             *00061201
+000613******************************************************************00061301
+000614                                                                  00061401
+000615 01  ML02003-LINK-PARAMETERS.                                     00061506
+000616     02  ML02003-LENGTH            PIC S9(4)  VALUE +1500 COMP.   00061606
+000617     02  ML02003-PROGRAM           PIC X(8)   VALUE 'ML02003'.    00061706
+000618                                                                  00061801
+000619 01  ML02003-PARAMETERS.                                          00061906
+000620     02  ML02003-SOURCE-PROG       PIC X(8).                      00062006
+000621     02  ML02003-BANK-NBR          PIC 9(03).                     00062106
+000622     02  ML02003-ACCT-NBR          PIC 9(10).                     00062206
+000624     02  ML02003-PROCESS-SW        PIC X(01).                     00062406
+000625     02  ML02003-STATUS-CODE       PIC X(04).                     00062506
+000626     02  ML02003-STATUS-DESC       PIC X(80).                     00062606
+000629* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 00062904
+000630* BELOW LAYOUT IS A COPY OF THE GENERATED REQUEST LANGUAGE        00063004
+000631*  STRUCTURES FOR WSDL OPERATION 'GETACCOUNTINFO1027'(MLGACO01)   00063104
+000632* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 00063204
+000640     02  ML02003-RESPONSE.                                        00064009
+000650       05  ML02003-LOAN-TYPE            PIC 9(1) DISPLAY.         00065006
+000660       05  ML02003-SUB-TYPE             PIC 9(1) DISPLAY.         00066006
+000670       05  ML02003-PRIN-BALANCE         PIC S9(9)V9(2) DISPLAY.   00067006
+000680       05  ML02003-ESCROW-BALANCE       PIC S9(9)V9(2) DISPLAY.   00068006
+000690       05  ML02003-INT-PYTD             PIC S9(9)V9(2) DISPLAY.   00069006
+000700       05  ML02003-PYMT-AMT-DUE         PIC S9(9)V9(2) DISPLAY.   00070006
+000800       05  ML02003-TOTAL-AMT-DUE        PIC S9(9)V9(2) DISPLAY.   00080006
+000900       05  ML02003-PYMT-DUE-DATE        PIC X(10).                00090006
+001000       05  ML02003-LAST-PYMT-DATE       PIC X(10).                00100008
+001100       05  ML02003-LAST-PYMT-AMT        PIC S9(9)V9(2) DISPLAY.   00110006
+001200       05  ML02003-PREV-INT-PAID        PIC S9(9)V9(2) DISPLAY.   00120006
+001300       05  ML02003-LAST-ADV-DATE        PIC X(10).                00130006
+001400       05  ML02003-LAST-ADV-AMT         PIC S9(9)V9(2) DISPLAY.   00140006
+001500       05  ML02003-AVAIL-CREDIT         PIC S9(9)V9(2) DISPLAY.   00150006
+001600       05  ML02003-MAX-CREDIT           PIC S9(9)V9(2) DISPLAY.   00160006
+001700       05  ML02003-LATE-CHRG-BAL        PIC S9(9)V9(2) DISPLAY.   00170006
+001800       05  ML02003-FEES-BAL             PIC S9(9)V9(2) DISPLAY.   00180006
+001900       05  ML02003-PAST-DUE-AMT         PIC S9(9)V9(2) DISPLAY.   00190006
+002000       05  ML02003-DATE-OPENED          PIC X(10).                00200006
+002100       05  ML02003-DATE-MATURITY        PIC X(10).                00210006
+002200       05  ML02003-TAXES-PD-CURR-YEAR   PIC S9(9)V9(2) DISPLAY.   00220006
+002300       05  ML02003-TAXES-PD-PREV-YEAR   PIC S9(9)V9(2) DISPLAY.   00230006
+002400       05  ML02003-ESCROW-INS-PAID      PIC S9(9)V9(2) DISPLAY.   00240006
+002500       05  ML02003-INSURANCE-PREV-YEAR  PIC S9(9)V9(2) DISPLAY.   00250006
+002600       05  ML02003-PAYOFF-DATE          PIC X(10).                00260006
+002700       05  ML02003-ORIG-NOTE-DATE       PIC X(10).                00270006
+002800       05  ML02003-ORIG-NOTE-AMT        PIC S9(9)V9(2) DISPLAY.   00280006
+002900       05  ML02003-FREEZE-DATE          PIC X(10).                00290006
+003000       05  ML02003-FREEZE-REASON        PIC X(35).                00300006
+003100       05  ML02003-LINE-STATUS          PIC X(6).                 00310008
+003200       05  ML02003-NEXT-INT-RATE-CHG-DT PIC X(10).                00320006
+003300       05  ML02003-ACCR-INT             PIC S9(9)V9(2) DISPLAY.   00330006
+003400       05  ML02003-PYMT-ESCROW-AMT      PIC S9(9)V9(2) DISPLAY.   00340006
+003500       05  ML02003-CLOSE-CODES          PIC 9(1) DISPLAY.         00350006
+003600       05  ML02003-DROP-LOAN-CODE       PIC 9(3) DISPLAY.         00360008
+003700       05  ML02003-WARNING-CODE         PIC 9(1) DISPLAY.         00370006
+003800       05  ML02003-BANKRUPTCY-FLAG      PIC X(1).                 00380006
+003900       05  ML02003-DELINQUENT-DAYS      PIC 9(5) DISPLAY.         00390006
+004000       05  ML02003-LOSS-MITIGATION-FLAG PIC X(1).                 00400006
+004100       05  ML02003-INTEREST-RATE        PIC 9(2)V9(5)  DISPLAY.   00410006
+004200       05  ML02003-LATE-CHARGE-AMT      PIC S9(9)V9(2) DISPLAY.   00420007
+004300       05  ML02003-CREDIT-INS-PYMT-AMT  PIC S9(9)V9(2) DISPLAY.   00430006
+004400       05  ML02003-ANCILLARY-AMT        PIC S9(9)V9(2) DISPLAY.   00440006
+004500       05  ML02003-UNAPPLIED-FUNDS-TOT  PIC S9(9)V9(2) DISPLAY.   00450008
+004600       05  ML02003-ESCROW-PYMT-CHNG-DATE PIC X(10).               00460006
+004700       05  ML02003-ESCROW-PYMT-CHNG-AMT                           00470006
+004800                                        PIC S9(9)V9(2) DISPLAY.   00480001
+004900       05  ML02003-PAID-TO-DATE         PIC X(10).                00490006
+005000       05  ML02003-LOAN-TERM            PIC S9(3) DISPLAY.        00500006
+005100       05  ML02003-PYMT-CYCLE           PIC X(11).                00510007
+005200       05  ML02003-BILLING-METHOD       PIC X(8).                 00520006
+005300       05  ML02003-PROPERTY-CODE        PIC 9(3) DISPLAY.         00530006
+005400       05  ML02003-PROPERTY-DESC        PIC X(55).                00540006
+005500       05  ML02003-GRACE-DAYS           PIC X(3).                 00550006
+005600       05  ML02003-CURRENT-DATE         PIC X(10).                00560006
+005700       05  ML02003-PRIM-BORROWER-NAME   PIC X(35).                00570006
+005800       05  ML02003-SEC-BORROWER-NAME    PIC X(35).                00580006
+005900       05  ML02003-APR-RATE             PIC S9(3)V9(2) DISPLAY.   00590006
+006000       05  ML02003-LAST-ACT-DATE        PIC X(10).                00600006
+006100       05  ML02003-STOP-PYMT-IND        PIC X(1).                 00610006
+006200       05  ML02003-INT-PERDIEM          PIC S9(7)V9(4) DISPLAY.   00620006
+006300       05  ML02003-LOCKOUT-CODE         PIC 9(1) DISPLAY.         00630006
+006400       05  ML02003-STOP-CODE1           PIC 9(1) DISPLAY.         00640006
+006500       05  ML02003-STOP-CODE2           PIC 9(1) DISPLAY.         00650006
+006600       05  ML02003-STOP-CODE3           PIC 9(1) DISPLAY.         00660006
+006700       05  ML02003-DP-1ST-PYMT-FIX-AMT  PIC S9(9)V9(2) DISPLAY.   00670006
+006900       05  ML02003-DP-1ST-PYMT-BAL-PCT  PIC S9(2)V9(5) DISPLAY.   00690006
+007000       05  ML02003-DP-1ST-PYMT-BAL-OPT  PIC X(1).                 00700006
+007100       05  ML02003-DP-1ST-PYMT-OPT      PIC 9(3) DISPLAY.         00710006
+007200       05  ML02003-DP-2ND-PYMT-FIX-AMT                            00720006
+007300                                        PIC S9(9)V9(2) DISPLAY.   00730001
+007400       05  ML02003-DP-2ND-PYMT-BAL-PCT                            00740006
+007410                                        PIC S9(2)V9(5) DISPLAY.   00741004
+007500       05  ML02003-DP-2ND-PYMT-BAL-OPT  PIC X(1).                 00750006
+007600       05  ML02003-DP-2ND-PYMT-OPT      PIC 9(3) DISPLAY.         00760006
+007700       05  ML02003-LAST-STMT-DATE       PIC X(10).                00770006
+007800       05  ML02003-LINE-TEASER-EXP-DATE PIC X(10).                00780006
+007900       05  ML02003-ARM-1ST-MARGIN       PIC S9(2)V9(5) DISPLAY.   00790006
+008000       05  ML02003-ARM-1ST-MARG-EXP-DATE PIC X(10).               00800006
+008100       05  ML02003-ARM-2ND-MARGIN       PIC S9(2)V9(5) DISPLAY.   00810006
+008200       05  ML02003-CURR-APPR-BPO-AMT    PIC 9(9) DISPLAY.         00820006
+008300       05  ML02003-CURR-APPR-BPO-DATE   PIC X(10).                00830006
+008400       05  ML02003-LPMI-FLAG            PIC X(1).                 00840006
+008500       05  ML02003-FHAVA-PMI-NBR-ALPHA  PIC X(2).                 00850006
+008600       05  ML02003-FHAVA-PMI-NBR        PIC 9(13) DISPLAY.        00860006
+008700     02  FILLER                         PIC X(630).               00870004
+008800******************************************************************00880001
+008900*                                                        COPYBOOK*00890001
+009000*                                                                *00900001
+009100* PURPOSE:    FISERV'S 'GETACCOUNTINFO' WEBSERVICE               *00910001
+009200*                                                                *00920001
+009300* LENGTH OF COPYBOOK:  1500 BYTES                                *00930001
+009400*                                                                *00940001
+009500* USAGE:      ML02003-P - USED TO PASS PARAMETERS THROUGH        *00950006
+009600*                        DFHCOMMAREA TO ML02003-                 *00960006
+009700*                                                                *00970001
+009800* FIELD DESCRIPTION/VALUES:                                      *00980001
+009900*                                                                *00990001
+010000*    SEE COPYBOOK MLWS001P FOR DESCRIPTIONS                      *01000008

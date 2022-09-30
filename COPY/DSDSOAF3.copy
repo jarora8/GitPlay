@@ -1,0 +1,118 @@
+000100*01  OVERDRAWN-ACCOUNTS-FILE3.
+000200 01  OVERDRAWN-ACCOUNTS-FILE3.
+000210     02  FILLER                PIC X          VALUE '"'.
+000300     02  OAF3-ACCOUNT-NUMBER   PIC X(25)      VALUE SPACES.
+000400     02  FILLER REDEFINES OAF3-ACCOUNT-NUMBER.
+000500         03  FILLER            PIC X(13).
+000600         03  OAF3-BANK-NBR     PIC 9(03).
+000700         03  OAF3-ACCT-NBR     PIC 9(09).
+000710     02  FILLER                PIC X(03)      VALUE '","'.
+000800     02  OAF3-NAME1            PIC X(40)      VALUE SPACES.
+000810     02  FILLER                PIC X(03)      VALUE '","'.
+000900     02  OAF3-NAME2            PIC X(40)      VALUE SPACES.
+000910     02  FILLER                PIC X(03)      VALUE '","'.
+001000     02  OAF3-NAME3            PIC X(40)      VALUE SPACES.
+001010     02  FILLER                PIC X(03)      VALUE '","'.
+001100     02  OAF3-NAME4-ADDR1      PIC X(40)      VALUE SPACES.
+001110     02  FILLER                PIC X(03)      VALUE '","'.
+001200     02  OAF3-NAME4-ADDR2      PIC X(40)      VALUE SPACES.
+001210     02  FILLER                PIC X(03)      VALUE '","'.
+001300     02  OAF3-NAME4-CSZ        PIC X(40)      VALUE SPACES.
+001310     02  FILLER                PIC X(03)      VALUE '","'.
+001400     02  OAF3-HOME-PHONE       PIC X(20)      VALUE SPACES.
+001410     02  FILLER                PIC X(03)      VALUE '","'.
+001500     02  OAF3-WORK-PHONE       PIC X(20)      VALUE SPACES.
+001510     02  FILLER                PIC X(03)      VALUE '","'.
+001600     02  OAF3-WORK-PHONE-EXT   PIC X(05)      VALUE SPACES.
+001610     02  FILLER                PIC X(03)      VALUE '","'.
+001700     02  OAF3-BRANCH-NBR       PIC X(25)      VALUE SPACES.
+001800     02  FILLER REDEFINES OAF3-BRANCH-NBR.
+001900         03  FILLER            PIC X(19).
+002000         03  OAF3-BR-BANK      PIC 9(03).
+002100         03  OAF3-BR-BRANCH    PIC 9(03).
+002110     02  FILLER                PIC X(03)      VALUE '","'.
+002200     02  OAF3-CURR-BALANCE     PIC -(16).99   VALUE ZEROS.
+002210     02  FILLER                PIC X(03)      VALUE '","'.
+002300     02  OAF3-CURR-DAYS-OD     PIC ZZZZZZZZ9  VALUE ZEROS.
+002310     02  FILLER                PIC X(03)      VALUE '","'.
+002400     02  OAF3-AMT-DEPOSITS     PIC -(16).99   VALUE ZEROS.
+002410     02  FILLER                PIC X(03)      VALUE '","'.
+002500     02  OAF3-DATE-LAST-DEP    PIC X(10)      VALUE SPACES.
+002510     02  FILLER                PIC X(03)      VALUE '","'.
+002600     02  OAF3-DATE-OPENED      PIC X(10)      VALUE SPACES.
+002610     02  FILLER                PIC X(03)      VALUE '","'.
+002700     02  OAF3-OD-CODE          PIC X(10)      VALUE SPACES.
+002710     02  FILLER                PIC X(03)      VALUE '","'.
+002800     02  OAF3-ACCT-TYPE-CODE   PIC X(02)      VALUE SPACES.
+002810     02  FILLER                PIC X(03)      VALUE '","'.
+002900     02  OAF3-INSTITUTION-NBR  PIC X(09)      VALUE SPACES.
+002910     02  FILLER                PIC X(03)      VALUE '","'.
+003000     02  OAF3-PRODUCT-CODE     PIC X(20)      VALUE SPACES.
+003010     02  FILLER                PIC X(03)      VALUE '","'.
+003100     02  OAF3-FIRST-NAME       PIC X(15)      VALUE SPACES.
+003110     02  FILLER                PIC X(03)      VALUE '","'.
+003200     02  OAF3-MI               PIC X          VALUE SPACES.
+003210     02  FILLER                PIC X(03)      VALUE '","'.
+003300     02  OAF3-LAST-NAME        PIC X(25)      VALUE SPACES.
+003310     02  FILLER                PIC X(03)      VALUE '","'.
+003400     02  OAF3-ADDRESS          PIC X(40)      VALUE SPACES.
+003410     02  FILLER                PIC X(03)      VALUE '","'.
+003500     02  OAF3-CITY             PIC X(40)      VALUE SPACES.
+003510     02  FILLER                PIC X(03)      VALUE '","'.
+003600     02  OAF3-STATE            PIC X(02)      VALUE SPACES.
+003610     02  FILLER                PIC X(03)      VALUE '","'.
+003700     02  OAF3-ZIP              PIC X(10)      VALUE SPACES.
+003710     02  FILLER                PIC X(03)      VALUE '","'.
+003800     02  OAF3-LOCATION-CODE    PIC X(02)      VALUE SPACES.
+003810     02  FILLER                PIC X(03)      VALUE '","'.
+003900     02  OAF3-BRANCH-NAME      PIC X(40)      VALUE SPACES.
+003910     02  FILLER                PIC X(03)      VALUE '","'.
+004000     02  OAF3-EMPLOYEE-FLAG    PIC X(02)      VALUE SPACES.
+004010     02  FILLER                PIC X(03)      VALUE '","'.
+004100     02  OAF3-ACCOUNT-OFFICER  PIC X(40)      VALUE SPACES.
+004110     02  FILLER                PIC X(03)      VALUE '","'.
+004200     02  OAF3-DATA-DATE        PIC X(10)      VALUE SPACES.
+004210     02  FILLER                PIC X(03)      VALUE '","'.
+004300     02  OAF3-AVG-COLL-BAL     PIC -(16).99   VALUE ZEROS.
+004310     02  FILLER                PIC X(03)      VALUE '","'.
+004400     02  OAF3-DIRECT-DEPOSIT   PIC X(02)      VALUE SPACES.
+004410     02  FILLER                PIC X(03)      VALUE '","'.
+004500     02  OAF3-FED-TAX-ID       PIC X(13)      VALUE SPACES.
+004510     02  FILLER                PIC X(03)      VALUE '","'.
+004600     02  OAF3-SOCIAL-SECURITY  PIC X(11)      VALUE SPACES.
+004610     02  FILLER                PIC X(03)      VALUE '","'.
+004700     02  OAF3-DRIVER-NUMBER    PIC X(11)      VALUE SPACES.
+004710     02  FILLER                PIC X(03)      VALUE '","'.
+004800     02  OAF3-DRIVER-STATE     PIC X(02)      VALUE SPACES.
+004810     02  FILLER                PIC X(03)      VALUE '","'.
+004900     02  OAF3-OD-LIMIT         PIC ZZZZ9      VALUE ZEROS.
+004910     02  FILLER                PIC X(03)      VALUE '","'.
+005000     02  OAF3-EMAIL-ADDRESS    PIC X(60)      VALUE SPACES.
+005010     02  FILLER                PIC X(03)      VALUE '","'.
+005100     02  OAF3-DATE-OF-BIRTH    PIC X(10)      VALUE SPACES.
+005110     02  FILLER                PIC X(03)      VALUE '","'.
+005200     02  OAF3-PRODUCT-DESC     PIC X(40)      VALUE SPACES.
+005210     02  FILLER                PIC X(03)      VALUE '","'.
+005300     02  OAF3-COST-CTR-CODE    PIC X(25)      VALUE SPACES.
+005310     02  FILLER                PIC X(03)      VALUE '","'.
+005400     02  OAF3-COST-CTR-NAME    PIC X(40)      VALUE SPACES.
+005410     02  FILLER                PIC X(03)      VALUE '","'.
+005500     02  OAF3-REGION-CODE      PIC X(25)      VALUE SPACES.
+005510     02  FILLER                PIC X(03)      VALUE '","'.
+005600     02  OAF3-REGION-NAME      PIC X(40)      VALUE SPACES.
+005610     02  FILLER                PIC X(03)      VALUE '","'.
+005700     02  OAF3-DAILY-OD-FEE     PIC -(16).99   VALUE ZEROS.
+005710     02  FILLER                PIC X(03)      VALUE '","'.
+005800     02  OAF3-REF-NSF-OD-FEE   PIC -(16).99   VALUE ZEROS.
+005810     02  FILLER                PIC X(03)      VALUE '","'.
+005900     02  OAF3-REF-OD-FEE       PIC -(16).99   VALUE ZEROS.
+005910     02  FILLER                PIC X(03)      VALUE '","'.
+006000     02  OAF3-RET-DEP-ITEM-AMT PIC -(16).99   VALUE ZEROS.
+006010     02  FILLER                PIC X(03)      VALUE '","'.
+006100     02  OAF3-RET-DEP-ITEM-CNT PIC ZZZZZZZZZ9 VALUE ZEROS.
+006110     02  FILLER                PIC X(03)      VALUE '","'.
+006200     02  OAF3-ACCT-STATUS      PIC X(10)      VALUE SPACES.
+006201     02  FILLER                PIC X(03)      VALUE '","'.
+006210     02  FILLER                PIC X(173)     VALUE SPACES.
+006220     02  FILLER                PIC X          VALUE '"'.
+006300

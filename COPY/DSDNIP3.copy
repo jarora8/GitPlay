@@ -1,0 +1,44 @@
+000100*01  NSF-ITEM-FILE-3.
+000200     03  NIP3-RECORD-KEY.
+000300         05  NIP3-BANK-NBR   PIC 99.
+000400         05  NIP3-ACCT-ID    PIC 999                     COMP-3.
+000500         05  NIP3-ACCT-NBR   PIC 9(9)                    COMP-3.
+000600         05  NIP3-SEQ-NBR    PIC 9(7)                    COMP-3.
+000700     03  NIP3-SHORT-NAME     PIC X(14).
+000800     03  NIP3-TX-CODE        PIC 9(3)                    COMP-3.
+000900     03  NIP3-TX-AMT         PIC S9(11)V99               COMP-3.
+001000     03  NIP3-CURR-BAL       PIC S9(11)V99               COMP-3.
+001100     03  NIP3-REASON-CODE    PIC 99.
+001200         88  NIP3-NSF                    VALUE 01.
+001300         88  NIP3-UNLOCATED              VALUE 07.
+001400         88  NIP3-SCHK-NO-REC            VALUE 20.
+001410         88  NIP3-SCHK-NSF               VALUE 41.
+001500     03  NIP3-REASON         PIC X(10).
+001600     03  NIP3-SERIAL-NBR     PIC 9(11)                   COMP-3.
+001700     03  NIP3-OPER-ID        PIC 9(5)                    COMP-3.
+001800     03  NIP3-AUTH-ID        PIC 9(5)                    COMP-3.
+001900     03  NIP3-PAY-IND        PIC X.
+002000     03  NIP3-CHRG-IND       PIC X.
+002100     03  NIP3-MANUAL-IND     PIC X.
+002200     03  NIP3-PAYEE          PIC X(20).
+002300     03  NIP3-TX-DESC.
+002400         05  NIP3-DESC-16    PIC X(16).
+002500         05  NIP3-DESC-10    PIC X(10).
+002600     03  NIP3-TX-DATE        PIC S9(7)                   COMP-3.
+002700     03  NIP3-ENCL-SW        PIC 9.
+002800     03  NIP3-SC-ITEM        PIC 9.
+002900     03  NIP3-FOR-ATM-DESC   PIC X(50).
+003000     03  NIP3-CHANGE-ACCT    PIC X.
+003100     03  NIP3-ORIG-ACCT      PIC 9(9)                    COMP-3.
+003200     03  NIP3-POS-TX-DATE    PIC 9(7)                    COMP-3.
+003300     03  NIP3-POS-REF-NBR    PIC X(12).
+003400     03  NIP3-ACH-PAR-NBR    PIC 9(15).
+003500     03  NIP3-ACH-STD-ENTRY-CLASS
+003600                             PIC X(3).
+003700     03  NIP3-DESC-FORMAT    PIC X(3).
+003800         88  NIP3-FORMAT-BANKMATE        VALUE 'BKM' SPACES.
+003900         88  NIP3-FORMAT-FDR             VALUE 'FDR'.
+004000         88  NIP3-FORMAT-DEFAULT         VALUE 'DEF'.
+004100     03  NIP3-ACH-DISC-DATA  PIC X(2).
+004200     03  NIP3-ACH-RET-REASON PIC X(3).
+004300     03  FILLER              PIC X(5).

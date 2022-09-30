@@ -1,0 +1,21 @@
+000100*01  CDC-CURRENT-DATES.                                           00010000
+000110     02  CDC-DATE-VERSION    PIC X(2)           VALUE 'V2'.       00011007
+000200     02  CDC-CURRENT-DATE    PIC X(8).                            00020000
+000300     02  FILLER REDEFINES CDC-CURRENT-DATE.                       00030000
+000400         03  CDC-CURR-MM     PIC 99.                              00040000
+000500         03  FILLER          PIC X.                               00050000
+000600         03  CDC-CURR-DD     PIC 99.                              00060000
+000700         03  FILLER          PIC X.                               00070000
+000800         03  CDC-CURR-YY     PIC 99.                              00080000
+000900     02  CDC-JULIAN-DATE     PIC S9(5)                   COMP-3.  00090000
+001000     02  CDC-GREG-DATE       PIC S9(7)                   COMP-3.  00100000
+001100     02  CDC-MOD-JULIAN-DATE PIC S9(7)                   COMP-3.  00110000
+001200     02  CDC-MOD-GREG-DATE   PIC S9(9)                   COMP-3.  00120000
+001300     02  CDC-MOD-CURR-DATE   PIC X(10).                           00130007
+001400     02  FILLER REDEFINES CDC-MOD-CURR-DATE.                      00140008
+001500         03  CDC-MOD-CURR-MM PIC 99.                              00150007
+001600         03  FILLER          PIC X.                               00160007
+001610         03  CDC-MOD-CURR-DD PIC 99.                              00161007
+001800         03  FILLER          PIC X.                               00180007
+001810         03  CDC-MOD-CURR-YY PIC 9(4).                            00181007
+001820     02 CDC-DB2-DATE         PIC X(10).                           00182009

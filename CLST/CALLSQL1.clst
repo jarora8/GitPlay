@@ -1,0 +1,295 @@
+*PROCESS RENT,USING(MAP,WARN(7)),CPAT(MC)                               00010000
+CALLSQL  TITLE 'TEST FOR CALLING SQL WITH CAF REQUIREMNETS'             00010000
+*                                                                       00390000
+         EJECT                                                          00400000
+         COPY  DBUUGSYM                                                 00410000
+         EQUREGS                                                        00420000
+*
+PARMLIST DSECT
+PARMLEN  DS    H
+PARMSSID DS    CL4
+*********************************************************************** 00570000
+*        WORK AREA                                                      00580000
+*********************************************************************** 00590000
+*                                                                       00600000
+WORKAREA DSECT                                                          00610000
+*                                                                       00620000
+SAVEAREA DS    9D                      SAVEAREA                         00630000
+*                                                                       00680000
+@DBUTCOU DS    A                       DBUUTCOU                         00740000
+*-------------------------------------                                  00980013
+DBUSQLER DS    A                                                        00740000
+*-------------------------------------                                  00980013
+         DSN@LI                                                         00990000
+*-------------------------------------                                  01000013
+ARGLIST  DS    0F                                                       00920000
+ARG1     DS    A                                                        00930000
+ARG2     DS    A                                                        00940000
+ARG3     DS    A                                                        00950000
+ARG4     DS    A                                                        00960000
+ARG5     DS    A                                                        00970000
+ARG6     DS    A                                                        00980000
+*
+CMT1     DS    CL70                    ERROR VERBAGE                    00430000
+*
+WTOAREA  DS    F
+         ORG   WTOAREA+WTOLEN
+*
+V27PKEY  DS    0CL8
+V27SCLAS DS    CL1                                                      02250001
+V27SVAL  DS    CL7                                                      02260001
+V27PCHAR DS    CL60                                                     02260001
+V27PNUM  DS    F                                                        02260001
+*-------------------------------------                                  00930001
+         DBUUTCOU DSECT=NO
+*
+RETCDE   DS    F
+*
+CMT      DS    CL70
+*
+WORKLEN  EQU   *-WORKAREA                                               00610000
+*                                                                       00990000
+         EXEC  SQL INCLUDE VUM0027                                      01980000
+         EXEC  SQL INCLUDE SQLCA                                        01980000
+* ------------------------------------ SET SQL CONDITIONS               02060000
+         EXEC  SQL WHENEVER SQLERROR CONTINUE                           02070000
+         EXEC  SQL WHENEVER SQLWARNING CONTINUE                         02080000
+         EXEC  SQL WHENEVER NOT FOUND CONTINUE                          02090000
+         PRINT NOGEN                                                    02390000
+*********************************************************************** 00770000
+*                                                                       00780000
+         EXEC  SQL                                                     +00790000
+               DECLARE R027S    CURSOR FOR                             +00800000
+               SELECT PKEYWD, PCHAR                                    +00810000
+               FROM VUM0027                                            +00820000
+               WHERE SUBSTR(PKEYWD,1,1) = :V27SCLAS                    +00830000
+               AND SUBSTR(PKEYWD,2,7) >=  :V27SVAL                     +00840000
+               ORDER BY PKEYWD                                         +00850000
+               FOR FETCH ONLY                                           00860000
+CALLSQL  AMODE 31                                                       02400000
+CALLSQL  RMODE ANY                     MUST BE!!!                       02410000
+CALLSQL  CSECT                                                          02420000
+* ------------------------------------ ENTRY                            02430000
+         PUSH  PRINT                                                    02440000
+         PRINT GEN                                                      02450000
+*                                                                       02460000
+         $RENT DREG=R10,                                               +02470000
+               BASE2=R11,                                              +02480000
+               VRM=&VRM,                                               +02490000
+               STACK=&STACK,                                           +02500000
+               DBGSTK=PGMNM,                                           +02770005
+               COPYRT='1995, COMPUWARE CORP.',                         +02780000
+               SP=25,                                                  +02520000
+               LOC=(BELOW)                                              02530000
+*                                                                       02540000
+         L     R8,0(,R1)               ADDRESS PARMLIST
+         USING PARMLIST,R8
+         LH    R3,PARMLEN
+         LTR   R3,R3
+         BNZ   USESSID
+*
+PARMERR  EQU   *
+         MVC   WTOAREA(WTOLEN),WTOLST1
+         MVC   WTOAREA+4(L'BADPARM),BADPARM
+         WTO   MF=(E,WTOAREA)
+         B     RETRN
+*
+USESSID  EQU   *
+*                                                                       02540000
+         SQLDS GET,BASE=R9
+*
+         DSNLLI
+*                                                                       02540000
+         LOAD  EP=DBUSQLER
+         ST    R0,DBUSQLER
+         LOAD  EP=DBUUTCOU
+         ST    R0,@DBUTCOU
+*                                                                       02540000
+         MVC   CSSID,PARMSSID
+         MVC   CPLAN,PGMNM                                              04810000
+         MVC   CPLAN(L'$RIBPLPF),$RIBPLPF                               04840000
+*                                                                       04860000
+         CAFCALL CONN                                                   04720000
+*
+         BZ    CAFOPN
+         MVC   CMT(L'CMT),C' '
+         MVC   CMT(7),=C'CAFCONN'
+         BAS   R3,SQLERR
+         B     RETRN
+CAFOPN   EQU     *
+         CAFCALL OPEN                                                   04870000
+         BZ    CAFINIT
+         MVC   CMT(L'CMT),C' '
+         MVC   CMT(7),=C'CAFOPEN'
+         BAS   R3,SQLERR
+         B     RETRN
+CAFINIT  EQU     *
+****************************************************************
+*  PARAMETER LIST AND CALL TO DBUUTCOA
+****************************************************************
+         EXEC  SQL                                                     +16900001
+               OPEN R027S                                               16910001
+         BAS   R3,PCCDE                ANALYSE REASON, ---><            01470000
+         BAS   R3,PCEA                 ERROR ACTION, ---><              01480000
+*                                                                       01490000
+         IF    (CLC,SQLCODE,NE,=F'0')                                   01500000
+         MVC   CMT1,=CL(L'CMT1)'SQL OPEN R027S PARA PKWS'               01510000
+         B     PSQLE                   --->                             01520000
+         ENDIF                                                          01530000
+*********************************************************************** 17070001
+         ZINIT UCOUPARM,C' ',UCOULEN                                    03780000
+         MVC   UCOUEYEC,=C'TCOU'       MOVE EYEBALL CHARACTER
+         MVC   UCOUQTY,ISPABYT         MOVE BYTES FROM DBUISPA
+         LA    R15,CAFCTLB             ADDRESS OF CAF CONTROL BLOCK
+         ST    R15,UCOUCTLB            SAVE ADDRESS OF CAF FOR UCOU
+         LA    R15,UCOUPARM
+         ST    R15,ARG1
+         OI    ARG1,X'80'
+         LA    R1,ARGLIST
+         L     R15,@DBUTCOU            GET ADDRESS OF DATACLAS          14050030
+         BASR  R14,R15                                                  14060030
+*
+         CLC   UCOUDCLS,=C'####TCOU'   INDICATES NOT FOUND              14070030
+WTOMSG   WTO   'RESULTS FROM DBUUTCOA CALL: DATACLAS=XXXXXXXX',        +07350013
+               ROUTCDE=(11),DESC=(6)                                    07360013
+* ------------------------------------ TERMINATE THREAD                 06630000
+*                                                                       06640000
+         CAFCALL CLOS,TERMOP='SYNC'    CLOSE                            06650000
+         BZ    CAFDISC
+         MVC   CMT(L'CMT),C' '
+         MVC   CMT(7),=C'CAFCLOS'
+         BAS   R3,SQLERR
+         B     RETRN
+CAFDISC  EQU     *
+*                                                                       06660000
+         CAFCALL DISC                  DISCONNECT                       06670000
+*                                                                       07280000
+         BZ    RETRN
+         MVC   CMT(L'CMT),C' '
+         MVC   CMT(7),=C'CAFDISC'
+         BAS   R3,SQLERR
+         B     RETRN
+RETRN    PARA                                                           07290000
+         SQLDS   FREE
+         DELETE  EP=DBUSQLER
+         DELETE  EP=DBUUTCOU
+         DROP  R8
+         DROP  R9
+         $RXIT
+*                                                                       02240000
+PCEA     PARA                                                           02250000
+         IF    (CLI,CAFCTL,EQ,CTLDU)                                    02260000
+         WTO   'DBUC999E - DB2 HAS REQUESTED A DUMP',                  +02270000
+               ROUTCDE=(11),DESC=(6)                                    02280000
+         L     R2,CAFREAS                                               02290000
+         ABEND 3500,DUMP,REASON=(R2)                                    02300000
+         ENDIF                                                          02310000
+*------------------------------------- QUIESCE OR FORCE                 02320000
+         IF    (CLI,CAFCTL,EQ,CTLFO)                                    02330000
+         WTO   'DBUC999E - DB2 SHUTTING DOWN - PGM TERMINATED',        +02340000
+               ROUTCDE=(11),DESC=(6)                                    02350000
+*                                                                       02360000
+         B     RETRN                   --->                             02370000
+         ENDIF                                                          02380000
+*-------------------------------------                                  02390000
+         IF    (CLC,CAFREAS,EQ,F30002),OR,                             +02400000
+               (CLC,CAFREAS,EQ,F30012)                                  02410000
+         L     R2,CAFREAS                                               02420000
+*                                                                       02430000
+         ENDIF                                                          02440000
+*------------------------------------- QUIESCE OR FORCE                 02450000
+         IF    (CLI,CAFCTL,EQ,CTLXL)                                    02460000
+         WTO   'DBUC999E - DB2 HAS REQUESTED A CAF TRANSLATE FUNCTION',+02470000
+               ROUTCDE=(11),DESC=(6)                                    02480000
+         CAFCALL XLAT                                                   02490000
+         IF    (C,R15,EQ,=F'200')                                       02500000
+         WTO   'DBUC999E - CAF TRANSLATE FUNCTION HAS FAILED',         +02510000
+               ROUTCDE=(11),DESC=(6)                                    02520000
+         L     R2,CAFREAS                                               02530000
+         ABEND 3500,DUMP,REASON=(R2)                                    02540000
+         ENDIF                                                          02550000
+*                                                                       02560000
+         B     PSQLE                   --->                             02570000
+         ENDIF                                                          02580000
+*-------------------------------------                                  02590000
+         IF    (CLI,CAFMSG,NE,C' ')                                     02600000
+         WTO   'DBUC999E A DB2 CALL ATTACH ERROR HAS OCCURRED',        +02610000
+               ROUTCDE=(11),DESC=(6)                                    02620000
+         WTO   '         CHECK REASON CODE',                           +02630000
+               ROUTCDE=(11),DESC=(6)                                    02640000
+*                                                                       02650000
+         L     R2,CAFREAS                                               02660000
+         ABEND 3500,DUMP,REASON=(R2)                                    02670000
+         ENDIF                                                          02680000
+*-------------------------------------                                  02690000
+         BR    R3                      --->                             02700000
+*********************************************************************** 02710000
+*        CHECK CAF RETURN CODES                                         02720000
+*********************************************************************** 02730000
+*                                                                       02740000
+PCCDE    PARA                                                           02750000
+         LA    R1,CAFCTLB                                               02760000
+         ST    R1,ARG1                                                  02770000
+         LA    R1,CAFMSG                                                02780000
+         ST    R1,ARG2                                                  02790000
+         OI    ARG2,X'80'                                               02800000
+         LA    R1,ARGLIST                                               02810000
+*                                                                       02820000
+         L     R15,DBUUCCA                                              02830000
+         BASR  R14,R15                                                  02840000
+*                                                                       02850000
+PCCDEX   PARA                                                           02860000
+         BR    R3                      --->                             02870000
+*                                                                       02880000
+*********************************************************************** 06900000
+*        SQL ERROR                                                      06910000
+*********************************************************************** 06920000
+*                                                                       06930000
+SQLERR   PARA                                                           06940000
+         LA    R1,PGMNM                PGM NAME                         06950000
+         ST    R1,ARG1                                                  06960000
+         LA    R1,CMT                  COMMENTS                         06970000
+         ST    R1,ARG2                                                  06980000
+         LA    R1,SQLCA                SQLCA                            06990000
+         ST    R1,ARG3                                                  07000000
+         OI    ARG3,X'80'              MAKE LAST                        07010000
+         LA    R1,ARGLIST              @PARM LIST                       07020000
+*                                                                       07030000
+         $CALL DBUSQLER,TYPE=L         DIAG ROUTINE                     07040000
+         BR    R3
+PSQLE    PARA                                                           02890000
+         LA    R1,PGMNM                PGM NAME                         02900000
+         ST    R1,ARG1                                                  02910000
+         LA    R1,CMT1                 A COMMENT                        02920000
+         ST    R1,ARG2                                                  02930000
+         LA    R1,SQLCA                @SQLCA                           02940000
+         ST    R1,ARG3                                                  02950000
+         OI    ARG3,X'80'              MAKE LAST                        02960000
+         LA    R1,ARGLIST              @ ARGLIST                        02970000
+*                                                                       02980000
+         L     R15,DBUSQLER                                             02990000
+         BALR  R14,R15                                                  03000000
+*                                                                       03010000
+         ABEND 3500,DUMP,STEP                                           03020000
+         TITLE '$OPN027 - OPEN CURSOR R027S'                            03030000
+*                                                                       07050000
+*                                                                       07960000
+*-------------------------------------                                  07970000
+*                                                                       07980000
+*                                                                       07410013
+PGMNM    SECTNAME
+F30002   DC    XL4'00F30002'                                            03960000
+F30012   DC    XL4'00F30012'                                            03970000
+WTOLST1  WTO   '                                                       X05511094
+                                ',                                     X
+               ROUTCDE=11,DESC=6,MF=L                                   05511094
+WTOLEN   EQU   *-WTOLST1
+BADPARM  DC    C'PARM MISSING - SSID REQUIRED'
+ISPABYT  DC    PL16'222222'
+         DBU$RIB  DSECT=NO                                              00430000
+         LTORG                                                          13130000
+         END   CALLSQL                                                  13140000
+         PUNCH ' SETCODE AC(0)'                                         13150000
+         PUNCH ' SETSSI 04010000'                                       20840000
+         PUNCH ' ENTRY CALLSQL'                                         13170000
+         END                                                            13180000

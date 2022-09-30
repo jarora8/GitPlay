@@ -1,0 +1,26 @@
+      ******************************************************************
+      * DCLGEN TABLE(IRA.DDA)                                          *
+      *        LIBRARY(LMFPROG.APPLDCL.U099079(IRADDA))                *
+      *        LANGUAGE(COBOL)                                         *
+      *        QUOTE                                                   *
+      * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+      ******************************************************************
+           EXEC SQL DECLARE IRA.DDA TABLE
+           ( IRADDA_BANK_NBR                DECIMAL(3, 0) NOT NULL,
+             IRADDA_CUST_NBR                DECIMAL(9, 0) NOT NULL,
+             IRADDA_SEQ_NBR                 DECIMAL(3, 0) NOT NULL,
+             IRADDA_ACCT_NBR                DECIMAL(9, 0) NOT NULL,
+             IRADDA_LAST_UPDATE             TIMESTAMP NOT NULL
+           ) END-EXEC.
+      ******************************************************************
+      * COBOL DECLARATION FOR TABLE IRA.DDA                            *
+      ******************************************************************
+       01  IRA-DDA.
+           10 IRADDA-BANK-NBR      PIC S9(3)V USAGE COMP-3.
+           10 IRADDA-CUST-NBR      PIC S9(9)V USAGE COMP-3.
+           10 IRADDA-SEQ-NBR       PIC S9(3)V USAGE COMP-3.
+           10 IRADDA-ACCT-NBR      PIC S9(9)V USAGE COMP-3.
+           10 IRADDA-LAST-UPDATE   PIC X(26).
+      ******************************************************************
+      * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 5       *
+      ******************************************************************

@@ -1,0 +1,349 @@
+      ******************************************************************
+      * DCLGEN TABLE(DSDS.BCFSCR)                                      *
+      *        LIBRARY(LMFPROG.APPLDCL.U099420(DSDSSCR))               *
+      *        ACTION(REPLACE)                                         *
+      *        LANGUAGE(COBOL)                                         *
+      *        APOST                                                   *
+      *        LABEL(YES)                                              *
+      *        DBCSDELIM(NO)                                           *
+      * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+      ******************************************************************
+           EXEC SQL DECLARE DSDS.BCFSCR TABLE
+           ( BCFSCR_BANK_NBR                DECIMAL(3, 0) NOT NULL,
+             BCFSCR_DSDS_ID                 CHAR(3) NOT NULL,
+             BCFSCR_SC_CODE                 DECIMAL(3, 0) NOT NULL,
+             BCFSCR_SC_DESC                 CHAR(25) NOT NULL,
+             BCFSCR_MAINT_FEE_1             DECIMAL(5, 2) NOT NULL,
+             BCFSCR_MAINT_FEE_2             DECIMAL(5, 2) NOT NULL,
+             BCFSCR_MAINT_FEE_3             DECIMAL(5, 2) NOT NULL,
+             BCFSCR_MAINT_FEE_4             DECIMAL(5, 2) NOT NULL,
+             BCFSCR_MAINT_FEE_5             DECIMAL(5, 2) NOT NULL,
+             BCFSCR_MAINT_FEE_TYPE_1        CHAR(2) NOT NULL,
+             BCFSCR_MAINT_FEE_TYPE_2        CHAR(2) NOT NULL,
+             BCFSCR_MAINT_FEE_TYPE_3        CHAR(2) NOT NULL,
+             BCFSCR_MAINT_FEE_TYPE_4        CHAR(2) NOT NULL,
+             BCFSCR_MAINT_FEE_TYPE_5        CHAR(2) NOT NULL,
+             BCFSCR_MAINT_BAL_1             DECIMAL(7, 0) NOT NULL,
+             BCFSCR_MAINT_BAL_2             DECIMAL(7, 0) NOT NULL,
+             BCFSCR_MAINT_BAL_3             DECIMAL(7, 0) NOT NULL,
+             BCFSCR_MAINT_BAL_4             DECIMAL(7, 0) NOT NULL,
+             BCFSCR_MAINT_AVG_CUR_MIN       DECIMAL(7, 0) NOT NULL,
+             BCFSCR_MAINT_AVG_COL_MIN       DECIMAL(7, 0) NOT NULL,
+             BCFSCR_MAINT_LOW_BAL_MIN       DECIMAL(7, 0) NOT NULL,
+             BCFSCR_EARN_RATE               DECIMAL(5, 5) NOT NULL,
+             BCFSCR_OD_RATE                 DECIMAL(5, 5) NOT NULL,
+             BCFSCR_BALANCE_CODE            DECIMAL(1, 0) NOT NULL,
+             BCFSCR_DEBIT_CHG_1             DECIMAL(5, 3) NOT NULL,
+             BCFSCR_DEBIT_CHG_2             DECIMAL(5, 3) NOT NULL,
+             BCFSCR_DEBIT_CHG_3             DECIMAL(5, 3) NOT NULL,
+             BCFSCR_DEBIT_QTY_1             DECIMAL(5, 0) NOT NULL,
+             BCFSCR_DEBIT_QTY_2             DECIMAL(5, 0) NOT NULL,
+             BCFSCR_DEBIT_CHG_FT            DECIMAL(5, 3) NOT NULL,
+             BCFSCR_DEBIT_CHG_3RD_PARTY     DECIMAL(5, 3) NOT NULL,
+             BCFSCR_DEBIT_CHG_RDC           DECIMAL(5, 3) NOT NULL,
+             BCFSCR_DEBIT_CHG_ATM           DECIMAL(5, 3) NOT NULL,
+             BCFSCR_DEBIT_AVG_CUR_MIN       DECIMAL(7, 0) NOT NULL,
+             BCFSCR_DEBIT_AVG_COL_MIN       DECIMAL(7, 0) NOT NULL,
+             BCFSCR_DEBIT_LOW_BAL_MIN       DECIMAL(7, 0) NOT NULL,
+             BCFSCR_DEBIT_CHG_ACH           DECIMAL(5, 3) NOT NULL,
+             BCFSCR_DEBIT_CHG_INFOLINE      DECIMAL(5, 3) NOT NULL,
+             BCFSCR_DEBIT_CHG_LIMIT_6       DECIMAL(5, 3) NOT NULL,
+             BCFSCR_DEBIT_CHG_POS           DECIMAL(5, 3) NOT NULL,
+             BCFSCR_CREDIT_CHG              DECIMAL(5, 3) NOT NULL,
+             BCFSCR_ITEM_CHG_1              DECIMAL(5, 3) NOT NULL,
+             BCFSCR_ITEM_CHG_2              DECIMAL(5, 3) NOT NULL,
+             BCFSCR_ITEM_CHG_3              DECIMAL(5, 3) NOT NULL,
+             BCFSCR_ITEM_QTY_1              DECIMAL(5, 0) NOT NULL,
+             BCFSCR_ITEM_QTY_2              DECIMAL(5, 0) NOT NULL,
+             BCFSCR_LOCAL_ITEM_DEFAULT_IND  CHAR(1) NOT NULL,
+             BCFSCR_LOCAL_ITEM_CHG_1        DECIMAL(5, 3) NOT NULL,
+             BCFSCR_LOCAL_ITEM_CHG_2        DECIMAL(5, 3) NOT NULL,
+             BCFSCR_LOCAL_ITEM_QTY_1        DECIMAL(5, 0) NOT NULL,
+             BCFSCR_NO_FREE_WITHD           DECIMAL(3, 0) NOT NULL,
+             BCFSCR_SC_STMT_SW              DECIMAL(1, 0) NOT NULL,
+             BCFSCR_SC_ACCT_TYPE            CHAR(1) NOT NULL,
+             BCFSCR_ACCT_ANAL_RTN_IND       CHAR(1) NOT NULL,
+             BCFSCR_DORM_INACT_FEE          DECIMAL(5, 3) NOT NULL,
+             BCFSCR_DORM_INACT_BAL          DECIMAL(7, 0) NOT NULL,
+             BCFSCR_REL_BANK_TYPE           CHAR(1) NOT NULL,
+             BCFSCR_REL_BANK_BAL_1          DECIMAL(7, 0) NOT NULL,
+             BCFSCR_REL_BANK_BAL_2          DECIMAL(7, 0) NOT NULL,
+             BCFSCR_REL_BANK_BAL_3          DECIMAL(7, 0) NOT NULL,
+             BCFSCR_REL_BANK_BAL_4          DECIMAL(7, 0) NOT NULL,
+             BCFSCR_REL_BANK_BAL_5          DECIMAL(7, 0) NOT NULL,
+             BCFSCR_MIN_INT_AMT             DECIMAL(5, 2) NOT NULL,
+             BCFSCR_MIN_BAL_INT_CREDIT      DECIMAL(5, 2) NOT NULL,
+             BCFSCR_SC_INT_ACCR_RESERVE     DECIMAL(5, 5) NOT NULL,
+             BCFSCR_OSB_SERV_CHRG_DESC_IND  CHAR(1) NOT NULL,
+             BCFSCR_OSB_SERV_CHRG_DESC      CHAR(25) NOT NULL,
+             BCFSCR_SALES_PROD              DECIMAL(3, 0) NOT NULL,
+             BCFSCR_SALES_PROD_BUSINESS     DECIMAL(3, 0) NOT NULL,
+             BCFSCR_SALES_PROD_BA           CHAR(3) NOT NULL,
+             BCFSCR_CREATE_TS               TIMESTAMP NOT NULL,
+             BCFSCR_UPDATE_TS               TIMESTAMP NOT NULL,
+             BCFSCR_ACCT_ANAL_EARN_CREDIT   CHAR(1) NOT NULL
+           ) END-EXEC.
+      ******************************************************************
+      * COBOL DECLARATION FOR TABLE DSDS.BCFSCR                        *
+      ******************************************************************
+       01  DSDS-BCFSCR.
+      *    *************************************************************
+           10 BCFSCR-BANK-NBR      PIC S9(3)V USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-DSDS-ID       PIC X(3).
+      *    *************************************************************
+           10 BCFSCR-SC-CODE       PIC S9(3)V USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-SC-DESC       PIC X(25).
+      *    *************************************************************
+           10 BCFSCR-MAINT-FEE-1   PIC S9(3)V9(2) USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-MAINT-FEE-2   PIC S9(3)V9(2) USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-MAINT-FEE-3   PIC S9(3)V9(2) USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-MAINT-FEE-4   PIC S9(3)V9(2) USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-MAINT-FEE-5   PIC S9(3)V9(2) USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-MAINT-FEE-TYPE-1  PIC X(2).
+              88  BCFSCR-MF-TYPE-1-VALID           VALUE '  ' 'MF'
+                                                         'HC'
+                                                         'IS' 'PS'
+                                                         'CH' 'NS'
+                                                         'IF'.
+              88  BCFSCR-MF-TYPE-1-MAINT-FEE       VALUE '  ' 'MF'.
+              88  BCFSCR-MF-TYPE-1-HOLD-CHARGE     VALUE 'HC'.
+              88  BCFSCR-MF-TYPE-1-IMAGE-STMT      VALUE 'IS'.
+              88  BCFSCR-MF-TYPE-1-PAPER-STMT      VALUE 'PS'.
+              88  BCFSCR-MF-TYPE-1-CHK-HANDLING    VALUE 'CH'.
+              88  BCFSCR-MF-TYPE-1-NON-SAFEKEEP    VALUE 'NS'.
+              88  BCFSCR-MF-TYPE-1-IMAGE-FEE       VALUE 'IF'.
+      *    *************************************************************
+           10 BCFSCR-MAINT-FEE-TYPE-2  PIC X(2).
+              88  BCFSCR-MF-TYPE-2-VALID           VALUE '  ' 'MF'
+                                                         'HC'
+                                                         'IS' 'PS'
+                                                         'CH' 'NS'
+                                                         'IF'.
+              88  BCFSCR-MF-TYPE-2-MAINT-FEE       VALUE '  ' 'MF'.
+              88  BCFSCR-MF-TYPE-2-HOLD-CHARGE     VALUE 'HC'.
+              88  BCFSCR-MF-TYPE-2-IMAGE-STMT      VALUE 'IS'.
+              88  BCFSCR-MF-TYPE-2-PAPER-STMT      VALUE 'PS'.
+              88  BCFSCR-MF-TYPE-2-CHK-HANDLING    VALUE 'CH'.
+              88  BCFSCR-MF-TYPE-2-NON-SAFEKEEP    VALUE 'NS'.
+              88  BCFSCR-MF-TYPE-2-IMAGE-FEE       VALUE 'IF'.
+      *    *************************************************************
+           10 BCFSCR-MAINT-FEE-TYPE-3  PIC X(2).
+              88  BCFSCR-MF-TYPE-3-VALID           VALUE '  ' 'MF'
+                                                         'HC'
+                                                         'IS' 'PS'
+                                                         'CH' 'NS'
+                                                         'IF'.
+              88  BCFSCR-MF-TYPE-3-MAINT-FEE       VALUE '  ' 'MF'.
+              88  BCFSCR-MF-TYPE-3-HOLD-CHARGE     VALUE 'HC'.
+              88  BCFSCR-MF-TYPE-3-IMAGE-STMT      VALUE 'IS'.
+              88  BCFSCR-MF-TYPE-3-PAPER-STMT      VALUE 'PS'.
+              88  BCFSCR-MF-TYPE-3-CHK-HANDLING    VALUE 'CH'.
+              88  BCFSCR-MF-TYPE-3-NON-SAFEKEEP    VALUE 'NS'.
+              88  BCFSCR-MF-TYPE-3-IMAGE-FEE       VALUE 'IF'.
+      *    *************************************************************
+           10 BCFSCR-MAINT-FEE-TYPE-4  PIC X(2).
+              88  BCFSCR-MF-TYPE-4-VALID           VALUE '  ' 'MF'
+                                                         'HC'
+                                                         'IS' 'PS'
+                                                         'CH' 'NS'
+                                                         'IF'.
+              88  BCFSCR-MF-TYPE-4-MAINT-FEE       VALUE '  ' 'MF'.
+              88  BCFSCR-MF-TYPE-4-HOLD-CHARGE     VALUE 'HC'.
+              88  BCFSCR-MF-TYPE-4-IMAGE-STMT      VALUE 'IS'.
+              88  BCFSCR-MF-TYPE-4-PAPER-STMT      VALUE 'PS'.
+              88  BCFSCR-MF-TYPE-4-CHK-HANDLING    VALUE 'CH'.
+              88  BCFSCR-MF-TYPE-4-NON-SAFEKEEP    VALUE 'NS'.
+              88  BCFSCR-MF-TYPE-4-IMAGE-FEE       VALUE 'IF'.
+      *    *************************************************************
+           10 BCFSCR-MAINT-FEE-TYPE-5  PIC X(2).
+              88  BCFSCR-MF-TYPE-5-VALID           VALUE '  ' 'MF'
+                                                         'HC'
+                                                         'IS' 'PS'
+                                                         'CH' 'NS'
+                                                         'IF'.
+              88  BCFSCR-MF-TYPE-5-MAINT-FEE       VALUE '  ' 'MF'.
+              88  BCFSCR-MF-TYPE-5-HOLD-CHARGE     VALUE 'HC'.
+              88  BCFSCR-MF-TYPE-5-IMAGE-STMT      VALUE 'IS'.
+              88  BCFSCR-MF-TYPE-5-PAPER-STMT      VALUE 'PS'.
+              88  BCFSCR-MF-TYPE-5-CHK-HANDLING    VALUE 'CH'.
+              88  BCFSCR-MF-TYPE-5-NON-SAFEKEEP    VALUE 'NS'.
+              88  BCFSCR-MF-TYPE-5-IMAGE-FEE       VALUE 'IF'.
+      *    *************************************************************
+           10 BCFSCR-MAINT-BAL-1   PIC S9(7)V USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-MAINT-BAL-2   PIC S9(7)V USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-MAINT-BAL-3   PIC S9(7)V USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-MAINT-BAL-4   PIC S9(7)V USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-MAINT-AVG-CUR-MIN
+              PIC S9(7)V USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-MAINT-AVG-COL-MIN
+              PIC S9(7)V USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-MAINT-LOW-BAL-MIN
+              PIC S9(7)V USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-EARN-RATE     PIC SV9(5) USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-OD-RATE       PIC SV9(5) USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-BALANCE-CODE  PIC S9(1)V USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-DEBIT-CHG-1   PIC S9(2)V9(3) USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-DEBIT-CHG-2   PIC S9(2)V9(3) USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-DEBIT-CHG-3   PIC S9(2)V9(3) USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-DEBIT-QTY-1   PIC S9(5)V USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-DEBIT-QTY-2   PIC S9(5)V USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-DEBIT-CHG-FT  PIC S9(2)V9(3) USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-DEBIT-CHG-3RD-PARTY
+              PIC S9(2)V9(3) USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-DEBIT-CHG-RDC
+              PIC S9(2)V9(3) USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-DEBIT-CHG-ATM
+              PIC S9(2)V9(3) USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-DEBIT-AVG-CUR-MIN
+              PIC S9(7)V USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-DEBIT-AVG-COL-MIN
+              PIC S9(7)V USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-DEBIT-LOW-BAL-MIN
+              PIC S9(7)V USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-DEBIT-CHG-ACH
+              PIC S9(2)V9(3) USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-DEBIT-CHG-INFOLINE
+              PIC S9(2)V9(3) USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-DEBIT-CHG-LIMIT-6
+              PIC S9(2)V9(3) USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-DEBIT-CHG-POS
+              PIC S9(2)V9(3) USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-CREDIT-CHG    PIC S9(2)V9(3) USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-ITEM-CHG-1    PIC S9(2)V9(3) USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-ITEM-CHG-2    PIC S9(2)V9(3) USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-ITEM-CHG-3    PIC S9(2)V9(3) USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-ITEM-QTY-1    PIC S9(5)V USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-ITEM-QTY-2    PIC S9(5)V USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-LOCAL-ITEM-DEFAULT-IND
+              PIC X(1).
+      *    *************************************************************
+           10 BCFSCR-LOCAL-ITEM-CHG-1
+              PIC S9(2)V9(3) USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-LOCAL-ITEM-CHG-2
+              PIC S9(2)V9(3) USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-LOCAL-ITEM-QTY-1
+              PIC S9(5)V USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-NO-FREE-WITHD
+              PIC S9(3)V USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-SC-STMT-SW    PIC S9(1)V USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-SC-ACCT-TYPE  PIC X(1).
+              88  BCFSCR-NORMAL                   VALUE '0'.
+              88  BCFSCR-CHARGE-A-TIME            VALUE '1'.
+              88  BCFSCR-GOLD-ACCOUNT             VALUE '2'.
+              88  BCFSCR-COMMERCIAL               VALUE '3'.
+              88  BCFSCR-GROWTH-SAVINGS           VALUE '4'.
+              88  BCFSCR-COMMERCIAL-PLUS-FDIC     VALUE '5'.
+              88  BCFSCR-ELECTRONIC-BENEFITS      VALUE '6'.
+              88  BCFSCR-FREE-CHECKING            VALUE '7'.
+              88  BCFSCR-FRESH-START-CHECKING     VALUE '8'.
+              88  BCFSCR-FREE-INTEREST-CHECKING   VALUE '9'.
+              88  BCFSCR-MYCHOICE-CHECKING        VALUE 'A'.
+              88  BCFSCR-HUD-CHECKING             VALUE 'B'.
+              88  BCFSCR-SAVINGS-ACCESS-CHECKING  VALUE 'C'.
+              88  BCFSCR-PREPAID-CARD             VALUE 'D'.
+              88  BCFSCR-WORLD-CHECKING           VALUE 'E'.
+              88  BCFSCR-CAPITAL-RESOURCE-ACCT    VALUE 'F'.
+              88  BCFSCR-EQUITY-ACCESS-CHECKING   VALUE 'G'.
+      *    *************************************************************
+           10 BCFSCR-ACCT-ANAL-RTN-IND
+              PIC X(1).
+      *    *************************************************************
+           10 BCFSCR-DORM-INACT-FEE
+              PIC S9(2)V9(3) USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-DORM-INACT-BAL
+              PIC S9(7)V USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-REL-BANK-TYPE
+              PIC X(1).
+      *    *************************************************************
+           10 BCFSCR-REL-BANK-BAL-1
+              PIC S9(7)V USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-REL-BANK-BAL-2
+              PIC S9(7)V USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-REL-BANK-BAL-3
+              PIC S9(7)V USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-REL-BANK-BAL-4
+              PIC S9(7)V USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-REL-BANK-BAL-5
+              PIC S9(7)V USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-MIN-INT-AMT   PIC S9(3)V9(2) USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-MIN-BAL-INT-CREDIT
+              PIC S9(3)V9(2) USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-SC-INT-ACCR-RESERVE
+              PIC SV9(5) USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-OSB-SERV-CHRG-DESC-IND
+              PIC X(1).
+      *    *************************************************************
+           10 BCFSCR-OSB-SERV-CHRG-DESC
+              PIC X(25).
+      *    *************************************************************
+           10 BCFSCR-SALES-PROD    PIC S9(3)V USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-SALES-PROD-BUSINESS
+              PIC S9(3)V USAGE COMP-3.
+      *    *************************************************************
+           10 BCFSCR-SALES-PROD-BA
+              PIC X(3).
+      *    *************************************************************
+           10 BCFSCR-CREATE-TS     PIC X(26).
+      *    *************************************************************
+           10 BCFSCR-UPDATE-TS     PIC X(26).
+      *    *************************************************************
+           10 BCFSCR-ACCT-ANAL-EARN-CREDIT
+              PIC X(1).
+      ******************************************************************
+      * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 73      *
+      ******************************************************************

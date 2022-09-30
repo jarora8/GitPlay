@@ -1,0 +1,56 @@
+      ******************************************************************
+      * DCLGEN TABLE(DSDS.ODB_GL_BATCH_TXN)                            *
+      *        LIBRARY(LMFPROG.APPLDCL.U099632(ODBGLTXN))              *
+      *        ACTION(REPLACE)                                         *
+      *        LANGUAGE(COBOL)                                         *
+      *        APOST                                                   *
+      *        LABEL(YES)                                              *
+      *        DBCSDELIM(NO)                                           *
+      * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+      ******************************************************************
+           EXEC SQL DECLARE DSDS.ODB_GL_BATCH_TXN TABLE
+           ( OBGL_BANK_NBR                  DECIMAL(3, 0) NOT NULL,
+             OBGL_PLAN                      CHAR(2) NOT NULL,
+             OBGL_LOAN_OFF_CODE             DECIMAL(5, 0) NOT NULL,
+             OBGL_ADVANCE_AMT               DECIMAL(11, 2) NOT NULL,
+             OBGL_PAYMENT_AMT               DECIMAL(11, 2) NOT NULL,
+             OBGL_ACCR_INT_AMT              DECIMAL(14, 5) NOT NULL,
+             OBGL_COLL_INT_AMT              DECIMAL(11, 2) NOT NULL,
+             OBGL_DROP_INT_AMT              DECIMAL(11, 2) NOT NULL,
+             OBGL_CREDIT_LIFE_AMT           DECIMAL(11, 2) NOT NULL,
+             OBGL_MO_FEE_AMT                DECIMAL(11, 2) NOT NULL,
+             OBGL_CREATE_TS                 TIMESTAMP NOT NULL,
+             OBGL_UPDATE_TS                 TIMESTAMP NOT NULL
+           ) END-EXEC.
+      ******************************************************************
+      * COBOL DECLARATION FOR TABLE DSDS.ODB_GL_BATCH_TXN              *
+      ******************************************************************
+       01  DSDS-ODB-GL-BATCH-TXN.
+      *    *************************************************************
+           10 OBGL-BANK-NBR        PIC S9(3)V USAGE COMP-3.
+      *    *************************************************************
+           10 OBGL-PLAN            PIC X(2).
+      *    *************************************************************
+           10 OBGL-LOAN-OFF-CODE   PIC S9(5)V USAGE COMP-3.
+      *    *************************************************************
+           10 OBGL-ADVANCE-AMT     PIC S9(9)V9(2) USAGE COMP-3.
+      *    *************************************************************
+           10 OBGL-PAYMENT-AMT     PIC S9(9)V9(2) USAGE COMP-3.
+      *    *************************************************************
+           10 OBGL-ACCR-INT-AMT    PIC S9(9)V9(5) USAGE COMP-3.
+      *    *************************************************************
+           10 OBGL-COLL-INT-AMT    PIC S9(9)V9(2) USAGE COMP-3.
+      *    *************************************************************
+           10 OBGL-DROP-INT-AMT    PIC S9(9)V9(2) USAGE COMP-3.
+      *    *************************************************************
+           10 OBGL-CREDIT-LIFE-AMT
+              PIC S9(9)V9(2) USAGE COMP-3.
+      *    *************************************************************
+           10 OBGL-MO-FEE-AMT      PIC S9(9)V9(2) USAGE COMP-3.
+      *    *************************************************************
+           10 OBGL-CREATE-TS       PIC X(26).
+      *    *************************************************************
+           10 OBGL-UPDATE-TS       PIC X(26).
+      ******************************************************************
+      * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 12      *
+      ******************************************************************

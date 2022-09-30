@@ -1,0 +1,53 @@
+000100******************************************************************00010000
+000200*                                                                *00020000
+000300*     O P E R A T O R    I N F O R M A T I O N    M A S T E R    *00030000
+000400*                                                                *00040000
+000500******************************************************************00050000
+000600     SKIP2                                                        00060000
+000700 01  AMS-OPERATOR-INFO-LIST.                                      00070000
+000800     03  OI-CONTROL-INFO.                                         00080000
+000900         05  OI-FILE-NAME        PIC X(8)    VALUE 'AMSOPER '.    00090000
+001000         05  OI-RECORD-LENGTH    PIC S9(4)   VALUE +300  COMP.    00100000
+001100     03  OI-DATA-RECORD.                                          00110000
+001200         05  OI-OPERATOR-KEY             PIC 9(5)        COMP-3.  00120000
+001300         05  OI-PERSONAL-INFO.                                    00130000
+001400             07  OI-FULL-NAME            PIC X(40).               00140000
+001500             07  OI-SHORT-NAME           PIC X(10).               00150000
+001600             07  OI-INITIALS             PIC X(3).                00160000
+001700             07  OI-COMMENT              PIC X(30).               00170000
+001800             07  OI-STATUS               PIC S9(3)       COMP-3.  00180000
+001900                 88  OI-OPERATOR-UNAVAILABLE VALUE +999.          00190000
+002000         05  OI-BANK-INFO.                                        00200000
+002100             07  OI-BANK-NUMBER          PIC 9(3)        COMP-3.  00210000
+002200             07  OI-BANK-COST-CENTER     PIC 9(3)        COMP-3.  00220000
+002300         05  OI-PAYROLL-INFO.                                     00230000
+002400             07  OI-PAYROLL-ACCT-FILE-ID PIC X(3).                00240000
+002500             07  OI-PAYROLL-ACCT-NUMBER  PIC X(9).                00250000
+002600         05  OI-VACATION-INFO.                                    00260000
+002700             07  OI-VACATION-START-DATE  PIC S9(7)       COMP-3.  00270000
+002800             07  OI-VACATION-END-DATE    PIC S9(7)       COMP-3.  00280000
+002900         05  OI-LOGON-INFO.                                       00290000
+003000             07  OI-LAST-LOGON-DATE      PIC S9(7)       COMP-3.  00300000
+003100             07  OI-LAST-LOGON-TIME      PIC S9(7)       COMP-3.  00310000
+003200             07  OI-LAST-LOGON-TERMINAL  PIC X(4).                00320000
+003300         05  OI-MAINTENANCE-INFO.                                 00330000
+003400             07  OI-LAST-MAINT-DATE      PIC S9(7)       COMP-3.  00340000
+003500             07  OI-LAST-MAINT-TIME      PIC S9(7)       COMP-3.  00350000
+003600             07  OI-LAST-MAINT-TERMINAL  PIC X(4).                00360000
+003700             07  OI-LAST-MAINT-OPERATOR  PIC 9(5)        COMP-3.  00370000
+003800         05  OI-POST-SIGN-ON-SCREEN-OPT  PIC X.                   00380000
+003900             88  FAST-MENU               VALUE 'A'.               00390000
+004000             88  TELLER-MENU             VALUE 'B'.               00400000
+004100             88  PM-MENU                 VALUE 'C'.               00410000
+004200             88  NO-MENU                 VALUE 'Z'.               00420000
+004300         05  OI-LAST-NEWDAY-DATE         PIC S9(7)       COMP-3.  00430000
+004400         05  OI-MESSAGE-NOTIFICATION     PIC X.                   00440000
+004500             88  NO-MSG-NOTIFICATION     VALUE 'A' ' '.           00450000
+004600             88  NOTIFY-TPX-USER-ID      VALUE 'B'.               00460000
+004700             88  NOTIFY-SYSTEM-CONSOLE   VALUE 'C'.               00470000
+004800             88  NOTIFY-CICS-USER-ID     VALUE 'D'.               00480000
+004900         05  OI-PRIMARY-TPX-USER-ID      PIC X(7).                00490000
+005000         05  OI-SECONDARY-TPX-USER-ID    PIC X(7).                00500000
+005100         05  OI-TITLE                    PIC X(40).               00510000
+005200         05  OI-PW                       PIC X(8).                00520000
+005300         05  FILLER                      PIC X(93).               00530003

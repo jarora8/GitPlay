@@ -1,0 +1,148 @@
+000110******************************************************************00011008
+000120*                                                        COPYBOOK*00012008
+000130*                                                                *00013008
+000140* PURPOSE: CHANGE LOG WORK INFORMATION                           *00014008
+000150*                                                                *00015008
+000160* LENGTH OF COPYBOOK: 80                                         *00016008
+000170* LENGTH OF SORT KEY: N/A                                        *00017008
+000180*                                                                *00018008
+000190* USAGE: MAINTENANCE LOG FILE LAYOUT                             *00019008
+000191*                                                                *00019108
+000192******************************************************************00019208
+000193*01  CHANGE-LOG-WORK.                                             00019308
+000200     02  CLW-BANK-NBR         PIC 9(3)                   COMP-3.  00020001
+000300     02  CLW-ACCT-ID          PIC 9(3)                   COMP-3.  00030001
+000400     02  CLW-ACCT-NBR         PIC 9(9)                   COMP-3.  00040001
+000500     02  CLW-FIELD-CODE       PIC 9(3)                   COMP-3.  00050001
+000600                                                                  00060001
+000700     02  CLW-OLD-INFO         PIC X(20).                          00070001
+000800     02  FILLER REDEFINES CLW-OLD-INFO.                           00080001
+000900         03  CLW-OLD-STAT-2X  PIC X(02).                          00090001
+001000         03  FILLER           PIC X(18).                          00100001
+001100     02  FILLER REDEFINES CLW-OLD-INFO.                           00110001
+001200         03  CLW-OLD-SC-DISP  PIC 9(01).                          00120001
+001300         03  FILLER           PIC X(19).                          00130001
+001400     02  FILLER REDEFINES CLW-OLD-INFO.                           00140001
+001500         03  CLW-OLD-EARN-DISP PIC X(01).                         00150001
+001600         03  FILLER           PIC X(19).                          00160001
+001700     02  FILLER REDEFINES CLW-OLD-INFO.                           00170001
+001800         03  CLW-OLD-INV-STAT PIC X(02).                          00180001
+001900         03  FILLER           PIC X(18).                          00190001
+002000     02  FILLER REDEFINES CLW-OLD-INFO.                           00200001
+002100         03  CLW-OLD-ODB-STAT PIC X(02).                          00210001
+002200         03  FILLER           PIC X(18).                          00220001
+002300     02  FILLER REDEFINES CLW-OLD-INFO.                           00230001
+002400         03  CLW-OLD-ACCESS-CODE PIC 9(02).                       00240001
+002500         03  FILLER           PIC X(18).                          00250001
+002600     02  FILLER REDEFINES CLW-OLD-INFO.                           00260001
+002700         03  CLW-OLD-ACCESS-LIMIT PIC S9(5).                      00270001
+002800         03  FILLER           PIC X(15).                          00280001
+002900     02  FILLER REDEFINES CLW-OLD-INFO.                           00290001
+003000         03  CLW-OLD-STMT-CYCLE   PIC S9(3).                      00300001
+003100         03  FILLER           PIC X(17).                          00310001
+003200     02  FILLER REDEFINES CLW-OLD-INFO.                           00320001
+003300         03  CLW-OLD-SC-EARN-CYC  PIC S9(3).                      00330001
+003400         03  FILLER           PIC X(17).                          00340001
+003500     02  FILLER REDEFINES CLW-OLD-INFO.                           00350004
+003600         03  CLW-OLD-STMT-DISP-CODE PIC X.                        00360004
+003700         03  FILLER           PIC X(19).                          00370004
+003800     02  FILLER REDEFINES CLW-OLD-INFO.                           00380001
+003900         03  CLW-OLD-INV-TERM PIC S9(5).                          00390001
+004000         03  FILLER           PIC X(15).                          00400001
+004100     02  FILLER REDEFINES CLW-OLD-INFO.                           00410001
+004200         03  CLW-OLD-INV-MAT-DATE PIC X(10).                      00420001
+004300         03  FILLER           PIC X(10).                          00430001
+004400     02  FILLER REDEFINES CLW-OLD-INFO.                           00440001
+004500         03  CLW-OLD-INV-NEXT-TERM PIC S9(5).                     00450001
+004600         03  FILLER           PIC X(15).                          00460001
+004700     02  FILLER REDEFINES CLW-OLD-INFO.                           00470001
+004800         03  CLW-OLD-INV-NEXT-MAT-DATE PIC X(10).                 00480001
+004900         03  FILLER           PIC X(10).                          00490001
+005000     02  FILLER REDEFINES CLW-OLD-INFO.                           00500001
+005100         03  CLW-OLD-ACCT-TYPE PIC X(03).                         00510001
+005200         03  FILLER            PIC X(17).                         00520001
+005300     02  FILLER REDEFINES CLW-OLD-INFO.                           00530001
+005400         03  CLW-OLD-PLUS-PKG-IND PIC X(01).                      00540001
+005500         03  FILLER               PIC X(19).                      00550001
+005600     02  FILLER REDEFINES CLW-OLD-INFO.                           00560001
+005700         03  CLW-OLD-RESUBMIT-IND PIC X(01).                      00570002
+005800         03  FILLER               PIC X(19).                      00580002
+005810     02  FILLER REDEFINES CLW-OLD-INFO.                           00581006
+005820         03  CLW-OLD-CUST-ACT-DT  PIC X(10).                      00582006
+005830         03  FILLER           PIC X(10).                          00583006
+005840     02  FILLER REDEFINES CLW-OLD-INFO.                           00584009
+005850         03  CLW-OLD-BR-CLSN-TIED PIC S9(11).                     00585009
+005860         03  FILLER           PIC X(09).                          00586009
+005900                                                                  00590001
+006000     02  CLW-NEW-INFO         PIC X(20).                          00600001
+006100     02  FILLER REDEFINES CLW-NEW-INFO.                           00610001
+006200         03  CLW-NEW-STAT-2X  PIC X(02).                          00620001
+006300         03  FILLER           PIC X(18).                          00630001
+006400     02  FILLER REDEFINES CLW-NEW-INFO.                           00640001
+006500         03  CLW-NEW-SC-DISP  PIC 9(01).                          00650001
+006600         03  FILLER           PIC X(19).                          00660001
+006700     02  FILLER REDEFINES CLW-NEW-INFO.                           00670001
+006800         03  CLW-NEW-EARN-DISP PIC X(01).                         00680001
+006900         03  FILLER           PIC X(19).                          00690001
+007000     02  FILLER REDEFINES CLW-NEW-INFO.                           00700001
+007100         03  CLW-NEW-INV-STAT PIC X(02).                          00710001
+007200         03  FILLER           PIC X(18).                          00720001
+007300     02  FILLER REDEFINES CLW-NEW-INFO.                           00730001
+007400         03  CLW-NEW-ODB-STAT PIC X(02).                          00740001
+007500         03  FILLER           PIC X(18).                          00750001
+007600     02  FILLER REDEFINES CLW-NEW-INFO.                           00760001
+007700         03  CLW-NEW-ACCESS-CODE PIC 9(02).                       00770001
+007800         03  FILLER           PIC X(18).                          00780001
+007900     02  FILLER REDEFINES CLW-NEW-INFO.                           00790001
+008000         03  CLW-NEW-ACCESS-LIMIT PIC S9(5).                      00800001
+008100         03  FILLER           PIC X(15).                          00810001
+008200     02  FILLER REDEFINES CLW-NEW-INFO.                           00820001
+008300         03  CLW-NEW-STMT-CYCLE   PIC S9(3).                      00830001
+008400         03  FILLER           PIC X(17).                          00840001
+008500     02  FILLER REDEFINES CLW-NEW-INFO.                           00850001
+008600         03  CLW-NEW-SC-EARN-CYC  PIC S9(3).                      00860001
+008700         03  FILLER           PIC X(17).                          00870001
+008800     02  FILLER REDEFINES CLW-NEW-INFO.                           00880004
+008900         03  CLW-NEW-STMT-DISP-CODE PIC X.                        00890004
+009000         03  FILLER           PIC X(19).                          00900004
+009100     02  FILLER REDEFINES CLW-NEW-INFO.                           00910001
+009200         03  CLW-NEW-INV-TERM PIC S9(5).                          00920001
+009300         03  FILLER           PIC X(15).                          00930001
+009400     02  FILLER REDEFINES CLW-NEW-INFO.                           00940001
+009500         03  CLW-NEW-INV-MAT-DATE PIC X(10).                      00950001
+009600         03  FILLER           PIC X(10).                          00960001
+009700     02  FILLER REDEFINES CLW-NEW-INFO.                           00970001
+009800         03  CLW-NEW-INV-NEXT-TERM PIC S9(5).                     00980001
+009900         03  FILLER           PIC X(15).                          00990001
+010000     02  FILLER REDEFINES CLW-NEW-INFO.                           01000001
+010100         03  CLW-NEW-INV-NEXT-MAT-DATE PIC X(10).                 01010001
+010200         03  FILLER           PIC X(10).                          01020001
+010300     02  FILLER REDEFINES CLW-NEW-INFO.                           01030001
+010400         03  CLW-NEW-ACCT-TYPE PIC X(03).                         01040001
+010500         03  FILLER            PIC X(17).                         01050001
+010600     02  FILLER REDEFINES CLW-NEW-INFO.                           01060001
+010700         03  CLW-NEW-PLUS-PKG-IND PIC X(01).                      01070001
+010800         03  FILLER               PIC X(19).                      01080001
+010900     02  FILLER REDEFINES CLW-NEW-INFO.                           01090001
+011000         03  CLW-NEW-RESUBMIT-IND PIC X(01).                      01100002
+011100         03  FILLER               PIC X(19).                      01110002
+011110     02  FILLER REDEFINES CLW-NEW-INFO.                           01111006
+011120         03  CLW-NEW-CUST-ACT-DT  PIC X(10).                      01112006
+011130         03  FILLER           PIC X(10).                          01113006
+011140     02  FILLER REDEFINES CLW-NEW-INFO.                           01114009
+011150         03  CLW-NEW-BR-CLSN-TIED PIC S9(11).                     01115009
+011160         03  FILLER           PIC X(09).                          01116009
+011200                                                                  01120001
+011300     02  CLW-EXTRACT-IND      PIC X.                              01130001
+011400     02  FILLER               PIC X(28).                          01140001
+011500******************************************************************01150008
+012500* FIELD DESCRIPTION/VALUES:                                      *01250000
+012600* CLW-BANK-NBR    - BANK NUMBER                                  *01260007
+012610* CLW-ACCT-ID     - DSDS ACCOUNT ID                              *01261007
+012620* CLW-ACCT-NBR    - ACCOUNT NUMBER                               *01262007
+012630* CLW-FIELD-CODE  - FIELD CODE                                   *01263007
+012650* CLW-OLD-INFO    - OLD DATA                                     *01265007
+012651* CLW-NEW-INFO    - NEW DATA                                     *01265107
+012660* CLW-EXTRACT-IND - EXTRACT INDICATOR                            *01266007
+012680*                                                                *01268007
+012700******************************************************************01270000

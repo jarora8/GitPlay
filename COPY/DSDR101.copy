@@ -1,0 +1,97 @@
+000100*01  STOCK-PAPER-WORK-FIELDS.                                     00010000
+000200     02  COLLAT-RPT-IND      PIC X          VALUE SPACE.          00020000
+000300     02  CYCLE-THIS-STMT     PIC 9          VALUE ZEROS  COMP-3.  00030000
+000400     02  HOLD-ACCUM          PIC S9(9)V99   VALUE ZEROS  COMP-3.  00040000
+000500     02  HOLD-APPR-OD-SW     PIC 9          VALUE ZEROS  COMP-3.  00050000
+000600     02  HOLD-CS-SC-AMT      PIC S9(5)V99   VALUE ZEROS  COMP-3.  00060000
+000700     02  HOLD-DAY-OD-SW      PIC 9          VALUE ZEROS  COMP-3.  00070000
+000800     02  HOLD-EARNINGS       PIC S9(9)V99   VALUE ZEROS  COMP-3.  00080000
+000900     02  HOLD-FLOAT          PIC S9(9)      VALUE ZEROS  COMP-3.  00090000
+001000     02  HOLD-FREQ-RPT       PIC 9          VALUE ZEROS  COMP-3.  00100000
+001100     02  HOLD-GE-DT-OF-BIRTH PIC S9(7)      VALUE ZEROS  COMP-3.  00110000
+001200     02  HOLD-GE-REASON      PIC XX         VALUE SPACE.          00120000
+001300     02  HOLD-IMM-AVG-INV-BAL PIC S9(9)V99  VALUE ZEROS  COMP-3.  00130000
+001400     02  HOLD-IMM-AVG-INT-RT PIC S99V9(3)   VALUE ZEROS  COMP-3.  00140000
+001500     02  HOLD-IMM-RATE-WORK REDEFINES HOLD-IMM-AVG-INT-RT         00150000
+001600                             PIC SV9(5)                  COMP-3.  00160000
+001700     02  HOLD-NSF-CHECKS-SW  PIC 9          VALUE ZEROS  COMP-3.  00170000
+001800     02  HOLD-REASON-CODE    PIC 99         VALUE ZEROS  COMP-3.  00180000
+001900     02  HOLD-RP-AMT         PIC S9(9)V99   VALUE ZEROS  COMP-3.  00190000
+002000     02  HOLD-RP-COLL-BAL    PIC S9(9)V99   VALUE ZEROS  COMP-3.  00200000
+002100     02  HOLD-RP-DISP-IND    PIC X          VALUE SPACE.          00210000
+002200     02  HOLD-RP-SECURE-AMT  PIC S9(9)V99   VALUE ZEROS  COMP-3.  00220000
+002300     02  HOLD-RP-TX-AMT      PIC S9(9)V99   VALUE ZEROS  COMP-3.  00230000
+002400     02  HOLD-TAX-WITHHELD   PIC S9(9)V99   VALUE ZEROS  COMP-3.  00240000
+002500     02  HOLD-THIS-ACCRUAL   PIC S9(8)V9(5) VALUE ZEROS  COMP-3.  00250000
+002600     02  HOLD-TIMES-OD-SW    PIC 9          VALUE ZEROS  COMP-3.  00260000
+002700     02  HOLD-TX-CODE-IN     PIC 999        VALUE ZEROS  COMP-3.  00270000
+002800     02  HOLD-UI-REASON      PIC 99         VALUE ZEROS.          00280000
+002900     02  HOLD-UNCOLL-WITHD-SW PIC 9         VALUE ZEROS  COMP-3.  00290000
+003000     02  HOLD-WA-TX-DISP     PIC X          VALUE SPACE.          00300000
+003100     02  HOLD-XSC-IND        PIC X          VALUE SPACE.          00310000
+003200     02  INSF-CNT            PIC S9(3)      VALUE ZEROS  COMP-3.  00320000
+003300     02  KITE-IND            PIC X          VALUE SPACE.          00330000
+003400     02  LIST-POST-WATCHED-SW PIC 9         VALUE ZEROS  COMP-3.  00340000
+003500     02  MSTR-REC-ID.                                             00350000
+003600         03  ACCOUNT-ID      PIC 9(3)       VALUE ZEROS  COMP-3.  00360000
+003700         03  ACCOUNT-NUMBER  PIC 9(9)       VALUE ZEROS  COMP-3.  00370000
+003800         03  FILLER          PIC X(13)      VALUE SPACE.          00380000
+003900     02  PROC-CURR-DATE-WK   PIC 9(5)       VALUE ZEROS  COMP-3.  00390000
+004000     02  SPW-HA-RPT-REASON   PIC X          VALUE SPACE.          00400000
+004100     02  SPW-MONTH-END       PIC X          VALUE SPACE.          00410000
+004200                                                                  00420000
+004300     02  SUB-ID              PIC S9(4)      VALUE ZEROS COMP SYNC.00430000
+004400**** SUB-ID          INDEX FOR ACCOUNT ID ELEMENTS IN BCF        *00440000
+004500                                                                  00450000
+004600     02  SUB1                PIC S9(4)      VALUE ZEROS COMP SYNC.00460000
+004700**** SUB1            INDEX FOR REPORTS AND CLEARING ALL TOTALS   *00470000
+004800                                                                  00480000
+004900     02  SUB2                PIC S9(4)      VALUE ZEROS COMP SYNC.00490000
+005000**** SUB2            INDEX FOR HOLDS IN MASTER RECORD            *00500000
+005100                                                                  00510000
+005200     02  SUB5                PIC S9(4)      VALUE ZEROS COMP SYNC.00520000
+005300**** SUB5            INDEX FOR SERVICE CHARGE ELEMENTS IN BCF    *00530000
+005400                                                                  00540000
+005500     02  SUB15               PIC S9(4)      VALUE +1    COMP SYNC.00550000
+005600**** SUB15           INDEX FOR EXT. S.C./HARD CHRG TABLES        *00560000
+005700                                                                  00570000
+005800     02  TEMP-DAILY-INT      PIC S9(9)V9(6) VALUE ZEROS  COMP-3.  00580000
+005900     02  TODAYS-DEBIT        PIC S9(5)      VALUE ZEROS  COMP-3.  00590000
+006000     02  TODAYS-GREG         PIC 9(6)       VALUE ZEROS.          00600000
+006100     02  FILLER REDEFINES TODAYS-GREG.                            00610000
+006200         03  TDY-YR          PIC 99.                              00620000
+006300         03  TDY-MO          PIC 99.                              00630000
+006400         03  TDY-DA          PIC 99.                              00640000
+006500     02  UNPACK-5            PIC 9(5)       VALUE ZEROS.          00650000
+006600     02  FILLER REDEFINES UNPACK-5.                               00660000
+006700         03  FILLER          PIC X(4).                            00670000
+006800         03  UNPACKED-1-X    PIC X.                               00680000
+006900     02  DAYS-TO-NEXT-DATE   PIC S9(5)      VALUE ZEROS  COMP-3.  00690000
+007000     02  HOLD-TTX-ITEM-COUNT PIC S9(5)      VALUE ZEROS  COMP-3.  00700000
+007100     02  CYC-46-EXCEPT-FILE-ID                                    00710000
+007200                             PIC X(4)       VALUE SPACES.         00720000
+007300     02  CYC-46-EXCEPT-REC-ID                                     00730000
+007400                             PIC X(25)      VALUE SPACES.         00740000
+007500     02  CYC-46-EXCEPT-PRIM-ODB-IND                               00750000
+007600                             PIC X          VALUE SPACES.         00760000
+007700     02  CYC-46-EXCEPT-SEC-ODB-IND                                00770000
+007800                             PIC X          VALUE SPACES.         00780000
+007900     02  SPW-HOLD-INFORMATION.                                    00790000
+008000         03  SPW-HOLD-TYPE   PIC X.                               00800000
+008100         03  SPW-HOLD-RELEASE-DATE                                00810000
+008200                             PIC S9(7)                   COMP-3.  00820000
+008300         03  SPW-HOLD-AMT    PIC S9(9)V99                COMP-3.  00830000
+008400         03  SPW-HOLD-PERSON.                                     00840000
+008500             04  SPW-HOLD-ONLINE-OPER-ID                          00850000
+008600                             PIC 9(5).                            00860000
+008700             04  FILLER      PIC X(5).                            00870000
+008800         03  SPW-HOLD-PLACED-DATE                                 00880000
+008900                             PIC S9(7)                   COMP-3.  00890000
+009000     02  HOLD-INV-PEGGED-BAL PIC S9(9)V99                COMP-3.  00900000
+009000     02  HOLD-STATUS-CODE    PIC 999.                             00901002
+009000     02  FILLER REDEFINES HOLD-STATUS-CODE.                       00902002
+009000         03  HOLD-STAT-2X    PIC XX.                              00903002
+009000         03  HOLD-STAT-1X    PIC X.                               00904002
+009000     02  HOLD-TRNSF-ACCT-ID  PIC S9(3)                   COMP-3.  00904103
+009000     02  HOLD-TRNSF-ACCT-NBR PIC S9(9)                   COMP-3.  00904203
+009000     02  FILLER              PIC X(71).                           00905003

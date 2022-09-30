@@ -1,0 +1,227 @@
+000100*01  ADM-RTE-MSG-PARAMETERS.                                      00010000
+000200     03  ADM-BK-NO                     PIC 9(02).                 00020000
+000300     03  ADM-REQUEST-CODE              PIC 9(03)         COMP-3.  00030000
+000400         88  RATE-REQUEST                      VALUE 01.          00040000
+000500         88  MKT-MSG-REQUEST                   VALUE 02.          00050000
+000600         88  RATE-VARI-REQUEST                 VALUE 03.          00060000
+000700         88  PENALTY-REQUEST                   VALUE 04.          00070000
+000800         88  LASER-MKT-MSG-REQUEST             VALUE 05.          00080000
+000900         88  CLOSE-ADMSCNTL-FILE               VALUE 999.         00090000
+001000     03  ADM-MODE-TYPE                 PIC 9(03)         COMP-3.  00100000
+001100         88  BATCH-MODE                        VALUE 01.          00110000
+001200         88  ONLINE-MODE                       VALUE 02.          00120000
+001300****     ADM-FILE-TYPE (THIS FIELD IS NO LONGER REQUIRED BY BANK) 00130000
+001400     03  ADM-FILE-TYPE                 PIC 9(03)         COMP-3.  00140000
+001500         88  PROD-FILE                         VALUE 01.          00150000
+001600         88  TEST-FILE                         VALUE 02.          00160000
+001610****     PAC-RATE 21 WAS ADDED ALTHOUGH 21 WAS NOT ADDED TO CLASS 00161015
+001700     03  ADM-RTE-TYPE                  PIC 9(03)         COMP-3.  00170008
+001800         88  NTD-RTE                           VALUE 03.          00180008
+001900         88  REG-CD-RTE                        VALUE 04.          00190008
+002000         88  HIGHER-LEARNING-RTE               VALUE 05.          00200008
+002100         88  PRIME-RTE                         VALUE 08.          00210008
+002200         88  TDOA-VARI-RTE                     VALUE 09.          00220008
+002300         88  TDOA-FIXED-RTE                    VALUE 10.          00230008
+002400         88  42-MO-VARI-RTE                    VALUE 13.          00240008
+002500         88  7-31-DY-RTE                       VALUE 14.          00250008
+002600         88  UNREGULATED-RTE                   VALUE 17.          00260008
+002700         88  IMMA-TDOA-RTE                     VALUE 18.          00270008
+002800         88  SUPER-SAVER-RTE                   VALUE 19.          00280008
+002900         88  401K-MM-RTE                       VALUE 20.          00290008
+002910         88  PAC-RATE                          VALUE 21.          00291014
+002920         88  CDARS-RTE                         VALUE 22.          00292019
+003000         88  IMM-RTE                           VALUE 50.          00300008
+003100         88  TERM-REPO-RTE                     VALUE 52.          00310008
+003200         88  INVD-PRIME-RTE                    VALUE 53.          00320008
+003300         88  EQUITY-CREDIT-RTE                 VALUE 54.          00330008
+003400         88  CMM-RTE                           VALUE 56.          00340008
+003500         88  REPO-TAX-EXEMPT-RTE               VALUE 57.          00350008
+003600         88  REPO-GOV-SECURE-RTE               VALUE 58.          00360008
+003700         88  T-BILL-DISCOUNT-RTE               VALUE 59.          00370008
+003800         88  T-BILL-LAST-AUCTION-RTE           VALUE 60.          00380008
+003900         88  IMMA-PUBLIC-FUND-RTE              VALUE 61.          00390008
+004000         88  IMMA-TRUST-RTE                    VALUE 62.          00400008
+004100         88  PERSONAL-LOAN-RTE                 VALUE 63.          00410008
+004200         88  FED-FUNDS-RTE                     VALUE 64.          00420008
+004300         88  REGULATED-SAVINGS-RTE             VALUE 65.          00430008
+004400         88  UNREGULATED-SAVINGS-RTE           VALUE 66.          00440008
+004500         88  REGULATED-NOW-RTE                 VALUE 67.          00450008
+004600         88  IMMA-ADVANTAGE-ACCOUNT            VALUE 68.          00460008
+004700         88  BUSINESS-NOW-RTE                  VALUE 69.          00470008
+004800         88  CASH-MGMT-PLUS                    VALUE 70.          00480008
+004900         88  RP-OVERNIGHT-RTE-I                VALUE 71.          00490008
+005000         88  RP-OVERNIGHT-RTE-II               VALUE 72.          00500008
+005100         88  RP-OVERNIGHT-RTE-III              VALUE 73.          00510008
+005200         88  CMR-FED-FUNDS-RTE                 VALUE 74.          00520008
+005300         88  CASH-MGMT-TRUST-FUND-RTE          VALUE 75.          00530008
+005400         88  IMMA-MONEYLINK-RTE                VALUE 76.          00540008
+005500         88  CLASSIC-IMM                       VALUE 77.          00550008
+005600         88  INDEXED-IMM                       VALUE 78.          00560008
+005700         88  INVESTOR-GOLD-NOW                 VALUE 79.          00570008
+005800         88  INVESTOR-GOLD-IMM                 VALUE 80.          00580008
+005900         88  RP-OVERNIGHT-RTE-IV               VALUE 81.          00590008
+006000         88  RP-OVERNIGHT-RTE-V                VALUE 82.          00600008
+006100         88  TIERED-OVERNIGHT-RATE-I           VALUE 83.          00610008
+006200         88  TIERED-OVERNIGHT-RATE-II          VALUE 84.          00620008
+006300         88  TIERED-OVERNIGHT-RATE-III         VALUE 85.          00630008
+006400         88  TIERED-OVERNIGHT-RATE-IV          VALUE 86.          00640008
+006500         88  TIERED-OVERNIGHT-RATE-V           VALUE 87.          00650000
+006510         88  PREFERRED-INTEREST                VALUE 88.          00651008
+006520         88  CASH-MGMT-INTEREST                VALUE 89.          00652001
+006521         88  IOLTA-INTEREST                    VALUE 90.          00652113
+006522         88  UNADVERTISED-MM                   VALUE 91.          00652213
+006523         88  CORP-INT-RATE                     VALUE 92.          00652322
+006524         88  WORLD-RATE                        VALUE 93.          00652424
+006525         88  WORLD-ELITE-RATE                  VALUE 94.          00652528
+006526         88  WORLD-MM-RATE                     VALUE 95.          00652628
+006527         88  MM1-RATE                          VALUE 96.          00652730
+006528         88  MM2-RATE                          VALUE 97.          00652830
+006530         88  ONLINE-MM-RATE                    VALUE 98.          00653031
+006531         88  PG6-UNUSED1-RATE                  VALUE 99.          00653131
+006532         88  PG6-UNUSED2-RATE                  VALUE 100.         00653231
+006533         88  PG6-UNUSED3-RATE                  VALUE 101.         00653331
+006534         88  PG6-UNUSED4-RATE                  VALUE 102.         00653431
+006535         88  MM3-RATE                          VALUE 103.         00653531
+006536         88  MAXM-RATE                         VALUE 104.         00653632
+006537         88  CO-IOLTA-RATE                     VALUE 105.         00653734
+006538         88  FREE-INTEREST-CHECKING-RTE        VALUE 113.         00653833
+006540         88  SAVEUP-SAVINGS-RATE               VALUE 122.         00654016
+006550         88  FED-FUNDS-RATE                    VALUE 123.         00655026
+006600     03  ADM-MKT-TYPE                  PIC 9(03)         COMP-3.  00660000
+006700         88  DDA-MSG                           VALUE 01.          00670000
+006800         88  DDA-OSB-MSG                       VALUE 02.          00680000
+006900         88  IRA-MSG                           VALUE 03.          00690000
+007000         88  INT-MSG                           VALUE 04.          00700000
+007100         88  SAV-MSG                           VALUE 05.          00710000
+007200         88  ML-MSG                            VALUE 06.          00720000
+007300         88  IMM-MSG                           VALUE 07.          00730000
+007400         88  BBI-MSG                           VALUE 08.          00740000
+007500     03  ADM-PENALTY-TYPE REDEFINES ADM-MKT-TYPE                  00750000
+007600                                       PIC 9(03)         COMP-3.  00760000
+007700         88  NTD-PENALTY                       VALUE 01.          00770000
+007800         88  PRIME-TIED-PENALTY                VALUE 02.          00780000
+007900         88  TDOA-FIXED-PENALTY                VALUE 03.          00790000
+008000         88  TDOA-VARIABLE-PENALTY             VALUE 04.          00800000
+008100         88  TDOA-IMMA-PENALTY                 VALUE 05.          00810000
+008200         88  UNREG-REG-PENALTY                 VALUE 06.          00820000
+008300         88  UNREG-IRA-PENALTY                 VALUE 07.          00830000
+008400         88  7-31-DAY-PENALTY                  VALUE 08.          00840000
+008500         88  REGULAR-PENALTY                   VALUE 09.          00850000
+008600         88  SUPERSAVER-CD                     VALUE 10.          00860000
+008700         88  401K-MM-PENALTY                   VALUE 11.          00870000
+008800         88  HIGHER-LEARNING-PENALTY           VALUE 12.          00880000
+008810         88  IAP-CD-PENALTY                    VALUE 13.          00881023
+008820         88  IAP-IRA-PENALTY                   VALUE 14.          00882023
+008830         88  FED-FUND-PENALTY                  VALUE 15.          00883026
+008900     03  ADM-VARI-TYPE                 PIC 9(03)         COMP-3.  00890000
+009000         88  PRIME-TIED-VARI                   VALUE 02.          00900000
+009100         88  TDOA-VARIABLE-VARI                VALUE 03.          00910000
+009200         88  HIGHER-LEARNING-VARI              VALUE 04.          00920000
+009210         88  FED-FUNDS-VARI                    VALUE 05.          00921027
+009300     03  ADM-PLAN-TYPE REDEFINES ADM-VARI-TYPE                    00930000
+009400                                       PIC X(02).                 00940000
+009500     03  FILLER                        PIC 9(05)         COMP-3.  00950000
+009600     03  RTE-VARIABLES.                                           00960000
+009700         05  RTE-CATEGORY              PIC 9(03)         COMP-3.  00970000
+009800             88  IRA-CATEGORY                  VALUE 01 02 04     00980000
+009900                                                     05 06 07     00990000
+010000                                                     08 09 11     01000000
+010100                                                     13 14 15     01010000
+010200                                                     16 17 18.    01020002
+010300         05  RTE-TERM                  PIC 9(03)         COMP-3.  01030000
+010400         05  RTE-AMOUNT                PIC S9(9)V99      COMP-3.  01040000
+010500         05  RTE-VARI-IND              PIC 9(01)         COMP-3.  01050000
+010600         05  RTE-PAPERLESS-IND REDEFINES RTE-VARI-IND             01060000
+010700                                       PIC 9(01)         COMP-3.  01070000
+010800         05  RTE-TERM-IND REDEFINES RTE-VARI-IND                  01080000
+010900                                       PIC 9(01)         COMP-3.  01090000
+011000             88  RTE-MONTH-TERM                VALUE 1.           01100000
+011100             88  RTE-DAY-TERM                  VALUE 2.           01110000
+011200             88  RTE-YEAR-TERM                 VALUE 3.           01120000
+011300         05  RTE-CONTROL               PIC 9(01)         COMP-3.  01130000
+011400         05  RTE-PER-NONPER-IND REDEFINES RTE-CONTROL             01140000
+011500                                       PIC X(01).                 01150000
+011600                                                                  01160000
+011700     03  RETURN-AREA                   PIC X(247).                01170000
+011800     03  FILLER REDEFINES RETURN-AREA.                            01180000
+011900         05  RETURN-RATE               PIC SV9(7)        COMP-3.  01190000
+012000         05  RETURN-MIN-CK-AMT         PIC S9(03)        COMP-3.  01200000
+012100         05  FILLER                    PIC X(237).                01210000
+012200         05  RETURN-VARIANCE           PIC SV9(7)        COMP-3.  01220000
+012300                                                                  01230000
+012400     03  FILLER REDEFINES RETURN-AREA.                            01240000
+012500         05  FILLER                    PIC X(06).                 01250000
+012600         05  RETURN-RATE-1             PIC SV9(7)        COMP-3.  01260000
+012700         05  RETURN-RATE-2             PIC SV9(7)        COMP-3.  01270000
+012800         05  RETURN-AMOUNT-1           PIC S9(9)V99      COMP-3.  01280000
+012900         05  RETURN-USURY-RATE         PIC SV9(7)        COMP-3.  01290000
+013000         05  FILLER                    PIC X(223).                01300000
+013100                                                                  01310000
+013110     03  FILLER REDEFINES RETURN-AREA.                            01311006
+013120         05  FILLER                    PIC X(06).                 01312006
+013130         05  RETURN-RATE1              PIC SV9(7)        COMP-3.  01313007
+013140         05  RETURN-RATE2              PIC SV9(7)        COMP-3.  01314007
+013150         05  RETURN-MIN-RATE           PIC SV9(7)        COMP-3.  01315006
+013151         05  RETURN-BREAK-AMT          PIC S9(09)        COMP-3.  01315109
+013160         05  RETURN-VARI               PIC SV9(7)        COMP-3.  01316007
+013170         05  FILLER                    PIC X(220).                01317011
+013180                                                                  01318006
+013200     03  FILLER REDEFINES RETURN-AREA.                            01320000
+013300         05  RETURN-PENALTY-CODE       PIC X(01).                 01330000
+013400         05  FILLER                    PIC X(246).                01340000
+013500                                                                  01350000
+013600     03  FILLER REDEFINES RETURN-AREA.                            01360000
+013700         05  FILLER                    PIC X(06).                 01370000
+013800         05  RETURN-MKT-MSG.                                      01380000
+013900             07  MKT-MESSAGE           PIC X(79) OCCURS 3 TIMES.  01390000
+014000         05  FILLER                    PIC X(04).                 01400000
+014100                                                                  01410000
+014200     03  FILLER REDEFINES RETURN-AREA.                            01420000
+014300         05  RETURN-LASER-MKT-MSG.                                01430000
+014400             07  LSR-MKT-MESSAGE       PIC X(40) OCCURS 6 TIMES.  01440000
+014500         05  FILLER                    PIC X(07).                 01450000
+014501                                                                  01450117
+014510     03  FILLER REDEFINES RETURN-AREA.                            01451017
+014520         05  FILLER                    PIC X(06).                 01452017
+014530         05  RETURN-SAVEUP-RATE        PIC SV9(7)        COMP-3.  01453018
+014550         05  RETURN-SAVEUP-MIN         PIC SV9(7)        COMP-3.  01455017
+014560         05  RETURN-SAVEUP-HIGH        PIC S9(09)        COMP-3.  01456017
+014570         05  RETURN-SAVEUP-VARI        PIC SV9(7)        COMP-3.  01457017
+014580         05  FILLER                    PIC X(224).                01458018
+014600                                                                  01460000
+014610     03  FILLER REDEFINES RETURN-AREA.                            01461019
+014620         05  FILLER                    PIC X(06).                 01462019
+014630         05  RETURN-CDARS-LOW          PIC SV9(7)        COMP-3.  01463019
+014640         05  RETURN-CDARS-BASE         PIC SV9(7)        COMP-3.  01464019
+014650         05  RETURN-CDARS-HIGH         PIC SV9(7)        COMP-3.  01465021
+014670         05  FILLER                    PIC X(229).                01467021
+014680                                                                  01468019
+014700     03  RETURN-STAT                   PIC 9(03)         COMP-3.  01470000
+014800         88  GOOD-RETURN                       VALUE 0.           01480000
+014900         88  BAD-BANK-NO                       VALUE 1.           01490000
+015000         88  BAD-REQUEST                       VALUE 2.           01500000
+015100         88  BAD-MKT-TYPE                      VALUE 3.           01510000
+015200         88  BAD-RTE-TYPE                      VALUE 4.           01520000
+015300         88  BAD-EFF-DATE                      VALUE 5.           01530000
+015400         88  BAD-VARI-TYPE                     VALUE 6.           01540000
+015500         88  BAD-RATE-ON-FILE                  VALUE 7.           01550000
+015600         88  BAD-PLAN-TYPE                     VALUE 8.           01560000
+015700     03  RETURN-PARAGRAPH    PIC X(5).                            01570000
+015800                                                                  01580000
+015900                                                                  01590000
+016000     03  ADM-MOD-EFF-DATE              PIC 9(07)         COMP-3.  01600000
+016001******************************************************************01600115
+016002*                                                        COPYBOOK*01600200
+016003*                                                                *01600300
+016004* PURPOSE: USED FOR PASSING RATE OR MARKETING MESSAGES.          *01600415
+016005*                                                                *01600500
+016006* LENGTH OF COPYBOOK: 287 BYTES                                  *01600615
+016007* LENGTH OF SORT KEY: N/A                                        *01600715
+016008*                                                                *01600800
+016009* USAGE: USE WHEN CALLING PROGRAM ADMS010                        *01600915
+016010*     CALL 'ADMS010' USING ADM-RTE-MSG-PARAMETERS.               *01601015
+016011*                                                                *01601115
+016012* FIELD DESCRIPTION/VALUES:                                      *01601215
+016013*     ADM-RTE-TYPE    RATE TYPE                                  *01601315
+016014*                                                                *01601415
+016015******************************************************************01601515

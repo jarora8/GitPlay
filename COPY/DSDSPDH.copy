@@ -1,0 +1,59 @@
+000100*01  PD-REG-STMT-HDR.                                             00010000
+000200     02  PDH-BANK-NO         PIC 99.                              00020000
+000300     02  PDH-ACCT-ID         PIC 999                     COMP-3.  00030000
+000400     02  PDH-ACCT-NO         PIC 9(9)                    COMP-3.  00040000
+000500     02  PDH-REPORT-CODE     PIC S999                    COMP-3.  00050000
+000600         88  PDH-CUSTOMER-HEADER         VALUE +000.              00060000
+000700         88  PDH-HEADER                  VALUE +011.              00070000
+000800         88  PDH-SPECIAL-HEADER          VALUE +012.              00080000
+000900     02  PDH-DEBIT-AMOUNT    PIC S9(9)V99                COMP-3.  00090000
+001000     02  PDH-CREDIT-AMOUNT   PIC S9(9)V99                COMP-3.  00100000
+001100     02  PDH-FILLER1         PIC X.                               00110002
+001200     02  PDH-SORT-KEY        PIC XX.                              00120000
+001300     02  PDH-CURR-PROC-DT    PIC S9(7)                   COMP-3.  00130000
+001400     02  PDH-STMT-BAL        PIC S9(9)V99                COMP-3.  00140000
+001500     02  PDH-ENDING-BAL      PIC S9(9)V99                COMP-3.  00150000
+001600     02  PDH-LAST-STMT-DT    PIC S9(7)                   COMP-3.  00160000
+001700     02  PDH-NO-ENCLOSURES   PIC S9(5)                   COMP-3.  00170000
+001800     02  PDH-ACCT-CLASS      PIC XXX.                             00180000
+001900         88  PDH-REG-ACCOUNT             VALUE 'DDA'.             00190000
+002000         88  PDH-IMM-ACCOUNT             VALUE 'IMM' 'IMT' 'IMP'  00200000
+002100                                               'IMA' 'IML'.       00210000
+002200         88  PDH-CMM-ACCOUNT             VALUE 'CMM'.             00220000
+002300         88  PDH-NOW-ACCOUNT             VALUE 'NOW'.             00230000
+002400         88  PDH-SAV-ACCOUNT             VALUE 'SAV'.             00240000
+002500         88  PDH-CC-ACCOUNT              VALUE 'CC '.             00250000
+002600     02  PDH-INV-MAT-DATE    PIC S9(7)                   COMP-3.  00260000
+002700     02  PDH-INV-RENEW-CODE  PIC X.                               00270000
+002800     02  PDH-NO-DAYS-IN-CYC  PIC S999                    COMP-3.  00280000
+002900     02  PDH-INV-PLAN        PIC XX.                              00290000
+003000         88  PDH-CF-ACCOUNT              VALUE 'CF'.              00300000
+003100         88  PDH-FF-ACCOUNT              VALUE 'FF'.              00310000
+003200         88  PDH-IR-ACCOUNT              VALUE 'IR'.              00320000
+003300         88  PDH-RP-ACCOUNT              VALUE 'RP'.              00330000
+003400         88  PDH-TE-ACCOUNT              VALUE 'TE'.              00340000
+003500         88  PDH-TF-ACCOUNT              VALUE 'TF'.              00350000
+003600         88  PDH-TR-ACCOUNT              VALUE 'TR'.              00360000
+003700         88  PDH-TS-ACCOUNT              VALUE 'TS'.              00370000
+003800     02  PDH-STMT-CYCLE-CODE PIC 99.                              00380000
+003900     02  PDH-STMT-DISP       PIC X.                               00390000
+004000     02  PDH-FILLER2         PIC X(3).                            00400002
+004100     02  PDH-ACCT-ID-LINKED-TO-SEC                                00410000
+004200                             PIC 999                     COMP-3.  00420000
+004300     02  PDH-ACCT-NO-LINKED-TO-SEC                                00430000
+004400                             PIC 9(9)                    COMP-3.  00440000
+004500     02  PDH-DATE-CLOSED     PIC S9(7)                   COMP-3.  00450003
+004600     02  PDH-PREPAID-CARD-SW PIC X.                               00460004
+004610     02  PDH-FILLER3         PIC X(146).                          00461004
+004700                                                                  00470000
+004800*                                 TX CODE                         00480000
+004900*        HEADER TYPE           (CYC)   (SPEC)   SORT KEY          00490000
+005000*                                                                 00500000
+005100*    OSB DDA, IMM, CMM, NOW     011     012        AA             00510000
+005200*    OSB ODB                    013     013        GA             00520000
+005300*    INVESTMENTS (RP)           051     052        DA             00530000
+005400*    REGULAR SAVINGS            071     072        AA             00540000
+005500*    OSB SAVINGS                081     082        AA             00550000
+005600*    CLUB ACCOUNTS              091     092        AA             00560000
+005700*                                                                 00570000
+005800*  THIS RECORD IS 225 CHARACTERS                                  00580000

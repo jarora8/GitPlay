@@ -1,0 +1,28 @@
+000100*01  PD-SC-STMT-TRLR.                                             00010000
+000200     02  SCT-BANK-NO         PIC 99.                              00020000
+000300     02  SCT-ACCT-ID         PIC 999                     COMP-3.  00030000
+000400     02  SCT-ACCT-NO         PIC 9(9)                    COMP-3.  00040000
+000500     02  SCT-REPORT-CODE     PIC S999                    COMP-3.  00050000
+000600     02  SCT-SERV-CHG-DEBITS PIC S9(5)                   COMP-3.  00060000
+000700     02  SCT-NO-DEP-ITEMS    PIC S9(7)                   COMP-3.  00070000
+000800     02  SCT-AVG-CURR-BAL    PIC S9(9)                   COMP-3.  00080000
+000900     02  SCT-AVG-COLL-BAL    PIC S9(9)                   COMP-3.  00090000
+001000     02  SCT-ENCL-CNT-SC-FEE PIC S9(3)V99                COMP-3.  00100000
+001100     02  SCT-INT-PAID        PIC S9(7)V99                COMP-3.  00110000
+001200     02  SCT-SERV-CHG-CREDIT PIC S9(5)                   COMP-3.  00120000
+001300     02  SCT-SERV-CHG-DISP   PIC X.                               00130000
+001400     02  SCT-EARN-RATE       PIC SV9(5)                  COMP-3.  00140000
+001500     02  SCT-OD-RATE         PIC SV9(5)                  COMP-3.  00150000
+001600     02  SCT-SERV-CHG-AMT    PIC S9(5)V99                COMP-3.  00160000
+001700     02  SCT-NO-LOC-ITEMS    PIC S9(7)                   COMP-3.  00170000
+001800     02  SCT-LOC-ITEMS-IND   PIC X.                               00180000
+001900     02  SCT-INV-INT-PD-LST-CYC                                   00190000
+002000                             PIC S9(9)V99                COMP-3.  00200000
+002100     02  SCT-INV-GR-BAL-LST-CYC                                   00210000
+002200                             PIC S9(11)V99               COMP-3.  00220000
+002300     02  SCT-INV-DAYS-IN-PREV-CYC                                 00230000
+002400                             PIC 9(3)                    COMP-3.  00240000
+002500     02  SCT-FILLER          PIC X(155).                          00250000
+002600*  THIS LAYOUT IS USED FOR THE SERVICE CHARGE STATEMENT TRAILER.  00260000
+002700*    REPORT CODE 996.                                             00270000
+002800*  THIS RECORD IS 225 CHARACTERS.                                 00280000

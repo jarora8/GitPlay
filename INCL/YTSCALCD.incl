@@ -1,0 +1,350 @@
+ /**********************************************************************
+
+ Date   : May 2019
+ Author : Roger Begert
+ Purpose: YTSCALC Definitions
+
+ !!Attention!!
+ All rates has to come as percenatge value. That means an
+ percentage value of 15% has to be delivered as 15.
+
+ -----------------------------------------------------------------------
+ MODIFICATION
+ ------------
+ RB: Roger Befert        (A727870)
+ CO: Christian Ott       (A158147)
+ YL: Yasmin Luetzeschwab (A722485)
+ JL: Joshua Luetzeschwab (A948347)
+ CH: Christian Hirschi   (A336712)
+ MP: Michael Guenther Ploentzke (A918962)
+ NF: Nicola Fusco        (A481211)
+ -----------------------------------------------------------------------
+ TASS000015:  DC 3/2020  07.05.2020
+ -----------------------------------------------------------------------
+ 10.06.2020 | NF | recalculate reciept of cover                @TAS-5298
+ 22.05.2020 | MP | DEV - SLB - UC42 Replace ATR with ETR       @TAS-5148
+ 20.05.2020 | NF | Calculate ETR TaxAmount                     @TAS-5104
+ 25.05.2020 | JL | Add Indicators for TaxFormula,SecAmountKey  @TAS-5084
+ -----------------------------------------------------------------------
+ TASS000009:  DC 1/2020  14.02.2020                                01.04
+ -----------------------------------------------------------------------
+ 19.11.2019 | YL | update @YTSEXLG PP, add requestId to INIT
+ -----------------------------------------------------------------------
+ TASS000007:  DC 4/2019  08.11.2019                                01.03
+ -----------------------------------------------------------------------
+ 19.09.2019 | CH | implement calc changes
+ 03.09.2019 | YL | add new comm for YTSCALC#taxableGrossAmount method
+ -----------------------------------------------------------------------
+ TASS000006:  FP 3/2019  13.09.2019                                01.02
+ -----------------------------------------------------------------------
+ 22.08.2019 | YL | remove determination logic for IC/EC
+ -----------------------------------------------------------------------
+ TASS000005:  DC 3/2019  09.08.2019                                01.01
+ -----------------------------------------------------------------------
+ 20.06.2019 | CH | adjust comm-stru for august dc
+ 16.05.2019 | CO | Version number angepasst
+ 27.05.2019 | YL | add resultset for RFT-tables #K5413YA/#K5414YA
+ -----------------------------------------------------------------------
+ TASS000002:  DC 2/2019  10.05.2019                                01.00
+ -----------------------------------------------------------------------
+ 10.05.2019 | RB | Initial version
+ -----------------------------------------------------------------------
+
+ **********************************************************************/
+
+ /*--- generally TASS definitions ------------------------------------*/
+ %xinclude TSDEFS;
+
+ dcl YTSCALC#V_NAME     char(6)     value('TSCALC');
+ dcl YTSCALC#V_NUMBER   pic'99V.99' value(01.04);
+
+ dcl YTSCALC#TARIFF_EXPRESSION_TAB_SIZE fixed bin(31) value(10);
+ dcl YTSCALC#TAX_AMOUNT_TAB_SIZE        fixed bin(31) value(20);
+ dcl YTSCALC#DISTR_COMP_TAB_SIZE        fixed bin(31) value(10);
+ dcl YTSCALC#DISTR_COMP_TAB_SIZE_D      fixed bin(31) value(1);
+
+ /*---------------------------------------------------------------------
+   preprocessing procedures
+ ---------------------------------------------------------------------*/
+ %DCL @YTSCALC#INIT        entry;
+ %@YTSCALC#INIT:
+   proc(@$comm
+       ,@$mode
+       )
+   statement;
+   dcl @$comm char noscan;
+   dcl @$mode char noscan;
+
+   if ^parmset(@$mode)
+   then note('@YTSCALC#INIT @$mode has to be set',16);
+   if ^(@$mode = 0 | @$mode = 1 | @$mode = 2 | @$mode = 3 | @$mode = 4)
+   then note('@YTSCALC#INIT @$mode not in range',16);
+
+   ans('/*I*/'||@$comm||
+       '.version.versionName   = YTSCALC#V_NAME;')
+     col(2) noScan;
+   ans('/*I*/'||@$comm||
+       '.version.versionNumber = YTSCALC#V_NUMBER;')
+     col(2) noScan;
+   ans('/*I*/'||@$comm||
+       '.commHeader.testonly   = value(:TSDEFS#testonly_T:);')
+     col(2) noScan;
+   ans('/*I*/'||@$comm||
+       '.commHeader.imsData    = value(:TSDEFS#imsData_T:);')
+     col(2) noScan;
+   ans('/*I*/'||@$comm||
+       '.commHeader.requestId  = "";')
+     col(2) noScan;
+
+   if @$mode = 1 then
+   do;
+     ans('@TSDEFS#INIT_TABLE @$main(' || trim(@$comm) || ') @$list('
+       ||'pTariffExpressionTab,'
+       ||'tariffExpressionTabArea,'
+       ||'YTSCALC#TARIFF_EXPRESSION_TAB_SIZE,'
+       ||'pTaxAmountTab,'
+       ||'taxAmountTabArea,'
+       ||'YTSCALC#TAX_AMOUNT_TAB_SIZE,'
+       ||');');
+   end;
+
+   if @$mode = 2 then
+   do;
+     ans('/*I*/'||@$comm||
+         '.output.orderTaxResult = value(:YTSCALC#orderTaxResult_T:);')
+       col(2) noScan;
+     ans('@TSDEFS#INIT_TABLE @$main(' || trim(@$comm) || ') @$list('
+       ||'pDistrCompTab,'
+       ||'distrCompTabArea,'
+       ||'YTSCALC#DISTR_COMP_TAB_SIZE,'
+       ||'pTaxAmountTab,'
+       ||'taxAmountTabArea,'
+       ||'YTSCALC#TAX_AMOUNT_TAB_SIZE,'
+       ||');');
+   end;
+
+   if @$mode = 3 then
+   do;
+     ans('@TSDEFS#INIT_TABLE @$main(' || trim(@$comm) || ') @$list('
+       ||'pTariffExpressionTab,'
+       ||'tariffExpressionTabArea,'
+       ||'YTSCALC#TARIFF_EXPRESSION_TAB_SIZE,'
+       ||');');
+   end;
+
+   if @$mode = 4 then
+   do;
+     ans('@TSDEFS#INIT_TABLE @$main(' || trim(@$comm) || ') @$list('
+       ||'pTaxAmountTab,'
+       ||'taxAmountTabArea,'
+       ||'YTSCALC#TAX_AMOUNT_TAB_SIZE,'
+       ||');');
+   end;
+
+ %end @YTSCALC#INIT;
+
+ /*---------------------------------------------------------------------
+   structure declarations
+ ---------------------------------------------------------------------*/
+ define structure
+ 1 YTSCALC#tariffExpression_T force(NoLaxQual)
+ ,2 formulaNumber     dec fixed(7)
+ ,2 flatRateAmount    dec fixed(31,8)
+ ,2 besl              char(4)
+ ,2 taxAmountTypeCode fixed bin(15)
+ ,2 *                 char(2)
+ ;
+
+ define structure
+ 1 YTSCALC#tariffExpressionTab_T force(NoLaxQual)
+ ,2 header type TSDEFS#tabHeader_T nonAsgn
+ ,2 tab((2**31 - size(:TSDEFS#tabHeader_T:)) /
+                 size(:YTSCALC#tariffExpression_T:) - 1)
+           type YTSCALC#tariffExpression_T
+ ;
+
+ define structure
+ 1 YTSCALC#taxAmount_T   force(NoLaxQual)
+ ,2 taxFormulaNumberInd  type TSDEFS#indicatorVariable init(-1)
+ ,2 secAmountKeyInd      type TSDEFS#indicatorVariable init(-1)
+ ,2 taxAmountTypeCode    fixed bin(15)                 init(-32678)
+ ,2 taxFormulaNumber     fixed dec(7)                  init(-9999999)
+ ,2 taxRate              fixed dec(31,8)               init(0)
+ ,2 taxAmount            fixed dec(31,8)               init(0)
+ ,2 secAmountKey         char(4)                       init('')
+ ,2 taxAmountCcyIso      char(3)                       init('')
+ ,2 *                    char(3)                       init('')
+ ;
+
+ define structure
+ 1 YTSCALC#taxAmountTab_T force(NoLaxQual)
+ ,2 header type TSDEFS#tabHeader_T nonAsgn
+ ,2 tab((2**31 - size(:TSDEFS#tabHeader_T:)) /
+                 size(:YTSCALC#taxAmount_T:) -1)
+           type YTSCALC#taxAmount_T
+ ;
+
+ define structure
+ 1 YTSCALC#orderTaxResult_T force(NoLaxQual)
+ ,2 receiptOfCoverRate   fixed dec(31,8) init(0)
+ ,2 receiptOfCoverAmount fixed dec(31,8) init(0)
+ ,2 textCodeCount        fixed bin(15) init(0)
+ ,2 addTextCodeCount     fixed bin(15) init(0)
+ ,2 receiptOfCoverBesl   char(4)       init('1830')
+ ,2 receiptOfCoverCcyIso char(3)       init('')
+ ,2 textCode             char(80)      init('')
+ ,2 addTextCode          char(80)      init('')
+ ,2 *                    char(1)       init('')
+ ;
+
+ define structure
+ 1 YTSCALC#distrCompTaxResult_T force(NoLaxQual)
+ ,2 orderValues          type YTSCALC#orderTaxResult_T
+ ,2 dstTariffRuleNumber  char(6)
+ ,2 *                    char(2)
+ ;
+
+ define structure
+ 1 YTSCALC#distrComp_T force(NoLaxQual)
+ ,2 taxResult     type YTSCALC#distrCompTaxResult_T
+ ,2 inUse         fixed bin(31)
+ ,2 amountTypeCd  char(3)
+ ,2 *             char(1)
+ ,2 amount(YTSCALC#TAX_AMOUNT_TAB_SIZE) type YTSCALC#taxAmount_T
+ ;
+
+ define structure
+ 1 YTSCALC#distrCompTab_T force(NoLaxQual)
+ ,2 header type TSDEFS#tabHeader_T nonAsgn
+ ,2 tab((2**31 - size(:TSDEFS#tabHeader_T:)) /
+                 size(:YTSCALC#distrComp_T:) - 1)
+           type YTSCALC#distrComp_T
+ ;
+
+ /*--- comm struktur -------------------------------------------------*/
+ /* mode = 0 */
+ define structure
+ 1 YTSCALC#commDistributionAmount_T force(NoLaxQual)
+ ,2 version                         type TSDEFS#version_T
+ ,2 commHeader                      type TSDEFS#commHeader_T
+ ,2 input
+  ,3 calculationBasis               fixed bin(15)
+  ,3 eligiblePosition               fixed dec(31,8)
+  ,3 grossAmount                    fixed dec(31,8)
+  ,3 distributedSecurities          fixed dec(31,8)
+  ,3 payRate                        fixed dec(31,8)
+  ,3 payAmount                      fixed dec(31,8)
+  ,3 grossAmountIsPresent           bit(1) aligned
+  ,3 eligiblePositionIsPresent      bit(1) aligned
+  ,3 distributedSecuritiesIsPresent bit(1) aligned
+  ,3 payRateIsPresent               bit(1) aligned
+  ,3 payAmountIsPresent             bit(1) aligned
+  ,3 amountTypeCd                   char(3)
+  ,3 trxCurrency                    char(3)
+  ,3 grossAmountCurrency            char(3)
+ ,2 output
+  ,3 distributionAmount             type YTSCALC#taxAmount_T
+ ;
+
+ /* mode = 0 */
+ define structure
+ 1 YTSCALC#commReportableAmount_T force(NoLaxQual)
+ ,2 version                         type TSDEFS#version_T
+ ,2 commHeader                      type TSDEFS#commHeader_T
+ ,2 input
+  ,3 incomeCode                     char(3)
+  ,3 *                              char(1)
+  ,3 distributionAmount             type YTSCALC#taxAmount_T
+ ,2 output
+  ,3 reportableAmount               type YTSCALC#taxAmount_T
+ ;
+
+ /* mode = 3 */
+ define structure
+ 1 YTSCALC#commTaxableAmount_T force(NoLaxQual)
+ ,2 version                         type TSDEFS#version_T
+ ,2 commHeader                      type TSDEFS#commHeader_T
+ ,2 input
+  ,3 distributionAmount             type YTSCALC#taxAmount_T
+  ,3 totalTaxAmount                 type YTSCALC#taxAmount_T
+  ,3 totalTaxAmountPresent          bit(1) aligned
+  ,3 *                              char(3)
+ ,2 output
+  ,3 taxableAmount                  type YTSCALC#taxAmount_T
+  ,3 present                        bit(1) aligned
+  ,3 *                              char(3)
+ ;
+
+ /* mode = 4 */
+ define structure
+ 1 YTSCALC#commLocalReportableAmount_T force(NoLaxQual)
+ ,2 version                         type TSDEFS#version_T
+ ,2 commHeader                      type TSDEFS#commHeader_T
+ ,2 input
+  ,3 pTaxAmountTab                  ptr
+  ,3 isSwissInfected                bit(1) aligned
+  ,3 *                              char(3)
+  ,3 distributionAmount             type YTSCALC#taxAmount_T
+  ,3 taxAmountTabArea nonasgn
+   ,4 *                             char(size(:TSDEFS#tabHeader_T:))
+   ,4 * (YTSCALC#TAX_AMOUNT_TAB_SIZE * size(:YTSCALC#taxAmount_T:))
+                                    char(1)
+ ,2 output
+  ,3 localReportableAmount          type YTSCALC#taxAmount_T
+ ;
+
+ /* mode = 2 */
+ define structure
+ 1 YTSCALC#commDistributionComponentTotal_T force(NoLaxQual)
+ ,2 version                         type TSDEFS#version_T
+ ,2 commHeader                      type TSDEFS#commHeader_T
+ ,2 input
+  ,3 pDistrCompTab                  ptr
+  ,3 distrCompTabArea nonasgn
+   ,4 *                             char(size(:TSDEFS#tabHeader_T:))
+   ,4 * (YTSCALC#DISTR_COMP_TAB_SIZE * size(:YTSCALC#distrComp_T:))
+                                    char(1)
+ ,2 output
+  ,3 pTaxAmountTab                  ptr
+  ,3 orderTaxResult                 type YTSCALC#orderTaxResult_T
+  ,3 taxAmountTabArea nonasgn
+   ,4 *                             char(size(:TSDEFS#tabHeader_T:))
+   ,4 * (YTSCALC#TAX_AMOUNT_TAB_SIZE * size(:YTSCALC#taxAmount_T:))
+                                    char(1)
+ ;
+
+ /* mode = 0 */
+ define structure
+ 1 YTSCALC#commEtrAmount_T force(NoLaxQual)
+ ,2 version                         type TSDEFS#version_T
+ ,2 commHeader                      type TSDEFS#commHeader_T
+ ,2 input
+  ,3 trxCurrency                    char(3)
+  ,3 taxableAmount                  fixed dec(31,8)
+  ,3 etrTaxRate                     fixed dec(31,8)
+  ,3 *                              char(01)
+ ,2 output
+  ,3 etrTaxAmount                   type YTSCALC#taxAmount_T
+ ;
+
+ /* mode = 1 */
+ define structure
+ 1 YTSCALC#commTaxAmounts_T force(NoLaxQual)
+ ,2 version                         type TSDEFS#version_T
+ ,2 commHeader                      type TSDEFS#commHeader_T
+ ,2 input
+  ,3 pTariffExpressionTab           ptr
+  ,3 distributionAmount             type YTSCALC#taxAmount_T
+  ,3 tariffExpressionTabArea nonAsgn
+   ,4 *                             char(size(:TSDEFS#tabHeader_T:))
+   ,4 * (YTSCALC#TARIFF_EXPRESSION_TAB_SIZE
+        *size(:YTSCALC#tariffExpression_T:))
+                                    char(1)
+ ,2 output
+  ,3 pTaxAmountTab                  ptr
+  ,3 distrCompTaxResult             type YTSCALC#distrCompTaxResult_T
+  ,3 taxAmountTabArea nonAsgn
+   ,4 *                             char(size(:TSDEFS#tabHeader_T:))
+   ,4 * (YTSCALC#TAX_AMOUNT_TAB_SIZE * size(:YTSCALC#taxAmount_T:))
+                                    char(1)
+ ;

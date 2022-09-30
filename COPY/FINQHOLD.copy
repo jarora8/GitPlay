@@ -1,0 +1,85 @@
+      ******************************************************************
+      * DCLGEN TABLE(FINQ.HOLD)                                        *
+      *        LIBRARY(LMFPROG.APPLDCL.U099502(FINQHOLD))              *
+      *        ACTION(REPLACE)                                         *
+      *        LANGUAGE(COBOL)                                         *
+      *        QUOTE                                                   *
+      *        LABEL(YES)                                              *
+      *        DBCSDELIM(NO)                                           *
+      * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+      ******************************************************************
+           EXEC SQL DECLARE FINQ.HOLD TABLE
+           ( HOLD_BANK_NBR                  DECIMAL(3, 0) NOT NULL,
+             HOLD_ACCT_ID                   DECIMAL(3, 0) NOT NULL,
+             HOLD_ACCT_NBR                  CHAR(9) NOT NULL,
+             HOLD_TYPE                      DECIMAL(3, 0) NOT NULL,
+             HOLD_SOURCE_USER               DECIMAL(5, 0) NOT NULL,
+             HOLD_SOURCE_PROG               CHAR(8) NOT NULL,
+             HOLD_PLACE_DATE                DECIMAL(7, 0) NOT NULL,
+             HOLD_RELEASE_DATE              DECIMAL(7, 0) NOT NULL,
+             HOLD_AMOUNT                    DECIMAL(11, 2) NOT NULL,
+             HOLD_CHECK_NBR                 DECIMAL(9, 0) NOT NULL,
+             HOLD_LAST_UPDATE               TIMESTAMP NOT NULL,
+             HOLD_TX_DESC                   VARCHAR(50) NOT NULL,
+             HOLD_LST_4_DIGITS              DECIMAL(4, 0) NOT NULL,
+             HOLD_REFERENCE_SOURCE          CHAR(10),
+             HOLD_REFERENCE_ID              VARCHAR(25),
+             HOLD_MEMO_ID                   INTEGER NOT NULL,
+             HOLD_CREATE_TS                 TIMESTAMP NOT NULL,
+             HOLD_UPDATE_TS                 TIMESTAMP NOT NULL
+           ) END-EXEC.
+      ******************************************************************
+      * COBOL DECLARATION FOR TABLE FINQ.HOLD                          *
+      ******************************************************************
+       01  FINQ-HOLD.
+      *    *************************************************************
+           10 HOLD-BANK-NBR        PIC S9(3)V USAGE COMP-3.
+      *    *************************************************************
+           10 HOLD-ACCT-ID         PIC S9(3)V USAGE COMP-3.
+      *    *************************************************************
+           10 HOLD-ACCT-NBR        PIC X(9).
+      *    *************************************************************
+           10 HOLD-TYPE            PIC S9(3)V USAGE COMP-3.
+      *    *************************************************************
+           10 HOLD-SOURCE-USER     PIC S9(5)V USAGE COMP-3.
+      *    *************************************************************
+           10 HOLD-SOURCE-PROG     PIC X(8).
+      *    *************************************************************
+           10 HOLD-PLACE-DATE      PIC S9(7)V USAGE COMP-3.
+      *    *************************************************************
+           10 HOLD-RELEASE-DATE    PIC S9(7)V USAGE COMP-3.
+      *    *************************************************************
+           10 HOLD-AMOUNT          PIC S9(9)V9(2) USAGE COMP-3.
+      *    *************************************************************
+           10 HOLD-CHECK-NBR       PIC S9(9)V USAGE COMP-3.
+      *    *************************************************************
+           10 HOLD-LAST-UPDATE     PIC X(26).
+      *    *************************************************************
+           10 HOLD-TX-DESC.
+              49 HOLD-TX-DESC-LEN
+                 PIC S9(4) USAGE COMP.
+              49 HOLD-TX-DESC-TEXT
+                 PIC X(50).
+      *    *************************************************************
+           10 HOLD-LST-4-DIGITS    PIC S9(4)V USAGE COMP-3.
+      *    *************************************************************
+           10 HOLD-REFERENCE-SOURCE
+              PIC X(10).
+      *    *************************************************************
+           10 HOLD-REFERENCE-ID.
+              49 HOLD-REFERENCE-ID-LEN
+                 PIC S9(4) USAGE COMP.
+              49 HOLD-REFERENCE-ID-TEXT
+                 PIC X(25).
+      *    *************************************************************
+           10 HOLD-MEMO-ID         PIC S9(9) USAGE COMP.
+      *    *************************************************************
+           10 HOLD-CREATE-TS       PIC X(26).
+      *    *************************************************************
+           10 HOLD-UPDATE-TS       PIC X(26).
+      ******************************************************************
+      * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 18      *
+      ******************************************************************
+       01  IND-FINQ-HOLD.
+           10  IND-HOLD-REFERENCE-SOURCE         PIC S9(4)   COMP.
+           10  IND-HOLD-REFERENCE-ID             PIC S9(4)   COMP.

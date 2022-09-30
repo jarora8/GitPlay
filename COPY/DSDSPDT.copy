@@ -1,0 +1,75 @@
+000100*01  PD-REG-STMT-TRLR.                                            00010000
+000200     02  PDT-BANK-NO         PIC 99.                              00020000
+000300     02  PDT-ACCT-ID         PIC 999                     COMP-3.  00030000
+000400     02  PDT-ACCT-NO         PIC 9(9)                    COMP-3.  00040000
+000500     02  PDT-REPORT-CODE     PIC S999                    COMP-3.  00050000
+000600     02  PDT-BAL-ELG         PIC S9(9)V99                COMP-3.  00060000
+000700     02  PDT-AVG-INV-BAL     PIC S9(9)V99                COMP-3.  00070000
+000800     02  PDT-FILLER1         PIC X.                               00080001
+000900     02  PDT-SORT-KEY        PIC XX.                              00090000
+001000     02  PDT-CURR-PROC-DT    PIC S9(7)                   COMP-3.  00100000
+001100     02  PDT-AVG-INT-RATE    PIC S99V9(5)                COMP-3.  00110000
+001200     02  PDT-APYE-INT-RATE   PIC S99V9(3)                COMP-3.  00120000
+001300     02  PDT-EARN-BAL-CODE   PIC X.                               00130000
+001400     02  PDT-INT-PAID-CYC    PIC S9(7)V99                COMP-3.  00140001
+001500     02  PDT-ACCRUED-INT     PIC S9(7)V99                COMP-3.  00150001
+001600     02  PDT-FILLER2         PIC X(19).                           00160001
+001700     02  PDT-DDA-ACCT-ID     PIC 999                     COMP-3.  00170000
+001800     02  PDT-DDA-ACCT-NO     PIC 9(9)                    COMP-3.  00180000
+001810     02  PDT-OD-FEES-CTD     PIC S9(5)V99                COMP-3.  00181002
+001820     02  PDT-RET-CK-FEES-CTD PIC S9(5)V99                COMP-3.  00182002
+001830     02  PDT-OD-FEES-YTD     PIC S9(5)V99                COMP-3.  00183002
+001840     02  PDT-RET-CK-FEES-YTD PIC S9(5)V99                COMP-3.  00184002
+001850     02  PDT-OD-FEES-REF-CTD     PIC S9(5)V99            COMP-3.  00185002
+001860     02  PDT-RET-CK-FEES-REF-CTD PIC S9(5)V99            COMP-3.  00186002
+001870     02  PDT-OD-FEES-REF-YTD     PIC S9(5)V99            COMP-3.  00187002
+001880     02  PDT-RET-CK-FEES-REF-YTD PIC S9(5)V99            COMP-3.  00188002
+001890     02  PDT-NSF-FEES-WVD-LST    PIC S9(5)V99            COMP-3.  00189004
+001891     02  PDT-NSF-FEES-WVD-YTD    PIC S9(5)V99            COMP-3.  00189103
+001900     02  PDT-FILLER3             PIC X(111).                      00190005
+002000                                                                  00200000
+002901******************************************************************00290105
+002902*                                                        COPYBOOK*00290200
+002903*                                                                *00290300
+002904* PURPOSE: THIS IS A STATEMENT TRAILER RECORD                    *00290405
+002905*                                                                *00290500
+002906* LENGTH OF COPYBOOK: 225                                        *00290605
+002907* LENGTH OF SORT KEY:                                            *00290700
+002908*                                                                *00290800
+002909*       TRAILER TYPE           TX CODE    SORT KEY               *00290905
+002910*                                                                *00291005
+002911*    ODB HISTORY CARD            997         BZ                  *00291105
+002912*    DDA, IMM, CMM, SAV          998         BZ                  *00291205
+002913*    OSB SAV                     999         BZ                  *00291305
+002914*    CLUB ACCOUNTS               999         BZ                  *00291405
+002915*                                                                *00291505
+002916* USAGE: DSDS100, DSDS445                                        *00291605
+002917*                                                                *00291700
+002918* FIELD DESCRIPTION/VALUES:                                      *00291800
+002919*       BANK NUMBER         - BANK NUMBER                        *00291905
+002920*       ACCOUNT ID          - ACCOUNT ID                         *00292005
+002921*       ACCOUNT NUMBER      - ACCOUNT NUMBER                     *00292105
+002922*       REPORT CODE         - REPORT CODE                        *00292205
+002923*       BAL ELG             - CURRENT BALANCE ELIGIBLE TO W/D    *00292305
+002924*       FILLER              -                                    *00292405
+002925*       SORT KEY            - SORT KEY (SEE ABOVE)               *00292505
+002926*       CURR PROC DT        - CURRENT PROCESSING DATE            *00292605
+002927*       AVG INT RATE        - AVERAGE INTEREST RATE              *00292705
+002928*       APYE INT RATE       - APYE INTEREST RATE                 *00292805
+002929*       EARN BAL CODE       - EARNINGS BALANCE CODE              *00292905
+002930*       INT PAID CYC        - INTEREST PAID LAST CYCLE           *00293005
+002931*       ACCRUED INT         - ACCRUED INTEREST                   *00293105
+002932*       FILLER2             -                                    *00293205
+002933*       DDA ACCT ID         - ACCOUNT ID                         *00293305
+002934*       DDA ACCT NO         - ACCOUNT NUMBER                     *00293405
+002935*       OD FEES CTD         - OVERDRAFT FEES CYCLE TO DATE       *00293505
+002936*       RET CK FEES CTD     - RETURN CHECK FEES CYCLE TO DATE    *00293605
+002937*       OD FEES YTD         - OVERDRAFT FEES YEAR TO DATE        *00293705
+002938*       RET CK FEES YTD     - RETURN CHECK FEES YEAR TO DATE     *00293805
+002939*       OD FEES REF CTD     - OVERDRAFT FEES REFUNDED CYC TO DATE*00293905
+002940*       RET CK FEES REF CTD - RETURN CHECK FEES REFUNDED CYC TO D*00294005
+002941*       OD FEES REF YTD     - OVERDRAFT FEES REFUNDED YR TO DT   *00294105
+002942*       RET CK FEES REF YTD - RETURN CHECK FEES REFUNDED YR TO DT*00294205
+002950*       NSF FEES WVD LST    - NSF FEES WAIVED LAST STATEMENT     *00295005
+002956*       NSF FEES WVD YTD    - NSF FEES WAIVED YEAR-TO-DATE       *00295605
+002960******************************************************************00296005

@@ -1,0 +1,63 @@
+000100 01  MISCELLANEOUS-FEES-WORK-AREA.                                00010001
+000200     02  OVERDRAFT-FEE-RETAIL                                     00020001
+000300                         PIC S9(9)V99 VALUE ZERO     COMP-3.      00030001
+000400     02  OVERDRAFT-FEE-RETAIL-OA                                  00040001
+000500                         PIC S9(9)V99 VALUE ZERO     COMP-3.      00050001
+000600     02  OVERDRAFT-FEE-COMMERCIAL                                 00060001
+000700                         PIC S9(9)V99 VALUE ZERO     COMP-3.      00070001
+000800     02  OVERDRAFT-FEE-COMMERCIAL-OA                              00080002
+000900                         PIC S9(9)V99 VALUE ZERO     COMP-3.      00090002
+001000     02  RETURN-CHECK-FEE-RETAIL                                  00100001
+001100                         PIC S9(9)V99 VALUE ZERO     COMP-3.      00110001
+001200     02  RETURN-CHECK-FEE-COMMERCIAL                              00120001
+001300                         PIC S9(9)V99 VALUE ZERO     COMP-3.      00130001
+001400     02  FOREIGN-ATM-FEES-REFUND                                  00140001
+001500                         PIC S9(9)V99 VALUE ZERO     COMP-3.      00150001
+001600     02  CHECKPLUS-TX-FEES                                        00160001
+001700                         PIC S9(9)V99 VALUE ZERO     COMP-3.      00170001
+001800     02  CHECK-HANDLING-FEES-HC                                   00180001
+001900                         PIC S9(9)V99 VALUE ZERO     COMP-3.      00190001
+002000     02  CHECK-IMAGING-FEES-HC                                    00200001
+002100                         PIC S9(9)V99 VALUE ZERO     COMP-3.      00210001
+002200     02  NON-SAFEKEEP-FEES-HC                                     00220001
+002300                         PIC S9(9)V99 VALUE ZERO     COMP-3.      00230001
+002400     02  MEMBERSHIP-FEES PIC S9(9)V99 VALUE ZERO     COMP-3.      00240001
+002500     02  DORMANT-INACT-LOST-FEES                                  00250001
+002600                         PIC S9(9)V99 VALUE ZERO     COMP-3.      00260001
+002700     02  PLUS-PACKAGE-FEES                                        00270001
+002800                         PIC S9(9)V99 VALUE ZERO     COMP-3.      00280001
+002900     02  ESCHEAT-BALANCE                                          00290004
+003000                         PIC S9(9)V99 VALUE ZERO     COMP-3.      00300003
+003010     02  GENERATED-DEBITS                                         00301005
+003011                         PIC S9(9)V99 VALUE ZERO     COMP-3.      00301105
+003020     02  GENERATED-CREDITS                                        00302005
+003021                         PIC S9(9)V99 VALUE ZERO     COMP-3.      00302105
+003030     02  ZBA-CMA-DEBITS                                           00303005
+003031                         PIC S9(9)V99 VALUE ZERO     COMP-3.      00303105
+003040     02  ZBA-CMA-CREDITS                                          00304005
+003050                         PIC S9(9)V99 VALUE ZERO     COMP-3.      00305005
+003060     02  CD-SAC-DEBITS   PIC S9(9)V99 VALUE ZERO     COMP-3.      00306006
+003070     02  CD-SAC-CREDITS  PIC S9(9)V99 VALUE ZERO     COMP-3.      00307006
+003080     02  ODP-DEBITS      PIC S9(9)V99 VALUE ZERO     COMP-3.      00308007
+003090     02  ODP-CREDITS     PIC S9(9)V99 VALUE ZERO     COMP-3.      00309007
+003091     02  ODP-FEES        PIC S9(9)V99 VALUE ZERO     COMP-3.      00309107
+003092     02  ODB-EXCESS-PMNT PIC S9(9)V99 VALUE ZERO     COMP-3.      00309209
+003093     02  ML-HELOC-ADVANCES PIC S9(9)V99 VALUE ZERO     COMP-3.    00309312
+003094     02  CLSN-BR-ADVANCES  PIC S9(9)V99 VALUE ZERO     COMP-3.    00309413
+003095     02  CLSN-BR-PAYMENTS  PIC S9(9)V99 VALUE ZERO     COMP-3.    00309513
+003096     02  ICS-SWEEP-DEBITS  PIC S9(9)V99 VALUE ZERO     COMP-3.    00309615
+003097     02  ICS-SWEEP-CREDITS PIC S9(9)V99 VALUE ZERO     COMP-3.    00309715
+003100     02  FILLER          PIC X(54)    VALUE SPACES.               00310016
+003101******************************************************************00310114
+003102*                                                        COPYBOOK*00310213
+003103*                                                                *00310313
+003104* PURPOSE:  USED TO PASSED AMOUNTS TO DSDM103 FOR GL TRANSACTIONS*00310414
+003105*                                                                *00310513
+003106* LENGTH OF COPYBOOK: 234                                        *00310614
+003107* LENGTH OF SORT KEY: N/A                                        *00310714
+003108*                                                                *00310813
+003109* USAGE: GL TX AMOUNTS TO BE PASSED IN THE LINKAGE SECTIONS      *00310914
+003110*                                                                *00311013
+003111* FIELD DESCRIPTION/VALUES:                                      *00311113
+003112*                                                                *00311213
+003113******************************************************************00311313

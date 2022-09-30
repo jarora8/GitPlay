@@ -1,0 +1,45 @@
+000100 01  DSDS-H-FILE-RECORD.                                          00010000
+000200                                                                  00020001
+000300     05  DSDS-H-RECORD-KEY.                                       00030001
+000400                                                                  00040001
+000500         10  DSDS-H-BANK-ID.                                      00050001
+000600             15  DSDS-H-PREFIX   PIC XX        VALUE 'B0'.        00060001
+000700             15  DSDS-H-BANK-NO  PIC 99.                          00070001
+000800         10  DSDS-H-RECORD-ID    PIC X(20).                       00080001
+000900             88  DSDS-H-EOF                    VALUE HIGH-VALUES. 00090001
+001000         10  FILLER REDEFINES DSDS-H-RECORD-ID.                   00100001
+001100             15  DSDS-H-ACCT-ID  PIC 9(3)                  COMP-3.00110001
+001200             15  DSDS-H-ACCT-NO  PIC 9(9)                  COMP-3.00120001
+001300             15  FILLER          PIC X(13).                       00130001
+001400                                                                  00140001
+001500                                                                  00150004
+001600     05  DSDS-H-RECORD-CONTROL.                                   00160001
+001700                                                                  00170001
+001800         10  DSDS-H-FILE-DATE    PIC 9(7)                  COMP-3.00180001
+001900         10  DSDS-H-STATUS-CODE  PIC 9(3)                  COMP-3.00190001
+002000             88  DSDS-H-OPEN                   VALUE 010.         00200001
+002100             88  DSDS-H-CLOSE                  VALUE 020.         00210001
+002200             88  DSDS-H-DELETE                 VALUE 255.         00220001
+002300         10  DSDS-H-MAINT-TYPE   PIC 9(3)                  COMP-3.00230001
+002400             88  DSDS-H-CREATED                VALUE 001.         00240001
+002500             88  DSDS-H-REOPENED               VALUE 003.         00250001
+002600             88  DSDS-H-UPDATED                VALUE 005.         00260001
+002700             88  DSDS-H-CLOSED                 VALUE 007.         00270001
+002800             88  DSDS-H-DELETED                VALUE 009.         00280001
+002900             88  DSDS-H-ADDED                  VALUE 101.         00290001
+003000             88  DSDS-H-CHANGED                VALUE 105.         00300001
+003100             88  DSDS-H-REMOVED                VALUE 109.         00310001
+003200         10  DSDS-H-MAINT-DATE   PIC 9(7)                  COMP-3.00320001
+003300         10  DSDS-H-SEQ-NUMBER   PIC 9(7)                  COMP-3.00330001
+003400         10  DSDS-H-SEQ-SUFFIX   PIC 9(3)                  COMP-3.00340001
+003500         10  DSDS-H-NBR-SEGMENTS PIC 9(2).                        00350001
+003600         10  DSDS-H-CTL-FILLER   PIC X(20).                       00360001
+003700                                                                  00370001
+003800     05  DSDS-H-RECORD-DATA      PIC X(1536).                     00380007
+003900                                                                  00390004
+004000                                                                  00400004
+004100 01  DSDS-H-FILE-EOF-REC.                                         00410004
+004200                                                                  00420004
+004300     05  DSDS-H-EOF-REC-KEY      PIC X(24).                       00430004
+004400                                                                  00440004
+004500     05  DSDS-H-EOF-REC-CONTROL  PIC X(40).                       00450004

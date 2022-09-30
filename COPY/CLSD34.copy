@@ -1,0 +1,40 @@
+      ******************************************************************
+      * DCLGEN TABLE(CLS.CLST34_BR_AVAILABLE)                          *
+      *        LIBRARY(LMFPROG.APPLDCL.U099472(CLSD34))                *
+      *        ACTION(REPLACE)                                         *
+      *        LANGUAGE(COBOL)                                         *
+      *        APOST                                                   *
+      * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+      ******************************************************************
+           EXEC SQL DECLARE CLS.CLST34_BR_AVAILABLE TABLE
+           ( CL34_BANK_NBR                  DECIMAL(3, 0) NOT NULL,
+             CL34_CUST_NBR                  DECIMAL(7, 0) NOT NULL,
+             CL34_LOAN_NBR                  DECIMAL(4, 0) NOT NULL,
+             CL34_REPT_BRANCH               DECIMAL(4, 0) NOT NULL,
+             CL34_CIF_KEY                   CHAR(25) NOT NULL,
+             CL34_AVAIL_BAL                 DECIMAL(13, 2) NOT NULL,
+             CL34_PRIN_BAL                  DECIMAL(13, 2) NOT NULL,
+             CL34_EXCEPTION                 CHAR(18) NOT NULL,
+             CL34_DDA_CURR_COLL_BAL         DECIMAL(13, 2) NOT NULL,
+             CL34_CREATE_TS                 TIMESTAMP NOT NULL,
+             CL34_UPDATE_TS                 TIMESTAMP NOT NULL
+           ) END-EXEC.
+      ******************************************************************
+      * COBOL DECLARATION FOR TABLE CLS.CLST34_BR_AVAILABLE            *
+      ******************************************************************
+       01  CLS-CLST34-BR-AVAILABLE.
+           10 CL34-BANK-NBR        PIC S9(3)V USAGE COMP-3.
+           10 CL34-CUST-NBR        PIC S9(7)V USAGE COMP-3.
+           10 CL34-LOAN-NBR        PIC S9(4)V USAGE COMP-3.
+           10 CL34-REPT-BRANCH     PIC S9(4)V USAGE COMP-3.
+           10 CL34-CIF-KEY         PIC X(25).
+           10 CL34-AVAIL-BAL       PIC S9(11)V9(2) USAGE COMP-3.
+           10 CL34-PRIN-BAL        PIC S9(11)V9(2) USAGE COMP-3.
+           10 CL34-EXCEPTION       PIC X(18).
+           10 CL34-DDA-CURR-COLL-BAL
+              PIC S9(11)V9(2) USAGE COMP-3.
+           10 CL34-CREATE-TS       PIC X(26).
+           10 CL34-UPDATE-TS       PIC X(26).
+      ******************************************************************
+      * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 11      *
+      ******************************************************************

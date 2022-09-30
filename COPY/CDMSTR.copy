@@ -1,0 +1,308 @@
+      ******************************************************************
+      * DCLGEN TABLE(CD.MASTER)                                        *
+      *        LIBRARY(LMFPROG.APPLDCL.U099056(CDMSTR))                *
+      *        ACTION(REPLACE)                                         *
+      *        LANGUAGE(COBOL)                                         *
+      *        QUOTE                                                   *
+      * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+      ******************************************************************
+           EXEC SQL DECLARE CD.MASTER TABLE
+           ( CDMST_BANK_NBR                 DECIMAL(3, 0) NOT NULL,
+             CDMST_ACCT_NBR                 CHAR(9) NOT NULL,
+             CDMST_CIF_KEY                  CHAR(25) NOT NULL,
+             CDMST_ORIG_ISS_DT              DATE NOT NULL,
+             CDMST_ORIG_AMT                 DECIMAL(11, 2) NOT NULL,
+             CDMST_ORIG_TERM                DECIMAL(3, 0) NOT NULL,
+             CDMST_TERM                     DECIMAL(3, 0) NOT NULL,
+             CDMST_TERM_IND                 DECIMAL(1, 0) NOT NULL,
+             CDMST_PAY_PERIOD               DECIMAL(3, 0) NOT NULL,
+             CDMST_INT_CALC_MTH             DECIMAL(1, 0) NOT NULL,
+             CDMST_PAY_MTH                  DECIMAL(3, 0) NOT NULL,
+             CDMST_DEP_ACCT_NBR             DECIMAL(9, 0) NOT NULL,
+             CDMST_CHECK_DT                 DATE NOT NULL,
+             CDMST_CURR_AMT                 DECIMAL(11, 2) NOT NULL,
+             CDMST_ACCR_FACTOR              DECIMAL(15, 9) NOT NULL,
+             CDMST_ACCR_INT                 DECIMAL(13, 5) NOT NULL,
+             CDMST_INT_AMT_RMN              DECIMAL(11, 5) NOT NULL,
+             CDMST_INT_ACCR_SAV             DECIMAL(9, 5) NOT NULL,
+             CDMST_MEMO_ACCR                DECIMAL(13, 5) NOT NULL,
+             CDMST_MEMO_PAID                DECIMAL(13, 5) NOT NULL,
+             CDMST_INT_PD_LIFE              DECIMAL(9, 2) NOT NULL,
+             CDMST_INT_PD_TERM              DECIMAL(9, 2) NOT NULL,
+             CDMST_TOT_INT_DUE              DECIMAL(9, 2) NOT NULL,
+             CDMST_INT_TO_EARN              DECIMAL(9, 2) NOT NULL,
+             CDMST_PROJ_PENALTY             DECIMAL(7, 2) NOT NULL,
+             CDMST_APY                      DECIMAL(7, 7) NOT NULL,
+             CDMST_INT_RATE                 DECIMAL(7, 7) NOT NULL,
+             CDMST_SIMPLE_RATE              DECIMAL(7, 7) NOT NULL,
+             CDMST_ACCR_BASE                DECIMAL(1, 0) NOT NULL,
+             CDMST_MIN_INT_RATE             DECIMAL(7, 7) NOT NULL,
+             CDMST_SYSTEM_APY               DECIMAL(7, 7) NOT NULL,
+             CDMST_PREV_APY                 DECIMAL(7, 7) NOT NULL,
+             CDMST_APY_CHG_DT               DATE NOT NULL,
+             CDMST_INT_PY_CODE              DECIMAL(1, 0) NOT NULL,
+             CDMST_INT_PY_AMT_F             DECIMAL(9, 2) NOT NULL,
+             CDMST_MAT_DT                   DATE NOT NULL,
+             CDMST_NEXT_IPAY_DT             DATE NOT NULL,
+             CDMST_LST_IPD_DT               DATE NOT NULL,
+             CDMST_LST_IPD_AMT              DECIMAL(9, 2) NOT NULL,
+             CDMST_PRIOR_IPD_DT             DATE NOT NULL,
+             CDMST_RENEW_DT                 DATE NOT NULL,
+             CDMST_RENEW_10_DAY             DATE NOT NULL,
+             CDMST_RENEWAL_AMT              DECIMAL(11, 2) NOT NULL,
+             CDMST_INT_PD_CYTD              DECIMAL(9, 2) NOT NULL,
+             CDMST_FORFEIT_CYTD             DECIMAL(9, 2) NOT NULL,
+             CDMST_INT_PD_PYTD              DECIMAL(9, 2) NOT NULL,
+             CDMST_FORFEIT_PYTD             DECIMAL(9, 2) NOT NULL,
+             CDMST_LST_DEP_DT               DATE NOT NULL,
+             CDMST_LST_DEP_AMT              DECIMAL(9, 2) NOT NULL,
+             CDMST_TERMNTD_DT               DATE NOT NULL,
+             CDMST_TERMNTD_AMT              DECIMAL(11, 2) NOT NULL,
+             CDMST_LST_MAINT_DT             DATE NOT NULL,
+             CDMST_LST_ACT_DT               DATE NOT NULL,
+             CDMST_STATUS_CODE              DECIMAL(3, 0) NOT NULL,
+             CDMST_STATUS_1                 DECIMAL(2, 0) NOT NULL,
+             CDMST_STATUS_2                 DECIMAL(1, 0) NOT NULL,
+             CDMST_TYPE_CODE                DECIMAL(3, 0) NOT NULL,
+             CDMST_TYPE_1                   DECIMAL(1, 0) NOT NULL,
+             CDMST_TYPE_2                   DECIMAL(2, 0) NOT NULL,
+             CDMST_CLASS_CODE               DECIMAL(3, 0) NOT NULL,
+             CDMST_CATEGORY                 DECIMAL(3, 0) NOT NULL,
+             CDMST_SOURCE_CODE              DECIMAL(1, 0) NOT NULL,
+             CDMST_ASSET_ALL_CD             DECIMAL(3, 0) NOT NULL,
+             CDMST_SAFEKEPT_IND             DECIMAL(1, 0) NOT NULL,
+             CDMST_PENALTY_CODE             CHAR(1) NOT NULL,
+             CDMST_RENEW_CODE               CHAR(1) NOT NULL,
+             CDMST_BRANCH                   DECIMAL(3, 0) NOT NULL,
+             CDMST_OFFICER_CODE             CHAR(3) NOT NULL,
+             CDMST_NEG_CODE                 DECIMAL(1, 0) NOT NULL,
+             CDMST_PER_CODE                 CHAR(1) NOT NULL,
+             CDMST_ACCR_IND                 DECIMAL(1, 0) NOT NULL,
+             CDMST_STMT_REQ_CD              DECIMAL(1, 0) NOT NULL,
+             CDMST_LOYALTY_IND              DECIMAL(1, 0) NOT NULL,
+             CDMST_MISC_CODE                DECIMAL(3, 0) NOT NULL,
+             CDMST_COMPANY_CODE             DECIMAL(3, 0) NOT NULL,
+             CDMST_CONTACT_CODE             DECIMAL(3, 0) NOT NULL,
+             CDMST_LOST_CNT_DT              DATE NOT NULL,
+             CDMST_SHORT_NAME               CHAR(20) NOT NULL,
+             CDMST_SSN                      DECIMAL(9, 0) NOT NULL,
+             CDMST_SSN_OWNER                DECIMAL(1, 0) NOT NULL,
+             CDMST_SSN_EDIT_CO              DECIMAL(1, 0) NOT NULL,
+             CDMST_SSN_CERT_CD              CHAR(1) NOT NULL,
+             CDMST_CIF_ID                   CHAR(9) NOT NULL,
+             CDMST_OID_ISSUE_PR             DECIMAL(11, 2) NOT NULL,
+             CDMST_OID_REDMPTN              DECIMAL(11, 2) NOT NULL,
+             CDMST_OID_MO_RTBL              DECIMAL(5, 2) NOT NULL,
+             CDMST_OID_AMT_CYTD             DECIMAL(9, 2) NOT NULL,
+             CDMST_OID_RPTED                DECIMAL(9, 2) NOT NULL,
+             CDMST_OID_UNRPTED              DECIMAL(9, 2) NOT NULL,
+             CDMST_LN_PL_NBR                CHAR(13) NOT NULL,
+             CDMST_LN_PL_AMT                DECIMAL(9, 2) NOT NULL,
+             CDMST_LN_PL_DT                 DATE NOT NULL,
+             CDMST_LN_PL_DUE_DT             DATE NOT NULL,
+             CDMST_RT_VARI_IND              DECIMAL(1, 0) NOT NULL,
+             CDMST_RT_VARIANCE              DECIMAL(7, 7) NOT NULL,
+             CDMST_RT_CONTROL               DECIMAL(1, 0) NOT NULL,
+             CDMST_RT_RVIEW_IND             DECIMAL(1, 0) NOT NULL,
+             CDMST_RT_RVIEW_INC             DECIMAL(3, 0) NOT NULL,
+             CDMST_RT_RVIEW_DT              DATE NOT NULL,
+             CDMST_GRSS_BAL_CUR             DECIMAL(13, 2) NOT NULL,
+             CDMST_DAYS_PRD_CUR             DECIMAL(5, 0) NOT NULL,
+             CDMST_GRSS_BAL_PRV             DECIMAL(13, 2) NOT NULL,
+             CDMST_DAYS_PRD_PRV             DECIMAL(5, 0) NOT NULL,
+             CDMST_TAX_WH_CODE              CHAR(1) NOT NULL,
+             CDMST_TAX_TO_BE_WH             DECIMAL(9, 2) NOT NULL,
+             CDMST_LAST_TAX_WH              DECIMAL(9, 2) NOT NULL,
+             CDMST_TAX_WH_CYTD              DECIMAL(11, 2) NOT NULL,
+             CDMST_TAX_WH_PYTD              DECIMAL(11, 2) NOT NULL,
+             CDMST_LST_STMT_DT              DATE NOT NULL,
+             CDMST_LST_STMT_BAL             DECIMAL(11, 2) NOT NULL,
+             CDMST_STMT_CY_CODE             DECIMAL(3, 0) NOT NULL,
+             CDMST_PAC_IND                  DECIMAL(1, 0) NOT NULL,
+             CDMST_PAC_ORIG_BK              DECIMAL(3, 0) NOT NULL,
+             CDMST_PAC_TOT_AMT              DECIMAL(11, 2) NOT NULL,
+             CDMST_DB_PY_IND                DECIMAL(3, 0) NOT NULL,
+             CDMST_DB_PY_ACCT               DECIMAL(9, 0) NOT NULL,
+             CDMST_EXCESS_INT               DECIMAL(11, 2) NOT NULL,
+             CDMST_BEG_AMT_CYR              DECIMAL(11, 2) NOT NULL,
+             CDMST_BEG_AMT_PYR              DECIMAL(11, 2) NOT NULL,
+             CDMST_IRA_DIST_AMT             DECIMAL(9, 2) NOT NULL,
+             CDMST_IRA_RVIEW_DT             DATE NOT NULL,
+             CDMST_IRA_RVIEW_CD             CHAR(1) NOT NULL,
+             CDMST_IRA_CONTR_CD             CHAR(1) NOT NULL,
+             CDMST_IRA_DED_CODE             CHAR(1) NOT NULL,
+             CDMST_IRA_CDIST_CD             DECIMAL(3, 0) NOT NULL,
+             CDMST_IRA_PDIST_CD             DECIMAL(3, 0) NOT NULL,
+             CDMST_IRA_PREV_ACT             CHAR(1) NOT NULL,
+             CDMST_ACH_TR_NBR               DECIMAL(9, 0) NOT NULL,
+             CDMST_ACH_ACCT_NBR             CHAR(17) NOT NULL,
+             CDMST_ACH_ACCT_TP              DECIMAL(1, 0) NOT NULL,
+             CDMST_ACH_DATE                 DATE NOT NULL,
+             CDMST_ACH_AMT                  DECIMAL(11, 2) NOT NULL,
+             CDMST_PLTY_ON_NTC              CHAR(1) NOT NULL
+           ) END-EXEC.
+      ******************************************************************
+      * COBOL DECLARATION FOR TABLE CD.MASTER                          *
+      ******************************************************************
+       01  CD-MASTER.
+           10 CDMST-BANK-NBR       PIC S9(3)V USAGE COMP-3.
+           10 CDMST-ACCT-NBR       PIC X(9).
+           10 CDMST-CIF-KEY        PIC X(25).
+           10 CDMST-ORIG-ISS-DT    PIC X(10).
+           10 CDMST-ORIG-AMT       PIC S9(9)V9(2) USAGE COMP-3.
+           10 CDMST-ORIG-TERM      PIC S9(3)V USAGE COMP-3.
+           10 CDMST-TERM           PIC S9(3)V USAGE COMP-3.
+           10 CDMST-TERM-IND       PIC S9(1)V USAGE COMP-3.
+           10 CDMST-PAY-PERIOD     PIC S9(3)V USAGE COMP-3.
+           10 CDMST-INT-CALC-MTH   PIC S9(1)V USAGE COMP-3.
+           10 CDMST-PAY-MTH        PIC S9(3)V USAGE COMP-3.
+           10 CDMST-DEP-ACCT-NBR   PIC S9(9)V USAGE COMP-3.
+           10 CDMST-CHECK-DT       PIC X(10).
+           10 CDMST-CURR-AMT       PIC S9(9)V9(2) USAGE COMP-3.
+           10 CDMST-ACCR-FACTOR    PIC S9(6)V9(9) USAGE COMP-3.
+           10 CDMST-ACCR-INT       PIC S9(8)V9(5) USAGE COMP-3.
+           10 CDMST-INT-AMT-RMN    PIC S9(6)V9(5) USAGE COMP-3.
+           10 CDMST-INT-ACCR-SAV   PIC S9(4)V9(5) USAGE COMP-3.
+           10 CDMST-MEMO-ACCR      PIC S9(8)V9(5) USAGE COMP-3.
+           10 CDMST-MEMO-PAID      PIC S9(8)V9(5) USAGE COMP-3.
+           10 CDMST-INT-PD-LIFE    PIC S9(7)V9(2) USAGE COMP-3.
+           10 CDMST-INT-PD-TERM    PIC S9(7)V9(2) USAGE COMP-3.
+           10 CDMST-TOT-INT-DUE    PIC S9(7)V9(2) USAGE COMP-3.
+           10 CDMST-INT-TO-EARN    PIC S9(7)V9(2) USAGE COMP-3.
+           10 CDMST-PROJ-PENALTY   PIC S9(5)V9(2) USAGE COMP-3.
+           10 CDMST-APY            PIC SV9(7) USAGE COMP-3.
+           10 CDMST-INT-RATE       PIC SV9(7) USAGE COMP-3.
+           10 CDMST-SIMPLE-RATE    PIC SV9(7) USAGE COMP-3.
+           10 CDMST-ACCR-BASE      PIC S9(1)V USAGE COMP-3.
+           10 CDMST-MIN-INT-RATE   PIC SV9(7) USAGE COMP-3.
+           10 CDMST-SYSTEM-APY     PIC SV9(7) USAGE COMP-3.
+           10 CDMST-PREV-APY       PIC SV9(7) USAGE COMP-3.
+           10 CDMST-APY-CHG-DT     PIC X(10).
+           10 CDMST-INT-PY-CODE    PIC S9(1)V USAGE COMP-3.
+           10 CDMST-INT-PY-AMT-F   PIC S9(7)V9(2) USAGE COMP-3.
+           10 CDMST-MAT-DT         PIC X(10).
+           10 CDMST-NEXT-IPAY-DT   PIC X(10).
+           10 CDMST-LST-IPD-DT     PIC X(10).
+           10 CDMST-LST-IPD-AMT    PIC S9(7)V9(2) USAGE COMP-3.
+           10 CDMST-PRIOR-IPD-DT   PIC X(10).
+           10 CDMST-RENEW-DT       PIC X(10).
+           10 CDMST-RENEW-10-DAY   PIC X(10).
+           10 CDMST-RENEWAL-AMT    PIC S9(9)V9(2) USAGE COMP-3.
+           10 CDMST-INT-PD-CYTD    PIC S9(7)V9(2) USAGE COMP-3.
+           10 CDMST-FORFEIT-CYTD   PIC S9(7)V9(2) USAGE COMP-3.
+           10 CDMST-INT-PD-PYTD    PIC S9(7)V9(2) USAGE COMP-3.
+           10 CDMST-FORFEIT-PYTD   PIC S9(7)V9(2) USAGE COMP-3.
+           10 CDMST-LST-DEP-DT     PIC X(10).
+           10 CDMST-LST-DEP-AMT    PIC S9(7)V9(2) USAGE COMP-3.
+           10 CDMST-TERMNTD-DT     PIC X(10).
+           10 CDMST-TERMNTD-AMT    PIC S9(9)V9(2) USAGE COMP-3.
+           10 CDMST-LST-MAINT-DT   PIC X(10).
+           10 CDMST-LST-ACT-DT     PIC X(10).
+           10 CDMST-STATUS-CODE    PIC S9(3)V USAGE COMP-3.
+           10 CDMST-STATUS-1       PIC S9(2)V USAGE COMP-3.
+           10 CDMST-STATUS-2       PIC S9(1)V USAGE COMP-3.
+           10 CDMST-TYPE-CODE      PIC S9(3)V USAGE COMP-3.
+           10 CDMST-TYPE-1         PIC S9(1)V USAGE COMP-3.
+           10 CDMST-TYPE-2         PIC S9(2)V USAGE COMP-3.
+           10 CDMST-CLASS-CODE     PIC S9(3)V USAGE COMP-3.
+           10 CDMST-CATEGORY       PIC S9(3)V USAGE COMP-3.
+              88  CDMST-CATEGORY-TRAD-IRA     VALUE 01.
+              88  CDMST-CATEGORY-KEOGH        VALUE 02.
+              88  CDMST-CATEGORY-REGULAR      VALUE 03.
+              88  CDMST-CATEGORY-SEP          VALUE 04.
+              88  CDMST-CATEGORY-QRP-RLLVR    VALUE 05.
+              88  CDMST-CATEGORY-SPOUSAL      VALUE 06.
+              88  CDMST-CATEGORY-401K-BASIC   VALUE 07.
+              88  CDMST-CATEGORY-401K-MATCH   VALUE 08.
+              88  CDMST-CATEGORY-401K-RLLVR   VALUE 09.
+              88  CDMST-CATEGORY-401K-CTL     VALUE 10.
+              88  CDMST-CATEGORY-401K-PR-SH   VALUE 11.
+              88  CDMST-CATEGORY-SIMPLE-CTL   VALUE 12.
+              88  CDMST-CATEGORY-SIMPLE       VALUE 13.
+              88  CDMST-CATEGORY-ROTH         VALUE 14.
+              88  CDMST-CATEGORY-TR-TO-ROTH   VALUE 15.
+              88  CDMST-CATEGORY-EDU          VALUE 16.
+              88  CDMST-CATEGORY-HSA          VALUE 17.
+              88  CDMST-CATEGORY-529          VALUE 18.
+              88  CDMST-CONTROL-CATEGORIES    VALUE 10, 12.
+              88  CDMST-NONIRA-CATEGORIES     VALUE 02, 03.
+              88  CDMST-401K-CATEGORIES       VALUE 07, 08, 09, 11.
+              88  CDMST-IRA-CATEGORIES        VALUE 01, 04, 05, 06
+                                                    07, 08, 09, 11
+                                                    13, 14, 15, 16
+                                                    17, 18.
+           10 CDMST-SOURCE-CODE    PIC S9(1)V USAGE COMP-3.
+           10 CDMST-ASSET-ALL-CD   PIC S9(3)V USAGE COMP-3.
+           10 CDMST-SAFEKEPT-IND   PIC S9(1)V USAGE COMP-3.
+           10 CDMST-PENALTY-CODE   PIC X(1).
+           10 CDMST-RENEW-CODE     PIC X(1).
+           10 CDMST-BRANCH         PIC S9(3)V USAGE COMP-3.
+           10 CDMST-OFFICER-CODE   PIC X(3).
+           10 CDMST-NEG-CODE       PIC S9(1)V USAGE COMP-3.
+           10 CDMST-PER-CODE       PIC X(1).
+           10 CDMST-ACCR-IND       PIC S9(1)V USAGE COMP-3.
+           10 CDMST-STMT-REQ-CD    PIC S9(1)V USAGE COMP-3.
+           10 CDMST-LOYALTY-IND    PIC S9(1)V USAGE COMP-3.
+           10 CDMST-MISC-CODE      PIC S9(3)V USAGE COMP-3.
+           10 CDMST-COMPANY-CODE   PIC S9(3)V USAGE COMP-3.
+           10 CDMST-CONTACT-CODE   PIC S9(3)V USAGE COMP-3.
+           10 CDMST-LOST-CNT-DT    PIC X(10).
+           10 CDMST-SHORT-NAME     PIC X(20).
+           10 CDMST-SSN            PIC S9(9)V USAGE COMP-3.
+           10 CDMST-SSN-OWNER      PIC S9(1)V USAGE COMP-3.
+           10 CDMST-SSN-EDIT-CO    PIC S9(1)V USAGE COMP-3.
+           10 CDMST-SSN-CERT-CD    PIC X(1).
+           10 CDMST-CIF-ID         PIC X(9).
+           10 CDMST-OID-ISSUE-PR   PIC S9(9)V9(2) USAGE COMP-3.
+           10 CDMST-OID-REDMPTN    PIC S9(9)V9(2) USAGE COMP-3.
+           10 CDMST-OID-MO-RTBL    PIC S9(3)V9(2) USAGE COMP-3.
+           10 CDMST-OID-AMT-CYTD   PIC S9(7)V9(2) USAGE COMP-3.
+           10 CDMST-OID-RPTED      PIC S9(7)V9(2) USAGE COMP-3.
+           10 CDMST-OID-UNRPTED    PIC S9(7)V9(2) USAGE COMP-3.
+           10 CDMST-LN-PL-NBR      PIC X(13).
+           10 CDMST-LN-PL-AMT      PIC S9(7)V9(2) USAGE COMP-3.
+           10 CDMST-LN-PL-DT       PIC X(10).
+           10 CDMST-LN-PL-DUE-DT   PIC X(10).
+           10 CDMST-RT-VARI-IND    PIC S9(1)V USAGE COMP-3.
+           10 CDMST-RT-VARIANCE    PIC SV9(7) USAGE COMP-3.
+           10 CDMST-RT-CONTROL     PIC S9(1)V USAGE COMP-3.
+           10 CDMST-RT-RVIEW-IND   PIC S9(1)V USAGE COMP-3.
+           10 CDMST-RT-RVIEW-INC   PIC S9(3)V USAGE COMP-3.
+           10 CDMST-RT-RVIEW-DT    PIC X(10).
+           10 CDMST-GRSS-BAL-CUR   PIC S9(11)V9(2) USAGE COMP-3.
+           10 CDMST-DAYS-PRD-CUR   PIC S9(5)V USAGE COMP-3.
+           10 CDMST-GRSS-BAL-PRV   PIC S9(11)V9(2) USAGE COMP-3.
+           10 CDMST-DAYS-PRD-PRV   PIC S9(5)V USAGE COMP-3.
+           10 CDMST-TAX-WH-CODE    PIC X(1).
+           10 CDMST-TAX-TO-BE-WH   PIC S9(7)V9(2) USAGE COMP-3.
+           10 CDMST-LAST-TAX-WH    PIC S9(7)V9(2) USAGE COMP-3.
+           10 CDMST-TAX-WH-CYTD    PIC S9(9)V9(2) USAGE COMP-3.
+           10 CDMST-TAX-WH-PYTD    PIC S9(9)V9(2) USAGE COMP-3.
+           10 CDMST-LST-STMT-DT    PIC X(10).
+           10 CDMST-LST-STMT-BAL   PIC S9(9)V9(2) USAGE COMP-3.
+           10 CDMST-STMT-CY-CODE   PIC S9(3)V USAGE COMP-3.
+           10 CDMST-PAC-IND        PIC S9(1)V USAGE COMP-3.
+           10 CDMST-PAC-ORIG-BK    PIC S9(3)V USAGE COMP-3.
+           10 CDMST-PAC-TOT-AMT    PIC S9(9)V9(2) USAGE COMP-3.
+           10 CDMST-DB-PY-IND      PIC S9(3)V USAGE COMP-3.
+           10 CDMST-DB-PY-ACCT     PIC S9(9)V USAGE COMP-3.
+           10 CDMST-EXCESS-INT     PIC S9(9)V9(2) USAGE COMP-3.
+           10 CDMST-BEG-AMT-CYR    PIC S9(9)V9(2) USAGE COMP-3.
+           10 CDMST-BEG-AMT-PYR    PIC S9(9)V9(2) USAGE COMP-3.
+           10 CDMST-IRA-DIST-AMT   PIC S9(7)V9(2) USAGE COMP-3.
+           10 CDMST-IRA-RVIEW-DT   PIC X(10).
+           10 CDMST-IRA-RVIEW-CD   PIC X(1).
+           10 CDMST-IRA-CONTR-CD   PIC X(1).
+           10 CDMST-IRA-DED-CODE   PIC X(1).
+           10 CDMST-IRA-CDIST-CD   PIC S9(3)V USAGE COMP-3.
+           10 CDMST-IRA-PDIST-CD   PIC S9(3)V USAGE COMP-3.
+           10 CDMST-IRA-PREV-ACT   PIC X(1).
+           10 CDMST-ACH-TR-NBR     PIC S9(9)V USAGE COMP-3.
+           10 CDMST-ACH-ACCT-NBR   PIC X(17).
+           10 CDMST-ACH-ACCT-TP    PIC S9(1)V USAGE COMP-3.
+           10 CDMST-ACH-DATE       PIC X(10).
+           10 CDMST-ACH-AMT        PIC S9(9)V9(2) USAGE COMP-3.
+           10 CDMST-PLTY-ON-NTC    PIC X(1).
+      ******************************************************************
+      * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 133     *
+      ******************************************************************

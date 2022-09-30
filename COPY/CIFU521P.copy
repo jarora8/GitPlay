@@ -1,0 +1,36 @@
+000100***************************************************************** 00010009
+000200*                ADD/UPD/DEL CIF.ACCTRMX TABLE                  * 00020009
+000300*                                                               * 00030009
+000400*                                                               * 00040009
+000500*             CALL CIFU521 USING CIFU521-LINKAGE                * 00050009
+000600*             USE DYNAMIC CALL IN ONLINE PROGRAMS               * 00060009
+000700*                                                               * 00070009
+000800* MOVE HIGH-VALUES TO FIELDS NOT BEING UPDATED.                 * 00080015
+000900* ALL INPUT FIELDS EXCEPT REMARKS-ID ARE NEEDED FOR INSERT      * 00090009
+001000****************************************************************  00100009
+001010 01  CIFU521-LINK-PARAMETERS.                                     00101012
+001020     02  CIFU521-LENGTH               PIC S9(4)  VALUE +0400 COMP.00102012
+001040                                                                  00104012
+001100 01  CIFU521-PARAMETERS.                                          00110009
+001200     02  CIFU521-INPUT-FIELDS.                                    00120009
+001300         03  CIFU521-USERID                PIC 9(05)   COMP-3.    00130009
+001400         03  CIFU521-SOURCE                PIC X(08).             00140009
+001500         03  CIFU521-TERMID                PIC X(08).             00150009
+001600         03  CIFU521-FUNCTION              PIC X(01).             00160009
+001700         03  CIFU521-BANK-NBR              PIC 9(03)   COMP-3.    00170009
+001800         03  CIFU521-FILE-ID               PIC X(04).             00180009
+001900         03  CIFU521-FILE-KEY              PIC X(25).             00190009
+002000         03  CIFU521-TYPE                  PIC 9(04)   COMP-3.    00200009
+002100         03  CIFU521-REMARKS-ID            PIC 9(04)   COMP-3.    00210009
+002200         03  CIFU521-EXPIRATION            PIC X(10).             00220009
+002300         03  CIFU521-CODE                  PIC 9(03)   COMP-3.    00230009
+002400         03  CIFU521-COMMENT1              PIC X(60).             00240017
+002500         03  CIFU521-COMMENT2              PIC X(60).             00250017
+003440         03  FILLER                        PIC X(28).             00344017
+003500     02  CIFU521-RETURN-FIELDS.                                   00350009
+003600         03  CIFU521-ERRORCODE             PIC S9(9)   COMP.      00360009
+003700         03  CIFU521-SQLCODE               PIC S9(9)   COMP.      00370009
+003800         03  CIFU521-SQLSTATE              PIC X(05).             00380009
+003900         03  CIFU521-SQLTEXT               PIC X(80).             00390009
+004000         03  CIFU521-ERROR-TEXT            PIC X(80).             00400009
+004100         03  FILLER                        PIC X(10).             00410014

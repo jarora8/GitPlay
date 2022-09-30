@@ -1,0 +1,164 @@
+000100 01  DSDS-MSTR-CTL-DATA.                                          00010000
+000200     05  MFC-CONTENTS-101.                                        00020000
+000300         10  XSC-101-110-INFO OCCURS 10 TIMES.                    00030000
+000400             15  SOFT-101-110-CNT    PIC 9(5)            COMP-3.  00040000
+000500             15  SOFT-101-110-AMT    PIC S9(9)V99        COMP-3.  00050000
+000600             15  HARD-101-110-CNT    PIC 9(5)            COMP-3.  00060000
+000700             15  HARD-101-110-AMT    PIC S9(9)V99        COMP-3.  00070000
+000800     05  MFC-CONTENTS-102.                                        00080000
+000900         10  XSC-111-120-INFO OCCURS 10 TIMES.                    00090000
+001000             15  SOFT-111-120-CNT    PIC 9(5)            COMP-3.  00100000
+001100             15  SOFT-111-120-AMT    PIC S9(9)V99        COMP-3.  00110000
+001200             15  HARD-111-120-CNT    PIC 9(5)            COMP-3.  00120000
+001300             15  HARD-111-120-AMT    PIC S9(9)V99        COMP-3.  00130000
+001400     05  MFC-CONTENTS-103.                                        00140000
+001500         10  XSC-121-130-INFO OCCURS 10 TIMES.                    00150000
+001600             15  SOFT-121-130-CNT    PIC 9(5)            COMP-3.  00160000
+001700             15  SOFT-121-130-AMT    PIC S9(9)V99        COMP-3.  00170000
+001800             15  HARD-121-130-CNT    PIC 9(5)            COMP-3.  00180000
+001900             15  HARD-121-130-AMT    PIC S9(9)V99        COMP-3.  00190000
+002000     05  MFC-CONTENTS-104.                                        00200000
+002100         10  XSC-131-140-INFO OCCURS 10 TIMES.                    00210000
+002200             15  SOFT-131-140-CNT    PIC 9(5)            COMP-3.  00220000
+002300             15  SOFT-131-140-AMT    PIC S9(9)V99        COMP-3.  00230000
+002400             15  HARD-131-140-CNT    PIC 9(5)            COMP-3.  00240000
+002500             15  HARD-131-140-AMT    PIC S9(9)V99        COMP-3.  00250000
+002600     05  MFC-CONTENTS-105.                                        00260000
+002700         10  XSC-141-150-INFO OCCURS 10 TIMES.                    00270000
+002800             15  SOFT-141-150-CNT    PIC 9(5)            COMP-3.  00280000
+002900             15  SOFT-141-150-AMT    PIC S9(9)V99        COMP-3.  00290000
+003000             15  HARD-141-150-CNT    PIC 9(5)            COMP-3.  00300000
+003100             15  HARD-141-150-AMT    PIC S9(9)V99        COMP-3.  00310000
+003200     05  MFC-CONTENTS-106.                                        00320000
+003300         10  XSC-151-160-INFO OCCURS 10 TIMES.                    00330000
+003400             15  SOFT-151-160-CNT    PIC 9(5)            COMP-3.  00340000
+003500             15  SOFT-151-160-AMT    PIC S9(9)V99        COMP-3.  00350000
+003600             15  HARD-151-160-CNT    PIC 9(5)            COMP-3.  00360000
+003700             15  HARD-151-160-AMT    PIC S9(9)V99        COMP-3.  00370000
+003800     05  MFC-CONTENTS-107.                                        00380000
+003900         10  XSC-161-170-INFO OCCURS 10 TIMES.                    00390000
+004000             15  SOFT-161-170-CNT    PIC 9(5)            COMP-3.  00400000
+004100             15  SOFT-161-170-AMT    PIC S9(9)V99        COMP-3.  00410000
+004200             15  HARD-161-170-CNT    PIC 9(5)            COMP-3.  00420000
+004300             15  HARD-161-170-AMT    PIC S9(9)V99        COMP-3.  00430000
+004400     05  MFC-CONTENTS-108.                                        00440000
+004500         10  XSC-171-180-INFO OCCURS 10 TIMES.                    00450000
+004600             15  SOFT-171-180-CNT    PIC 9(5)            COMP-3.  00460000
+004700             15  SOFT-171-180-AMT    PIC S9(9)V99        COMP-3.  00470000
+004800             15  HARD-171-180-CNT    PIC 9(5)            COMP-3.  00480000
+004900             15  HARD-171-180-AMT    PIC S9(9)V99        COMP-3.  00490000
+005000     05  MFC-CONTENTS-109.                                        00500000
+005100         10  XSC-181-190-INFO OCCURS 10 TIMES.                    00510000
+005200             15  SOFT-181-190-CNT    PIC 9(5)            COMP-3.  00520000
+005300             15  SOFT-181-190-AMT    PIC S9(9)V99        COMP-3.  00530000
+005400             15  HARD-181-190-CNT    PIC 9(5)            COMP-3.  00540000
+005500             15  HARD-181-190-AMT    PIC S9(9)V99        COMP-3.  00550000
+005600     05  MFC-CONTENTS-110.                                        00560000
+005700         10  XSC-191-200-INFO OCCURS 10 TIMES.                    00570000
+005800             15  SOFT-191-200-CNT    PIC 9(5)            COMP-3.  00580000
+005900             15  SOFT-191-200-AMT    PIC S9(9)V99        COMP-3.  00590000
+006000             15  HARD-191-200-CNT    PIC 9(5)            COMP-3.  00600000
+006100             15  HARD-191-200-AMT    PIC S9(9)V99        COMP-3.  00610000
+006200     05  MFC-CONTENTS-111.                                        00620000
+006300         10  XSC-201-210-INFO OCCURS 10 TIMES.                    00630000
+006400             15  SOFT-201-210-CNT    PIC 9(5)            COMP-3.  00640000
+006500             15  SOFT-201-210-AMT    PIC S9(9)V99        COMP-3.  00650000
+006600             15  HARD-201-210-CNT    PIC 9(5)            COMP-3.  00660000
+006700             15  HARD-201-210-AMT    PIC S9(9)V99        COMP-3.  00670000
+006800     05  MFC-CONTENTS-112.                                        00680000
+006900         10  XSC-211-220-INFO OCCURS 10 TIMES.                    00690000
+007000             15  SOFT-211-220-CNT    PIC 9(5)            COMP-3.  00700000
+007100             15  SOFT-211-220-AMT    PIC S9(9)V99        COMP-3.  00710000
+007200             15  HARD-211-220-CNT    PIC 9(5)            COMP-3.  00720000
+007300             15  HARD-211-220-AMT    PIC S9(9)V99        COMP-3.  00730000
+007400     05  MFC-CONTENTS-113.                                        00740000
+007500         10  XSC-221-230-INFO OCCURS 10 TIMES.                    00750000
+007600             15  SOFT-221-230-CNT    PIC 9(5)            COMP-3.  00760000
+007700             15  SOFT-221-230-AMT    PIC S9(9)V99        COMP-3.  00770000
+007800             15  HARD-221-230-CNT    PIC 9(5)            COMP-3.  00780000
+007900             15  HARD-221-230-AMT    PIC S9(9)V99        COMP-3.  00790000
+008000     05  MFC-CONTENTS-114.                                        00800000
+008100         10  XSC-231-240-INFO OCCURS 10 TIMES.                    00810000
+008200             15  SOFT-231-240-CNT    PIC 9(5)            COMP-3.  00820000
+008300             15  SOFT-231-240-AMT    PIC S9(9)V99        COMP-3.  00830000
+008400             15  HARD-231-240-CNT    PIC 9(5)            COMP-3.  00840000
+008500             15  HARD-231-240-AMT    PIC S9(9)V99        COMP-3.  00850000
+008600     05  MFC-CONTENTS-115.                                        00860000
+008700         10  XSC-241-250-INFO OCCURS 10 TIMES.                    00870000
+008800             15  SOFT-241-250-CNT    PIC 9(5)            COMP-3.  00880000
+008900             15  SOFT-241-250-AMT    PIC S9(9)V99        COMP-3.  00890000
+009000             15  HARD-241-250-CNT    PIC 9(5)            COMP-3.  00900000
+009100             15  HARD-241-250-AMT    PIC S9(9)V99        COMP-3.  00910000
+009200     05  MFC-CONTENTS-116.                                        00920000
+009300         10  XSC-251-260-INFO OCCURS 10 TIMES.                    00930000
+009400             15  SOFT-251-260-CNT    PIC 9(5)            COMP-3.  00940000
+009500             15  SOFT-251-260-AMT    PIC S9(9)V99        COMP-3.  00950000
+009600             15  HARD-251-260-CNT    PIC 9(5)            COMP-3.  00960000
+009700             15  HARD-251-260-AMT    PIC S9(9)V99        COMP-3.  00970000
+009800     05  MFC-CONTENTS-117.                                        00980000
+009900         10  XSC-261-270-INFO OCCURS 10 TIMES.                    00990000
+010000             15  SOFT-261-270-CNT    PIC 9(5)            COMP-3.  01000000
+010100             15  SOFT-261-270-AMT    PIC S9(9)V99        COMP-3.  01010000
+010200             15  HARD-261-270-CNT    PIC 9(5)            COMP-3.  01020000
+010300             15  HARD-261-270-AMT    PIC S9(9)V99        COMP-3.  01030000
+010400     05  MFC-CONTENTS-118.                                        01040000
+010500         10  XSC-271-280-INFO OCCURS 10 TIMES.                    01050000
+010600             15  SOFT-271-280-CNT    PIC 9(5)            COMP-3.  01060000
+010700             15  SOFT-271-280-AMT    PIC S9(9)V99        COMP-3.  01070000
+010800             15  HARD-271-280-CNT    PIC 9(5)            COMP-3.  01080000
+010900             15  HARD-271-280-AMT    PIC S9(9)V99        COMP-3.  01090000
+011000     05  MFC-CONTENTS-119.                                        01100000
+011100         10  XSC-281-290-INFO OCCURS 10 TIMES.                    01110000
+011200             15  SOFT-281-290-CNT    PIC 9(5)            COMP-3.  01120000
+011300             15  SOFT-281-290-AMT    PIC S9(9)V99        COMP-3.  01130000
+011400             15  HARD-281-290-CNT    PIC 9(5)            COMP-3.  01140000
+011500             15  HARD-281-290-AMT    PIC S9(9)V99        COMP-3.  01150000
+011600     05  MFC-CONTENTS-120.                                        01160000
+011700         10  XSC-291-300-INFO OCCURS 10 TIMES.                    01170000
+011800             15  SOFT-291-300-CNT    PIC 9(5)            COMP-3.  01180000
+011900             15  SOFT-291-300-AMT    PIC S9(9)V99        COMP-3.  01190000
+012000             15  HARD-291-300-CNT    PIC 9(5)            COMP-3.  01200000
+012100             15  HARD-291-300-AMT    PIC S9(9)V99        COMP-3.  01210000
+012200     05  MFC-CONTENTS-121.                                        01220000
+012300         10  XSC-301-310-INFO OCCURS 10 TIMES.                    01230000
+012400             15  SOFT-301-310-CNT    PIC 9(5)            COMP-3.  01240000
+012500             15  SOFT-301-310-AMT    PIC S9(9)V99        COMP-3.  01250000
+012600             15  HARD-301-310-CNT    PIC 9(5)            COMP-3.  01260000
+012700             15  HARD-301-310-AMT    PIC S9(9)V99        COMP-3.  01270000
+012800     05  MFC-CONTENTS-122.                                        01280000
+012900         10  XSC-311-320-INFO OCCURS 10 TIMES.                    01290000
+013000             15  SOFT-311-320-CNT    PIC 9(5)            COMP-3.  01300000
+013100             15  SOFT-311-320-AMT    PIC S9(9)V99        COMP-3.  01310000
+013200             15  HARD-311-320-CNT    PIC 9(5)            COMP-3.  01320000
+013300             15  HARD-311-320-AMT    PIC S9(9)V99        COMP-3.  01330000
+013400     05  MFC-CONTENTS-123.                                        01340000
+013500         10  XSC-321-330-INFO OCCURS 10 TIMES.                    01350000
+013600             15  SOFT-321-330-CNT    PIC 9(5)            COMP-3.  01360000
+013700             15  SOFT-321-330-AMT    PIC S9(9)V99        COMP-3.  01370000
+013800             15  HARD-321-330-CNT    PIC 9(5)            COMP-3.  01380000
+013900             15  HARD-321-330-AMT    PIC S9(9)V99        COMP-3.  01390000
+014000     05  MFC-CONTENTS-124.                                        01400000
+014100         10  XSC-331-340-INFO OCCURS 10 TIMES.                    01410000
+014200             15  SOFT-331-340-CNT    PIC 9(5)            COMP-3.  01420000
+014300             15  SOFT-331-340-AMT    PIC S9(9)V99        COMP-3.  01430000
+014400             15  HARD-331-340-CNT    PIC 9(5)            COMP-3.  01440000
+014500             15  HARD-331-340-AMT    PIC S9(9)V99        COMP-3.  01450000
+014600     05  MFC-CONTENTS-125.                                        01460000
+014700         10  XSC-341-350-INFO OCCURS 10 TIMES.                    01470000
+014800             15  SOFT-341-350-CNT    PIC 9(5)            COMP-3.  01480000
+014900             15  SOFT-341-350-AMT    PIC S9(9)V99        COMP-3.  01490000
+015000             15  HARD-341-350-CNT    PIC 9(5)            COMP-3.  01500000
+015100             15  HARD-341-350-AMT    PIC S9(9)V99        COMP-3.  01510000
+015200     05  MFC-CONTENTS-220.                                        01520000
+015300         10  DSDS-MSTR-FILE-DATE PIC S9(7)               COMP-3.  01530000
+015400         10  CURR-NUM-ODB-ACCTS  PIC 9(9)                COMP-3.  01540000
+015500         10  CURR-NUM-INV-ACCTS  PIC 9(9)                COMP-3.  01550000
+015600         10  CURR-TOT-NUM-ACCTS  PIC 9(9)                COMP-3.  01560000
+015700         10  CURR-TOT-NUM-TXS    PIC 9(9)                COMP-3.  01570000
+015800         10  PREV-NUM-ODB-ACCTS  PIC 9(9)                COMP-3.  01580000
+015900         10  PREV-NUM-INV-ACCTS  PIC 9(9)                COMP-3.  01590000
+016000         10  PREV-TOT-NUM-ACCTS  PIC 9(9)                COMP-3.  01600000
+016100         10  PREV-TOT-NUM-TXS    PIC 9(9)                COMP-3.  01610000
+016200         10  CURR-NUM-IMG-ACCTS  PIC 9(9)                COMP-3.  01620000
+016300         10  PREV-NUM-IMG-ACCTS  PIC 9(9)                COMP-3.  01630000
+016400         10  FILLER              PIC X(54).                       01640001

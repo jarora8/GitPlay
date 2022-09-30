@@ -1,0 +1,23 @@
+000100*01  VSAM-FILE-STATUS-CODES.                                      00010000
+000200     02  VSAM-FILE-STATUS        PIC 99.                          00020000
+000300         88  VSAM-SUCCESSFUL                 VALUE 00 04.         00030003
+000400         88  VSAM-SUCCESSFUL-DUPLICATE       VALUE 02.            00040000
+000500         88  VSAM-SUCCESSFUL-RECSIZE         VALUE 04.            00050000
+000600         88  VSAM-SUCCESSFUL-EMPTY           VALUE 05.            00060000
+000700         88  VSAM-SUCCESSFUL-UNIT            VALUE 07.            00070000
+000800         88  VSAM-END-OF-FILE                VALUE 10.            00080000
+000900         88  VSAM-END-OF-FILE-KEYMATCH       VALUE 14.            00090000
+001000         88  VSAM-INVALID-KEY                VALUE 20 THRU 24.    00100000
+001100         88  VSAM-SEQUENCE-ERROR             VALUE 21.            00110000
+001200         88  VSAM-DUPLICATE-RECORD           VALUE 22.            00120000
+001300         88  VSAM-RECORD-NOT-FOUND           VALUE 23.            00130000
+001400         88  VSAM-BOUNDARY-ERROR             VALUE 24.            00140000
+001500         88  VSAM-PERMANENT-ERROR            VALUE 30 THRU 39.    00150000
+001600         88  VSAM-LOGIC-ERROR                VALUE 40 THRU 49.    00160000
+001700         88  VSAM-FILE-ERROR                 VALUE 90 THRU 97.    00170000
+001800         88  VSAM-NOT-AVAILABLE              VALUE 93.            00180000
+001900         88  VSAM-FILE-INTEGRITY-VERIFIED    VALUE 97.            00190000
+002000     02  VSAM-FILE-CODE.                                          00200000
+002100         03  VSAM-RETURN-CODE    PIC 9(2)    COMP.                00210000
+002200         03  VSAM-FUNCTION       PIC 9(1)    COMP.                00220000
+002300         03  VSAM-FEEDBACK       PIC 9(3)    COMP.                00230000

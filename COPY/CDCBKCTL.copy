@@ -1,0 +1,171 @@
+      ******************************************************************
+      * DCLGEN TABLE(CDC.BANKCTL)                                      *
+      *        LIBRARY(LMFPROG.APPLDCL.U099074(CDCBKCTL))              *
+      *        ACTION(REPLACE)                                         *
+      *        LANGUAGE(COBOL)                                         *
+      *        APOST                                                   *
+      * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+      ******************************************************************
+           EXEC SQL DECLARE CDC.BANKCTL TABLE
+           ( UBKC_BANK_NBR                  DECIMAL(3, 0) NOT NULL,
+             UBKC_BANK_NAME                 CHAR(40) NOT NULL,
+             UBKC_ADDRESS                   CHAR(40) NOT NULL,
+             UBKC_CITY_STATE                CHAR(30) NOT NULL,
+             UBKC_PHONE_NBR                 CHAR(12) NOT NULL,
+             UBKC_SHORT_NAME_1              CHAR(25) NOT NULL,
+             UBKC_SHORT_NAME_2              CHAR(15) NOT NULL,
+             UBKC_BANK_CIF_ID               CHAR(4) NOT NULL,
+             UBKC_HOLDING_CO                DECIMAL(3, 0) NOT NULL,
+             UBKC_TRANS_ROUTING             DECIMAL(9, 0) NOT NULL,
+             UBKC_FED_TAX_ID                DECIMAL(9, 0) NOT NULL,
+             UBKC_DSD_SET_ID                CHAR(4) NOT NULL,
+             UBKC_DSS_SET_ID                CHAR(4) NOT NULL,
+             UBKC_CD_SET_ID                 CHAR(4) NOT NULL,
+             UBKC_RILS_SET_ID               CHAR(4) NOT NULL,
+             UBKC_CL_ASSET_BR_1             DECIMAL(5, 0) NOT NULL,
+             UBKC_CL_ASSET_BR_2             DECIMAL(5, 0) NOT NULL,
+             UBKC_CL_ASSET_BR_3             DECIMAL(5, 0) NOT NULL,
+             UBKC_CL_ASSET_BR_4             DECIMAL(5, 0) NOT NULL,
+             UBKC_CL_ASSET_BR_5             DECIMAL(5, 0) NOT NULL,
+             UBKC_HOLIDAY_1                 DECIMAL(9, 0) NOT NULL,
+             UBKC_HOLIDAY_2                 DECIMAL(9, 0) NOT NULL,
+             UBKC_HOLIDAY_3                 DECIMAL(9, 0) NOT NULL,
+             UBKC_HOLIDAY_4                 DECIMAL(9, 0) NOT NULL,
+             UBKC_HOLIDAY_5                 DECIMAL(9, 0) NOT NULL,
+             UBKC_HOLIDAY_6                 DECIMAL(9, 0) NOT NULL,
+             UBKC_HOLIDAY_7                 DECIMAL(9, 0) NOT NULL,
+             UBKC_HOLIDAY_8                 DECIMAL(9, 0) NOT NULL,
+             UBKC_HOLIDAY_9                 DECIMAL(9, 0) NOT NULL,
+             UBKC_HOLIDAY_10                DECIMAL(9, 0) NOT NULL,
+             UBKC_HOLIDAY_11                DECIMAL(9, 0) NOT NULL,
+             UBKC_HOLIDAY_12                DECIMAL(9, 0) NOT NULL,
+             UBKC_HOLIDAY_13                DECIMAL(9, 0) NOT NULL,
+             UBKC_HOLIDAY_14                DECIMAL(9, 0) NOT NULL,
+             UBKC_HOLIDAY_15                DECIMAL(9, 0) NOT NULL,
+             UBKC_LAST_CREATED              TIMESTAMP NOT NULL,
+             UBKC_ZIP_CODE                  DECIMAL(5, 0) NOT NULL,
+             UBKC_ST_TAX_ID                 CHAR(12) NOT NULL,
+             UBKC_SHORT_NAME_3              CHAR(12) NOT NULL,
+             UBKC_SHORT_NAME_4              CHAR(9) NOT NULL,
+             UBKC_ADP_CO_CODE1              CHAR(3) NOT NULL,
+             UBKC_ADP_CO_CODE2              CHAR(3) NOT NULL,
+             UBKC_MILEAGE_RATE              DECIMAL(6, 4) NOT NULL,
+             UBKC_MLPS_DSDS_SC              DECIMAL(3, 0) NOT NULL,
+             UBKC_MLPS_DSDS_STM             DECIMAL(3, 0) NOT NULL,
+             UBKC_BANK_WEB_ADDR             CHAR(70) NOT NULL,
+             UBKC_RE_EMAIL_ADDR             CHAR(70) NOT NULL,
+             UBKC_RE_PHONE_NBR              CHAR(12) NOT NULL,
+             UBKC_CCM_PRIM_CODE             CHAR(3) NOT NULL,
+             UBKC_CCM_SEC_CODE              CHAR(3) NOT NULL,
+             UBKC_INTERBNK_ACCT             DECIMAL(9, 0) NOT NULL,
+             UBKC_STATE_CODE                DECIMAL(2, 0) NOT NULL,
+             UBKC_AUTO_EM_ADDR              CHAR(70) NOT NULL,
+             UBKC_CHARTER_NBR               DECIMAL(5, 0) NOT NULL,
+             UBKC_FDIC_CERT_NBR             DECIMAL(5, 0) NOT NULL,
+             UBKC_IMS_IND                   DECIMAL(3, 0) NOT NULL,
+             UBKC_LOAN_DEPOSIT_RATIO        DECIMAL(11, 6) NOT NULL,
+             UBKC_INSTANT_ISSUE_PORT        DECIMAL(5, 0) NOT NULL,
+             UBKC_INTERNAL_MNYORDER_ACCT    DECIMAL(9, 0) NOT NULL,
+             UBKC_INTERNAL_CASHIER_ACCT     DECIMAL(9, 0) NOT NULL,
+             UBKC_INTERNAL_DISB_ACCT        DECIMAL(9, 0) NOT NULL,
+             UBKC_NON_BANK_IND              CHAR(1) NOT NULL,
+             UBKC_TPA_CODE                  CHAR(3) NOT NULL
+           ) END-EXEC.
+      ******************************************************************
+      * COBOL DECLARATION FOR TABLE CDC.BANKCTL                        *
+      ******************************************************************
+       01  CDC-BANKCTL.
+           10 UBKC-BANK-NBR        PIC S9(3)V USAGE COMP-3.
+           10 UBKC-BANK-NAME       PIC X(40).
+           10 UBKC-ADDRESS         PIC X(40).
+           10 UBKC-CITY-STATE      PIC X(30).
+           10 UBKC-PHONE-NBR       PIC X(12).
+           10 UBKC-SHORT-NAME-1    PIC X(25).
+           10 UBKC-SHORT-NAME-2    PIC X(15).
+           10 UBKC-BANK-CIF-ID     PIC X(4).
+           10 UBKC-HOLDING-CO      PIC S9(3)V USAGE COMP-3.
+           10 UBKC-TRANS-ROUTING   PIC S9(9)V USAGE COMP-3.
+           10 UBKC-FED-TAX-ID      PIC S9(9)V USAGE COMP-3.
+           10 UBKC-DSD-SET-ID      PIC X(4).
+           10 UBKC-DSS-SET-ID      PIC X(4).
+           10 UBKC-CD-SET-ID       PIC X(4).
+           10 UBKC-RILS-SET-ID     PIC X(4).
+           10 UBKC-CL-ASSET-BR-TABLE.
+               15 UBKC-CL-ASSET-BR-1   PIC S9(5)V USAGE COMP-3.
+               15 UBKC-CL-ASSET-BR-2   PIC S9(5)V USAGE COMP-3.
+               15 UBKC-CL-ASSET-BR-3   PIC S9(5)V USAGE COMP-3.
+               15 UBKC-CL-ASSET-BR-4   PIC S9(5)V USAGE COMP-3.
+               15 UBKC-CL-ASSET-BR-5   PIC S9(5)V USAGE COMP-3.
+           10 FILLER REDEFINES UBKC-CL-ASSET-BR-TABLE.
+               15  UBKC-CL-ASSETT-BR-TAB PIC S9(5)   COMP-3
+                                                    OCCURS 5 TIMES.
+           10 UBKC-HOLIDAY-TABLE.
+               15 UBKC-HOLIDAY-1       PIC S9(9)V USAGE COMP-3.
+               15 UBKC-HOLIDAY-2       PIC S9(9)V USAGE COMP-3.
+               15 UBKC-HOLIDAY-3       PIC S9(9)V USAGE COMP-3.
+               15 UBKC-HOLIDAY-4       PIC S9(9)V USAGE COMP-3.
+               15 UBKC-HOLIDAY-5       PIC S9(9)V USAGE COMP-3.
+               15 UBKC-HOLIDAY-6       PIC S9(9)V USAGE COMP-3.
+               15 UBKC-HOLIDAY-7       PIC S9(9)V USAGE COMP-3.
+               15 UBKC-HOLIDAY-8       PIC S9(9)V USAGE COMP-3.
+               15 UBKC-HOLIDAY-9       PIC S9(9)V USAGE COMP-3.
+               15 UBKC-HOLIDAY-10      PIC S9(9)V USAGE COMP-3.
+               15 UBKC-HOLIDAY-11      PIC S9(9)V USAGE COMP-3.
+               15 UBKC-HOLIDAY-12      PIC S9(9)V USAGE COMP-3.
+               15 UBKC-HOLIDAY-13      PIC S9(9)V USAGE COMP-3.
+               15 UBKC-HOLIDAY-14      PIC S9(9)V USAGE COMP-3.
+               15 UBKC-HOLIDAY-15      PIC S9(9)V USAGE COMP-3.
+           10 FILLER REDEFINES UBKC-HOLIDAY-TABLE.
+               15  UBKC-HOLIDAY-TAB      PIC S9(9)   COMP-3
+                                                    OCCURS 15 TIMES.
+           10 UBKC-LAST-CREATED-X.
+               15 UBKC-LAST-CREATED    PIC X(26).
+           10 FILLER REDEFINES UBKC-LAST-CREATED-X.
+               15  UBKC-LAST-CREATED-YR PIC 9(4).
+               15  UBKC-LAST-CREATED-D1 PIC X.
+               15  UBKC-LAST-CREATED-MO PIC 9(2).
+               15  UBKC-LAST-CREATED-D2 PIC X.
+               15  UBKC-LAST-CREATED-DY PIC 9(2).
+               15  UBKC-LAST-CREATED-D3 PIC X.
+               15  UBKC-LAST-CREATED-HR PIC 9(2).
+               15  UBKC-LAST-CREATED-P1 PIC X.
+               15  UBKC-LAST-CREATED-MI PIC 9(2).
+               15  UBKC-LAST-CREATED-P2 PIC X.
+               15  UBKC-LAST-CREATED-SE PIC 9(2).
+               15  UBKC-LAST-CREATED-P3 PIC X.
+               15  UBKC-LAST-CREATED-ML PIC 9(6).
+           10 UBKC-ZIP-CODE        PIC S9(5)V USAGE COMP-3.
+           10 UBKC-ST-TAX-ID       PIC X(12).
+           10 UBKC-SHORT-NAME-3    PIC X(12).
+           10 UBKC-SHORT-NAME-4    PIC X(9).
+           10 UBKC-ADP-CO-CODE1    PIC X(3).
+           10 UBKC-ADP-CO-CODE2    PIC X(3).
+           10 UBKC-MILEAGE-RATE    PIC S9(2)V9(4) USAGE COMP-3.
+           10 UBKC-MLPS-DSDS-SC    PIC S9(3)V USAGE COMP-3.
+           10 UBKC-MLPS-DSDS-STM   PIC S9(3)V USAGE COMP-3.
+           10 UBKC-BANK-WEB-ADDR   PIC X(70).
+           10 UBKC-RE-EMAIL-ADDR   PIC X(70).
+           10 UBKC-RE-PHONE-NBR    PIC X(12).
+           10 UBKC-CCM-PRIM-CODE   PIC X(3).
+           10 UBKC-CCM-SEC-CODE    PIC X(3).
+           10 UBKC-INTERBNK-ACCT   PIC S9(9)V USAGE COMP-3.
+           10 UBKC-STATE-CODE      PIC S9(2)V USAGE COMP-3.
+           10 UBKC-AUTO-EM-ADDR    PIC X(70).
+           10 UBKC-CHARTER-NBR     PIC S9(5)V USAGE COMP-3.
+           10 UBKC-FDIC-CERT-NBR   PIC S9(5)V USAGE COMP-3.
+           10 UBKC-IMS-IND         PIC S9(3)V USAGE COMP-3.
+           10 UBKC-LOAN-DEPOSIT-RATIO
+              PIC S9(5)V9(6) USAGE COMP-3.
+           10 UBKC-INSTANT-ISSUE-PORT
+              PIC S9(5)V USAGE COMP-3.
+           10 UBKC-INTERNAL-MNYORDER-ACCT
+              PIC S9(9)V USAGE COMP-3.
+           10 UBKC-INTERNAL-CASHIER-ACCT
+              PIC S9(9)V USAGE COMP-3.
+           10 UBKC-INTERNAL-DISB-ACCT
+              PIC S9(9)V USAGE COMP-3.
+           10 UBKC-NON-BANK-IND    PIC X(1).
+           10 UBKC-TPA-CODE        PIC X(3).
+      ******************************************************************
+      * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 62      *
+      ******************************************************************

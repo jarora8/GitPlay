@@ -1,0 +1,6 @@
+  dfsplm02: proc options(main);
+  /*dcl clpls02 entry; */
+    put skip list(' CLPLM02 Starting');
+    %include dfsinclc;
+    put skip list(' CLPLM02 Ending');
+ end dfsplm02;

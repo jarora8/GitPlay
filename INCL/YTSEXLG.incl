@@ -1,0 +1,196 @@
+ /**********************************************************************
+
+ Date   : April 2019
+ Author : Christian Hirschi
+ Purpose: YTSEXLG Entry Declaration
+
+ -----------------------------------------------------------------------
+ MODIFICATION
+ ------------
+ CO: Christian OTT        (A158147)
+ CH: Christian Hirschi    (A336712)
+ YL: Yasmin Luetzelschwab (A722485)
+ -----------------------------------------------------------------------
+
+ -----------------------------------------------------------------------
+ TASS000017:  DC 3/2020  14.08.2020
+ -----------------------------------------------------------------------
+ 28.05.2020 | CH | add requestSubId
+ 06.05.2020 | CO | TRACE PARAMETER
+ -----------------------------------------------------------------------
+ TASS000013:  DC 2/2020  08.05.2020
+ -----------------------------------------------------------------------
+ 16.03.2020 | CO | Package name is new an additional parameter
+ -----------------------------------------------------------------------
+ TASS000009:  DC 1/2020  14.02.2020
+ -----------------------------------------------------------------------
+ 11.11.2019 | YL | change YTSEXLG#LogEx
+ -----------------------------------------------------------------------
+ TASS000005:  DC 3/2019  09.08.2019
+ -----------------------------------------------------------------------
+ 26.04.2019 | CH | Initial version
+ -----------------------------------------------------------------------
+
+ **********************************************************************/
+
+ /*--- table PL/1 structure ------------------------------------------*/
+ %xinclude VTS090A1;
+
+ /*--- dcl entry -----------------------------------------------------*/
+ dcl YTSEXLG
+   entry(type VTS090D#record_T inOnly nonAsgn byAddr
+        ,type TSDEFS#trace_T   inOnly nonAsgn byAddr
+        );
+
+ %dcl @YTSEXLG#LogEx entry;
+ %do skip;/*------------------------------------------------------------
+ this macro gathers all required informations for an exception log
+ entry and calls the YTSEXLG module which does the insertion
+ ----------------------------------------------------------------*/%end;
+ %@YTSEXLG#LogEx:
+   proc(@$requestId
+       ,@$requestSubId
+       ,@$ifmsServiceException
+       ,@$returnStruc
+       ,@$returnCode
+       ,@$reasonCode
+       ,@$errorMessage
+       ,@$packageName
+       ,@$trace
+       )
+   statement;
+
+   dcl @$requestId            char noScan;
+   dcl @$requestSubId         char noScan;
+   dcl @$ifmsServiceException char noScan;
+   dcl @$returnStruc          char noScan;
+   dcl @$returnCode           char noScan;
+   dcl @$reasonCode           char noScan;
+   dcl @$errorMessage         char noScan;
+   dcl @$packageName          char noScan;
+   dcl @$trace                char noScan;
+
+   dcl @record char noScan;
+   @record = 'record'||counter;
+
+   /*--- dcl TTS090A1 record -----------------------------------------*/
+   ans('/*---  START MACRO @YTSEXLG#LogEx  -------------------*/')
+     col(2) noScan;
+   ans('/*EX*/ do;')
+     col(2) noScan;
+   ans('/*EX*/   dcl '||@record||' type VTS090D#record_T ctl;')
+     col(2) noScan;
+   ans('/*EX*/   alloc '||@record||';')
+     col(2) noScan;
+
+   /*--- REQUEST-ID --------------------------------------------------*/
+   if parmset(@$requestId) then
+     ans('/*EX*/   '||@record||'.REQUEST_ID = '||@$requestId||';')
+       col(2) noScan;
+   else
+     ans('/*EX*/   '||@record||'.REQUEST_ID = "";')
+       col(2) noScan;
+
+   /*--- REQUEST-SUB-ID ----------------------------------------------*/
+   if parmset(@$requestSubId) then
+   do;
+     ans('/*EX*/   '||@record||'.REQUEST_SUB_ID = '||@$requestSubId||';'
+        )
+       col(2) noScan;
+     ans('/*EX*/   '||@record||'.REQUEST_SUB_ID_IND = 0;')
+       col(2) noScan;
+   end;
+   else
+   do;
+     ans('/*EX*/   '||@record||'.REQUEST_SUB_ID = "";')
+       col(2) noScan;
+     ans('/*EX*/   '||@record||'.REQUEST_SUB_ID_IND = -1;')
+       col(2) noScan;
+   end;
+
+   /*--- default values ----------------------------------------------*/
+   ans('/*EX*/   '||@record||'.MAIN_NAME = mainName();')
+     col(2) noScan;
+   ans('/*EX*/   '||@record||'.PROC_NAME = procName();')
+     col(2) noScan;
+   ans('/*EX*/   '||@record||'.SOURCE_LINE = sourceLine();')
+     col(2) noScan;
+   ans('/*EX*/   '||@record||'.JOB_NAME = getSysWord("JOBNAME");')
+     col(2) noScan;
+   ans('/*EX*/   '||@record||'.JOB_NR = getSysWord("JOBNUMBER");')
+     col(2) noScan;
+   ans('/*EX*/   '||@record||'.JES_NODE = getSysWord("JESNODE");')
+     col(2) noScan;
+
+   /*--- IFMS attributes ---------------------------------------------*/
+   if parmset(@$ifmsServiceException) then
+     ans('/*EX*/   '||@record||'.IFMS_SERVICE_EXCEPTION = '
+       ||@$ifmsServiceException||';')
+       col(2) noScan;
+   else
+     ans('/*EX*/   '||@record||'.IFMS_SERVICE_EXCEPTION = "";')
+       col(2) noScan;
+
+   /*--- Package Name ------------------------------------------------*/
+   if parmset(@$packageName) then
+     ans('/*EX*/   '||@record||'.PACKAGE_NAME = '
+       ||@$packageName||';')
+     col(2) noScan;
+   else
+     ans('/*EX*/   '||@record||'.PACKAGE_NAME = packageName();')
+       col(2) noScan;
+
+   /*--- return attributes -------------------------------------------*/
+   if ^(parmset(@$returnStruc)
+       ^(parmset(@$returnCode)  |
+         parmset(@$reasonCode)  |
+         parmset(@$errorMessage)
+        )
+       )
+   then note('either @$returnStruc or @$returnCode,@$reasonCode,' ||
+             '@$errorMessage can be filled',16);
+
+   if parmset(@$returnStruc) then do;
+     ans('/*EX*/   '||@record||'.RETURN_CODE   = '||@$returnStruc||
+         '.returnCode;')
+       col(2) noScan;
+     ans('/*EX*/   '||@record||'.REASON_CODE   = '||@$returnStruc||
+         '.reasonCode;')
+       col(2) noScan;
+     ans('/*EX*/   '||@record||'.ERROR_MESSAGE = '||@$returnStruc||
+         '.reasonTxt;')
+       col(2) noScan;
+   end;
+   else do;
+     if parmset(@$returnCode) then
+       ans('/*EX*/   '||@record||'.RETURN_CODE   = '||@$returnCode||';')
+         col(2) noScan;
+     else note('@$returnCode has to be filled',16);
+
+     if parmset(@$reasonCode) then
+       ans('/*EX*/   '||@record||'.REASON_CODE   = '||@$reasonCode||';')
+         col(2) noScan;
+     else note('@$reasonCode has to be filled',16);
+
+     if parmset(@$errorMessage) then
+       ans('/*EX*/   '||@record||'.ERROR_MESSAGE = '||
+           @$errorMessage||';')
+         col(2) noScan;
+     else note('@$errorMessage has to be filled',16);
+   end;
+
+   /*--- YTSEXLG default call ----------------------------------------*/
+   if parmset(@$trace) then
+     ans('/*EX*/   call YTSEXLG('||@record||',' || @$trace ||');')
+       col(2) noScan;
+   else
+     ans('/*EX*/   call YTSEXLG('||@record||',YTSTRAC#MainData.trace);')
+       col(2) noScan;
+   ans('/*EX*/   free '||@record||';')
+     col(2) noScan;
+   ans('/*EX*/ end;')
+     col(2) noScan;
+   ans('/*---  END MACRO @YTSEXLG#LogEx  ---------------------*/')
+     col(2) noScan;
+
+ %end @YTSEXLG#LogEx;

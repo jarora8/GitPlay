@@ -1,0 +1,587 @@
+ /**********************************************************************
+
+ Date   : September 2019
+ Author : Yasmin Luetzelschwab
+ Purpose: Common TASS Type Definitions
+
+ DESCRIPTION
+ -----------
+ Normally this member has to be included on top of all modules.
+ Also %XINCLUDE (be aware of the X at the beginning) in all
+ copybooks (structures and entry definitions), so everone sees
+ where the TSDEFS structures comes from.
+
+ ATTENTION: DO NOT CHANGE ANY DEFINITION WITHOUT RECOMPILE ALL
+ ========== DEPENDENT MODULES! Better make a new type, and conso-
+            lidate it in a managed way (if necessary).
+            New type definitions are never a problem. The type
+            must always begin with TSDEFS#.
+            Reason: The TSDEFS structures are parts of structures
+                    with versions, so any change of a generally
+                    type change also a versioned structure.
+
+ -----------------------------------------------------------------------
+ MODIFICATION
+ ------------
+ YL: Yasmin Luetzelschwab (A722485)
+ CH: Christian Hirschi    (A336712)
+ -----------------------------------------------------------------------
+
+ -----------------------------------------------------------------------
+ TASS000009:  DC 1/2020  14.02.2020
+ -----------------------------------------------------------------------
+ 05.06.2019 | YL | add requestId in TSDEFS#commHeader_T
+ -----------------------------------------------------------------------
+ TASS000005:  DC 3/2019  09.08.2019
+ -----------------------------------------------------------------------
+ 05.06.2019 | CH | add alias TSDEFS#timestamp6_T & TSDEFS#timestamp12_T
+ -----------------------------------------------------------------------
+ TASS000002:  DC 2/2019  10.05.2019
+ -----------------------------------------------------------------------
+ 06.09.2018 | YL | Initial version
+ -----------------------------------------------------------------------
+
+ **********************************************************************/
+
+ /*---------------------------------------------------------------------
+      COMPILETIME and SYSVERSION
+ ---------------------------------------------------------------------*/
+ %dcl (COMPILETIME,SYSVERSION,QUOTE) builtin;
+ /*--- use abnormal to be sure, the text is in the loadmodule --------*/
+ dcl 1 * static nonAsgn abNormal
+     ,2 *                char(04) init('*** ')
+     ,2 TSDEFS#COMP_NAME char(08) init(packagename())
+     ,2 *                char(13) init(' / COMPILED :')
+     ,2 TSDEFS#COMP_TIME char(18) init(QUOTE(COMPILETIME))
+     ,2 *                char(09) init(' / WITH: ')
+     ,2 TSDEFS#COMP_VERS char(31) init(QUOTE(SYSVERSION))
+     ,2 *                char(04) init(' ***')
+ ;
+
+ %deactivate COMPILETIME,SYSVERSION,QUOTE;
+
+ /*---------------------------------------------------------------------
+   PREPROCESSOR PROCEDURES
+ ---------------------------------------------------------------------*/
+ %dcl @headerCnt                  fixed init(0);
+ %dcl @TSDEFS#INIT_TABLE          entry;
+ %do skip;/*------------------------------------------------------------
+ @TSDEFS#INIT_TABLE
+   this macro generate the code for the initialization of the
+   resulttables.
+
+   When a module has resulttable-areas in the automatic storage
+   (as AREA-parts in the comm-structure), this storage can't
+   initialized via a normal init statement, so this macro generate
+   the code for the correct initialization.
+
+   This macro should never called directly from the source. Every
+   structure defintion should contain a #mmmmmm_INIT preprocessor
+   macro (mmmmmm = defintionname). In this #mmmmmm_init macro is
+   the call to this @TSDEFS#INIT_TABLE macro with all resulttables
+   of the structure as input.
+
+   This macro based solution prevents initialization faults. In case
+   of a structure extension with a new resulttable, only the macro
+   #mmmmmm_INIT has to update and the correct code is generated at
+   compiletime (no sourcecode changes needed).
+ ----------------------------------------------------------------*/%end;
+ %@TSDEFS#INIT_TABLE:
+   proc(@$main
+       ,@$list
+       )
+   statement;
+
+   dcl @$main char noScan;
+   dcl @$list char noScan;
+
+   dcl stru   char;
+   dcl elem   char;
+   dcl area   char;
+   dcl size   char;
+
+   dcl count  fixed noScan;
+   dcl start  fixed noScan;
+   dcl pos1   fixed noScan;
+   dcl pos2   fixed noScan;
+   dcl pos3   fixed noScan;
+
+   dcl headerStru char noScan;
+
+   /*--- both parameter must by set ----------------------------------*/
+   if ^parmset(@$main)
+     then do;
+       note('@TSDEFS#INIT_TABLE: structure name missing',16);
+       return;
+     end;
+
+   if ^parmset(@$list)
+     then do;
+       note('@TSDEFS#INIT_TABLE: elements missing',16);
+       return;
+     end;
+
+   /*--- Trim the name of the target main-structure ------------------*/
+   stru = trim(@$main);
+   if stru = ''
+     then do;
+       note('@TSDEFS#INIT_TABLE: structure name is empty',16);
+       return;
+     end;
+
+   @headerCnt += 1;
+   headerStru  = 'TSDEFS@' || trim(@headerCnt);
+
+   ans('/*---  START MACRO @TSDEFS#INIT_TABLE -------------*/')
+     col(2) noScan;
+   ans('/*D*/ Dcl ' || headerStru ||' type TSDEFS#tabHeader_T based;')
+     col(2) noScan;
+
+   /*--- process every list element (always three values) ------------*/
+   count = 0;
+   start = 1;
+
+   do while(start < length(@$list));
+     count = count + 1;
+
+     pos1 = index(@$list,',',start);
+     if pos1 > 0
+       then pos2 = index(@$list,',',pos1 + 1);
+       else pos2 = 0;
+
+     if pos2 > 0
+       then pos3 = index(@$list,',',pos2 + 1);
+       else pos3 = 0;
+
+     /*--- check if the tripple is okay ------------------------------*/
+     if pos1 = 0 ! pos2 = 0 ! pos3 = 0
+       then do;
+         note('@TSDEFS#INIT: not three values for element' || count,16);
+         return;
+       end;
+
+     elem = trim(substr(@$list,start ,pos1 - start ));
+     area = trim(substr(@$list,pos1+1,pos2 - pos1 -1));
+     size = trim(substr(@$list,pos2+1,pos3 - pos2 -1));
+
+     /*--- check the content of every part ---------------------------*/
+     if elem = ''
+       then do;
+         note('@TSDEFS#INIT: value 1 of Element'
+           || count
+           || ' empty'
+             ,16
+             );
+
+         return;
+       end;
+
+     if area = ''
+       then do;
+         note('@TSDEFS#INIT: value 2 of Element'
+           || count
+           || ' empty'
+             ,16
+             );
+
+         return;
+       end;
+
+     If size = ''
+       then do;
+         note('@TSDEFS#INIT: value 3 of Element'
+           || count
+           || ' empty'
+             ,16
+             );
+         return;
+       end;
+
+     /*--- generate the code for this line ---------------------------*/
+     ans('/*D*/ ' || stru || '.' || elem || '=addr(' ||
+                     stru || '.' || area || ');')
+       col(2) noScan;
+     ans('/*D*/ ' || stru || '.' || elem || '->' ||
+       headerStru || '=value(:TSDEFS#tabHeader_T:);')
+       col(2) noScan;
+     ans('/*D*/ ' || stru || '.' || elem || '->' ||
+       headerStru || '.tabSize=' || size || ';')
+       col(2) noScan;
+     ans('/*D*/ ' || stru || '.' || elem || '->' ||
+       headerStru || '.inUse=0;')
+       col(2) noScan;
+     ans('/*D*/ ' || stru || '.' || elem || '->' ||
+       headerStru || '.version=' || stru || '.version;')
+       col(2) noScan;
+
+     start = pos3 + 1;
+   end; /* do while(start < length(@$list)) */
+
+   ans('/*---    END MACRO @TSDEFS#INIT_TABLE -------------*/')
+     col(2) noScan;
+
+ %end @TSDEFS#INIT_TABLE;
+
+ %dcl @TSDEFS#INIT_RETURN         entry;
+ %do skip;/*------------------------------------------------------------
+ @TSDEFS#INIT_RETURN
+   this macro generate the code for the initialization of the
+   returnstructure.
+ ----------------------------------------------------------------*/%end;
+ %@TSDEFS#INIT_RETURN:
+   proc(@$return)
+   statement;
+
+   dcl @$return char noScan;
+
+   dcl struk    char;
+
+   if ^parmset(@$return)
+     then do;
+       note('TSDEFS#INIT_RETURN: Returnstructure is missing',16);
+       return;
+     end;
+
+   struk = trim(@$return);
+
+   ans('/*---  START MACRO @TSDEFS#INIT_RETURN --------------*/')
+     col(2) noScan;
+   ans('/*T*/ do;')
+     col(2) noScan;
+   ans('/*T*/   ' || struk || '.returnCode = 0;'                  )
+     col(2) noScan;
+   ans('/*T*/   ' || struk || '.reasonCode = 0;'                  )
+     col(2) noScan;
+   ans('/*T*/   ' || struk || ".reasonTxt  = '';"                 )
+     col(2) noScan;
+   ans('/*T*/ end;')
+     col(2) noScan;
+   ans('/*---  END MARCO @TSDEFS#INIT_RETURN ----------------*/')
+     col(2) noScan;
+
+ %end @TSDEFS#INIT_RETURN;
+
+ %DCL @TSDEFS#VERSION_CHECK       entry;
+ %do skip;/*------------------------------------------------------------
+ @TSDEFS#INIT_TABLE
+   this macro generate the code for the initialization of the
+   resulttables.
+
+   When a module has resulttable-areas in the automatic storage
+   (as AREA-parts in the comm-structure), this storage can't
+   initialized via a normal init statement, so this macro generate
+   the code for the correct initialization.
+
+   This macro should never called directly from the source. Every
+   structure defintion should contain a #mmmmmm_INIT preprocessor
+   macro (mmmmmm = defintionname). In this #mmmmmm_init macro is
+   the call to this @TSDEFS#INIT_TABLE macro with all resulttables
+   of the structure as input.
+
+   This macro based solution prevents initialization faults. In case
+   of a structure extension with a new resulttable, only the macro
+   #mmmmmm_INIT has to update and the correct code is generated at
+   compiletime (no sourcecode changes needed).
+ ----------------------------------------------------------------*/%end;
+ %@TSDEFS#VERSION_CHECK:
+   proc(@$version
+       ,@$vName
+       ,@$vNumber
+       ,@$return
+       )
+   statement;
+
+   dcl @$version char noScan;
+   dcl @$vName   char noScan;
+   dcl @$vNumber char noScan;
+   dcl @$return  char noScan;
+
+   if ^parmset(@$version)
+     then do;
+       note('TSDEFS#VERSION_CHECK: version missing',16);
+       return;
+     end;
+
+   if ^parmset(@$vName)
+     then do;
+       note('TSDEFS#VERSION_CHECK: target version name missing',16);
+       return;
+     end;
+
+   if ^parmset(@$vNumber)
+     then do;
+       note('TSDEFS#VERSION_CHECK: target version number missing',16);
+       return;
+     end;
+
+   if ^parmset(@$return)
+     then do;
+       note('TSDEFS#VERSION_CHECK: return structure is missing',16);
+       return;
+     end;
+
+   /*--- Check Verion ------------------------------------------------*/
+   ans('/*---  START MACRO @TSDEFS#VERSION_CHECK ------------*/')
+     col(2) noScan;
+   ans('/*T*/ if '||@$version||'.versionName   ^= '||@$vName    )
+     col(2) noScan;
+   ans('/*T*/  | '||@$version||'.versionNumber ^= '||@$vNumber  )
+     col(2) noScan;
+   ans('/*T*/ then do;'                                         )
+     col(2) noScan;
+   ans('/*T*/   call YTSTOOL#pgmError('||@$return               )
+     col(2) noScan;
+   ans('/*T*/                        ,"invalid version: "'      )
+     col(2) noScan;
+   ans('/*T*/                       ||'||@$version              )
+     col(2) noScan;
+   ans('/*T*/                         .versionName'             )
+     col(2) noScan;
+   ans('/*T*/                       ||" "'                      )
+     col(2) noScan;
+   ans('/*T*/                       ||'||@$version              )
+     col(2) noScan;
+   ans('/*T*/                         .versionNumber'           )
+     col(2) noScan;
+   ans('/*T*/                       ||"|supported version:"'    )
+     col(2) noScan;
+   ans('/*T*/                       ||'||@$vName                )
+     col(2) noScan;
+   ans('/*T*/                       ||" "'                      )
+     col(2) noScan;
+   ans('/*T*/                       ||'||@$vNumber              )
+     col(2) noScan;
+   ans('/*T*/                         );'                       )
+     col(2) noScan;
+   ans('/*T*/   return;'                                        )
+     col(2) noScan;
+   ans('/*T*/ end;'                                             )
+     col(2) noScan;
+   ans('/*T*/ else do;'                                         )
+     col(2) noScan;
+   ans('/*T*/   '||@$version||'.methodName = procName();'       )
+     col(2) noScan;
+   ans('/*T*/ end;'                                             )
+     col(2) noScan;
+   ans('/*---  END MARCO @TSDEFS#VERSION_CHECK --------------*/')
+     col(2) noScan;
+
+ %end @TSDEFS#VERSION_CHECK;
+
+ /*---------------------------------------------------------------------
+      ALIAS DEFINITIONS
+ ---------------------------------------------------------------------*/
+ /*--- db2 timestamp definition --------------------------------------*/
+ %do skip;/*------------------------------------------------------------
+    Every module that uses an temporal identificator should use this
+    alias and provide the data in the db2 timestamp format.
+    timestamp(6): YYYY-MM-DD-hh.mm.ss.nnnnnn
+    timestamp(12):YYYY-MM-DD-hh.mm.ss.nnnnnnnnnnnn
+ ----------------------------------------------------------------*/%end;
+ define alias TSDEFS#timestamp6_T  char(26);
+ define alias TSDEFS#timestamp12_T char(32);
+
+ /*--- Db2 null indicator --------------------------------------------*/
+ %do skip;/*------------------------------------------------------------
+    indicates if the field is null or not
+    =0 (is not null)
+    <0 (is null)
+    https://www.ibm.com/support/knowledgecenter/en/SSEPEK_12.0.0/apsg/
+    src/tpc/db2z_indicatorvariablearray.html
+ ----------------------------------------------------------------*/%end;
+ define alias
+ TSDEFS#indicatorVariable fixed bin(15) valuerange(-7,0);
+
+ /*---------------------------------------------------------------------
+      STRUCTURE DEFINITIONS
+ ---------------------------------------------------------------------*/
+ /*--- return structure ----------------------------------------------*/
+ %do skip;/*------------------------------------------------------------
+    Every module delivers the returnvalues as separated paramater.
+    In case of invalid comm-structure versions, the module sets a
+    returncode instead of signal an error.
+    (as is right and proper for a module)
+ ----------------------------------------------------------------*/%end;
+ define structure
+ 1 TSDEFS#return_T
+ ,2 returnCode               bin fixed(31)
+ ,2 reasonCode               bin fixed(31)
+ ,2 reasonTxt                char(400) varying
+ ;
+
+ /*--- trace structure -----------------------------------------------*/
+ %do skip;/*------------------------------------------------------------
+    All TASS-modules have this definition in the comm-structure.
+    This definition is used by the trace module YTSTRAC. For further
+    informations look into YTSTRAC.PL#.
+ ----------------------------------------------------------------*/%end;
+ define structure
+ 1 TSDEFS#trace_T
+ ,2 * union
+  ,3 *                       char(4)
+  ,3 *
+   ,4 traceLvl               bin fixed(16)   unSigned
+   ,4 optionLvl              bin fixed(16)   unSigned
+  ,3 *
+   ,4 bits
+    ,5 isTrace               bit(1)
+    ,5 *                     bit(8)
+    ,5 isTraceExt            bit(1)
+    ,5 isTraceDbg            bit(1)
+    ,5 isTraceIfr            bit(1)
+    ,5 isTraceSQL            bit(1)
+    ,5 isTraceDat            bit(1)
+    ,5 isTracePrm            bit(1)
+    ,5 isTraceFlw            bit(1)
+   ,4 opts
+    ,5 *                     bit(11)
+    ,5 flwWthSepIn           bit(1)
+    ,5 flwWthSepOut          bit(1)
+    ,5 flwWthDrtn            bit(1)
+    ,5 flwWthEndTS           bit(1)
+    ,5 flwWthStartTS         bit(1)
+ ;
+
+ /*--- commit structure ----------------------------------------------*/
+ %do skip;/*------------------------------------------------------------
+    All TASS-modules with checkpoint/commit TST_doCommit have to use
+    this definition for the commit handling.
+ ----------------------------------------------------------------*/%end;
+ define structure
+ 1 TSDEFS#commit_T
+ ,2 ltm                      ptr
+ ,2 pCpwa                    ptr
+ ,2 position                 char(8)
+ ,2 value                    bin fixed(31)
+ ,2 count                    bin fixed(31)
+ ,2 doNotCommit              bit(1) aligned
+ ,2 *                        char(3)
+ ;
+
+ /*--- version definition --------------------------------------------*/
+ %do skip;/*------------------------------------------------------------
+    every versioned structure has to use this definition
+ ----------------------------------------------------------------*/%end;
+ define structure
+ 1 TSDEFS#version_T
+ ,2 * union
+  ,3 fullVersion             char(64)    init('')
+  ,3 *
+   ,4 versionName            char(6)     init(low(6))
+   ,4 versionNumber          pic'99V.99' init(0)
+   ,4 methodName             char(53)    init('')
+ ;
+
+ /*--- resulttable header --------------------------------------------*/
+ %do skip;/*------------------------------------------------------------
+    All TASST resulttables include this header. To keep it simple, there
+    is only one Version with full access to all datafields inside the
+    header (consumer must not changed any if the fields, only read
+    the field version and inuse).
+ ----------------------------------------------------------------*/%end;
+ define structure
+ 1 TSDEFS#tabHeader_T
+ ,2 version                  type TSDEFS#version_T
+                               init(value(:TSDEFS#version_T:))
+ ,2 inUse                    bin fixed(31)  init(0)
+ ,2 tabSize                  bin fixed(31)  init(0)
+ ,2 heapId                   bin fixed(31)  init(0)
+ ,2 isAllocated              bit(1) aligned init('0'b)
+ ,2 isObject                 bit(1) aligned init('0'b)
+ ,2 *                        char(2)        init('')
+ ;
+
+ /*--- message controller --------------------------------------------*/
+ %do skip;/*------------------------------------------------------------
+    A MQ message controller define the sizes (1 initial and max 3 steps
+    expanding). All MQ messages should be build with this message con-
+    troller. (can also used to control any other dynamic buffer)
+ ----------------------------------------------------------------*/%end;
+ define structure
+ 1 TSDEFS#msg_T
+ ,2 mSize                    bin fixed(31)   init(0)
+ ,2 mAnnex                   bin fixed(31)   init(0)
+ ,2 mPtr                     ptr             init(null())
+ ,2 pTrace                   ptr             init(null())
+ ,2 sizes
+  ,3 sizeInit                bin fixed(31)   init(0)
+  ,3 sizeStep1               bin fixed(31)   init(0)
+  ,3 sizeStep2               bin fixed(31)   init(0)
+  ,3 sizeMax                 bin fixed(31)   init(0)
+  ,3 annexMax                bin fixed(31)   init(0)
+ ,2 heapId                   bin fixed(31)   init(0)
+ ,2 mId                      bin fixed(31)   init(0)
+ ,2 reinit
+  ,3 mLength                 bin fixed(31)   init(0)
+  ,3 lastTracePos            bin fixed(31)   init(0)
+  ,3 isOutSized              bit(1) aligned  init('0'b)
+ ;
+
+ /*--- SQLCA as type -------------------------------------------------*/
+ %do skip;/*------------------------------------------------------------
+    SQLCA as type. Descriptors are obsolete if the SQLCA is used as
+    parameter of a procedure (shorter code).
+ ----------------------------------------------------------------*/%end;
+ define structure
+ 1 TSDEFS#sqlca_T
+ ,%include SQLSTATE;
+
+ /*--- session key ---------------------------------------------------*/
+ %do skip;/*------------------------------------------------------------
+    this structure has to be used if the rowId of an table will be used
+    as a sessionKey outside of the mainframe and/or application
+    !!!!!
+    DEPRECATED: use ZZMTTT
+    !!!!!
+ ----------------------------------------------------------------*/%end;
+ define alias TSDEFS#octet_T bit(8);
+ define structure
+ 1 TSDEFS#sessionKey_T
+ ,2 * union
+  ,3 *
+   ,4 timestamp              char(32)            init(low(32))
+   ,4 rowId                  char(40) var        init(low(40))
+   ,4 *                      char(54)            init(low(54))
+  ,3 char                    char(128) nonAsgn   init(low(128))
+  ,3 value(128)              type TSDEFS#octet_T init((*)((8)'0'b))
+ ;
+
+ /*--- testonly struc ------------------------------------------------*/
+ %do skip;/*------------------------------------------------------------
+    all fields in this structure may only be filled from a testdriver
+ ----------------------------------------------------------------*/%end;
+ define structure
+ 1 TSDEFS#testonly_T
+ ,2 doNotWriteQueue          bit(1) aligned init('0'b)
+ ,2 doNotCommit              bit(1) aligned init('0'b)
+ ,2 *                        char(2)        init('')
+ ;
+
+ /*--- ims data struc ------------------------------------------------*/
+ %do skip;/*------------------------------------------------------------
+    data structure for commit handling
+ ----------------------------------------------------------------*/%end;
+ define structure
+ 1 TSDEFS#imsData_T
+ ,2 ltm                      ptr init(null())
+ ,2 pCpwa                    ptr init(null())
+ ;
+
+ /*--- COMM-struk general --------------------------------------------*/
+ %do skip;/*------------------------------------------------------------
+    this structure is for all general communication-structure
+    attributes.
+ ----------------------------------------------------------------*/%end;
+ define structure
+ 1 TSDEFS#commHeader_T
+ ,2 trace                    type TSDEFS#trace_T
+ ,2 testonly                 type TSDEFS#testonly_T
+ ,2 imsData                  type TSDEFS#imsData_T
+ ,2 requestId                char(80)
+ ;
+
+ /*---------------------------------------------------------------------
+   TASS CONSTANT
+ ---------------------------------------------------------------------*/
+ dcl TSDEFS#TEMPORAL_MAXVAL type TSDEFS#timestamp12_T
+                            value('9999-12-30-00.00.00.000000000000');

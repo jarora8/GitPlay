@@ -1,0 +1,15 @@
+000100*01  CHECK-RECORD.                                                00010000
+000200     02  CK-REPORT-CODE      PIC S999                    COMP-3.  00020000
+000300     02  CK-FILE-ID          PIC XXX.                             00030000
+000400     02  CK-BANK-NO          PIC 99.                              00040000
+000500     02  CK-ACCT-ID          PIC 999                     COMP-3.  00050000
+000600     02  CK-ACCT-NO          PIC 9(9)                    COMP-3.  00060000
+000700     02  CK-CRF-REC-ID       PIC X(11).                           00070000
+000800     02  CK-AMT              PIC S9(9)V99                COMP-3.  00080000
+000900     02  CK-DT               PIC S9(7)                   COMP-3.  00090001
+001000     02  CK-SC-DESC          PIC X(25).                           00100000
+001100     02  FILLER              PIC X(90).                           00110001
+001200*   THIS LAYOUT IS USED FOR REPORT CODES 91 AND 95.               00120000
+001300*        91 = INTEREST CHECKS                                     00130000
+001400*        95 = CLUB CHECKS                                         00140000
+001500*  THIS RECORD IS 150 CHARACTERS                                  00150000

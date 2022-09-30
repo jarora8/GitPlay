@@ -1,0 +1,200 @@
+000100*01  AA-FILEREC.                                                  00010000
+000200******************************************************************00020000
+000300*    ANALYSIS DEPOSIT INTERFACE RECORD DESCRIPTION (228 BYTES)   *00030000
+000400*    THIS RECORD MAY CONTAIN ANY OF THE FOLLOWING RECORD CODES - *00040000
+000500*        AA-RECCODE =                                            *00050000
+000600*          01 POSTED TRANSACTION RECORD                          *00060000
+000700*          02 ACCOUNT IS NEW TO ANALYSIS                         *00070000
+000800*          03 ACCOUNT CHANGE RECORD                              *00080000
+000900*          04 DAILY BALANCE RECORD                               *00090000
+001000*          05 OTHER RECORD                                       *00100000
+001100*          06 ACCOUNT TAKEN OFF ANALYSIS                         *00110000
+001200*          07 BALANCE ADJUSTMENT RECORD                          *00120000
+001300******************************************************************00130000
+001400     03  AA-INSYSTEM             PIC 9(02).                       00140000
+001500     03  AA-KEY.                                                  00150000
+001600         05  AA-BKNBR            PIC 9(03).                       00160000
+001700         05  AA-APPL             PIC 9(02).                       00170000
+001800         05  AA-ACCOUNT          PIC X(25).                       00180000
+001900         05  FILLER     REDEFINES AA-ACCOUNT.                     00190000
+002000             07  FILLER          PIC X(07).                       00200000
+002100             07  AA-ACCTN        PIC 9(18).                       00210000
+002200     03  AA-RECCODE              PIC 9(02).                       00220000
+002300     03  AA-DATA                 PIC X(194).                      00230000
+002400*----------------------------------------------------------------*00240000
+002500     03  AA-TRANSACTION                                           00250000
+002600                        REDEFINES AA-DATA.                        00260000
+002700         05  AA-TRADJFILE        PIC X(01).                       00270000
+002800         05  AA-TREXTC           PIC X(04).                       00280000
+002900         05  AA-TRITC            PIC X(04).                       00290000
+003000         05  AA-TRITEMCT         PIC S9(07)      COMP-3.          00300000
+003100         05  AA-TRPROCDT         PIC S9(07)      COMP-3.          00310000
+003200         05  AA-TREFFDT          PIC S9(07)      COMP-3.          00320000
+003300         05  AA-TRAMT            PIC S9(09)V99   COMP-3.          00330000
+003400         05  AA-TRCOST           PIC S9(09)V99   COMP-3.          00340000
+003500         05  AA-TRFITEMS         PIC S9(04)      COMP             00350000
+003600                                                 OCCURS 5 TIMES.  00360000
+003700         05  AA-TRLITEMS         PIC S9(04)      COMP.            00370000
+003800         05  AA-TRCASH           PIC S9(07)      COMP-3.          00380000
+003900         05  AA-TRINTRATE        PIC SV9(05)     COMP-3.          00390000
+004000         05  AA-TRCC             PIC S9(07)      COMP-3.          00400000
+004100         05  AA-TRLOCKBOX        PIC S9(07)      COMP-3.          00410000
+004200         05  AA-TRCHRGCD         PIC X(01).                       00420000
+004300         05  AA-TRSOURCE         PIC X(04).                       00430000
+004400         05  AA-TRDESC1          PIC X(30).                       00440000
+004500         05  AA-TRDESC2          PIC X(30).                       00450000
+004600         05  AA-TRDESC3          PIC X(30).                       00460000
+004700         05  FILLER              PIC X(39).                       00470000
+004800*----------------------------------------------------------------*00480000
+004900     03  AA-NEWCHGACCT                                            00490000
+005000                        REDEFINES AA-DATA.                        00500000
+005100         05  AA-INTERFACE.                                        00510000
+005200             07  AA-IFCUST1.                                      00520000
+005300                 09  AA-IFC1NA                                    00530000
+005400                                 PIC X(08).                       00540000
+005500                 09  AA-IFC1BRK                                   00550000
+005600                                 PIC S9(04)      COMP.            00560000
+005700             07  AA-IFCUST2.                                      00570000
+005800                 09  AA-IFC2NA                                    00580000
+005900                                 PIC X(08).                       00590000
+006000                 09  AA-IFC2BRK                                   00600000
+006100                                 PIC S9(04)      COMP.            00610000
+006200             07  AA-IFCODE                                        00620000
+006300                                 PIC X(01).                       00630000
+006400             07  AA-IFMOD        PIC X(12).                       00640000
+006500             07  AA-IFALT        PIC X(01).                       00650000
+006600             07  AA-IFUSE        PIC X(01).                       00660000
+006700             07  AA-IFSHORT                                       00670000
+006800                                 PIC X(15).                       00680000
+006900         05  AA-SCAFFIL.                                          00690000
+007000             07  AA-SCABKNBR                                      00700000
+007100                                 PIC S9(03)      COMP-3.          00710000
+007200             07  AA-SCAAPPL                                       00720000
+007300                                 PIC 9(02).                       00730000
+007400             07  AA-SCAACCOUNTX.                                  00740000
+007500                 09  FILLER      PIC X(07).                       00750000
+007600                 09  AA-SCAACCOUNT                                00760000
+007700                                 PIC 9(18).                       00770000
+007800         05  AA-BRANCH           PIC S9(05)      COMP-3.          00780000
+007900         05  AA-TYPE             PIC S9(03)      COMP-3.          00790000
+008000         05  AA-OFFICER1         PIC X(09).                       00800000
+008100         05  AA-OFFICER2         PIC X(09).                       00810000
+008200         05  AA-CLASS            PIC X(02).                       00820000
+008300         05  AA-OPNDT            PIC S9(07)      COMP-3.          00830000
+008400         05  AA-DORM             PIC X(01).                       00840000
+008500         05  AA-STATUS           PIC X(01).                       00850000
+008600         05  AA-SACTION          PIC X(01).                       00860000
+008700         05  AA-SCNXT            PIC S9(07)      COMP-3.          00870000
+008800         05  AA-SCFREQ           PIC X(01).                       00880000
+008900         05  AA-SCTERM           PIC S9(03)      COMP-3.          00890000
+009000         05  AA-SCDAYS           PIC 9(02).                       00900000
+009100         05  AA-CC               PIC S9(07)      COMP-3.          00910000
+009200         05  AA-SIC              PIC S9(05)      COMP-3.          00920000
+009300         05  AA-BALFILE          PIC X(01).                       00930000
+009400         05  AA-USERAREA         PIC X(18).                       00940000
+009500         05  AA-SCDLX            PIC X(04).                       00950000
+009600         05  AA-SCDL REDEFINES AA-SCDLX                           00960000
+009700                                 PIC S9(07)      COMP-3.          00970000
+009800         05  AA-USERAREA2        PIC X(18).                       00980000
+009900         05  AA-USERCODE1        PIC X(01).                       00990000
+010000         05  AA-USERCODE2        PIC X(01).                       01000000
+010100         05  AA-USERCODE3        PIC X(02).                       01010000
+010200         05  AA-USERCODE4        PIC X(02).                       01020000
+010300         05  AA-BALOTHER         PIC S9(15)V99   COMP-3.          01030000
+010400         05  FILLER              PIC X(11).                       01040000
+010500*----------------------------------------------------------------*01050000
+010600     03  AA-DAILYBAL REDEFINES AA-DATA.                           01060000
+010700         05  AA-JULDT            PIC S9(07)      COMP-3.          01070000
+010800         05  AA-BALCUR           PIC S9(11)V99   COMP-3.          01080000
+010900         05  AA-CBALCOL          PIC S9(11)V99   COMP-3.          01090000
+011000         05  AA-BBALCOL          PIC S9(11)V99   COMP-3.          01100000
+011100         05  AA-BALAGR           PIC S9(13)V99   COMP-3.          01110000
+011200         05  AA-CBALCAGR         PIC S9(13)V99   COMP-3.          01120000
+011300         05  AA-BBALCAGR         PIC S9(13)V99   COMP-3.          01130000
+011400         05  AA-BALADAYS         PIC S9(03)      COMP-3.          01140000
+011500         05  AA-BALODAGR         PIC S9(13)V99   COMP-3.          01150000
+011600         05  AA-BALODDAYS        PIC S9(03)      COMP-3.          01160000
+011700         05  AA-BALODCAGR        PIC S9(13)V99   COMP-3.          01170000
+011800         05  AA-BALODCDAYS                                        01180000
+011900                                 PIC S9(03)      COMP-3.          01190000
+012000         05  AA-INTACCRX.                                         01200000
+012100             07  AA-INTACCR                                       01210000
+012200                                 PIC S9(09)V99   COMP-3.          01220000
+012300         05  AA-TOTINTACCRX.                                      01230000
+012400             07  AA-TOTINTACCR                                    01240000
+012500                                 PIC S9(11)V99   COMP-3.          01250000
+012600         05  AA-INTPAIDX.                                         01260000
+012700             07  AA-INTPAID                                       01270000
+012800                                 PIC S9(09)V99   COMP-3.          01280000
+012900         05  AA-ODINT            PIC S9(09)V99   COMP-3.          01290000
+013000         05  AA-STOPPAYS         PIC S9(05)      COMP-3.          01300000
+013100         05  AA-NBRNSF           PIC S9(05)      COMP-3.          01310000
+013200         05  AA-NBROD            PIC S9(05)      COMP-3.          01320000
+013300         05  AA-DBNOTUSED1                                        01330000
+013400                                 PIC S9(05)      COMP-3.          01340000
+013500         05  AA-DBNOTUSED2                                        01350000
+013600                                 PIC S9(05)      COMP-3.          01360000
+013700         05  AA-DBNOTUSED3                                        01370000
+013800                                 PIC S9(05)      COMP-3.          01380000
+013900         05  AA-DBNOTUSED4                                        01390000
+014000                                 PIC S9(05)      COMP-3.          01400000
+014100         05  AA-DBNOTUSED5                                        01410000
+014200                                 PIC S9(05)      COMP-3.          01420000
+014300         05  AA-USERBAL1         PIC S9(11)V99   COMP-3.          01430000
+014400         05  AA-USERBAL2         PIC S9(11)V99   COMP-3.          01440000
+014500         05  AA-USERBAL3         PIC S9(11)V99   COMP-3.          01450000
+014600         05  AA-USERBAL4         PIC S9(11)V99   COMP-3.          01460000
+014700         05  AA-COMPBALX.                                         01470000
+014800             07  AA-COMPBAL                                       01480000
+014900                                 PIC S9(11)      COMP-3.          01490000
+015000         05  AA-COMPCALCD        PIC X(01).                       01500000
+015100         05  AA-CRLIMIT          PIC S9(11)      COMP-3.          01510000
+015200         05  AA-LOWBAL           PIC S9(09)      COMP.            01520000
+015300         05  FILLER              PIC X(29).                       01530000
+015400*----------------------------------------------------------------*01540000
+015500     03  AA-OTHER       REDEFINES AA-DATA.                        01550000
+015600         05  FILLER              PIC X(194).                      01560000
+015700*----------------------------------------------------------------*01570000
+015800     03  AA-BALADJUST                                             01580000
+015900                        REDEFINES AA-DATA.                        01590000
+016000         05  AA-ADJFILE          PIC X(01).                       01600000
+016100         05  AA-EFFDT            PIC S9(07)      COMP-3.          01610000
+016200         05  AA-PDAYSADJ         PIC S9(03)      COMP-3.          01620000
+016300         05  AA-LDAYS            PIC S9(03)      COMP-3.          01630000
+016400         05  AA-LBAL             PIC S9(11)V99   COMP-3.          01640000
+016500         05  AA-LDESCRNBR        PIC S9(05)      COMP-3.          01650000
+016600         05  AA-LSTMTPRT         PIC X(01).                       01660000
+016700         05  AA-CDAYS            PIC S9(03)      COMP-3.          01670000
+016800         05  AA-CBAL             PIC S9(11)V99   COMP-3.          01680000
+016900         05  AA-CDESCNBR         PIC S9(05)      COMP-3.          01690000
+017000         05  AA-CSTMTPRT         PIC X(01).                       01700000
+017100         05  AA-BKCDAYS          PIC S9(03)      COMP-3.          01710000
+017200         05  AA-BKCBAL           PIC S9(11)V99   COMP-3.          01720000
+017300         05  AA-BKCDESCNBR                                        01730000
+017400                                 PIC S9(05)      COMP-3.          01740000
+017500         05  AA-BKCSTMTPRT                                        01750000
+017600                                 PIC X(01).                       01760000
+017700         05  AA-LCOMPBAL         PIC S9(11)V99   COMP-3.          01770000
+017800         05  AA-LCOMPDESCNBR                                      01780000
+017900                                 PIC S9(05)      COMP-3.          01790000
+018000         05  AA-LCOMPSTMTPRT                                      01800000
+018100                                 PIC X(01).                       01810000
+018200         05  AA-LCOMPCALCD                                        01820000
+018300                                 PIC X(01).                       01830000
+018400         05  AA-OLDAYSADJ        PIC S9(03)      COMP-3.          01840000
+018500         05  AA-OLDAYS           PIC S9(03)      COMP-3.          01850000
+018600         05  AA-OLBAL            PIC S9(11)V99   COMP-3.          01860000
+018700         05  AA-OLDESCNBR        PIC S9(05)      COMP-3.          01870000
+018800         05  AA-OLSTMTPRT        PIC X(01).                       01880000
+018900         05  AA-OCDAYSADJ        PIC S9(03)      COMP-3.          01890000
+019000         05  AA-OCDAYS           PIC S9(03)      COMP-3.          01900000
+019100         05  AA-OCBAL            PIC S9(11)V99   COMP-3.          01910000
+019200         05  AA-OCDESCNBR        PIC S9(05)      COMP-3.          01920000
+019300         05  AA-OCSTMTPRT        PIC X(01).                       01930000
+019400         05  AA-BASOURCE         PIC X(04).                       01940000
+019500         05  AA-DESCRIPTION.                                      01950000
+019600             07  AA-DESC         PIC X(30).                       01960000
+019700         05  FILLER              PIC X(72).                       01970000
+019800******************************************************************01980000
+019900*   END OF THE AA-FILEREC  DESCRIPTIONS                           01990000
+020000******************************************************************02000000

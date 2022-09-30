@@ -1,0 +1,57 @@
+      ******************************************************************
+      * DCLGEN TABLE(CIF.ACCTRMX)                                      *
+      *        LIBRARY(LMFPROG.APPLDCL.U099027(CIFACCTR))              *
+      *        ACTION(REPLACE)                                         *
+      *        LANGUAGE(COBOL)                                         *
+      *        QUOTE                                                   *
+      * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+      ******************************************************************
+           EXEC SQL DECLARE CIF.ACCTRMX TABLE
+           ( ACCTR_BANK_NBR                 DECIMAL(3, 0) NOT NULL,
+             ACCTR_FILE_ID                  CHAR(4) NOT NULL,
+             ACCTR_KEY                      CHAR(25) NOT NULL,
+             ACCTR_TYPE                     SMALLINT NOT NULL,
+             ACCTR_REMARKS_ID               DECIMAL(3, 0) NOT NULL,
+             ACCTR_DATE_PLACED              DATE NOT NULL,
+             ACCTR_EXPIRATION               DATE NOT NULL,
+             ACCTR_CODE                     DECIMAL(3, 0) NOT NULL,
+             ACCTR_REMARKS                  VARCHAR(4000) NOT NULL
+           ) END-EXEC.
+      ******************************************************************
+      * COBOL DECLARATION FOR TABLE CIF.ACCTRMX                        *
+      ******************************************************************
+       01  CIF-ACCTRMX.
+           10  ACCTR-BANK-NBR       PIC S9(3)V USAGE COMP-3.
+           10  ACCTR-FILE-ID        PIC X(4).
+           10  ACCTR-KEY            PIC X(25).
+           10  ACCTR-TYPE           PIC S9(4) USAGE COMP.
+               88  ACCTR-TYPE-COMMENT           VALUE +001.
+               88  ACCTR-TYPE-REMARK            VALUE +002.
+           10  ACCTR-REMARKS-ID     PIC S9(3)V USAGE COMP-3.
+           10  ACCTR-DATE-PLACED-X.
+               15  ACCTR-DATE-PLACED     PIC X(10).
+           10  FILLER REDEFINES ACCTR-DATE-PLACED-X.
+               15  ACCTR-DATE-PLACED-YR  PIC 9(4).
+               15  ACCTR-DATE-PLACED-D1  PIC X.
+               15  ACCTR-DATE-PLACED-MO  PIC 9(2).
+               15  ACCTR-DATE-PLACED-D2  PIC X.
+               15  ACCTR-DATE-PLACED-DY  PIC 9(2).
+           10  ACCTR-EXPIRATION-X.
+               15  ACCTR-EXPIRATION      PIC X(10).
+           10  FILLER REDEFINES ACCTR-EXPIRATION-X.
+               15  ACCTR-EXPIRATION-YR   PIC 9(4).
+               15  ACCTR-EXPIRATION-D1   PIC X.
+               15  ACCTR-EXPIRATION-MO   PIC 9(2).
+               15  ACCTR-EXPIRATION-D2   PIC X.
+               15  ACCTR-EXPIRATION-DY   PIC 9(2).
+           10  ACCTR-CODE           PIC S9(3)V USAGE COMP-3.
+           10  ACCTR-REMARKS-X.
+               15  ACCTR-REMARKS.
+                   49 ACCTR-REMARKS-LEN  PIC S9(4) USAGE COMP.
+                   49 ACCTR-REMARKS-TEXT  PIC X(4000).
+           10  FILLER REDEFINES ACCTR-REMARKS-X.
+               15  FILLER                PIC S9(4)           COMP.
+               15  ACCTR-REMARKS-TAB     PIC X(80)   OCCURS 25 TIMES.
+      ******************************************************************
+      * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 9       *
+      ******************************************************************

@@ -1,0 +1,53 @@
+000100 01  DSDS-M-FILE-RECORD.                                          00010001
+000200                                                                  00020002
+000300     05  DSDS-M-RECORD-KEY.                                       00030002
+000400                                                                  00040002
+000500         10  DSDS-M-BANK-ID.                                      00050003
+000600             15  DSDS-M-PREFIX   PIC XX        VALUE 'B0'.        00060003
+000700             15  DSDS-M-BANK-NO  PIC 99.                          00070003
+000800         10  DSDS-M-RECORD-ID    PIC X(20).                       00080002
+000900             88  DSDS-M-EOF                    VALUE HIGH-VALUES. 00090002
+001000         10  FILLER REDEFINES DSDS-M-RECORD-ID.                   00100002
+001100             15  DSDS-M-ACCT-ID  PIC 9(3)                  COMP-3.00110002
+001200             15  DSDS-M-ACCT-NO  PIC 9(9)                  COMP-3.00120002
+001300             15  FILLER          PIC X(13).                       00130002
+001400                                                                  00140002
+001500     05  DSDS-M-RECORD-CONTROL.                                   00150002
+001600                                                                  00160002
+001700         10  DSDS-M-FILE-DATE    PIC 9(7)                  COMP-3.00170002
+001800         10  DSDS-M-STATUS-CODE  PIC 9(3)                  COMP-3.00180002
+001900             88  DSDS-M-OPEN                   VALUE 010.         00190002
+002000             88  DSDS-M-CLOSE                  VALUE 020.         00200002
+002100             88  DSDS-M-DELETE                 VALUE 255.         00210002
+002200         10  DSDS-M-MAINT-TYPE   PIC 9(3)                  COMP-3.00220002
+002300             88  DSDS-M-CREATED                VALUE 001.         00230002
+002400             88  DSDS-M-REOPENED               VALUE 003.         00240002
+002500             88  DSDS-M-UPDATED                VALUE 005.         00250002
+002600             88  DSDS-M-CLOSED                 VALUE 007.         00260002
+002700             88  DSDS-M-DELETED                VALUE 009.         00270002
+002800             88  DSDS-M-ADDED                  VALUE 101.         00280002
+002900             88  DSDS-M-CHANGED                VALUE 105.         00290002
+003000             88  DSDS-M-REMOVED                VALUE 109.         00300002
+003100         10  DSDS-M-MAINT-DATE   PIC 9(7)                  COMP-3.00310002
+003200         10  DSDS-M-SEQ-NUMBER   PIC 9(7)                  COMP-3.00320002
+003300         10  DSDS-M-SEQ-SUFFIX   PIC 9(3)                  COMP-3.00330002
+003400         10  DSDS-M-NBR-SEGMENTS PIC 9(2).                        00340002
+003500         10  DSDS-M-CTL-FILLER   PIC X(20).                       00350002
+003600                                                                  00360002
+003700     05  DSDS-M-RECORD-DATA      PIC X(1728).                     00370004
+003800                                                                  00380005
+003900                                                                  00390005
+004000 01  DSDS-M-FILE-CONTROL.                                         00400005
+004100                                                                  00410005
+004200     05  DSDS-M-CONTROL-KEY      PIC X(24).                       00420005
+004300                                                                  00430005
+004400     05  DSDS-M-CONTROL-CONTROL  PIC X(40).                       00440005
+004500                                                                  00450005
+004600     05  DSDS-M-CONTROL-DATA     PIC X(4608).                     00460005
+004700                                                                  00470006
+004800                                                                  00480006
+004900 01  DSDS-M-FILE-EOF-REC.                                         00490006
+005000                                                                  00500006
+005100     05  DSDS-M-EOF-REC-KEY      PIC X(24).                       00510006
+005200                                                                  00520006
+005300     05  DSDS-M-EOF-REC-CONTROL  PIC X(40).                       00530006

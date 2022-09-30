@@ -1,0 +1,27 @@
+      ******************************************************************
+      * DCLGEN TABLE(AMS.PROPS)                                        *
+      *        LIBRARY(LMFPROG.APPLDCL.U099121(AMSPROPS))              *
+      *        ACTION(REPLACE)                                         *
+      *        LANGUAGE(COBOL)                                         *
+      *        QUOTE                                                   *
+      * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+      ******************************************************************
+           EXEC SQL DECLARE AMS.PROPS TABLE
+           ( AMSPRP_KEY                     VARCHAR(250) NOT NULL,
+             AMSPRP_VALUE                   VARCHAR(1500) NOT NULL
+           ) END-EXEC.
+      ******************************************************************
+      * COBOL DECLARATION FOR TABLE AMS.PROPS                          *
+      ******************************************************************
+       01  AMS-PROPS.
+           10 AMSPRP-KEY.
+              49 AMSPRP-KEY-LEN    PIC S9(4) USAGE COMP.
+              49 AMSPRP-KEY-TEXT   PIC X(250).
+           10 AMSPRP-VALUE.
+              49 AMSPRP-VALUE-LEN
+                 PIC S9(4) USAGE COMP.
+              49 AMSPRP-VALUE-TEXT
+                 PIC X(1500).
+      ******************************************************************
+      * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 2       *
+      ******************************************************************

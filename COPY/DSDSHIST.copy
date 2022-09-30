@@ -1,0 +1,93 @@
+000100******************************************************************00010000
+000200*                                                                *00020000
+000300*                 DSDS HISTORY VSAM FILE LAYOUT                  *00030000
+000400*                                                                *00040000
+000500******************************************************************00050000
+000600 01 DSDS-HISTORY-RECORD.                                          00060000
+000700   02  DSDS-HISTORY-RECORD-KEY.                                   00070002
+000800     03  FILLER                  PIC X       VALUE 'B'.           00080002
+000900     03  DSDS-HIST-BANK-NO       PIC 9(3)    VALUE ZEROS.         00090002
+001000     03  DSDS-HIST-RECORD-ID     PIC X(20)   VALUE SPACES.        00100002
+001100     03  FILLER REDEFINES DSDS-HIST-RECORD-ID.                    00110002
+001200         04  DSDS-HIST-ACCOUNT-ID  PIC 9(3)              COMP-3.  00120002
+001300         04  DSDS-HIST-ACCOUNT-NO  PIC 9(9)              COMP-3.  00130002
+001400         04  FILLER                PIC X(13).                     00140002
+001500   02  DSDS-HIST-RECORD-CONTROL  PIC X(40).                       00150002
+001600   02  FILLER REDEFINES DSDS-HIST-RECORD-CONTROL.                 00160003
+001700     03  FILLER                  PIC X(4).                        00170003
+001800     03  DSDS-HIST-STATUS-CODE   PIC 9(3)                COMP-3.  00180003
+001900         88  DSDS-HIST-OPEN                  VALUE 010.           00190003
+002000         88  DSDS-HIST-CLOSE                 VALUE 020.           00200003
+002100         88  DSDS-HIST-DELETE                VALUE 255.           00210003
+002200     03  FILLER                  PIC X(34).                       00220003
+002300   02  DDA-SAV-HIST-CONTENTS-001.                                 00230002
+002400     03  ONE-MONTH-QUARTER-HISTORY OCCURS 8 TIMES.                00240000
+002500         04  AVG-CURR-BAL-CYC    PIC S9(9)               COMP-3.  00250000
+002600         04  AVG-CURR-BAL-MO     PIC S9(9)               COMP-3.  00260000
+002700         04  AVG-COLL-BAL-CYC    PIC S9(9)               COMP-3.  00270000
+002800         04  AVG-COLL-BAL-MO     PIC S9(9)               COMP-3.  00280000
+002900         04  NUM-NSF-CHECKS      PIC S9(5)               COMP-3.  00290000
+003000         04  NUM-APPR-OD         PIC S9(3)               COMP-3.  00300000
+003100         04  NUM-DAY-OD          PIC S9(3)               COMP-3.  00310000
+003200         04  NUM-TIMES-OD        PIC S9(3)               COMP-3.  00320000
+003300         04  NUM-SC-DEBITS       PIC S9(5)               COMP-3.  00330000
+003400         04  NUM-SC-CREDITS      PIC S9(5)               COMP-3.  00340000
+003500         04  NUM-SC-ITEMS        PIC S9(7)               COMP-3.  00350000
+003600         04  SERV-CHG-AMT        PIC S9(5)V99            COMP-3.  00360000
+003700         04  SERV-CHG-CODE       PIC S9(3)               COMP-3.  00370000
+003800         04  SERV-CHG-DISP       PIC X.                           00380000
+003900             88  CHARGED                     VALUE 'C'.           00390000
+004000             88  WAIVED                      VALUE 'W'.           00400000
+004100             88  NO-CHARGE                   VALUE 'N', 'I', 'D', 00410000
+004200                                                   'M', 'E', 'R', 00420000
+004300                                                   'X'.           00430000
+004400             88  HIST-NOT-AVAILABLE          VALUE '-'.           00440000
+004500         04  LOW-BAL-CYCLE       PIC S9(9)               COMP-3.  00450000
+004600         04  UNCOLL-WITHD        PIC S9(3)               COMP-3.  00460000
+004700         04  AMT-CYCLE-DEBITS    PIC S9(9)V99            COMP-3.  00470000
+004800         04  AMT-CYCLE-CREDITS   PIC S9(9)V99            COMP-3.  00480000
+004900         04  DATA-PERIOD-IND.                                     00490000
+005000             06  MO-QTR-IND      PIC 99.                          00500000
+005100             06  YEAR-IND        PIC 99.                          00510000
+005200                                                                  00520000
+005300     03  ONE-MONTH-QUARTER-HISTORY-2 OCCURS 8 TIMES.              00530000
+005400         04  HIST-NUM-REG-SC-DEB PIC S9(5)               COMP-3.  00540000
+005500         04  HIST-NUM-ACH-SC-DEB PIC S9(5)               COMP-3.  00550000
+005600         04  HIST-NUM-FT-SC-DEB  PIC S9(5)               COMP-3.  00560000
+005700         04  HIST-NUM-INFOLINE-SC-DEB                             00570000
+005800                                 PIC S9(5)               COMP-3.  00580000
+005900         04  HIST-NUM-ATM-SC-DEB PIC S9(5)               COMP-3.  00590000
+006000         04  HIST-NUM-POS-SC-DEB PIC S9(5)               COMP-3.  00600000
+006100         04  HIST-NUM-LIMIT-OF-6-DEB                              00610000
+006200                                 PIC S9(5)               COMP-3.  00620000
+006300         04  HIST-NUM-TELE-SC-DEB                                 00630000
+006400                                 PIC S9(5)               COMP-3.  00640000
+006500         04  HIST-NUM-3RD-PARTY-DEB                               00650000
+006600                                 PIC S9(5)               COMP-3.  00660000
+006700         04  HIST-HIGH-BAL-CYCLE PIC S9(9)               COMP-3.  00670000
+006800         04  HIST-NUM-FOR-ATM-SC-DEB                              00680000
+006900                                 PIC S9(5)               COMP-3.  00690000
+007000         04  HIST-NUM-CHKPLUS-SC-DEB                              00700000
+007100                                 PIC S9(5)               COMP-3.  00710000
+007200         04  HIST-NUM-PAYLINE-SC-DEB                              00720000
+007300                                 PIC S9(5)               COMP-3.  00730000
+007400         04  HIST-TOT-AA-CHRG-AMT                                 00740001
+007500                                 PIC S9(5)V99            COMP-3.  00750001
+007600         04  HIST-TOT-AA-EARN-AMT                                 00760001
+007700                                 PIC S9(5)V99            COMP-3.  00770001
+007800         04  HIST-NUM-ACH-SC-CRED                                 00780005
+007810                                 PIC S9(5)               COMP-3.  00781005
+007820         04  HIST-NUM-E-DEPOSIT                                   00782007
+007830                                 PIC S9(5)               COMP-3.  00783007
+007840         04  HIST-NUM-MOBILE-RDC                                  00784007
+007850                                 PIC S9(5)               COMP-3.  00785007
+007860         04  HIST-NUM-DESKTOP-SCAN                                00786007
+007870                                 PIC S9(5)               COMP-3.  00787007
+007880         04  HIST-NUM-E-DEPOSIT-ITEMS                             00788007
+007890                                 PIC S9(5)               COMP-3.  00789007
+007891         04  HIST-NUM-MOBILE-RDC-ITEMS                            00789107
+007892                                 PIC S9(5)               COMP-3.  00789207
+007893         04  HIST-NUM-DESKTOP-SCAN-ITEMS                          00789307
+007894                                 PIC S9(5)               COMP-3.  00789407
+007900         04  FILLER-HIST         PIC X(50).                       00790007
+008000     03  FILLER                  PIC X(24).                       00800007

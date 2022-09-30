@@ -1,0 +1,19 @@
+000100*01  ODB-BILL.                                                    00010001
+000200     02  OB-REPORT-CODE      PIC S999                    COMP-3.  00020001
+000300     02  OB-FILE-ID          PIC XXX.                             00030001
+000400     02  OB-BANK-NO          PIC 99.                              00040001
+000500     02  OB-ACCT-ID          PIC 999                     COMP-3.  00050001
+000600     02  OB-ACCT-NO          PIC 9(9)                    COMP-3.  00060001
+000700     02  OB-ODB-STATUS       PIC XX.                              00070004
+000810     02  OB-ODB-PLAN-DESC    PIC X(25).                           00081007
+000900     02  OB-ODB-LOAN-OFFICER PIC S9(5)                   COMP-3.  00090011
+001000     02  OB-ODB-CR-LIMIT     PIC S9(9)V99                COMP-3.  00100001
+001100     02  OB-ODB-LOAN-BAL     PIC S9(9)V99                COMP-3.  00110001
+001200     02  OB-PREV-AMT-DUE     PIC S9(9)V99                COMP-3.  00120001
+001300     02  OB-CURR-AMT-DUE     PIC S9(9)V99                COMP-3.  00130001
+001400     02  OB-CURR-DATE        PIC 9(7)                    COMP-3.  00140003
+001410     02  OB-ODB-PLAN-TYPE    PIC X(2).                            00141009
+001500     02  FILLER              PIC X(76).                           00150007
+001600*   THIS RECORD IS USED FOR REPORT CODE 98.                       00160000
+001700*        98 = OVERDRAFT BANKING BILL                              00170001
+001800*  THIS RECORD IS 150 CHARACTERS                                  00180000

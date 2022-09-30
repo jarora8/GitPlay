@@ -1,0 +1,23 @@
+000100*01  PAYMENT-REMINDERS.                                           00010000
+000200     02  PR-REPORT-CODE      PIC S999                    COMP-3.  00020000
+000300     02  PR-FILE-ID          PIC XXX.                             00030000
+000400     02  PR-BANK-NO          PIC 99.                              00040000
+000500     02  PR-ACCT-ID          PIC 999                     COMP-3.  00050000
+000600     02  PR-ACCT-NO          PIC 9(9)                    COMP-3.  00060000
+000700     02  PR-CRF-REC-ID       PIC X(11).                           00070000
+000800     02  PR-MESSAGE          PIC S999                    COMP-3.  00080000
+000900     02  PR-LOAN-BAL         PIC S9(9)V99                COMP-3.  00090000
+001000     02  PR-AMT-DUE          PIC S9(9)V99                COMP-3.  00100000
+001100     02  PR-DT               PIC S9(7)                   COMP-3.  00110002
+001200     02  PR-LAST-STMT-DT     PIC S9(7)                   COMP-3.  00120002
+001300     02  PR-PLAN-DESC        PIC X(25).                           00130000
+001400     02  PR-PLAN-TYPE        PIC XX.                              00140000
+001500     02  PR-COLLATERAL-CODE  PIC X(3).                            00150000
+001600         88  PR-SECURED-BY-RE            VALUE 'G73' 'G74' 'G75'  00160000
+001700                                               'G80' 'G81' 'G82'. 00170000
+001800     02  PR-ODB-STATUS       PIC XX.                              00180001
+001900     02  PR-BILL-IND         PIC X.                               00190001
+002000     02  FILLER              PIC X(70).                           00200002
+002100*  THIS RECORD LAYOUT IS USED FOR REPORT CODE 92.                 00210000
+002200*        92 = PAYMENT REMINDERS                                   00220000
+002300*  THIS RECORD IS 150 CHARACTERS                                  00230000

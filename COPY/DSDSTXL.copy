@@ -1,0 +1,105 @@
+000100 01  DSDS-TRANSACTION-LONG.                                       00010000
+000200     02  DSDSTXL-CTL.                                             00020000
+000300         03  DSDSTXL-CTL-BK-NO     PIC 99.                        00030000
+000400         03  DSDSTXL-CTL-ACCT-ID   PIC 999            COMP-3.     00040000
+000500         03  DSDSTXL-CTL-FILE-ID   PIC XXX.                       00050000
+000600         03  DSDSTXL-CTL-FILE-DT   PIC S9(7)          COMP-3.     00060000
+000700         03  DSDSTXL-CTL-PROG-ID   PIC X(8).                      00070000
+000800         03  DSDSTXL-CTL-FILLER    PIC X(181).                    00080007
+000900                                                                  00090005
+001000     02  DSDSTXL-REC REDEFINES DSDSTXL-CTL.                       00100000
+001100         03  DSDSTXL-ID.                                          00110000
+001200             04  DSDSTXL-BANK-NO   PIC 99.                        00120000
+001300             04  DSDSTXL-ID-2.                                    00130000
+001400                 05  DSDSTXL-ACCT-ID                              00140000
+001500                                   PIC 999            COMP-3.     00150005
+001600                 05  DSDSTXL-ACCT-NO                              00160000
+001700                                   PIC 9(9)           COMP-3.     00170005
+001800         03  DSDSTXL-CODE          PIC 999            COMP-3.     00180000
+001900         03  DSDSTXL-AMOUNT        PIC S9(11)V99      COMP-3.     00190005
+002000         03  DSDSTXL-ACCR-INT REDEFINES DSDSTXL-AMOUNT            00200000
+002100                                   PIC S9(8)V9(5)     COMP-3.     00210005
+002200         03  DSDSTXL-EFFECT-DT     PIC S9(7)          COMP-3.     00220000
+002300         03  DSDSTXL-DATE          PIC S9(7)          COMP-3.     00230000
+002400         03  DSDSTXL-ITEM-COUNT    PIC S9(5)          COMP-3.     00240000
+002500         03  DSDSTXL-ITEM-ID       PIC X(6).                      00250000
+002600         03  FILLER REDEFINES DSDSTXL-ITEM-ID.                    00260000
+002700             04  DSDSTXL-BAT-NO    PIC S9(5)          COMP-3.     00270000
+002800             04  DSDSTXL-SEQ-NO    PIC S9(5)          COMP-3.     00280000
+002900         03  DSDSTXL-INV-CUSIP     PIC X(8).                      00290000
+003000         03  FILLER REDEFINES DSDSTXL-INV-CUSIP.                  00300000
+003100             04  DSDSTXL-FLOAT1    PIC 9(4).                      00310000
+003200             04  DSDSTXL-FLOAT2    PIC 9(4).                      00320000
+003300         03  DSDSTXL-TX-DESC       PIC X(26).                     00330006
+003400         03  FILLER REDEFINES DSDSTXL-TX-DESC.                    00340006
+003500             04  DSDSTXL-CO-DESC   PIC X(16).                     00350006
+003600             04  DSDSTXL-DESC      PIC X(10).                     00360006
+003700         03  DSDSTXL-CHK-NO        PIC S9(11)         COMP-3.     00370000
+003800         03  DSDSTXL-SORT-KEY      PIC XX.                        00380000
+003900         03  FILLER REDEFINES DSDSTXL-SORT-KEY.                   00390000
+004000             04  DSDSTXL-ENCL-TYPE PIC 9.                         00400000
+004100                 88  DSDSTXL-ENCL         VALUE 1.                00410000
+004200             04  DSDSTXL-SC-TYPE   PIC 9.                         00420000
+004300                 88  DSDSTXL-NOT-SC       VALUE 0.                00430000
+004400                 88  DSDSTXL-REG-SC       VALUE 1.                00440000
+004500                 88  DSDSTXL-ATM-SC       VALUE 2.                00450000
+004600                 88  DSDSTXL-ACH-SC       VALUE 3.                00460000
+004700                 88  DSDSTXL-FT-SC        VALUE 4.                00470000
+004800                 88  DSDSTXL-TELE-SC      VALUE 5.                00480000
+004900                 88  DSDSTXL-INFOLN-SC    VALUE 6.                00490000
+005000                 88  DSDSTXL-POS-SC       VALUE 7.                00500000
+005100         03  DSDSTXL-POS-TX-DATE   PIC 9(7)           COMP-3.     00510006
+005200         03  DSDSTXL-POS-REF-NBR   PIC X(12).                     00520006
+005300         03  DSDSTXL-ACH-PAR-NBR   PIC 9(15).                     00530006
+005400         03  DSDSTXL-ACH-STD-ENTRY-CLASS                          00540006
+005500                                   PIC X(3).                      00550006
+005600                                                                  00560004
+005700         03  DSDSTXL-DESC-FORMAT   PIC X(3).                      00570001
+005800             88  DSDSTXL-FORMAT-BANKMATE VALUE 'BKM' SPACES.      00580001
+005900             88  DSDSTXL-FORMAT-FDR      VALUE 'FDR'.             00590001
+006000             88  DSDSTXL-FORMAT-DEFAULT  VALUE 'DEF'.             00600001
+006100                                                                  00610004
+006200         03  DSDSTXL-FOR-ATM-DESC  PIC X(50).                     00620006
+006300                                                                  00630004
+006400         03  DSDSTXL-ATM-DESC REDEFINES DSDSTXL-FOR-ATM-DESC.     00640006
+006500             04  DSDSTXL-ATM-ADDR  PIC X(18).                     00650001
+006600             04  DSDSTXL-ATM-CITY  PIC X(13).                     00660001
+006700             04  DSDSTXL-ATM-STATE PIC X(2).                      00670001
+006800             04  DSDSTXL-ATM-BANK  PIC X(14).                     00680001
+006900             04  FILLER            PIC X(3).                      00690006
+007000                                                                  00700004
+007100*  USE THIS LAYOUT WITH FORMAT 'FDR'                              00710004
+007200         03  DSDSTXL-POS-DESC REDEFINES DSDSTXL-FOR-ATM-DESC.     00720006
+007300             04  DSDSTXL-MERCH-DESC                               00730001
+007400                                   PIC X(27).                     00740001
+007500             04  DSDSTXL-MERCH-CITY                               00750001
+007600                                   PIC X(15).                     00760001
+007700             04  DSDSTXL-MERCH-STATE                              00770000
+007800                                   PIC X(2).                      00780000
+007900             04  FILLER            PIC X(6).                      00790006
+008000                                                                  00800004
+008100*  USE THIS LAYOUT WITH FORMAT 'DEF'                              00810004
+008200         03  DSDSTXL-ACH-DESC REDEFINES DSDSTXL-FOR-ATM-DESC.     00820006
+008300             04  DSDSTXL-ACH-CO-NAME                              00830004
+008400                                   PIC X(16).                     00840004
+008500             04  DSDSTXL-ACH-CO-ENTRY-DESC                        00850004
+008600                                   PIC X(10).                     00860004
+008700             04  FILLER            PIC X(1).                      00870004
+008800             04  DSDSTXL-ACH-INDIV-ID                             00880005
+008900                                   PIC X(23).                     00890019
+                   04 DSDSTXL-POS-DESCRIPTION REDEFINES                 00891015
+                                                  DSDSTXL-ACH-INDIV-ID. 00892014
+                          08 DSDSTXL-POS-1  PIC X(06).                  00893014
+                          08 FILLER         PIC X.                      00893119
+                          08 DSDSTXL-POS-2  PIC X(13).                  00894016
+                          08 FILLER         PIC X.                      00894119
+                          08 DSDSTXL-POS-3  PIC X(2).                   00895018
+009000                                                                  00900019
+009100                                                                  00910004
+009200         03  DSDSTXL-ACH-DISC-DATA  PIC X(02).                    00920010
+009300         03  DSDSTXL-ACH-COMPANY-ID PIC X(10).                    00930010
+009310         03  DSDSTXL-FILLER         PIC X(12).                    00931013
+009311         03  DSDSTXL-REGE-SW        PIC X.                        00931111
+009320         03  DSDSTXL-ATM-POST-DATE  PIC S9(7)          COMP-3.    00932011
+009330         03  DSDSTXL-ATM-POST-TIME  PIC 9(05)          COMP-3.    00933013
+009400         03  DSDSTXL-SORT-CODE      PIC X(4).                     00940010

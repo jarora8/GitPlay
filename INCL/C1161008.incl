@@ -1,0 +1,32 @@
+DCSORT: proc()
+  DCL QUICKSORTX builtin;
+  dcl 1 cpybk(4),
+       2 key pic'9' ;
+      cpybk.key(1) ="4";
+      cpybk.key(2) ='3';
+      cpybk.key(3) ='1';
+      cpybk.key(4) ="2";
+
+  put skip list(string(cpybk));
+  call quickSortX(cpybk,compare);
+  put skip list(string(cpybk));
+
+compare: proc(p1,p2) returns(fixed bin(31) byValue);
+
+
+dcl p1 ptr byValue;
+dcl p2 ptr byValue;
+
+dcl key pic'9' based;
+
+/* Original Main Tab Key - aufsteigend sortiert */
+select;
+when (p1->key < p2->key)
+return(-1);
+when (p1->key > p2->key)
+return(1);
+other
+return(0);
+end;
+end compare;
+end DCSORT;

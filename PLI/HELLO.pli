@@ -1,0 +1,5 @@
+ HELLO:PROC OPTIONS(MAIN);                                              00010001
+  PUT SKIP LIST(0);                                                     00020001
+  PUT PAGE LIST((70)'*');                                               00030001
+  PUT PAGE LINE(2) LIST('HELLO  WORLD');                                00040001
+ END HELLO;                                                             00050001

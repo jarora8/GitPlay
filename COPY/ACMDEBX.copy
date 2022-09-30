@@ -1,0 +1,33 @@
+      ******************************************************************
+      * DCLGEN TABLE(ACM.DEBCXREF)                                     *
+      *        LIBRARY(LMFPROG.APPLDCL.U099281(ACMDEBX))               *
+      *        ACTION(REPLACE)                                         *
+      *        LANGUAGE(COBOL)                                         *
+      *        APOST                                                   *
+      * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+      ******************************************************************
+           EXEC SQL DECLARE ACM.DEBCXREF TABLE
+           ( ADCX_BANK_NBR                  DECIMAL(3, 0) NOT NULL,
+             ADCX_CARD_NBR                  CHAR(19) NOT NULL,
+             ADCX_FILE_ID                   CHAR(4) NOT NULL,
+             ADCX_FILE_BANK                 DECIMAL(3, 0) NOT NULL,
+             ADCX_FILE_KEY                  CHAR(25) NOT NULL,
+             ADCX_FILE_TYPE                 SMALLINT NOT NULL
+           ) END-EXEC.
+      ******************************************************************
+      * COBOL DECLARATION FOR TABLE ACM.DEBCXREF                       *
+      ******************************************************************
+       01  ACM-DEBCXREF.
+           10 ADCX-BANK-NBR        PIC S9(3)V USAGE COMP-3.
+           10 ADCX-CARD-NBR        PIC X(19).
+           10 ADCX-FILE-ID         PIC X(4).
+           10 ADCX-FILE-BANK       PIC S9(3)V USAGE COMP-3.
+           10 ADCX-FILE-KEY        PIC X(25).
+           10 ADCX-FILE-TYPE       PIC S9(4) USAGE COMP.
+              88  ADCX-FILE-TYPE-DDA      VALUE +1.
+              88  ADCX-FILE-TYPE-SAV      VALUE +2.
+              88  ADCX-FILE-TYPE-MM       VALUE +3.
+              88  ADCX-FILE-TYPE-VALID    VALUE +1 THRU +3.
+      ******************************************************************
+      * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 6       *
+      ******************************************************************

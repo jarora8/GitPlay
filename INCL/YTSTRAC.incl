@@ -1,0 +1,2985 @@
+ /**********************************************************************
+
+ Date   : October 18
+ Author : Yasmin Luetzelschwab
+ Purpose: Declaration and preprozessor
+
+ DESCRIPTION
+ -----------
+ Declaration and preprozessor
+ procedures for YTSTRAC.
+ Descriptions of the procedures are
+ inside (search for #description#).
+
+ -----------------------------------------------------------------------
+ MODIFICATION
+ ------------
+ YL: Yasmin Luetzelschwab (A722485)
+ -----------------------------------------------------------------------
+
+ -----------------------------------------------------------------------
+ TASS000002:  DC 2/2019  10.05.2019
+ -----------------------------------------------------------------------
+ 06.09.18 | YL | Initial version
+ -----------------------------------------------------------------------
+
+ -----------------------------------------------------------------------
+ TASS000020:  DC 4/2020  13.11.2020
+ -----------------------------------------------------------------------
+ 17.08.20 | CH | fix @TRACE_DECLARE_ENTRY
+          |    | change $tag from inOut to inOnly (fix IBM2671I)
+ -----------------------------------------------------------------------
+
+ **********************************************************************/
+
+ /*--- generally TASS definitions ------------------------------------*/
+ %xinclude TSDEFS;
+
+ /*--- Mainlevel Struktur --------------------------------------------*/
+ define structure
+ 1 YTSTRAC#MainData_T
+ ,2 depth                 bin fixed(31)
+ ,2 trace                 type TSDEFS#trace_T
+ ,2 mName                 char(08)
+ ;
+
+ /*--- Procedurelevel Struktur ---------------------------------------*/
+ /*--- versionnumber for YTSTRAC#ProcData_T  -------------------------*/
+ /*--- inkrement if you change the structure -------------------------*/
+ dcl   tstracVersion      bin fixed(31) nonAsgn static init(1)
+                          suppress(unref);
+
+ /*--- 0 Variable um Compilermessage bei @TRACE_SET zu verhindern ----*/
+ dcl   tstracZero         bin fixed(31) nonAsgn static init(0)
+                          suppress(unref);
+
+ /*--- leere char(1) Varying variable fuer leeren content bei list ---*/
+ dcl   tstracEmpty        char(1) var   nonAsgn static init('')
+                          suppress(unref);
+
+ define structure
+ 1 YTSTRAC#ProcData_T
+ ,2 version               bin fixed(31)
+ ,2 depth                 bin fixed(31)
+ ,2 trace                 type TSDEFS#trace_T
+ ,2 startTOD              bin fixed(64) unSigned
+ ,2 mName                 char(08)
+ ,2 pName                 char(50) var
+ ;
+
+ %do skip;/*------------------------------------------------------------
+    Prepocessor Prozeduren
+ ----------------------------------------------------------------*/%end;
+ %DCL @TRACE_SET                 entry;
+ %DCL @TRACE_OPTION_SET          entry;
+ %DCL @TRACE_MAIN_START          entry;
+ %DCL @TRACE_PROC_START          entry;
+ %DCL @TRACE_PROC_END            entry;
+ %DCL @TRACE_ALWAYS              entry;
+ %DCL @TRACE_ANY                 entry;
+ %DCL @TRACE_FLOW                entry;
+ %DCL @TRACE_PARAM               entry;
+ %DCL @TRACE_DATA                entry;
+ %DCL @TRACE_SQL                 entry;
+ %DCL @TRACE_DEBUG               entry;
+ %DCL @TRACE_EXTERN              entry;
+ %DCL @TRACE_INFRA               entry;
+ %DCL @TRACE_PROCESS_PUTS        entry;
+ %DCL @TRACE_PROCESS_PARM        entry;
+ %DCL @TRACE_PROCESS_LIST        entry;
+ %DCL @TRACE_ANALYSE_PARM        entry;
+ %DCL @TRACE_ANALYSE_CONTENT     entry;
+ %DCL @TRACE_DECLARE_ENTRY       entry;
+ %DCL @TRACE_TRIM_YES            entry;
+ %DCL @TRACE_TRIM_NO             entry;
+ %DCL @TRACE_OPTIMIZED_YES       entry;
+ %DCL @TRACE_OPTIMIZED_NO        entry;
+
+ %do skip;/*------------------------------------------------------------
+ Interne PP-Variable zur Steuerung des automatischen trimmens bei
+ numerischen Variabeln in param oder list.
+ Mit 0 wird kein TrIm gemacht. Mit 1 (Default) werden die Zahlen
+ getrimmt.
+ (siehe fuer die Beschreibung des TAGs [t] auch in der Beschreibung
+ von @TRACE_MAIN_START)
+
+ Wird via PP-Entry @TRACE_TRIM_YES und @TRACE_TRIM_NO
+ gesetzt oder geloescht. Das Setzen oder Loeschen ist PP-Run relevant
+ und somit sequenziel und nicht prozedural.
+ ----------------------------------------------------------------*/%end;
+ %DCL @TRACE_TRIM_VALUE fixed;
+     %@TRACE_TRIM_VALUE = 1;
+ %DEACTIVATE @TRACE_TRIM_VALUE;
+
+ %do skip;/*------------------------------------------------------------
+ Interne PP-Variable zur Steuerung des Generic Entry TSTRACInt und
+ TSTRACOpt. Steuert, ob man nicht optimierte CHAR Variablen in list
+ und param verwenden darf. Mit 1 (Default) duerfen keine NICHT
+ optimierte CHARs vorhanden sein.
+ (siehe fuer die Beschreibung des TAGs [f] oder [p] auch in der
+ Beschreibung von @TRACE_MAIN_START)
+
+ Wird via PP-Entry @TRACE_OPTIMIZED_YES und @TRACE_OPTIMIZED_NO
+ gesetzt oder geloescht. Das Setzen oder Loeschen ist PP-Run relevant
+ und somit sequenziel und nicht prozedural.
+
+ Die Restriction ist via zwei unterschiedlichen GENERIC ENTRY imple-
+ mentiert. Der TSTRACInt kennt einen default Entry, wohingegen
+ TSTRACOpt diesen Entry nicht hat und es somit zu einer Fehlermeldung
+ IBM1947I beim Compilieren kommt (The reference to the GENERIC
+ variable TSTRACOpt cannot be resolved).
+ ----------------------------------------------------------------*/%end;
+ %DCL @TRACE_OPTIMIZED_VALUE fixed;
+     %@TRACE_OPTIMIZED_VALUE = 1;
+ %DEACTIVATE @TRACE_OPTIMIZED_VALUE;
+
+ %do skip;/*------------------------------------------------------------
+ TRACE-Bit Prepocessor Variabeln, damit die Namen der Variabeln
+ durch das Programm nicht verwendet werden muessen.
+
+ Beispiel: if @TRACE_BIT_ANY then do;
+              @TRACE_DEBUG('Check 1,T);
+              @TRACE_DATA title('currenten customer')
+                        param([f]CIF
+                             ,   KONTO);
+           end;
+
+           if @TRACE_BIT_DATA then call putCalcResults();
+ ----------------------------------------------------------------*/%end;
+ %DCL @TRACE_BIT_ANY    char;
+     %@TRACE_BIT_ANY    = 'YTSTRAC#ProcData.trace.isTrace';
+ %DCL @TRACE_BIT_FLOW   char;
+     %@TRACE_BIT_FLOW   = 'YTSTRAC#ProcData.trace.isTraceFlw';
+ %DCL @TRACE_BIT_PARAM  char;
+     %@TRACE_BIT_PARAM  = 'YTSTRAC#ProcData.trace.isTracePrm';
+ %DCL @TRACE_BIT_DATA   char;
+     %@TRACE_BIT_DATA   = 'YTSTRAC#ProcData.trace.isTraceDat';
+ %DCL @TRACE_BIT_SQL    char;
+     %@TRACE_BIT_SQL    = 'YTSTRAC#ProcData.trace.isTraceSQL';
+ %DCL @TRACE_BIT_INFRA  char;
+     %@TRACE_BIT_INFRA  = 'YTSTRAC#ProcData.trace.isTraceIfr';
+ %DCL @TRACE_BIT_DEBUG  char;
+     %@TRACE_BIT_DEBUG  = 'YTSTRAC#ProcData.trace.isTraceDbg';
+ %DCL @TRACE_BIT_EXTERN char;
+     %@TRACE_BIT_EXTERN = 'YTSTRAC#ProcData.trace.isTraceExt';
+
+ %do skip;/*------------------------------------------------------------
+ TRACE-VALUE Prepocessor Variabeln, damit die Integerwerte der
+ Bits durch das Programm nicht verwendet werden muessen.
+ @TRACE_VALUE_ANY wird nur zur Berechnung verwendet, bei direkter
+ Zuweisung diesen Wert nicht verwenden.
+
+ Beispiele: @TRACE_SET(@TRACE_VALUE_FLOW +
+                     @TRACE_VALUE_DATA);
+
+            if modulIn.Tracelevel = 9
+            then @TRACE_SET(@TRACE_VALUE_ALL);
+            else @TRACE_SET(modulIn.Tracelevel);
+
+            /*--- switch OFF the trace for external modules -----
+            if @TRACE_BIT_EXTERN
+            then @TRACE_SET(@TRACE_GET     -
+                          @TRACE_VALUE_ANY -
+                          @TRACE_VALUE_EXTERN);
+ ----------------------------------------------------------------*/%end;
+ %DCL @TRACE_VALUE_NONE   char;
+     %@TRACE_VALUE_NONE   = '0';
+ %DCL @TRACE_VALUE_ANY    char;
+     %@TRACE_VALUE_ANY    = '32768';
+ %DCL @TRACE_VALUE_ALL    char;
+     %@TRACE_VALUE_ALL    = '32767';
+ %DCL @TRACE_VALUE_FLOW   char;
+     %@TRACE_VALUE_FLOW   = '1';
+ %DCL @TRACE_VALUE_PARAM  char;
+     %@TRACE_VALUE_PARAM  = '2';
+ %DCL @TRACE_VALUE_DATA   char;
+     %@TRACE_VALUE_DATA   = '4';
+ %DCL @TRACE_VALUE_SQL    char;
+     %@TRACE_VALUE_SQL    = '8';
+ %DCL @TRACE_VALUE_INFRA  char;
+     %@TRACE_VALUE_INFRA  = '16';
+ %DCL @TRACE_VALUE_DEBUG  char;
+     %@TRACE_VALUE_DEBUG  = '32';
+ %DCL @TRACE_VALUE_EXTERN char;
+     %@TRACE_VALUE_EXTERN = '64';
+
+ %do skip;/*------------------------------------------------------------
+ TRACE-OPTION Prepocessor Variablen, damit die Integerwerte der
+ Bits durch das Programm nicht verwendet werden muessen.
+
+ Beispiele: @TRACE_OPTION_SET(@TRACE_OPTION_ALL);
+            @TRACE_OPTION_SET(@TRACE_OPTION_STARTTS +
+                            @TRACE_OPTION_DURATION +
+                            @TRACE_OPTION_SEPARATOR_OUT);
+
+            /*--- switch OFF flow option for next part ---
+            dcl saveOption bin fixed(16) unSigned;
+            saveOption =@TRACE_GETOPTION;
+            @TRACE_OPTION_SET(@TRACE_OPTION_NONE);
+
+            ... (do your procedure call)
+
+            @TRACE_OPTION_SET(saveOption);
+ ----------------------------------------------------------------*/%end;
+ %DCL @TRACE_OPTION_NONE          char;
+     %@TRACE_OPTION_NONE          = '0';
+ %DCL @TRACE_OPTION_ALL           char;
+     %@TRACE_OPTION_ALL           = '65535';
+ %DCL @TRACE_OPTION_STARTTS       char;
+     %@TRACE_OPTION_STARTTS       = '1';
+ %DCL @TRACE_OPTION_ENDTS         char;
+     %@TRACE_OPTION_ENDTS         = '2';
+ %DCL @TRACE_OPTION_DURATION      char;
+     %@TRACE_OPTION_DURATION      = '4';
+ %DCL @TRACE_OPTION_SEPARATOR_OUT char;
+     %@TRACE_OPTION_SEPARATOR_OUT = '8';
+ %DCL @TRACE_OPTION_SEPARATOR_IN  char;
+     %@TRACE_OPTION_SEPARATOR_IN  = '16';
+
+ %do skip;/*------------------------------------------------------------
+ Pointer auf die Mainstruktur, damit der Name der Variable durch
+ das Programm nicht verwendet werden muss. Kann nicht in Prozeduren
+ bei @TRACE_PROC_START als mainPtr(@TRACE_MAIN_POINTER) verwendet
+ werden.
+
+ Beispiel: dcl  myTracePtr          ptr;
+           myTracePtr = @TRACE_MAIN_POINTER;
+
+           call myProc(data,@TRACE_MAIN_POINTER);
+ ----------------------------------------------------------------*/%end;
+ %DCL @TRACE_MAIN_POINTER char;
+     %@TRACE_MAIN_POINTER = 'addr(YTSTRAC#MainData)';
+
+ %do skip;/*------------------------------------------------------------
+ aktueller Tracelevel, damit der Name der Variable durch
+ das Programm nicht verwendet werden muss.
+
+ Beispiel: uPgm.trace.traceLvl =@TRACE_GET;
+ ----------------------------------------------------------------*/%end;
+ %DCL @TRACE_GET char;
+     %@TRACE_GET = 'YTSTRAC#MainData.trace.traceLvl';
+
+ %do skip;/*------------------------------------------------------------
+ aktueller Optionlevel, damit der Name der Variable durch
+ das Programm nicht verwendet werden muss.
+
+ Beispiel: uPgm.trace.optionLvl =@TRACE_GETOPTION;
+ ----------------------------------------------------------------*/%end;
+ %DCL @TRACE_GETOPTION char;
+     %@TRACE_GETOPTION = 'YTSTRAC#MainData.trace.optionLvl';
+
+ %do skip;/*------------------------------------------------------------
+ aktueller Tracelevel altes Format (0 oder 9), damit der Name
+ der Variable durch das Programm nicht verwendet werden muss.
+
+ Beispiel: uPgm.Tracelevel =@TRACE_GET_OLD;
+ ----------------------------------------------------------------*/%end;
+ %DCL @TRACE_GET_OLD char;
+     %@TRACE_GET_OLD = '(bin(YTSTRAC#MainData.trace.isTrace) * 9)';
+
+ %do skip;/*------------------------------------------------------------
+ dieses Makro kann verwendet werden, um zur Laufzeit die Trace-
+ bits neu zu setzen. Die Aenderung hat nur auf den Mainlevel einen
+ Einfluss. Alle bereits aktiven prozeduren werden von diesem
+ Makro nicht geaendert. Die neuen Tracebits sind erst bei Start
+ einer neuen Prozedur aktiv.
+
+ @$traceLevel Alle Bits direkt via einem Integerwert zwischen
+             0 und 32767 setzen. Kann eine Variable, Konstante oder
+             eine Expression sein.
+
+ ACHTUNG!    Der Wert bezieht sich auf die neuen Tracewerte. Ein DIMA
+             traceLevel 9 muss als 32767 uebergeben werden (kann mit
+            @TRACE_VALUE_ALL gemacht werden)!
+ ----------------------------------------------------------------*/%end;
+ %@TRACE_SET:
+   proc(@$traceLevel)
+   statement;
+
+   dcl @$traceLevel char noScan;
+
+   ANS('/*---  START MACRO @TRACE_SET ---------------*/')
+     COL(2) noScan;
+   ANS('/*T*/do;')
+     COL(2) noScan;
+
+   if parmset(@$traceLevel)
+     then do;
+       ANS('/*T*/ select;')
+         COL(2) noScan;
+       ANS('/*T*/   when('||@$traceLevel||' > (@TRACE_VALUE_NONE'
+                                            ||'+tstracZero)')
+         COL(2);
+       ANS('/*T*/       &'||@$traceLevel||' < (@TRACE_VALUE_ANY'
+                                            ||'+tstracZero)')
+         COL(2);
+       ANS('/*T*/       )')
+         COL(2) noScan;
+       ANS('/*T*/     YTSTRAC#MainData.trace.traceLvl = '
+                   ||'@TRACE_VALUE_ANY+'||@$traceLevel||';')
+         COL(2);
+       ANS('/*T*/   when('||@$traceLevel||' = (0 + tstracZero))')
+         COL(2) noScan;
+       ANS('/*T*/      YTSTRAC#MainData.trace.traceLvl = 0;')
+         COL(2) noScan;
+       ANS('/*T*/   other')
+         COL(2) noScan;
+       ANS('/*T*/     @TRACE_ALWAYS @$text("@$traceLevel '||@$traceLevel
+                                        ||' is out of border and will'
+                                        ||' not be set in @TRACE_SET");
+           ')
+         COL(2);
+       ANS('/*T*/ end;')
+         COL(2) noScan;
+     end;
+     else do;
+       note("@$traceLevel on @TRACE_SET can't be omitted",16);
+       return;
+     end;
+
+   ANS('/*T*/end;')
+     COL(2) noScan;
+   ANS('/*---    END MACRO @TRACE_SET ----------------------*/')
+     COL(2) noScan;
+
+ %end @TRACE_SET;
+
+ %do skip;/*------------------------------------------------------------
+ dieses Makro kann verwendet werden, um zur Laufzeit die Option-
+ bits neu zu setzen. Die Aenderung hat nur auf den Mainlevel einen
+ Einfluss. Alle bereits aktiven prozeduren werden von diesem
+ Makro nicht geaendert. Die neuen Optionbits sind erst bei Start
+ einer neuen Prozedur aktiv.
+
+ @$optionLevel Alle Bits direkt via einem Integerwert zwischen
+               0 und 65535 setzen. Kann eine Variable, Konstante
+               oder eine Expression sein.
+ ----------------------------------------------------------------*/%end;
+ %@TRACE_OPTION_SET:
+   proc(@$optionLevel)
+   statement;
+
+   dcl @$optionLevel char noScan;
+
+   ANS('/*---  START MACRO @TRACE_OPTION_SET ----------------*/')
+     COL(2) noScan;
+   ANS('/*T*/do;')
+     COL(2) noScan;
+
+   if parmset(@$optionLevel)
+     then do;
+       ANS('/*T*/ if ' || @$optionLevel || ' >= (0 + tstracZero) &')
+         COL(2) noScan;
+       ANS('/*T*/    ' || @$optionLevel || ' <= (65535 + tstracZero)')
+         COL(2) noScan;
+       ANS('/*T*/ then YTSTRAC#MainData.trace.optionLvl = ' ||
+           @$optionLevel || ';')
+         COL(2) noScan;
+     end;
+
+   ANS('/*T*/end;')
+     COL(2) noScan;
+   ANS('/*---    END MACRO @TRACE_OPTION_SET ----------------*/')
+     COL(2) noScan;
+
+ %end @TRACE_OPTION_SET;
+
+ %do skip;/*------------------------------------------------------------
+ dieses Makro kann verwendet werden, um zur compilezeit die
+ PP-Variable @TRACE_TRIM_VALUE zu setzen.
+ (Details siehe PP-Variablen Beschreibung)
+ ----------------------------------------------------------------*/%end;
+ %@TRACE_TRIM_YES:
+   proc()
+   statement;
+
+   @TRACE_TRIM_VALUE = 1;
+
+ %end @TRACE_TRIM_YES;
+
+ %do skip;/*------------------------------------------------------------
+ dieses Makro kann verwendet werden, um zur compilezeit die
+ PP-Variable @TRACE_TRIM_VALUE zu loeschen.
+ (Details siehe PP-Variablen Beschreibung)
+ ----------------------------------------------------------------*/%end;
+ %@TRACE_TRIM_NO:
+   proc()
+   statement;
+
+   @TRACE_TRIM_VALUE = 0;
+
+ %end @TRACE_TRIM_NO;
+
+ %do skip;/*------------------------------------------------------------
+ dieses Makro kann verwendet werden, um zur compilezeit die
+ PP-Variable @TRACE_OPTIMIZED_VALUE zu setzen.
+ (Details siehe PP-Variablen Beschreibung)
+ ----------------------------------------------------------------*/%end;
+ %@TRACE_OPTIMIZED_YES:
+   proc()
+   statement;
+
+   @TRACE_OPTIMIZED_VALUE = 1;
+
+ %end @TRACE_OPTIMIZED_YES;
+
+ %do skip;/*------------------------------------------------------------
+ dieses Makro kann verwendet werden, um zur compilezeit die
+ PP-Variable @TRACE_OPTIMIZED_VALUE zu loeschen.
+ (Details siehe PP-Variablen Beschreibung)
+ ----------------------------------------------------------------*/%end;
+ %@TRACE_OPTIMIZED_NO:
+   proc()
+   statement;
+
+   @TRACE_OPTIMIZED_VALUE = 0;
+
+ %end @TRACE_OPTIMIZED_NO;
+
+ %do skip;/*------------------------------------------------------------
+ dieses Makro muss auf dem Mainlevel ausgefuehrt werden und darf
+ nicht in einer unterprozedur verschachtelt werden.
+ Ebenfalls muss jede exportierte Prozedur eines Packages dieses
+ Macro als erstes aufrufen.
+
+ @$traceBits Die Variable aus dem Modulinput, welche die Tracestruk-
+             tur TSDEFS#trace_T enthaelt. Diese wird 1:1 zugeweisen,
+             ohne dass der Inhalt analysiert/veraendert wird.
+
+             Beispiel: @TRACE_MAIN_START traceBits(module.trace);
+                      @TRACE_MAIN_START(module.trace);
+
+ @$trace     Die Variable aus dem Modulinput, welche den Tracelevel
+             enthaelt. (Kann auch eine Konstante sein)
+             Wird ignoriert, wenn der Parameter traceBits angegeben
+             ist.
+             Der Tracelevel = 9 wird speziell behandelt, weil dieser
+             in den DIMA-Interfaces fuer "Alle Traces EIN" steht.
+             Somit sind beim Wert 9 immer alle Bits gesetzt.
+             Andere Werte werden intern auf Bitebene betrachtet.
+             es gibt 6 verschiedene Bits:
+
+             isTraceFlow   Start und Ende einer Prozedur
+                           ON wenn bit 1 (1,3,5,7,9... )
+             isTraceParam  Parameter bei Start/Ende einer Prozedur
+                           werden ausgegeben
+                           ON wenn bit 2 (2,3,6,7,10,11... )
+             isTraceData   Daten Trace ist aktiv
+                           ON wenn bit 3 (4,5,6,7,12,13... )
+             isTraceSQL    Daten aus SQL Abfragen tracen ist aktiv
+                           ON wenn bit 4 (8,9,10,11...)
+             isTraceDebug  Hilfstrace zur Debug hilfe ist aktiv
+                           ON wenn bit 5 (16,17,18...)
+             isTraceExtern Externer Modul-Traces ist aktiv
+                          ON wenn bit 6 (32,33,34...)
+
+             Fuer die effiziente Trace-Verarbeitung gibt es ein zu-
+             saetzliches Bit, welches immer gesetzt ist, wenn eines
+             der anderen Bit gesetzt ist:
+
+             isTrace       Irgend ein Trace ist aktiv
+                           Wird automatisch zugewiesen
+
+             Beispiel: @TRACE_MAIN_START trace(module.Tracelevel);
+                       @TRACE_MAIN_START(,module.Tracelevel);
+
+ @$option    Die Ausgabe des Flow-Traces kann mit option beeinflusst
+             werden. Es kann der Start-Timestamp, End-Timestamp und
+             die Duration unterdrueckt werden.
+
+             Per Default wird immer alles ausgegeben.
+
+             Es gibt 3 verschiedene Bits:
+
+             flwWthStartTs Start-Timestamp einer Prozedur ausgeben
+                           ON wenn bit 1 (1,3,5,7,9... )
+             flwWthEndTs   End-Timestamp einer Prozedur ausgeben
+                           ON wenn bit 2 (2,3,6,7,10,11... )
+             flwWthDrtn    Duration einer Prozedur ausgeben
+                           ON wenn bit 3 (4,5,6,7,12,13... )
+
+             Beispiel: @TRACE_MAIN_START option(@TRACE_OPTION_NONE);
+                       @TRACE_MAIN_START(,,@TRACE_OPTION_DURATION);
+
+ @$param     Durch Komma getrennte Liste der auszugebenden Para-
+             meter (nur im "statement-mode" Variable by Name).
+             Es koenen auch ganze Expressions als Parameter angege-
+             ben werden. Der Name auf der linken Seite der Liste
+             entspricht dann der Expression. Falls mit levels (siehe
+             oben) gearbeitet wird, kann dieser Namen unvollstaendig
+             sein.
+             Da param ein Komma Delimited Input ist, duerfen in den
+             Expressions natuerlich keine Kommas vorkommen. Soll
+             eine Expression verwendet werden, die Kommas benoetigt
+             muss der gesammte Ausdruck in [ ] eingeschlossen werden
+             und die enthaltenen Kommas durch [ oder ] ersetzt wer-
+             den.
+             Ebenfalls ist zu beruecksichtigen, dass doppelte an-
+             fuehrungszeichen in Ausdruecken zu Problemen beim
+             Generieren der Namen fuehren. Es muss in Ausdruecken
+             immer das einfache Anfuehrungszeichen verwendet werden.
+
+             Beispiele: [edit(zaehler['99999')]
+                        [substr(text[1[20)]
+                        [hex(myArea[' ')]
+
+             Da fuer die Ausgabe des Traces die Variable oder der
+             Ausdruck an einen String zugeweisen werden, gibt es
+             einige Tags, die am Anfang jedes Wertes eingefuegt
+             werden koennen:
+             [h]  Der Tag kann bei jeder Variable angegeben werden
+                  und generiert so ohne Einfluss auf den Namen
+                  den Ausdruck hex(meineVariable)
+             [t]  Mit diesem Tag wird die Variable/Ausdruck bei der
+                  Ausgabe beidseitig getrimmt. Dies ist vorallem bei
+                  numerischen Variabeln hilfreich da so der Wert
+                  unmittelbar nach dem Namen ausgegeben wird.
+                  Der Tag ersetz ohne Einfluss auf den generierten
+                  Namen den Ausdruck trim(meineVariable)
+             [c]  Dieses Tag verhindert bei der Ausgabe von Bits die
+                  Compiler-Message fuer die Conversion von BIT nach
+                  CHARACTER - generiert den Ausdruck char(meinBit)
+                  Ist nicht notwendig bei einem bit(1) aligned.
+             [f]  markiert einen fixlength string und generiert so
+                  optimalen code um die Prozeduren klein zu halten
+                  (siehe auch @TRACE_OPTIMIZED_VALUE)
+             [s]  Dieses Tag sorgt dafuer, dass nur die ersten 40 Zei-
+                  einer Variable ausgeben werden. Vor dem Text wird
+                  in Klammern die tatsaechliche Laenge des Variable
+                  ausgegeben. Bei nicht programmrelevanten Kommentar-
+                  feldern kann der Sysprint so klein gehalten werden.
+             [p]  Kombination von f und s. generiert optimalen Code
+                  fuer fixlength strings, die auch gekuerzt werden.
+             [?]  Soll zwischen den Parametern eine Trennlinie einge-
+                  fuegt werden, muss der Parameter genau 3 Zeichen
+                  lang sein, mit [ beginnen und mit ] enden. die
+                  Trennlinie wird dann mit dem Zeichen an 2. Stelle
+                  ausgegeben (Das ? steht fuer jedes beliebige Zeichen
+                  ausser c C f F h H N s S t T und Y)
+
+             Beispiel:
+             param([h]$pInput              <= Pointer
+                  ,[h]$callBackEntry       <= Entryvariable
+                  ,[_]                     <= Trennlinie _____
+                  ,   $firstName           <= normale Textausgabe
+                  ,[f]$firstName           <= fixlength optimiert
+                  ,[s]$comment             <= gekuerzte Textausgabe
+                  ,[p]$comment             <= gekuerzt optimiert
+                  ,   $functionNumber      <= zahl
+                  ,[c]$isAwesomeBit        <= Bit ohne Conversion
+                  ,[t]$functionNumber)     <= getrimmte Zahl
+
+ @$title     mit diesem Parameter kann der via procname() ermit-
+             telte Prozedurname ueberschrieben werden. Ist bei
+             Packages sinnvoll, da dort fuer die exports nur kurze
+             Namen verwendet werden koennen.
+ @$minLen    werden Parameter ausgegeben, kann die minimale ein-
+             rueckung der Parameternamen definiert werden. ohne
+             diesen Parameter wird der laengste Name automatisch
+             ermittelt. Ist ein Name laenger als minLen, wird der
+             wert intern erhoeht.
+             Als minimum wird analog zum Prozedurheader immer 9
+             Zeichen fuer die Namen verwendet.
+ @$levels    werden voll qualifizierte parameternamen verwendet,
+             kann man die anzahl der maximal anzuzeigenden letzten
+             levels mit diesem Parameter einstellen.
+ @$always    Ist dieser Parameter angegegeben (Inhalt ist irrele-
+             vant), wird der Start der MAIN-Prozedur immer in den
+             SYSPRINT geschrieben. Kann bei Batch und Task verwendet
+             werden, damit die Compiletime des Programms immer er-
+             sichtlich ist.
+             Ebenfalls hilfreiche bei Error-Prozeduren, die immer
+             im SYSPRINT ersichtlich sein sollen, so sieht man
+             auch dann die Compiletime des Moduls.
+             (ansonsten bitte nicht in Modulen verwenden).
+ @$sql       Dieser Parameter (Inhalt ist irrelevant) markiert ein
+             Datenbank-Modul. Falls@TRACE_BIT_SQL = falsch ist,
+             werden nur Traces in der MAIN-Prozedur ausgegeben.
+             Falls der Inhalt des Parameters NONE ist, wird auch
+             die MAIN-Prozedure nicht ausgegeben.
+ @$infra     Dieser Parameter (Inhalt ist irrelevant) markiert ein
+             Infrasturktur-Modul. Falls@TRACE_BIT_INFRA = falsch
+             ist, werden nur Traces in der MAIN-Prozedur ausgegeben.
+             Falls der Inhalt des Parameters NONE ist, wird auch
+             die MAIN-Prozedure nicht ausgegeben.
+ ----------------------------------------------------------------*/%end;
+ %@TRACE_MAIN_START:
+   proc(@$traceBits
+       ,@$trace
+       ,@$option
+       ,@$param
+       ,@$title
+       ,@$minLen
+       ,@$levels
+       ,@$always
+       ,@$sql
+       ,@$infra
+       )
+   statement;
+
+   dcl @$traceBits char noScan;
+   dcl @$trace     char noScan;
+   dcl @$option    char noScan;
+   dcl @$param     char noScan;
+   dcl @$title     char noScan;
+   dcl @$minLen    char noScan;
+   dcl @$levels    char noScan;
+   dcl @$always    char noScan;
+   dcl @$sql       char noScan;
+   dcl @$infra     char noScan;
+
+   ANS('/*---  START MACRO @TRACE_MAIN_START ---------------*/')
+     COL(2) noScan;
+   ANS('/*T*/do;')
+     COL(2) noScan;
+
+   ANS('/*T*/ dcl 1 YTSTRAC#MainData type YTSTRAC#MainData_T;')
+     COL(2) noScan;
+   ANS('/*T*/ YTSTRAC#MainData.depth = 0;')
+     COL(2) noScan;
+   ANS('/*T*/ YTSTRAC#MainData.mName = packagename();')
+     COL(2) noScan;
+
+   if parmset(@$traceBits)
+     then ANS('/*T*/ YTSTRAC#MainData.trace = '|| @$traceBits ||';')
+            COL(2) noScan;
+
+   if  parmset(@$trace)    &
+      ^parmset(@$traceBits)
+     then do;
+       ANS('/*T*/ if ' || @$trace || ' > (0 + tstracZero) then do;')
+         COL(2) noScan;
+       ANS('/*T*/  if ' || @$trace || ' = (9 + tstracZero) then do;')
+         COL(2) noScan;
+       ANS('/*T*/   YTSTRAC#MainData.trace.traceLvl = 65535;')
+         COL(2) noScan;
+       ANS('/*T*/  end;')
+         COL(2) noScan;
+       ANS('/*T*/  else do;')
+         COL(2) noScan;
+       ANS('/*T*/   YTSTRAC#MainData.trace.traceLvl = 32768 + '||
+           @$trace||';')
+         COL(2) noScan;
+       ANS('/*T*/  end;')
+         COL(2) noScan;
+       ANS('/*T*/ end;')
+         COL(2) noScan;
+       ANS('/*T*/ else YTSTRAC#MainData.trace.traceLvl = 0;')
+         COL(2) noScan;
+     end;
+
+   if ^parmset(@$trace)    &
+      ^parmset(@$traceBits)
+     then ANS('/*T*/ YTSTRAC#MainData.trace.traceLvl = 0;')
+            COL(2) noScan;
+
+   if  parmset(@$option)   &
+      ^parmset(@$traceBits)
+     then do;
+       ANS('/*T*/ if ' || @$option || ' >= (0 + tstracZero) &')
+         COL(2) noScan;
+       ANS('/*T*/    ' || @$option || ' <= (65535 + tstracZero)')
+         COL(2) noScan;
+       ANS('/*T*/ then  YTSTRAC#MainData.trace.optionLvl = ' ||
+           @$option||';')
+         COL(2) noScan;
+       ANS('/*T*/ else  YTSTRAC#MainData.trace.optionLvl = 65535;')
+         COL(2) noScan;
+     end;
+
+   if ^parmset(@$option)   &
+      ^parmset(@$traceBits)
+     then ANS('/*T*/ YTSTRAC#MainData.trace.optionLvl = 65535;')
+            COL(2) noScan;
+
+   if parmset(@$sql)
+     then do;
+       if @$sql = 'NONE'
+         then do;
+           ANS('/*T*/ if ^YTSTRAC#MainData.trace.isTraceSQL')
+             COL(2) noScan;
+           ANS('/*T*/ then YTSTRAC#MainData.trace.traceLvl = 0;')
+             COL(2) noScan;
+         end;
+     end;
+
+   if parmset(@$infra)
+     then do;
+       if @$infra = 'NONE'
+         then do;
+           ANS('/*T*/ if ^YTSTRAC#MainData.trace.isTraceIfr')
+             COL(2) noScan;
+           ANS('/*T*/ then YTSTRAC#MainData.trace.traceLvl = 0;')
+             COL(2) noScan;
+         end;
+     end;
+
+   ANS('/*T*/ dcl 1 YTSTRAC#ProcData type YTSTRAC#ProcData_T;')
+     COL(2) noScan;
+   ANS('/*T*/ YTSTRAC#ProcData.version = tstracVersion;')
+     COL(2) noScan;
+   ANS('/*T*/ YTSTRAC#ProcData.trace = YTSTRAC#MainData.trace;')
+     COL(2) noScan;
+
+   if parmset(@$sql)
+     then do;
+       if @$sql ^= 'NONE'
+         then do;
+           ANS('/*T*/ if ^YTSTRAC#MainData.trace.isTraceSQL')
+             COL(2) noScan;
+           ANS('/*T*/ then YTSTRAC#MainData.trace.traceLvl = 0;')
+             COL(2) noScan;
+         end;
+     end;
+
+   if parmset(@$infra)
+     then do;
+       if @$infra ^= 'NONE'
+         then do;
+           ANS('/*T*/ if ^YTSTRAC#MainData.trace.isTraceIfr')
+             COL(2) noScan;
+           ANS('/*T*/ then YTSTRAC#MainData.trace.traceLvl = 0;')
+             COL(2) noScan;
+         end;
+     end;
+
+   if ^parmset(@$always)
+     then ANS('/*T*/ if YTSTRAC#ProcData.trace.isTrace then do;')
+            COL(2) noScan;
+
+   ANS('/*T*/  YTSTRAC#ProcData.depth = YTSTRAC#MainData.depth;')
+     COL(2) noScan;
+   ANS('/*T*/  YTSTRAC#ProcData.mName = YTSTRAC#MainData.mName;')
+     COL(2) noScan;
+
+   if parmset(@$title)
+     then ANS('/*T*/  YTSTRAC#ProcData.pName = ' ||
+              trim(@$title) || ';')
+            COL(2) noScan;
+     else ANS('/*T*/  YTSTRAC#ProcData.pName = procname();')
+            COL(2) noScan;
+
+   if ^parmset(@$always)
+     then ANS('/*T*/  if YTSTRAC#ProcData.trace.isTraceFlw then do;')
+            COL(2) noScan;
+
+   if parmset(@$param)
+     then do;
+       ANS('/*T*/   call TSTRAC_comp(addr(YTSTRAC#ProcData),1);')
+         COL(2) noScan;
+     end;
+     else do;
+       ANS('/*T*/   call TSTRAC_comp(addr(YTSTRAC#ProcData),0);')
+         COL(2) noScan;
+     end;
+
+   if ^parmset(@$always)
+     then ANS('/*T*/  end;')
+            COL(2) noScan;
+
+   /*--- process the input values of the procedure -------------------*/
+   if parmset(@$param)
+     then do;
+       ANS('/*T*/  if YTSTRAC#ProcData.trace.isTracePrm then do;')
+         COL(2) noScan;
+
+       if ^parmset(@$always)
+         then do;
+           ANS('/*T*/   if ^YTSTRAC#ProcData.trace.isTraceFlw then do;')
+             COL(2) noScan;
+           ANS('/*T*/    call TSTRAC_line(addr(YTSTRAC#ProcData),4);')
+             COL(2) noScan;
+           ANS('/*T*/   end;')
+             COL(2) noScan;
+         end;
+
+       ANS('@TRACE_PROCESS_PARM @$param('  || trim(@$param ) || ')' ||
+                               '@$minLen(' || trim(@$minLen) || ')' ||
+                               '@$levels(' || trim(@$levels) || ')' ||
+                               '@$mode(1);');
+
+       ANS('/*T*/  end;')
+         COL(2) noScan;
+     end;
+
+   if ^parmset(@$always)
+     then ANS('/*T*/ end;')
+            COL(2) noScan;
+
+   ANS('/*T*/end;')
+     COL(2) noScan;
+
+   ANS('/*---    END MACRO @TRACE_MAIN_START ---------------*/')
+     COL(2) noScan;
+
+ %end @TRACE_MAIN_START;
+
+ %do skip;/*------------------------------------------------------------
+ dieses Makro muss in jeder Unterprozedur am Anfang eingebaut
+ werden. In exportieren firstlevel Strukturen eines Packages
+ wird @TRACE_MAIN_START eingebaut. in NICHT exportierten Prozeduren
+ muss als parameter ein Pointer auf die Main-Struktur uebergeben
+ werden und danach die Strukture darauf gebased werden.
+ Danach muss @TRACE_PROC_START codiert werden.
+
+ Die Beschreibungen der Parameter @$param, @$title, @$minLen und
+ @$levels sind im Kommentar zu @TRACE_MAIN_START zu finden.
+
+ @$mainPtr  Dieser Parameter kann verwendet werden, wenn die Pro-
+            zedur einen Pointer auf die Mainstruktur im Input
+            erhaelt.
+            Bei NICHT exportierten firstlevel Prozeduren eines
+            Packages muss dies angewendet werden.
+ @$never    Ist dieser Parameter angegegeben (inhalt ist irrele-
+            vant), wird der Start der Prozedur nie in den SYSPRINT
+            geschrieben. Kann bei Prozeduren verwendet werden,
+            welche nur Traces enthalten oder bei INLINE Prozeduren
+            um den Trace kurz und uebersichtlich zu halten.
+            das zugehoerige @TRACE_PROC_END muss ebenfalls mit
+            dem parameter @$never markiert werden, ansonsten der
+            Verschachtelungs-Level falsch wird.
+ @$infra    Dieser Parameter (Inhalt ist irrelevant) markiert eine
+            Infrasturktur-Prozedur (z.B. in YUSTOOL).
+            Falls@TRACE_BIT_INFRA = falsch werden keine Traces in
+            in dieser Prozedur ausgegeben.
+            Als Modul wird im Trace der packagename ausgeben, in
+            welchem die prozedur codiert ist.
+
+ ----------------------------------------------------------------*/%end;
+ %@TRACE_PROC_START:
+   proc(@$mainPtr
+       ,@$param
+       ,@$title
+       ,@$minLen
+       ,@$levels
+       ,@$never
+       ,@$infra
+       )
+   statement;
+
+   dcl @$mainPtr char noScan;
+   dcl @$param   char noScan;
+   dcl @$title   char noScan;
+   dcl @$minLen  char noScan;
+   dcl @$levels  char noScan;
+   dcl @$never   char noScan;
+   dcl @$infra   char noScan;
+
+   ANS('/*---  START MACRO @TRACE_PROC_START ---------------*/')
+     COL(2) noScan;
+   ANS('/*T*/do;')
+     COL(2) noScan;
+
+   if parmset(@$mainPtr)
+     then do;
+       ANS('/*T*/ dcl 1 YTSTRAC#MainData type YTSTRAC#MainData_T')
+         COL(2) noScan;
+       ANS('/*T*/       based(' || @$mainPtr || ');')
+         COL(2) noScan;
+     end;
+
+   ANS('/*T*/ dcl 1 YTSTRAC#ProcData type YTSTRAC#ProcData_T;')
+     COL(2) noScan;
+   ANS('/*T*/ YTSTRAC#ProcData.version = tstracVersion;')
+     COL(2) noScan;
+
+   if parmset(@$infra)
+     then do;
+       ANS('/*T*/ if ^YTSTRAC#MainData.trace.isTraceIfr')
+         COL(2) noScan;
+       ANS('/*T*/ then YTSTRAC#ProcData.trace.traceLvl = 0;')
+         COL(2) noScan;
+       ANS('/*T*/ else do;')
+         COL(2) noScan;
+     end;
+
+   ANS('/*T*/ YTSTRAC#ProcData.trace = YTSTRAC#MainData.trace;')
+     COL(2) noScan;
+
+   ANS('/*T*/ if YTSTRAC#ProcData.trace.isTrace then do;')
+     COL(2) noScan;
+
+   if ^parmset(@$never)
+     then do;
+       ANS('/*T*/  YTSTRAC#MainData.depth += 1;')
+         COL(2) noScan;
+     end;
+
+   ANS('/*T*/  YTSTRAC#ProcData.depth  = YTSTRAC#MainData.depth;')
+     COL(2) noScan;
+
+   if parmset(@$infra)
+     then do;
+       ANS('/*T*/  YTSTRAC#ProcData.mName  = packagename();')
+         COL(2) noScan;
+     end;
+     else do;
+       ANS('/*T*/  YTSTRAC#ProcData.mName  = YTSTRAC#MainData.mName;')
+         COL(2) noScan;
+     end;
+
+   if ^parmset(@$never)
+     then do;
+       if parmset(@$title)
+         then ANS('/*T*/  YTSTRAC#ProcData.pName = ' ||
+                  trim(@$title) || ';')
+                COL(2) noScan;
+         else ANS('/*T*/  YTSTRAC#ProcData.pName = procname();')
+                COL(2) noScan;
+
+       ANS('/*T*/  if YTSTRAC#ProcData.trace.isTraceFlw then do;')
+         COL(2) noScan;
+
+       if parmset(@$param)
+         then do;
+           ANS('/*T*/ call TSTRAC_3p(addr(YTSTRAC#ProcData),2,1);')
+             COL(2) noScan;
+         end;
+         else do;
+           ANS('/*T*/ call TSTRAC_2p(addr(YTSTRAC#ProcData),2);')
+             COL(2) noScan;
+         end;
+
+       ANS('/*T*/  end;')
+         COL(2) noScan;
+
+       /*--- process the input values of the procedure ---------------*/
+       if parmset(@$param)
+         then do;
+           ANS('/*T*/  if YTSTRAC#ProcData.trace.isTracePrm then do;')
+             COL(2) noScan;
+
+           ANS('/*T*/   if ^YTSTRAC#ProcData.trace.isTraceFlw then do;')
+             COL(2) noScan;
+           ANS('/*T*/    call TSTRAC_line(addr(YTSTRAC#ProcData),4);')
+             COL(2) noScan;
+           ANS('/*T*/   end;')
+             COL(2) noScan;
+
+        ANS('@TRACE_PROCESS_PARM @$param('  || trim(@$param ) || ')' ||
+                                '@$minLen(' || trim(@$minLen) || ')' ||
+                                '@$levels(' || trim(@$levels) || ')' ||
+                                '@$mode(1);');
+
+           ANS('/*T*/  end;')
+             COL(2) noScan;
+         end;
+     end;
+
+   ANS('/*T*/ end;')
+     COL(2) noScan;
+
+   if parmset(@$infra)
+     then do;
+       ANS('/*T*/ end;')
+         COL(2) noScan;
+     end;
+
+   ANS('/*T*/end;')
+     COL(2) noScan;
+
+   ANS('/*---    END MACRO @TRACE_PROC_START ---------------*/')
+     COL(2) noScan;
+
+ %end @TRACE_PROC_START;
+
+ %do skip;/*------------------------------------------------------------
+ dieses Makro muss am Ende jeder Prozedur eingebaut werden. (auch
+ bei allen Prozeduren eines Packages)
+
+ Die Beschreibung der parameter von @TRACE_PROC_END sind im Kom-
+ mentar zu @TRACE_MAIN_START zu finden.
+
+ @$always   Ist dieser Parameter angegegeben (inhalt ist irrele-
+            vant), wird das Ende der Prozedur immer in den
+            SYSPRINT geschrieben. Kann bei Batch und Task verwendet
+            werden, damit laufzeit des Programms immer ersicht-
+            lich ist (Bitte nicht in Modulen verwenden).
+
+ @$never    Ist dieser Parameter angegegeben (inhalt ist irrele-
+            vant), wird das Ende der Prozedur nie in den SYSPRINT
+            geschrieben. Kann bei Prozeduren verwendet werden,
+            welche nur Traces enthalten oder bei INLINE Prozeduren
+            um den Trace kurz und uebersichtlich zu halten.
+            das zugehoerige @TRACE_PROC_START muss ebenfalls mit
+            dem parameter @$never markiert werden, ansonsten der
+            Verschachtelungs-Level falsch wird.
+ ----------------------------------------------------------------*/%end;
+ %@TRACE_PROC_END:
+   proc(@$param
+       ,@$minLen
+       ,@$levels
+       ,@$always
+       ,@$never
+       )
+   statement;
+
+   dcl @$param  char noScan;
+   dcl @$minLen char noScan;
+   dcl @$levels char noScan;
+   dcl @$always char noScan;
+   dcl @$never  char noScan;
+
+   ANS('/*---  START MACRO @TRACE_PROC_END -----------------*/')
+     COL(2) noScan;
+   ANS('/*T*/do;')
+     COL(2) noScan;
+
+   if ^parmset(@$never)
+     then do;
+       if ^parmset(@$always)
+         then ANS('/*T*/ if YTSTRAC#ProcData.trace.isTrace then do;')
+                COL(2) noScan;
+
+       /*--- process the output values of the procedure --------------*/
+       if parmset(@$param)
+         then do;
+           ANS('/*T*/  if YTSTRAC#ProcData.trace.isTracePrm then do;')
+             COL(2) noScan;
+
+        ANS('@TRACE_PROCESS_PARM @$param('  || trim(@$param ) || ')' ||
+                                '@$minLen(' || trim(@$minLen) || ')' ||
+                                '@$levels(' || trim(@$levels) || ')' ||
+                                '@$mode(2);');
+
+           if ^parmset(@$always)
+             then do;
+               ANS('/*T*/   if ^YTSTRAC#ProcData.trace.isTraceFlw ' ||
+                   'then do;')
+                 COL(2) noScan;
+               ANS('/*T*/    call TSTRAC_line(addr(' ||
+                   'YTSTRAC#ProcData),5);')
+                 COL(2) noScan;
+               ANS('/*T*/   end;')
+                 COL(2) noScan;
+             end;
+
+           ANS('/*T*/  end;')
+             COL(2) noScan;
+         end;
+
+       if ^parmset(@$always)
+         then ANS('/*T*/  if YTSTRAC#ProcData.trace.isTraceFlw ' ||
+                  'then do;')
+                COL(2) noScan;
+
+       if parmset(@$param)
+         then do;
+           ANS('/*T*/ call TSTRAC_3p(addr(YTSTRAC#ProcData),3,1);')
+             COL(2) noScan;
+         end;
+         else do;
+           ANS('/*T*/ call TSTRAC_2p(addr(YTSTRAC#ProcData),3);')
+             COL(2) noScan;
+         end;
+
+       if ^parmset(@$always)
+         then ANS('/*T*/  end;')
+                COL(2) noScan;
+
+       ANS('/*T*/  YTSTRAC#MainData.depth = YTSTRAC#ProcData.depth -1;')
+         COL(2) noScan;
+
+       if ^parmset(@$always)
+         then ANS('/*T*/ end;')
+                COL(2) noScan;
+     end;
+
+   ANS('/*T*/end;')
+     COL(2) noScan;
+
+   ANS('/*---    END MACRO @TRACE_PROC_END -----------------*/')
+     COL(2) noScan;
+
+ %END @TRACE_PROC_END;
+
+ %do skip;/*------------------------------------------------------------
+ Ist immer aktiv (Beschreibung unter @TRACE_ANY)
+
+ Dieses Makro wird verwendet, wenn SYSPRINT Ausgaben unabhaengig
+ vom eingeschalteten Trace immer ausgegeben werden muessen. (Zum
+ Beispiel bei Fehlern).
+ Alternativ kann auch direkt ein PUT statement codiert werden. Da
+ jedoch PUT Statements den INLINE code verhindern, ist die Anwen-
+ dung von @TRACE_ALWAYS sehr zu empfehlen.
+ ----------------------------------------------------------------*/%end;
+ %@TRACE_ALWAYS:
+   proc(@$text
+       ,@$withTime
+       ,@$title
+       ,@$param
+       ,@$list
+       ,@$minLen
+       ,@$levels
+       )
+   statement;
+
+   dcl @$text     char noScan;
+   dcl @$withTime char noScan;
+   dcl @$title    char noScan;
+   dcl @$param    char noScan;
+   dcl @$list     char noScan;
+   dcl @$minLen   char noScan;
+   dcl @$levels   char noScan;
+
+   dcl ansTxt     char noScan;
+
+   ANS('/*---  START MACRO @TRACE_ALWAYS -------------------*/')
+     COL(2) noScan;
+
+   /*--- if trace is off, fill in the modulename and depth -----------*/
+   ANS('/*T*/do;')
+     COL(2) noScan;
+   ANS('/*T*/ if ^YTSTRAC#ProcData.trace.isTrace then do;')
+     COL(2) noScan;
+   ANS('/*T*/   YTSTRAC#ProcData.mName = packagename();')
+     COL(2) noScan;
+   ANS('/*T*/   YTSTRAC#ProcData.depth = 0;')
+     COL(2) noScan;
+   ANS('/*T*/ end;')
+     COL(2) noScan;
+
+   ansTxt   = '@TRACE_PROCESS_PUTS ';
+   if parmset(@$text)
+     then ansTxt||='@$text('    ||trim(@$text    )||')';
+   if parmset(@$withTime)
+     then ansTxt||='@$withTime('||trim(@$withTime)||')';
+   if parmset(@$title)
+     then ansTxt||='@$title('   ||trim(@$title   )||')';
+   if parmset(@$param)
+     then ansTxt||='@$param('   ||trim(@$param   )||')';
+   if parmset(@$list)
+     then ansTxt||='@$list('    ||trim(@$list    )||')';
+   if parmset(@$minLen)
+     then ansTxt||='@$minLen('  ||trim(@$minLen  )||')';
+   if parmset(@$levels)
+     then ansTxt||='@$levels('  ||trim(@$levels  )||')';
+   ansTxt ||= ';';
+
+   ANS(ansTxt);
+
+   ANS('/*---    END MACRO @TRACE_ALWAYS -------------------*/')
+     COL(2) noScan;
+
+ %end @TRACE_ALWAYS;
+
+ %do skip;/*------------------------------------------------------------
+ Diese Makro dient zur ausgabe diverser Tracedaten. @TRACE_ANY ist
+ immer aktiv, wenn eines der anderen Tracebits gesetzt ist.
+
+ Die Beschreibungen der Parameter param, minLen und levels
+ sind im Kommentar zu @TRACE_MAIN_START zu finden.
+
+ @$text     Ausdruck, der getraced wird. Sollen Kommas im Ausdruck
+            (nicht in einer Textkonstanten) verwendet werden, muss
+            das Makro im "statement-mode" (variable by Name) ausge-
+            gerufen werden.
+            Ist dieser Parameter angegeben, wird dieser als erster
+            ausgegeben, also vor param oder list.
+
+            Beipiele: @TRACE_ANY('Input,jetzt: ' || $input);
+                      @TRACE_ANY text('Zahl: ' || edit($cnt,'999'));
+
+ @$withTime Mit diesem Parameter wird die aktuelle Uhrzeit vor dem
+            Text ausgegeben. (Format HH.MM.SS.nnnnnn)
+            Der Inhalt des Parameters ist egal, es wird nur ge-
+            prueft, ob dieser uebergeben wurde (Empfehle aber T).
+            Ist nur aktiv zum Parameter @$text. wird nur param oder
+            list uebergeben, wird der Parameter ignoriert. Kann
+            aber auch ohne Text verwendet werden.
+
+            Beipiele: @TRACE_ANY('Check 1',T);
+                      @TRACE_ANY( ,T);
+                      @TRACE_ANY text('Berechnung gestartet')
+                                withTime(T);
+
+ @$title    Generiert einen Block mit Titel und Trennlinien um die
+            Traceausgabe im SYSPRINT.
+
+ @$list     Aenlich wie param, jedoch immer paarweise Kommentar
+            und Wert. Der Kommentar wird automatisch aus
+            dem Wert generiert, wenn das Kommentarfeld leer ist.
+            Ist der Parameter param angegeben, wird
+            dieser Parameter ignoriert.
+
+ @$minLen   Beschreibung bei Anwendung mit list: Im Gegensatz zur
+            Anwendung bei param wird ohne Angabe dieses Parameters
+            kein Alignement der Namen gemacht. Der zweite Unter-
+            schied ist, dass es keinen Minimalwert von 9 gibt. Als
+            dritter Unterschied ist zu erwaehnen, dass nur Texte
+            aligned werden, die kuerzer als @$minLen sind.
+ ----------------------------------------------------------------*/%end;
+ %@TRACE_ANY:
+   proc(@$text
+       ,@$withTime
+       ,@$title
+       ,@$param
+       ,@$list
+       ,@$minLen
+       ,@$levels
+       )
+   statement;
+
+   dcl @$text     char noScan;
+   dcl @$withTime char noScan;
+   dcl @$title    char noScan;
+   dcl @$param    char noScan;
+   dcl @$list     char noScan;
+   dcl @$minLen   char noScan;
+   dcl @$levels   char noScan;
+
+   dcl ansTxt     char noScan;
+
+   ANS('/*---  START MACRO @TRACE_ANY ----------------------*/')
+     COL(2) noScan;
+
+   ansTxt   = '@TRACE_PROCESS_PUTS @$traceBit(isTrace) ';
+   if parmset(@$text)
+     then ansTxt||='@$text('    ||trim(@$text    )||')';
+   if parmset(@$withTime)
+     then ansTxt||='@$withTime('||trim(@$withTime)||')';
+   if parmset(@$title)
+     then ansTxt||='@$title('   ||trim(@$title   )||')';
+   if parmset(@$param)
+     then ansTxt||='@$param('   ||trim(@$param   )||')';
+   if parmset(@$list)
+     then ansTxt||='@$list('    ||trim(@$list    )||')';
+   if parmset(@$minLen)
+     then ansTxt||='@$minLen('  ||trim(@$minLen  )||')';
+   if parmset(@$levels)
+     then ansTxt||='@$levels('  ||trim(@$levels  )||')';
+   ansTxt ||= ';';
+
+   ANS(ansTxt);
+
+   ANS('/*---    END MACRO @TRACE_ANY ----------------------*/')
+     COL(2) noScan;
+
+ %end @TRACE_ANY;
+
+ %do skip;/*------------------------------------------------------------
+ Aktiv bei@TRACE_BIT_FLOW (Beschreibung unter @TRACE_ANY)
+ ----------------------------------------------------------------*/%end;
+ %@TRACE_FLOW:
+   proc(@$text
+       ,@$withTime
+       ,@$title
+       ,@$param
+       ,@$list
+       ,@$minLen
+       ,@$levels
+       )
+   statement;
+
+   dcl @$text     char noScan;
+   dcl @$withTime char noScan;
+   dcl @$title    char noScan;
+   dcl @$param    char noScan;
+   dcl @$list     char noScan;
+   dcl @$minLen   char noScan;
+   dcl @$levels   char noScan;
+
+   dcl ansTxt     char noScan;
+
+   ANS('/*---  START MACRO @TRACE_FLOW ---------------------*/')
+     COL(2) noScan;
+
+   ansTxt   = '@TRACE_PROCESS_PUTS @$traceBit(isTraceFlw) ';
+   if parmset(@$text)
+     then ansTxt||='@$text('    ||trim(@$text    )||')';
+   if parmset(@$withTime)
+     then ansTxt||='@$withTime('||trim(@$withTime)||')';
+   if parmset(@$title)
+     then ansTxt||='@$title('   ||trim(@$title   )||')';
+   if parmset(@$param)
+     then ansTxt||='@$param('   ||trim(@$param   )||')';
+   if parmset(@$list)
+     then ansTxt||='@$list('    ||trim(@$list    )||')';
+   if parmset(@$minLen)
+     then ansTxt||='@$minLen('  ||trim(@$minLen  )||')';
+   if parmset(@$levels)
+     then ansTxt||='@$levels('  ||trim(@$levels  )||')';
+   ansTxt ||= ';';
+
+   ANS(ansTxt);
+
+   ANS('/*---    END MACRO @TRACE_FLOW ---------------------*/')
+     COL(2) noScan;
+
+ %end @TRACE_FLOW;
+ %do skip;/*------------------------------------------------------------
+ Aktiv bei@TRACE_BIT_PARAM (Beschreibung unter @TRACE_ANY)
+ ----------------------------------------------------------------*/%end;
+ %@TRACE_PARAM:
+   proc(@$text
+       ,@$withTime
+       ,@$title
+       ,@$param
+       ,@$list
+       ,@$minLen
+       ,@$levels
+       )
+   statement;
+
+   dcl @$text     char noScan;
+   dcl @$withTime char noScan;
+   dcl @$title    char noScan;
+   dcl @$param    char noScan;
+   dcl @$list     char noScan;
+   dcl @$minLen   char noScan;
+   dcl @$levels   char noScan;
+
+   dcl ansTxt     char noScan;
+
+   ANS('/*---  START MACRO @TRACE_PARAM --------------------*/')
+     COL(2) noScan;
+
+   ansTxt   = '@TRACE_PROCESS_PUTS @$traceBit(isTracePrm) ';
+   if parmset(@$text)
+     then ansTxt||='@$text('    ||trim(@$text    )||')';
+   if parmset(@$withTime)
+     then ansTxt||='@$withTime('||trim(@$withTime)||')';
+   if parmset(@$title)
+     then ansTxt||='@$title('   ||trim(@$title   )||')';
+   if parmset(@$param)
+     then ansTxt||='@$param('   ||trim(@$param   )||')';
+   if parmset(@$list)
+     then ansTxt||='@$list('    ||trim(@$list    )||')';
+   if parmset(@$minLen)
+     then ansTxt||='@$minLen('  ||trim(@$minLen  )||')';
+   if parmset(@$levels)
+     then ansTxt||='@$levels('  ||trim(@$levels  )||')';
+   ansTxt ||= ';';
+
+   ANS(ansTxt);
+
+   ANS('/*---    END MACRO @TRACE_PARAM --------------------*/')
+     COL(2) noScan;
+
+ %end @TRACE_PARAM;
+
+ %do skip;/*------------------------------------------------------------
+   /* Aktiv bei@TRACE_BIT_DATA (Beschreibung unter @TRACE_ANY)
+ ----------------------------------------------------------------*/%end;
+ %@TRACE_DATA:
+   proc(@$text
+       ,@$withTime
+       ,@$title
+       ,@$param
+       ,@$list
+       ,@$minLen
+       ,@$levels
+       )
+   statement;
+
+   dcl @$text     char noScan;
+   dcl @$withTime char noScan;
+   dcl @$title    char noScan;
+   dcl @$param    char noScan;
+   dcl @$list     char noScan;
+   dcl @$minLen   char noScan;
+   dcl @$levels   char noScan;
+
+   dcl ansTxt     char noScan;
+
+   ANS('/*---  START MACRO @TRACE_DATA ---------------------*/')
+     COL(2) noScan;
+
+   ansTxt   = '@TRACE_PROCESS_PUTS @$traceBit(isTraceDat) ';
+   if parmset(@$text)
+     then ansTxt||='@$text('    ||trim(@$text    )||')';
+   if parmset(@$withTime)
+     then ansTxt||='@$withTime('||trim(@$withTime)||')';
+   if parmset(@$title)
+     then ansTxt||='@$title('   ||trim(@$title   )||')';
+   if parmset(@$param)
+     then ansTxt||='@$param('   ||trim(@$param   )||')';
+   if parmset(@$list)
+     then ansTxt||='@$list('    ||trim(@$list    )||')';
+   if parmset(@$minLen)
+     then ansTxt||='@$minLen('  ||trim(@$minLen  )||')';
+   if parmset(@$levels)
+     then ansTxt||='@$levels('  ||trim(@$levels  )||')';
+   ansTxt ||= ';';
+
+   ANS(ansTxt);
+
+   ANS('/*---    END MACRO @TRACE_DATA ---------------------*/')
+     COL(2) noScan;
+
+ %end @TRACE_DATA;
+
+ %do skip;/*------------------------------------------------------------
+ Aktiv bei@TRACE_BIT_SQL (Beschreibung unter @TRACE_ANY)
+ ----------------------------------------------------------------*/%end;
+ %@TRACE_SQL:
+   proc(@$text
+       ,@$withTime
+       ,@$title
+       ,@$param
+       ,@$list
+       ,@$minLen
+       ,@$levels
+       )
+   statement;
+
+   dcl @$text     char noScan;
+   dcl @$withTime char noScan;
+   dcl @$title    char noScan;
+   dcl @$param    char noScan;
+   dcl @$list     char noScan;
+   dcl @$minLen   char noScan;
+   dcl @$levels   char noScan;
+
+   dcl ansTxt     char noScan;
+
+   ANS('/*---  START MACRO @TRACE_SQL ----------------------*/')
+     COL(2) noScan;
+
+   ansTxt   = '@TRACE_PROCESS_PUTS @$traceBit(isTraceSQL) ';
+   if parmset(@$text)
+     then ansTxt||='@$text('    ||trim(@$text    )||')';
+   if parmset(@$withTime)
+     then ansTxt||='@$withTime('||trim(@$withTime)||')';
+   if parmset(@$title)
+     then ansTxt||='@$title('   ||trim(@$title   )||')';
+   if parmset(@$param)
+     then ansTxt||='@$param('   ||trim(@$param   )||')';
+   if parmset(@$list)
+     then ansTxt||='@$list('    ||trim(@$list    )||')';
+   if parmset(@$minLen)
+     then ansTxt||='@$minLen('  ||trim(@$minLen  )||')';
+   if parmset(@$levels)
+     then ansTxt||='@$levels('  ||trim(@$levels  )||')';
+   ansTxt ||= ';';
+
+   ANS(ansTxt);
+
+   ANS('/*---    END MACRO @TRACE_SQL ----------------------*/')
+     COL(2) noScan;
+
+ %end @TRACE_SQL;
+
+ %do skip;/*------------------------------------------------------------
+ Aktiv bei@TRACE_BIT_DEBUG (Beschreibung unter @TRACE_ANY)
+ ----------------------------------------------------------------*/%end;
+ %@TRACE_DEBUG:
+   proc(@$text
+       ,@$withTime
+       ,@$title
+       ,@$param
+       ,@$list
+       ,@$minLen
+       ,@$levels
+       )
+   statement;
+
+   dcl @$text     char noScan;
+   dcl @$withTime char noScan;
+   dcl @$title    char noScan;
+   dcl @$param    char noScan;
+   dcl @$list     char noScan;
+   dcl @$minLen   char noScan;
+   dcl @$levels   char noScan;
+
+   dcl ansTxt     char noScan;
+
+   ANS('/*---  START MACRO @TRACE_DEBUG  -------------------*/')
+     COL(2) noScan;
+
+   ansTxt   = '@TRACE_PROCESS_PUTS @$traceBit(isTraceDbg) ';
+   if parmset(@$text)
+     then ansTxt||='@$text('    ||trim(@$text    )||')';
+   if parmset(@$withTime)
+     then ansTxt||='@$withTime('||trim(@$withTime)||')';
+   if parmset(@$title)
+     then ansTxt||='@$title('   ||trim(@$title   )||')';
+   if parmset(@$param)
+     then ansTxt||='@$param('   ||trim(@$param   )||')';
+   if parmset(@$list)
+     then ansTxt||='@$list('    ||trim(@$list    )||')';
+   if parmset(@$minLen)
+     then ansTxt||='@$minLen('  ||trim(@$minLen  )||')';
+   if parmset(@$levels)
+     then ansTxt||='@$levels('  ||trim(@$levels  )||')';
+   ansTxt ||= ';';
+
+   ANS(ansTxt);
+
+   ANS('/*---    END MACRO @TRACE_DEBUG  -------------------*/')
+     COL(2) noScan;
+
+ %end @TRACE_DEBUG;
+
+ %do skip;/*------------------------------------------------------------
+ Aktiv bei@TRACE_BIT_EXTERN (Beschreibung unter @TRACE_ANY)
+ ----------------------------------------------------------------*/%end;
+ %@TRACE_EXTERN:
+   proc(@$text
+       ,@$withTime
+       ,@$title
+       ,@$param
+       ,@$list
+       ,@$minLen
+       ,@$levels
+       )
+   statement;
+
+   dcl @$text     char noScan;
+   dcl @$withTime char noScan;
+   dcl @$title    char noScan;
+   dcl @$param    char noScan;
+   dcl @$list     char noScan;
+   dcl @$minLen   char noScan;
+   dcl @$levels   char noScan;
+
+   dcl ansTxt    char noScan;
+
+   ANS('/*---  START MACRO @TRACE_EXTERN -------------------*/')
+     COL(2) noScan;
+
+   ansTxt   = '@TRACE_PROCESS_PUTS @$traceBit(isTraceExt) ';
+   if parmset(@$text)
+     then ansTxt||='@$text('    ||trim(@$text    )||')';
+   if parmset(@$withTime)
+     then ansTxt||='@$withTime('||trim(@$withTime)||')';
+   if parmset(@$title)
+     then ansTxt||='@$title('   ||trim(@$title   )||')';
+   if parmset(@$param)
+     then ansTxt||='@$param('   ||trim(@$param   )||')';
+   if parmset(@$list)
+     then ansTxt||='@$list('    ||trim(@$list    )||')';
+   if parmset(@$minLen)
+     then ansTxt||='@$minLen('  ||trim(@$minLen  )||')';
+   if parmset(@$levels)
+     then ansTxt||='@$levels('  ||trim(@$levels  )||')';
+   ansTxt ||= ';';
+
+   ANS(ansTxt);
+
+   ANS('/*---    END MACRO @TRACE_EXTERN -------------------*/')
+     COL(2) noScan;
+
+ %end @TRACE_EXTERN;
+
+ %do skip;/*------------------------------------------------------------
+ Aktiv bei@TRACE_BIT_INFRA (Beschreibung unter @TRACE_ANY)
+ ----------------------------------------------------------------*/%end;
+ %@TRACE_INFRA:
+   proc(@$text
+       ,@$withTime
+       ,@$title
+       ,@$param
+       ,@$list
+       ,@$minLen
+       ,@$levels
+       )
+   statement;
+
+   dcl @$text     char noScan;
+   dcl @$withTime char noScan;
+   dcl @$title    char noScan;
+   dcl @$param    char noScan;
+   dcl @$list     char noScan;
+   dcl @$minLen   char noScan;
+   dcl @$levels   char noScan;
+
+   dcl ansTxt     char noScan;
+
+   ANS('/*---  START MACRO @TRACE_INFRA --------------------*/')
+     COL(2) noScan;
+
+   ansTxt   = '@TRACE_PROCESS_PUTS @$traceBit(isTraceIfr) ';
+   if parmset(@$text)
+     then ansTxt||='@$text('    ||trim(@$text    )||')';
+   if parmset(@$withTime)
+     then ansTxt||='@$withTime('||trim(@$withTime)||')';
+   if parmset(@$title)
+     then ansTxt||='@$title('   ||trim(@$title   )||')';
+   if parmset(@$param)
+     then ansTxt||='@$param('   ||trim(@$param   )||')';
+   if parmset(@$list)
+     then ansTxt||='@$list('    ||trim(@$list    )||')';
+   if parmset(@$minLen)
+     then ansTxt||='@$minLen('  ||trim(@$minLen  )||')';
+   if parmset(@$levels)
+     then ansTxt||='@$levels('  ||trim(@$levels  )||')';
+   ansTxt ||= ';';
+
+   ANS(ansTxt);
+
+   ANS('/*---    END MACRO @TRACE_INFRA --------------------*/')
+     COL(2) noScan;
+
+ %end @TRACE_INFRA;
+
+ %do skip;/*------------------------------------------------------------
+ INTERNE Prozedur, darf nicht direkt verwendet werden.
+ ----------------------------------------------------------------*/%end;
+ %@TRACE_PROCESS_PARM:
+   proc(@$param
+       ,@$minLen
+       ,@$levels
+       ,@$mode
+       )
+   statement;
+
+   dcl @$param  char  noScan;
+   dcl @$minLen char  noScan;
+   dcl @$levels char  noScan;
+   dcl @$mode   char  noScan;
+
+   dcl cont     char  noScan;
+   dcl opti     char  noScan;
+   dcl maxL     fixed noScan;
+   dcl oL       fixed noScan;
+   dcl start    fixed noScan;
+   dcl pos      fixed noScan;
+   dcl bPos     fixed noScan;
+   dcl pPos     fixed noScan;
+
+   start = 1;
+
+   if parmset(@$minLen)
+     then do;
+       if verify(@$minLen,'0123456789') = 0
+         then maxL = @$minLen;
+         else maxL = 0;
+     end;
+     else maxL = 0;
+
+   if parmset(@$levels)
+     then do;
+       if verify(@$levels,'0123456789') = 0
+         then oL = @$levels;
+         else oL = 0;
+     end;
+     else oL = 0;
+
+   /*--- remove all comments inside of parameters --------------------*/
+   bPos = index(@$param,'/*');
+   do while(bPos > 0);
+     pPos = index(@$param,'*/',bPos);
+     if pPos > 0
+       then do;
+         if bPos = 1
+           then @$param = substr(@$param,pPos +2);
+           else @$param = substr(@$param,1,bPos - 1) ||
+                          substr(@$param,pPos +2);
+       end;
+     bPos = index(@$param,'/*');
+   end;
+
+   /*--- remove all blanks inside of parameters ----------------------*/
+   bPos = index(@$param,' ');
+   do while(bPos > 0);
+     pPos = verify(@$param,' ',bPos);
+     if bPos = 1
+       then do;
+         if pPos > 0
+           then @$param = substr(@$param,pPos);
+           else @$param = '';
+       end;
+       else do;
+         if pPos > 0
+           then @$param = substr(@$param,1,bPos - 1) ||
+                          substr(@$param,pPos);
+           else @$param = substr(@$param,1,bPos - 1);
+       end;
+     bPos = index(@$param,' ',bPos);
+   end;
+
+   /*--- process every parameter -------------------------------------*/
+   pos = index(@$param,',',start);
+   do while(pos > 0);
+     cont = @TRACE_ANALYSE_PARM(@$param,start,pos,oL,1);
+     if maxL < length(cont)
+       then maxL = length(cont);
+
+     start = pos + 1;
+     pos = index(@$param,',',start);
+   end;
+
+   cont = @TRACE_ANALYSE_PARM(@$param,start,,oL,1);
+
+   if maxL < length(cont)
+     then maxL = length(cont);
+
+   maxL = maxL + 1;
+
+   if @$mode = '2'
+     then do;
+       ANS('/*T*/    call TSTRAC_line(addr(YTSTRAC#ProcData),20);')
+         COL(2) noScan;
+     end;
+
+   start = 1;
+   pos = index(@$param,',',start);
+
+   do while(pos > 0);
+     opti = @TRACE_ANALYSE_PARM(@$param,start,pos,oL,3);
+     select(opti);
+       when('N') do;
+         if @TRACE_OPTIMIZED_VALUE = 1
+           then ANS('/*T*/    call TSTRACOpt(addr(YTSTRAC#ProcData)')
+                  COL(2) noScan;
+           else ANS('/*T*/    call TSTRACInt(addr(YTSTRAC#ProcData)')
+                  COL(2) noScan;
+
+         ANS('/*T*/                ,10,' || trim(maxL))
+           COL(2) noScan;
+         ANS('/*T*/')
+           COL(2) noScan;
+         ANS(',"' || @TRACE_ANALYSE_PARM(@$param,start,pos,oL,1) || '"')
+           COL(23) noScan;
+         ANS('/*T*/')
+           COL(2) noScan;
+         ANS(',' || @TRACE_ANALYSE_PARM(@$param,start,pos,oL,2) || ');')
+           COL(23) noScan;
+       end;
+       when('Y') do;
+         ANS('/*T*/    call TSTRAC_fix(addr(YTSTRAC#ProcData)')
+           COL(2) noScan;
+         ANS('/*T*/                ,10,' || trim(maxL))
+           COL(2) noScan;
+         ANS('/*T*/')
+           COL(2) noScan;
+         ANS(',"' || @TRACE_ANALYSE_PARM(@$param,start,pos,oL,1) || '"')
+           COL(23) noScan;
+         ANS('/*T*/')
+           COL(2) noScan;
+         ANS(',' || @TRACE_ANALYSE_PARM(@$param,start,pos,oL,2) || ');')
+           COL(23) noScan;
+       end;
+       other do;
+         ANS('/*T*/    call TSTRAC_line1(addr(YTSTRAC#ProcData),''' ||
+                       opti || ''');')
+           COL(2) noScan;
+       end;
+     end;
+
+     start = pos + 1;
+     pos = index(@$param,',',start);
+   end;
+
+   opti = @TRACE_ANALYSE_PARM(@$param,start,,oL,3);
+   select(opti);
+     when('N') do;
+       if @TRACE_OPTIMIZED_VALUE = 1
+         then ANS('/*T*/    call TSTRACOpt(addr(YTSTRAC#ProcData)')
+                COL(2) noScan;
+         else ANS('/*T*/    call TSTRACInt(addr(YTSTRAC#ProcData)')
+                COL(2) noScan;
+       ANS('/*T*/                ,10,' || trim(maxL))
+         COL(2) noScan;
+       ANS('/*T*/')
+         COL(2) noScan;
+       ANS(',"' || @TRACE_ANALYSE_PARM(@$param,start,,oL,1) || '"')
+         COL(23) noScan;
+       ANS('/*T*/')
+         COL(2) noScan;
+       ANS(',' || @TRACE_ANALYSE_PARM(@$param,start,,oL,2) || ');')
+         COL(23) noScan;
+     end;
+     when('Y') do;
+       ANS('/*T*/    call TSTRAC_fix(addr(YTSTRAC#ProcData)')
+         COL(2) noScan;
+       ANS('/*T*/                ,10,' || trim(maxL))
+         COL(2) noScan;
+       ANS('/*T*/')
+         COL(2) noScan;
+       ANS(',"' || @TRACE_ANALYSE_PARM(@$param,start,,oL,1) || '"')
+         COL(23) noScan;
+       ANS('/*T*/')
+         COL(2) noScan;
+       ANS(',' || @TRACE_ANALYSE_PARM(@$param,start,,oL,2) || ');')
+         COL(23) noScan;
+     end;
+     other do;
+       ANS('/*T*/    call TSTRAC_line1(addr(YTSTRAC#ProcData),''' ||
+                     opti || ''');')
+         COL(2) noScan;
+     end;
+   end;
+
+   if @$mode = '1'
+     then do;
+       ANS('/*T*/    call TSTRAC_line(addr(YTSTRAC#ProcData),20);')
+         COL(2) noScan;
+     end;
+
+ %end @TRACE_PROCESS_PARM;
+
+ %do skip;/*------------------------------------------------------------
+ INTERNE Prozedur, darf nicht direkt verwendet werden.
+ ----------------------------------------------------------------*/%end;
+ %@TRACE_ANALYSE_PARM:
+   proc(@$param
+       ,@$start
+       ,@$pos
+       ,@$levels
+       ,@$mode
+       )
+   returns(char);
+
+   dcl @$param  char  noScan;
+   dcl @$start  fixed noScan;
+   dcl @$pos    fixed noScan;
+   dcl @$levels fixed noScan;
+   dcl @$mode   fixed noScan;
+
+   dcl tmpPr    char  noScan;
+   dcl pPos     fixed noScan;
+   dcl cntL     fixed noScan;
+
+   if parmset(@$pos)
+     then tmpPr = substr(@$param,@$start,@$pos - @$start);
+     else tmpPr = substr(@$param,@$start);
+
+   /*--- remove squared brackets: inside of it exchange [] with , ----*/
+   if length(tmpPr) > 3
+     then do;
+       if substr(tmpPr,1,1) = '['             &
+          substr(tmpPr,length(tmpPr),1) = ']'
+         then do;
+           tmpPr = substr(tmpPr,2,length(tmpPr) - 2);
+           tmpPr = translate(tmpPr,',,','[]');
+         end;
+     end;
+
+   /*--- detect special formats ----------------------------------------
+         [c] = char        convert any variable to char
+         [h] = hex         puts a variabel in HEX
+         [t] = trim        helpfull for numeric values
+         [f] = fix-length  generate optimal code for fix length char
+         [p] = fix-length  for shortet length char (combine f and s)
+         [s] = short       short a text to 40 bytes in sysprint
+         [-] = seperator   line with seperator (char is the 2.)
+   -------------------------------------------------------------------*/
+   if length(tmpPr) >= 3      &
+      substr(tmpPr,1,1) = '[' &
+      substr(tmpPr,3,1) = ']'
+     then do;
+       select(lowercase(substr(tmpPr,2,1)));
+         when('f') do;
+           select(@$mode);
+             when(1) tmpPr = substr(tmpPr,4);
+             when(2) tmpPr = 'addr(' || substr(tmpPr,4) || ")," ||
+                             'length(' || substr(tmpPr,4) || "),' '";
+             when(3) return('Y');
+             other;
+           end;
+         end;
+         when('h') do;
+           if @$mode = 1
+             then tmpPr = substr(tmpPr,4);
+             else tmpPr = 'hex(' || substr(tmpPr,4) || "),' '";
+         end;
+         when('c') do;
+           if @$mode = 1
+             then tmpPr = substr(tmpPr,4);
+             else tmpPr = "char(" || substr(tmpPr,4) || "),' '";
+         end;
+         when('s') do;
+           if @$mode = 1
+             then tmpPr = substr(tmpPr,4);
+             else tmpPr = substr(tmpPr,4) || ",'s'";
+         end;
+         when('p') do;
+           select(@$mode);
+             when(1) tmpPr = substr(tmpPr,4);
+             when(2) tmpPr = 'addr(' || substr(tmpPr,4) || ")," ||
+                             'length(' || substr(tmpPr,4) || "),'s'";
+             when(3) return('Y');
+             other;
+           end;
+         end;
+         when('t') do;
+           if @$mode = 1
+             then tmpPr = substr(tmpPr,4);
+             else tmpPr = substr(tmpPr,4) || ",'t'";
+         end;
+         other do;
+           select(@$mode);
+             when(1) tmpPr = '';
+             when(2) tmpPr = "'','" || substr(tmpPr,2,1) || "'";
+             when(3) return(substr(tmpPr,2,1));
+             other;
+           end;
+         end;
+       end;
+     end;
+     else do;
+       if @$mode = 2
+         then do;
+           if @TRACE_TRIM_VALUE = 1
+             then tmpPr ||= ",'T'";
+             else tmpPr ||= ",' '";
+         end;
+     end;
+
+   if @$mode = 3
+     then return('N');
+
+   /*--- detect multiple declaration level ---------------------------*/
+   /*--- for full qualified parameters: reduce the parameter name  ---*/
+   /*--- to the right levels given by "levels"                     ---*/
+   if @$levels > 0 & @$mode = 1
+     then do;
+       cntL = 0;
+       pPos = index(tmpPr,'.');
+
+       do while(pPos > 0);
+         cntL = cntL + 1;
+         pPos = index(tmpPr,'.',pPos + 1);
+       end;
+
+       do while(cntL >= @$levels);
+         pPos = index(tmpPr,'.');
+         tmpPr = substr(tmpPr,pPos + 1);
+         cntL = cntL - 1;
+       end;
+     end;
+
+   return(tmpPr);
+
+ %end @TRACE_ANALYSE_PARM;
+
+ %do skip;/*------------------------------------------------------------
+ INTERNE Prozedur, darf nicht direkt verwendet werden.
+ ----------------------------------------------------------------*/%end;
+ %@TRACE_PROCESS_PUTS:
+   proc(@$traceBit
+       ,@$text
+       ,@$withTime
+       ,@$title
+       ,@$param
+       ,@$list
+       ,@$minLen
+       ,@$levels
+       )
+   statement;
+
+   dcl @$traceBit char noScan;
+   dcl @$text     char noScan;
+   dcl @$withTime char noScan;
+   dcl @$title    char noScan;
+   dcl @$param    char noScan;
+   dcl @$list     char noScan;
+   dcl @$minLen   char noScan;
+   dcl @$levels   char noScan;
+
+   if parmset(@$traceBit)
+     then do;
+       ANS('/*T*/do;')
+         COL(2) noScan;
+       ANS('/*T*/ if YTSTRAC#ProcData.trace.' || @$traceBit
+        || ' then do;')
+         COL(2) noScan;
+     end;
+
+   if parmset(@$title)
+     then do;
+       ANS('/*T*/  call TSTRAC_tit1(addr(YTSTRAC#ProcData)')
+         COL(2) noScan;
+       ANS('/*T*/                  ,' || @$title || ');')
+         COL(2) noScan;
+     end;
+
+   if parmset(@$text)
+     then do;
+       if parmset(@$withTime)
+         then do;
+           ANS('/*T*/  call TSTRAC_text(addr(YTSTRAC#ProcData),31')
+             COL(2) noScan;
+         end;
+         else do;
+           ANS('/*T*/  call TSTRAC_text(addr(YTSTRAC#ProcData),30')
+             COL(2) noScan;
+         end;
+
+       ANS('/*T*/                    ,' || @$text || ');')
+         COL(2) noScan;
+     end;
+
+   select;
+     when(parmset(@$param)) do;
+       ANS('@TRACE_PROCESS_PARM @$param('  || @$param  || ')' ||
+                               '@$minLen(' || @$minLen || ')' ||
+                               '@$levels(' || @$levels || ')' ||
+                               '@$mode(0);');
+     end;
+     when(parmset(@$list)) do;
+       ANS('@TRACE_PROCESS_LIST @$list('   || @$list   || ')' ||
+                               '@$minLen(' || @$minLen || ')' ||
+                               '@$levels(' || @$levels || ');');
+     end;
+     other do;
+       if parmset(@$withTime) & ^parmset(@$text)
+         then do;
+           ANS('/*T*/  call TSTRAC_2p(addr(YTSTRAC#ProcData),32);')
+             COL(2) noScan;
+         end;
+     end;
+   end;
+
+   if parmset(@$title)
+     then do;
+       ANS('/*T*/  call TSTRAC_tit2(addr(YTSTRAC#ProcData)')
+         COL(2) noScan;
+       ANS('/*T*/                  ,length(' || @$title || '));')
+         COL(2) noScan;
+     end;
+
+   if parmset(@$traceBit)
+     then ANS('/*T*/ end;')
+            COL(2) noScan;
+
+   ANS('/*T*/end;')
+     COL(2) noScan;
+
+ %end @TRACE_PROCESS_PUTS;
+
+ %do skip;/*------------------------------------------------------------
+ INTERNE Prozedur, darf nicht direkt verwendet werden.
+ ----------------------------------------------------------------*/%end;
+ %@TRACE_PROCESS_LIST:
+   proc(@$list
+       ,@$minLen
+       ,@$levels
+       )
+   statement;
+
+   dcl @$list   char noScan;
+   dcl @$minLen char noScan;
+   dcl @$levels char noScan;
+
+   dcl comment char  noScan;
+   dcl content char  noScan;
+   dcl opti    char  noScan;
+   dcl minL    fixed noScan;
+   dcl oL      fixed noScan;
+   dcl start   fixed noScan;
+   dcl pos1    fixed noScan;
+   dcl pos2    fixed noScan;
+   dcl bPos    fixed noScan;
+   dcl pPos    fixed noScan;
+   dcl isSep   fixed noScan;
+
+   start = 1;
+
+   if parmset(@$minLen)
+     then do;
+       if verify(@$minLen,'0123456789') = 0
+         then minL = @$minLen;
+         else minL = 0;
+     end;
+     else minL = 0;
+
+   if parmset(@$levels)
+     then do;
+       if verify(@$levels,'0123456789') = 0
+         then oL = @$levels;
+         else oL = 0;
+     end;
+     else oL = 0;
+
+   /*--- remove all comments inside of the list ----------------------*/
+   bPos = index(@$list,'/*');
+   do while(bPos > 0);
+     pPos = index(@$list,'*/',bPos);
+     if pPos > 0
+       then do;
+         if bPos = 1
+           then @$list = substr(@$list,pPos +2);
+           else @$list = substr(@$list,1,bPos - 1) ||
+                         substr(@$list,pPos +2);
+       end;
+     bPos = index(@$list,'/*');
+   end;
+
+   /*--- process every list element (always a pair) ------------------*/
+   pos1 = index(@$list,',',start);
+   do while(pos1 > 0);
+     pos2 = index(@$list,',',pos1 + 1);
+     comment = trim(substr(@$list,start,pos1 - start));
+     if pos2 > 0
+       then do;
+         content = trim(substr(@$list,pos1 + 1,pos2 - (pos1 + 1)));
+         start   = pos2 + 1;
+         pos1    = index(@$list,',',start);
+       end;
+       else do;
+         content = trim(substr(@$list,pos1 + 1));
+         pos1    = 0;
+       end;
+
+     /*--- remove squared brackets: inside of it exchange [] with , --*/
+     if length(comment) > 3
+       then do;
+         if substr(comment,1,1) = '['               &
+            substr(comment,length(comment),1) = ']'
+           then do;
+             comment = substr(comment,2,length(comment) - 2);
+             comment = translate(comment,',,','[]');
+           end;
+       end;
+
+     if length(content) > 3
+       then do;
+         if substr(content,1,1) = '['               &
+            substr(content,length(content),1) = ']'
+           then do;
+             content = substr(content,2,length(content) - 2);
+             content = translate(content,',,','[]');
+           end;
+       end;
+
+     /*--- only content, fill the comment with the content -----------*/
+     if comment  = '' &
+        content ^= ''
+       then comment = @TRACE_ANALYSE_CONTENT(content,oL,1);
+
+     /*--- check if a seperator line requested -----------------------*/
+     isSep = 0;
+     if length(comment) = 3
+       then do;
+         if substr(comment,1,1) = '['               &
+            substr(comment,length(comment),1) = ']'
+           then do;
+             isSep = 1;
+             ANS('/*T*/    call TSTRAC_line1(addr(' ||
+                 'YTSTRAC#ProcData),''' ||
+                 substr(comment,2,1) || ''');')
+               COL(2) noScan;
+           end;
+       end;
+
+     if isSep = 0
+       then do;
+         if comment ^= '' ! content ^= ''
+           then do;
+             opti = @TRACE_ANALYSE_CONTENT(content,oL,3);
+             if opti = 'N'
+               then do;
+                 if @TRACE_OPTIMIZED_VALUE = 1
+                   then ANS('/*T*/    call TSTRACOpt(addr(' ||
+                            'YTSTRAC#ProcData)')
+                          COL(2) noScan;
+                   else ANS('/*T*/    call TSTRACInt(addr(' ||
+                            'YTSTRAC#ProcData)')
+                          COL(2) noScan;
+
+                 ANS('/*T*/                ,11,' || trim(minL))
+                   COL(2) noScan;
+                 ANS('/*T*/                ,' || comment)
+                   COL(2) noScan;
+                 ANS('/*T*/')
+                   COL(2) noScan;
+                 ANS(',' || @TRACE_ANALYSE_CONTENT(content,oL,2) ||
+                     ');')
+                   COL(23) noScan;
+               end;
+               else do;
+                 ANS('/*T*/    call TSTRAC_fix(addr(YTSTRAC#ProcData)')
+                   COL(2) noScan;
+                 ANS('/*T*/                ,11,' || trim(minL))
+                   COL(2) noScan;
+                 ANS('/*T*/                ,' || comment)
+                   COL(2) noScan;
+                 ANS('/*T*/')
+                   COL(2) noScan;
+                 ANS(',' || @TRACE_ANALYSE_CONTENT(content,oL,2) ||
+                     ');')
+                   COL(23) noScan;
+               end;
+           end;
+       end;
+   end;
+
+ %end @TRACE_PROCESS_LIST;
+
+ %do skip;/*------------------------------------------------------------
+ INTERNE Prozedur, darf nicht direkt verwendet werden.
+ ----------------------------------------------------------------*/%end;
+ %@TRACE_ANALYSE_CONTENT:
+   proc(@$content
+       ,@$levels
+       ,@$mode
+       )
+   returns(char);
+
+   dcl @$content char noScan;
+   dcl @$levels fixed noScan;
+   dcl @$mode   fixed noScan;
+
+   dcl tmpCt    char  noScan;
+   dcl pPos     fixed noScan;
+   dcl cntL     fixed noScan;
+   dcl isTag    fixed noScan;
+
+   tmpCt = @$content;
+
+   /*--- detect special formats ----------------------------------------
+   [c] = char        convert any variable to char
+   [h] = hex         puts a variabel in HEX
+   [t] = trim        helpfull for numeric values
+   [f] = fix-length  generate optimal code for fix length char
+   [p] = fix-length  for shortet length char (combine f and s)
+   [s] = short       short a text to 40 bytes in sysprint
+   [-] = seperator   line with seperator (char is the 2.)
+   -------------------------------------------------------------------*/
+   isTag = 0;
+   if length(tmpCt) >= 3
+     then do;
+       if substr(tmpCt,1,1) = '[' &
+          substr(tmpCt,3,1) = ']'
+         then do;
+           isTag = 1;
+           select(lowercase(substr(tmpCt,2,1)));
+             when('f') do;
+               select(@$mode);
+                 when(1) tmpCt = substr(tmpCt,4);
+                 when(2) tmpCt = 'addr(' || substr(tmpCt,4) || ")," ||
+                                 'length(' || substr(tmpCt,4) ||
+                                 "),' '";
+                 when(3) return('Y');
+                 other;
+               end;
+             end;
+             when('h') do;
+               if @$mode = 1
+                 then tmpCt = substr(tmpCt,4);
+                 else tmpCt = 'hex(' || substr(tmpCt,4) || "),' '";
+             end;
+             when('c') do;
+               if @$mode = 1
+                 then tmpCt = substr(tmpCt,4);
+                 else tmpCt = "char(" || substr(tmpCt,4) || "),' '";
+             end;
+             when('s') do;
+               if @$mode = 1
+                 then tmpCt = substr(tmpCt,4);
+                 else tmpCt = substr(tmpCt,4) || ",'s'";
+             end;
+             when('p') do;
+               select(@$mode);
+                 when(1) tmpCt = substr(tmpCt,4);
+                 when(2) tmpCt = 'addr(' || substr(tmpCt,4) || ")," ||
+                                 'length(' || substr(tmpCt,4) ||
+                                 "),'s'";
+                 when(3) return('Y');
+                 other;
+               end;
+             end;
+             when('t') do;
+               if @$mode = 1
+                 then tmpCt = substr(tmpCt,4);
+                 else tmpCt = substr(tmpCt,4) || ",'t'";
+             end;
+             other do;
+               if @$mode = 1
+                 then tmpCt = '';
+                 else tmpCt = "'','" || substr(tmpCt,2,1) || "'";
+             end;
+           end;
+         end;
+     end;
+
+   if @$mode = 3
+     then return('N');
+
+   if isTag = 0
+     then do;
+       if @$mode = 2
+         then do;
+           if tmpCt = ''
+             then do;
+               if @TRACE_TRIM_VALUE = 1
+                 then tmpCt = "'','T'";
+                 else tmpCt = "'',' '";
+             end;
+             else do;
+               if @TRACE_TRIM_VALUE = 1
+                 then tmpCt ||= ",'T'";
+                 else tmpCt ||= ",' '";
+             end;
+         end;
+     end;
+
+   /*--- detect multiple declaration level ---------------------------*/
+   /*--- for full qualified parameters: reduce the parameter name  ---*/
+   /*--- to the right levels given by "levels"                     ---*/
+   if @$levels > 0 & @$mode = 1
+     then do;
+       cntL = 0;
+       pPos = index(tmpCt,'.');
+       do while(pPos > 0);
+         cntL = cntL + 1;
+         pPos = index(tmpCt,'.',pPos + 1);
+       end;
+
+       do while(cntL >= @$levels);
+         pPos = index(tmpCt,'.');
+         tmpCt = substr(tmpCt,pPos + 1);
+         cntL = cntL - 1;
+       end;
+     end;
+
+   if @$mode = 1
+     then tmpCt = '''' || tmpCt || '''';
+
+   return(tmpCt);
+
+ %end @TRACE_ANALYSE_CONTENT;
+
+ %do skip;/*------------------------------------------------------------
+ INTERNAL Procedure, do not call this directly.
+ ----------------------------------------------------------------*/%end;
+ %@TRACE_DECLARE_ENTRY:
+   proc()
+   statement;
+
+   ANS('/*T*/ dcl YTSTRAC entry(ptr             inOnly nonAsgn byValue')
+     COL(2) noScan;
+   ANS('/*T*/                  ,bin fixed(31)   inOnly nonAsgn byValue')
+     COL(2) noScan;
+   ANS('/*T*/                  ,bin fixed(31)   inOnly nonAsgn byValue')
+     COL(2) noScan;
+   ANS('/*T*/                  ,char(*) varying inOnly nonAsgn byAddr ')
+     COL(2) noScan;
+   ANS('/*T*/                  ,char(*)         inOnly nonAsgn byAddr ')
+     COL(2) noScan;
+   ANS('/*T*/                  ,char(1)         inOnly nonAsgn byAddr ')
+     COL(2) noScan;
+   ANS('/*T*/                  ,dec float(16)   inOnly nonAsgn byAddr ')
+     COL(2) noScan;
+   ANS('/*T*/                                   optional);')
+     COL(2) noScan;
+
+ %end @TRACE_DECLARE_ENTRY;
+
+ %do skip;/*------------------------------------------------------------
+ internal STUBs
+ only used by macro, do not call this entries directly
+ ----------------------------------------------------------------*/%end;
+ TSTRAC_2p:
+   proc($pTrace
+       ,$function
+       )
+   suppress(unref)
+   options(noInline);
+
+   dcl $ptrace   ptr           inOnly nonAsgn byValue;
+   dcl $function bin fixed(31) inOnly nonAsgn byValue;
+
+   @TRACE_DECLARE_ENTRY;
+
+   call YTSTRAC($pTrace
+               ,$function
+               ,0
+               ,''
+               ,''
+               ,' '
+               );
+
+ end TSTRAC_2p;
+
+ /*-------------------------------------------------------------------*/
+
+ TSTRAC_3p:
+   proc($pTrace
+       ,$function
+       ,$value1
+       )
+   suppress(unref)
+   options(noInline);
+
+   dcl $ptrace   ptr           inOnly nonAsgn byValue;
+   dcl $function bin fixed(31) inOnly nonAsgn byValue;
+   dcl $value1   bin fixed(31) inOnly nonAsgn byValue;
+
+   @TRACE_DECLARE_ENTRY;
+
+   call YTSTRAC($pTrace
+               ,$function
+               ,$value1
+               ,''
+               ,''
+               ,' '
+               );
+
+ end TSTRAC_3p;
+
+ /*-------------------------------------------------------------------*/
+
+ TSTRAC_comp:
+   proc($pTrace
+       ,$value1
+       )
+   suppress(unref)
+   options(noInline);
+
+   dcl $ptrace ptr           inOnly nonAsgn byValue;
+   dcl $value1 bin fixed(31) inOnly nonAsgn byValue;
+
+   @TRACE_DECLARE_ENTRY;
+
+   %dcl (COMPILETIME,SYSVERSION,QUOTE) builtin;
+   call YTSTRAC($pTrace
+               ,1
+               ,$value1
+               ,QUOTE(COMPILETIME)
+               ,QUOTE(SYSVERSION)
+               ,' '
+               );
+   %deactivate COMPILETIME,SYSVERSION,QUOTE;
+
+ end TSTRAC_comp;
+
+ /*-------------------------------------------------------------------*/
+
+ TSTRAC_line:
+   proc($pTrace
+       ,$function
+       )
+   suppress(unref)
+   options(noInline);
+
+   dcl $ptrace   ptr           inOnly nonAsgn byValue;
+   dcl $function bin fixed(31) inOnly nonAsgn byValue;
+
+   @TRACE_DECLARE_ENTRY;
+
+   call YTSTRAC($pTrace
+               ,$function
+               ,0
+               ,'-'
+               ,''
+               ,' '
+               );
+
+ end TSTRAC_line;
+
+ /*-------------------------------------------------------------------*/
+
+ TSTRAC_line1:
+   proc($pTrace
+       ,$sep
+       )
+   suppress(unref)
+   options(noInline);
+
+   dcl $ptrace ptr     inOnly nonAsgn byValue;
+   dcl $sep    char(1) inOnly nonAsgn byValue;
+
+   @TRACE_DECLARE_ENTRY;
+
+   call YTSTRAC($pTrace
+               ,20
+               ,0
+               ,$sep
+               ,''
+               ,' '
+               );
+
+ end TSTRAC_line1;
+
+ /*-------------------------------------------------------------------*/
+
+ TSTRAC_tit1:
+   proc($pTrace
+       ,$text1
+       )
+   suppress(unref)
+   options(noInline noDescriptor);
+
+   dcl $ptrace ptr             inOnly nonAsgn byValue;
+   dcl $text1  char(*) varying inOnly nonAsgn byAddr;
+
+   @TRACE_DECLARE_ENTRY;
+
+   call YTSTRAC($pTrace
+               ,40
+               ,0
+               ,$text1
+               ,''
+               ,' '
+               );
+
+ end TSTRAC_tit1;
+
+ /*-------------------------------------------------------------------*/
+
+ TSTRAC_tit2:
+   proc($pTrace
+       ,$value1
+       )
+   suppress(unref)
+   options(noInline);
+
+   dcl $ptrace ptr           inOnly nonAsgn byValue;
+   dcl $value1 bin fixed(31) inOnly nonAsgn byValue;
+
+   @TRACE_DECLARE_ENTRY;
+
+   call YTSTRAC($pTrace
+               ,41
+               ,$value1
+               ,''
+               ,''
+               ,' '
+               );
+
+ end TSTRAC_tit2;
+
+ /*-------------------------------------------------------------------*/
+
+ TSTRAC_text:
+   proc($pTrace
+       ,$function
+       ,$text1
+       )
+   suppress(unref)
+   options(noInline noDescriptor);
+
+   dcl $ptrace   ptr             inOnly nonAsgn byValue;
+   dcl $function bin fixed(31)   inOnly nonAsgn byValue;
+   dcl $text1    char(*) varying inOnly nonAsgn byAddr;
+
+   @TRACE_DECLARE_ENTRY;
+
+   call YTSTRAC($pTrace
+               ,$function
+               ,0
+               ,$text1
+               ,''
+               ,' '
+               );
+
+ end TSTRAC_text;
+
+ /*-------------------------------------------------------------------*/
+
+ TSTRAC_fix:
+   proc($pTrace
+       ,$function
+       ,$value1
+       ,$text1
+       ,$pTxt
+       ,$lTxt
+       ,$tag
+       )
+   suppress(unref)
+   options(noInline noDescriptor);
+
+   dcl $ptrace   ptr             inOnly nonAsgn byValue;
+   dcl $function bin fixed(31)   inOnly nonAsgn byValue;
+   dcl $value1   bin fixed(31)   inOnly nonAsgn byValue;
+   dcl $text1    char(*) varying inOnly nonAsgn byAddr;
+   dcl $pTxt     ptr             inOnly nonAsgn byValue;
+   dcl $lTxt     bin fixed(31)   inOnly nonAsgn byValue;
+   dcl $tag      char(1)         inOnly nonAsgn byValue;
+
+   dcl tmpString char($lTxt)     based($pTxt);
+
+   @TRACE_DECLARE_ENTRY;
+
+   call YTSTRAC($pTrace
+               ,$function
+               ,$value1
+               ,$text1
+               ,tmpString
+               ,$tag
+               );
+
+ end TSTRAC_fix;
+
+ /*--- Generic entry declares ----------------------------------------*/
+ /*--- only used by macro, do not call this entry directly -----------*/
+ dcl TSTRACInt generic
+       (TSTRAC_ptr     when(*,*,*,*,ptr,*)
+       ,TSTRAC_entry   when(*,*,*,*,entry,*)
+       ,TSTRAC_bit     when(*,*,*,*,bit aligned,*)
+       ,TSTRAC_bin     when(*,*,*,*,bin fixed(31),*)
+       ,TSTRAC_bin     when(*,*,*,*,bin fixed(15),*)
+       ,TSTRAC_dec158  when(*,*,*,*,dec fixed(15,8),*)
+       ,TSTRAC_dec318  when(*,*,*,*,dec fixed(31,8),*)
+       ,TSTRAC_dec3115 when(*,*,*,*,dec fixed(31,15),*)
+       ,TSTRAC_float   when(*,*,*,*,dec float(16),*)
+       ,TSTRAC_var     when(*,*,*,*,char var,*)
+       ,TSTRAC_dflt    otherwise
+       );
+
+ /*--- version without default entry (for optimized calls only) ------*/
+ dcl TSTRACOpt generic
+       (TSTRAC_ptr     when(*,*,*,*,ptr,*)
+       ,TSTRAC_entry   when(*,*,*,*,entry,*)
+       ,TSTRAC_bit     when(*,*,*,*,bit aligned,*)
+       ,TSTRAC_bin     when(*,*,*,*,bin fixed(31),*)
+       ,TSTRAC_bin     when(*,*,*,*,bin fixed(15),*)
+       ,TSTRAC_dec158  when(*,*,*,*,dec fixed(15,8),*)
+       ,TSTRAC_dec318  when(*,*,*,*,dec fixed(31,8),*)
+       ,TSTRAC_dec3115 when(*,*,*,*,dec fixed(31,15),*)
+       ,TSTRAC_float   when(*,*,*,*,dec float(16),*)
+       ,TSTRAC_var     when(*,*,*,*,char var,*)
+       );
+
+ /*--- Generic entry implementation (or direct entries from macro) ---*/
+ TSTRAC_ptr:
+   proc($pTrace
+       ,$function
+       ,$value1
+       ,$text1
+       ,$ptr
+       ,$tag)
+   suppress(unref)
+   options(noInline noDescriptor);
+
+   dcl $ptrace   ptr             inOnly nonAsgn byValue;
+   dcl $function bin fixed(31)   inOnly nonAsgn byValue;
+   dcl $value1   bin fixed(31)   inOnly nonAsgn byValue;
+   dcl $text1    char(*) varying inOnly nonAsgn byAddr;
+   dcl $ptr      ptr             inOnly nonAsgn byValue;
+   dcl $tag      char(1)         inOut     asgn byAddr;
+
+   @TRACE_DECLARE_ENTRY;
+
+   /*--- switch off numeric autotrim ---------------------------------*/
+   if $tag = 'T'
+     then $tag = ' ';
+
+   call YTSTRAC($pTrace
+               ,$function
+               ,$value1
+               ,$text1
+               ,hex($ptr)
+               ,$tag
+               );
+
+ end TSTRAC_ptr;
+
+ /*-------------------------------------------------------------------*/
+
+ TSTRAC_entry:
+   proc($pTrace
+       ,$function
+       ,$text1
+       ,$value1
+       ,$entry
+       ,$tag
+       )
+   suppress(unref)
+   options(noInline noDescriptor);
+
+   dcl $ptrace   ptr             inOnly nonAsgn byValue;
+   dcl $function bin fixed(31)   inOnly nonAsgn byValue;
+   dcl $value1   bin fixed(31)   inOnly nonAsgn byValue;
+   dcl $text1    char(*) varying inOnly nonAsgn byAddr;
+   dcl $entry    entry()         inOnly nonAsgn byAddr;
+   dcl $tag      char(1)         inOut     asgn byAddr;
+
+   @TRACE_DECLARE_ENTRY;
+
+   /*--- switch off numeric autotrim ---------------------------------*/
+   if $tag = 'T'
+     then $tag = ' ';
+
+   call YTSTRAC($pTrace
+               ,$function
+               ,$value1
+               ,$text1
+               ,hex($entry)
+               ,$tag
+               );
+
+ end TSTRAC_entry;
+
+ /*-------------------------------------------------------------------*/
+
+ TSTRAC_bit:
+   proc($pTrace
+       ,$function
+       ,$value1
+       ,$text1
+       ,$bit
+       ,$tag
+       )
+   suppress(unref)
+   options(noInline noDescriptor);
+
+   dcl $ptrace   ptr             inOnly nonAsgn byValue;
+   dcl $function bin fixed(31)   inOnly nonAsgn byValue;
+   dcl $value1   bin fixed(31)   inOnly nonAsgn byValue;
+   dcl $text1    char(*) varying inOnly nonAsgn byAddr;
+   dcl $bit      bit(1) aligned  inOnly nonAsgn byValue;
+   dcl $tag      char(1)         inOut     asgn byAddr;
+
+   @TRACE_DECLARE_ENTRY;
+
+   /*--- switch off numeric autotrim ---------------------------------*/
+   if $tag = 'T'
+     then $tag = ' ';
+
+   call YTSTRAC($pTrace
+               ,$function
+               ,$value1
+               ,$text1
+               ,char($bit)
+               ,$tag
+               );
+
+ end TSTRAC_bit;
+
+ /*-------------------------------------------------------------------*/
+
+ TSTRAC_bin:
+   proc($pTrace
+       ,$function
+       ,$value1
+       ,$text1
+       ,$bin
+       ,$tag
+       )
+   suppress(unref)
+   options(noInline noDescriptor);
+
+   dcl $ptrace   ptr             inOnly nonAsgn byValue;
+   dcl $function bin fixed(31)   inOnly nonAsgn byValue;
+   dcl $value1   bin fixed(31)   inOnly nonAsgn byValue;
+   dcl $text1    char(*) varying inOnly nonAsgn byAddr;
+   dcl $bin      bin fixed(31)   inOnly nonAsgn byValue;
+   dcl $tag      char(1)         inOut     asgn byAddr;
+
+   @TRACE_DECLARE_ENTRY;
+
+   /*--- aktivate numeric autotrim -----------------------------------*/
+   if $tag = 'T'
+     then $tag = 't';
+
+   call YTSTRAC($pTrace
+               ,$function
+               ,$value1
+               ,$text1
+               ,char($bin)
+               ,$tag
+               );
+
+ end TSTRAC_bin;
+
+ /*-------------------------------------------------------------------*/
+
+ TSTRAC_dec158:
+   proc($pTrace
+       ,$function
+       ,$value1
+       ,$text1
+       ,$dec
+       ,$tag
+       )
+   suppress(unref)
+   options(noInline noDescriptor);
+
+   dcl $ptrace   ptr             inOnly nonAsgn byValue;
+   dcl $function bin fixed(31)   inOnly nonAsgn byValue;
+   dcl $value1   bin fixed(31)   inOnly nonAsgn byValue;
+   dcl $text1    char(*) varying inOnly nonAsgn byAddr;
+   dcl $dec      dec fixed(15,8) inOnly nonAsgn byAddr;
+   dcl $tag      char(1)         inOut     asgn byAddr;
+
+   @TRACE_DECLARE_ENTRY;
+
+   /*--- aktivate numeric autotrim ---*/
+   if $tag = 'T'
+     then $tag = 't';
+
+   call YTSTRAC($pTrace
+               ,$function
+               ,$value1
+               ,$text1
+               ,char($dec)
+               ,$tag
+               );
+
+ end TSTRAC_dec158;
+
+ /*-------------------------------------------------------------------*/
+
+ TSTRAC_dec318:
+   proc($pTrace
+       ,$function
+       ,$value1
+       ,$text1
+       ,$dec
+       ,$tag
+       )
+   suppress(unref)
+   options(noInline noDescriptor);
+
+   dcl $ptrace   ptr             inOnly nonAsgn byValue;
+   dcl $function bin fixed(31)   inOnly nonAsgn byValue;
+   dcl $value1   bin fixed(31)   inOnly nonAsgn byValue;
+   dcl $text1    char(*) varying inOnly nonAsgn byAddr;
+   dcl $dec      dec fixed(31,8) inOnly nonAsgn byAddr;
+   dcl $tag      char(1)         inOut     asgn byAddr;
+
+   @TRACE_DECLARE_ENTRY;
+
+   /*--- aktivate numeric autotrim -----------------------------------*/
+   if $tag = 'T'
+     then $tag = 't';
+
+   call YTSTRAC($pTrace
+               ,$function
+               ,$value1
+               ,$text1
+               ,char($dec)
+               ,$tag
+               );
+
+ end TSTRAC_dec318;
+
+ /*-------------------------------------------------------------------*/
+
+ TSTRAC_dec3115:
+   proc($pTrace
+       ,$function
+       ,$value1
+       ,$text1
+       ,$dec
+       ,$tag
+       )
+   suppress(unref)
+   options(noInline noDescriptor);
+
+   dcl $ptrace   ptr             inOnly nonAsgn byValue;
+   dcl $function bin fixed(31)   inOnly nonAsgn byValue;
+   dcl $value1   bin fixed(31)   inOnly nonAsgn byValue;
+   dcl $text1    char(*) varying inOnly nonAsgn byAddr;
+   dcl $dec      dec fixed(31,15)inOnly nonAsgn byAddr;
+   dcl $tag      char(1)         inOut     asgn byAddr;
+
+   @TRACE_DECLARE_ENTRY;
+
+   /*--- aktivate numeric autotrim -----------------------------------*/
+   if $tag = 'T'
+     then $tag = 't';
+
+   call YTSTRAC($pTrace
+               ,$function
+               ,$value1
+               ,$text1
+               ,char($dec)
+               ,$tag
+               );
+
+ end TSTRAC_dec3115;
+
+m/*-------------------------------------------------------------------*/
+
+ TSTRAC_float:
+   proc($pTrace
+       ,$function
+       ,$value1
+       ,$text1
+       ,$float
+       ,$tag
+       )
+   suppress(unref)
+   options(noInline noDescriptor);
+
+   dcl $ptrace   ptr             inOnly nonAsgn byValue;
+   dcl $function bin fixed(31)   inOnly nonAsgn byValue;
+   dcl $value1   bin fixed(31)   inOnly nonAsgn byValue;
+   dcl $text1    char(*) varying inOnly nonAsgn byAddr;
+   dcl $float    dec float(16)   inOnly nonAsgn byValue;
+   dcl $tag      char(1)         inOut     asgn byAddr;
+
+   @TRACE_DECLARE_ENTRY;
+
+   /*--- aktivate numeric autotrim -----------------------------------*/
+   if $tag = 'T'
+     then $tag = 't';
+
+   call YTSTRAC($pTrace
+               ,$function
+               ,$value1
+               ,$text1
+               ,''
+               ,$tag
+               ,$float
+               );
+
+ end TSTRAC_float;
+
+ /*-------------------------------------------------------------------*/
+
+ TSTRAC_var:
+   proc($pTrace
+       ,$function
+       ,$value1
+       ,$text1
+       ,$text2
+       ,$tag
+       )
+   suppress(unref)
+   options(noInline noDescriptor);
+
+   dcl $ptrace   ptr             inOnly nonAsgn byValue;
+   dcl $function bin fixed(31)   inOnly nonAsgn byValue;
+   dcl $value1   bin fixed(31)   inOnly nonAsgn byValue;
+   dcl $text1    char(*) varying inOnly nonAsgn byAddr;
+   dcl $text2    char(*) varying inOnly nonAsgn byAddr;
+   dcl $tag      char(1)         inOut     asgn byAddr;
+
+   @TRACE_DECLARE_ENTRY;
+
+   /*--- switch off numeric autotrim ---------------------------------*/
+   if $tag = 'T'
+     then $tag = ' ';
+
+   call YTSTRAC($pTrace
+               ,$function
+               ,$value1
+               ,$text1
+               ,$text2
+               ,$tag
+               );
+
+ end TSTRAC_var;
+
+ /*-------------------------------------------------------------------*/
+
+ TSTRAC_dflt:
+   proc($pTrace
+       ,$function
+       ,$value1
+       ,$text1
+       ,$text2
+       ,$tag
+       )
+   suppress(unref)
+   options(noInline);
+
+   dcl $ptrace   ptr             inOnly nonAsgn byValue;
+   dcl $function bin fixed(31)   inOnly nonAsgn byValue;
+   dcl $value1   bin fixed(31)   inOnly nonAsgn byValue;
+   dcl $text1    char(*) varying inOnly nonAsgn byAddr;
+   dcl $text2    char(*)         inOnly nonAsgn byAddr;
+   dcl $tag      char(1)         inOut     asgn byAddr;
+
+   @TRACE_DECLARE_ENTRY;
+
+   /*--- switch off numeric autotrim ---------------------------------*/
+   if $tag = 'T'
+     then $tag = ' ';
+
+   call YTSTRAC($pTrace
+               ,$function
+               ,$value1
+               ,$text1
+               ,$text2
+               ,$tag
+               );
+
+ end TSTRAC_dflt;

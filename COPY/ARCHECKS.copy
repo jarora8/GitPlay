@@ -1,0 +1,97 @@
+      ******************************************************************
+      * DCLGEN TABLE(AR.CHECKS)                                        *
+      *        LIBRARY(LMFPROG.APPLDCL.U099632(ARCHECKS))              *
+      *        ACTION(REPLACE)                                         *
+      *        LANGUAGE(COBOL)                                         *
+      *        QUOTE                                                   *
+      *        LABEL(YES)                                              *
+      *        DBCSDELIM(NO)                                           *
+      * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+      ******************************************************************
+           EXEC SQL DECLARE AR.CHECKS TABLE
+           ( AR_BANK                        DECIMAL(3, 0) NOT NULL,
+             AR_ACCT                        DECIMAL(9, 0) NOT NULL,
+             AR_SERIAL_NBR                  DECIMAL(9, 0) NOT NULL,
+             AR_CURR_STATUS                 CHAR(1) NOT NULL,
+             AR_PREV_STATUS                 CHAR(1) NOT NULL,
+             AR_DATE_ISSUED                 DATE NOT NULL,
+             AR_ISS_AUD_CYCLE               DATE NOT NULL,
+             AR_DATE_PAID                   DATE NOT NULL,
+             AR_ISSUED_AMT                  DECIMAL(11, 2) NOT NULL,
+             AR_PAID_AMT                    DECIMAL(11, 2) NOT NULL,
+             AR_BATCH_NBR                   DECIMAL(5, 0) NOT NULL,
+             AR_SEQUENCE_NBR                DECIMAL(5, 0) NOT NULL,
+             AR_CHECK_TYPE                  CHAR(1) NOT NULL,
+             AR_PAYEE_NAME                  CHAR(50) NOT NULL,
+             AR_PAYROLL_CO                  DECIMAL(3, 0) NOT NULL,
+             AR_STATUS_DATE                 DATE NOT NULL,
+             AR_LAST_MAINT_DT               DATE NOT NULL,
+             AR_LAST_PROC_DATE              DATE NOT NULL,
+             AR_MAINT_EXTRACT               CHAR(1) NOT NULL,
+             AR_MAINT_OPER                  DECIMAL(5, 0) NOT NULL,
+             AR_STOP_PAY_IND                CHAR(1) NOT NULL,
+             AR_REMITTER                    CHAR(30) NOT NULL,
+             AR_ON_MICR                     CHAR(1) NOT NULL,
+             AR_ITEM_PENDING                CHAR(1) NOT NULL,
+             AR_ACH_SEC                     CHAR(3) NOT NULL,
+             AR_SERIES                      CHAR(1) NOT NULL
+           ) END-EXEC.
+      ******************************************************************
+      * COBOL DECLARATION FOR TABLE AR.CHECKS                          *
+      ******************************************************************
+       01  AR-CHECKS.
+      *    *************************************************************
+           10 AR-BANK              PIC S9(3)V USAGE COMP-3.
+      *    *************************************************************
+           10 AR-ACCT              PIC S9(9)V USAGE COMP-3.
+      *    *************************************************************
+           10 AR-SERIAL-NBR        PIC S9(9)V USAGE COMP-3.
+      *    *************************************************************
+           10 AR-CURR-STATUS       PIC X(1).
+      *    *************************************************************
+           10 AR-PREV-STATUS       PIC X(1).
+      *    *************************************************************
+           10 AR-DATE-ISSUED       PIC X(10).
+      *    *************************************************************
+           10 AR-ISS-AUD-CYCLE     PIC X(10).
+      *    *************************************************************
+           10 AR-DATE-PAID         PIC X(10).
+      *    *************************************************************
+           10 AR-ISSUED-AMT        PIC S9(9)V9(2) USAGE COMP-3.
+      *    *************************************************************
+           10 AR-PAID-AMT          PIC S9(9)V9(2) USAGE COMP-3.
+      *    *************************************************************
+           10 AR-BATCH-NBR         PIC S9(5)V USAGE COMP-3.
+      *    *************************************************************
+           10 AR-SEQUENCE-NBR      PIC S9(5)V USAGE COMP-3.
+      *    *************************************************************
+           10 AR-CHECK-TYPE        PIC X(1).
+      *    *************************************************************
+           10 AR-PAYEE-NAME        PIC X(50).
+      *    *************************************************************
+           10 AR-PAYROLL-CO        PIC S9(3)V USAGE COMP-3.
+      *    *************************************************************
+           10 AR-STATUS-DATE       PIC X(10).
+      *    *************************************************************
+           10 AR-LAST-MAINT-DT     PIC X(10).
+      *    *************************************************************
+           10 AR-LAST-PROC-DATE    PIC X(10).
+      *    *************************************************************
+           10 AR-MAINT-EXTRACT     PIC X(1).
+      *    *************************************************************
+           10 AR-MAINT-OPER        PIC S9(5)V USAGE COMP-3.
+      *    *************************************************************
+           10 AR-STOP-PAY-IND      PIC X(1).
+      *    *************************************************************
+           10 AR-REMITTER          PIC X(30).
+      *    *************************************************************
+           10 AR-ON-MICR           PIC X(1).
+      *    *************************************************************
+           10 AR-ITEM-PENDING      PIC X(1).
+      *    *************************************************************
+           10 AR-ACH-SEC           PIC X(3).
+      *    *************************************************************
+           10 AR-SERIES            PIC X(1).
+      ******************************************************************
+      * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 26      *
+      ******************************************************************

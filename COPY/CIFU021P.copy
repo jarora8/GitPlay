@@ -1,0 +1,199 @@
+000100******************************************************************00010000
+000200*                                                                *00020000
+000300*              C I F U 0 2 1   P A R A M E T E R S               *00030000
+000400*                                                                *00040000
+000500******************************************************************00050000
+000600                                                                  00060000
+000700 01  CIFU021-PARAMETERS.                                          00070000
+000800     02  U021-INPUT-PARAMETERS.                                   00080000
+000900         03  U021-BANK-NBR            PIC 9(3).                   00090000
+001000         03  U021-FILE-ID             PIC X(04).                  00100000
+001100         03  U021-FILE-KEY            PIC X(25).                  00110000
+001200         03  U021-DEMOGRAPHICS-IND    PIC X.                      00120002
+001300                                                                  00130001
+001400     02  U021-CUSTOMER-PARAMETERS.                                00140002
+001500         03  U021-RETURN-CODE         PIC X.                      00150000
+001600             88  U021-GOOD-RETURN                 VALUE 'G'.      00160000
+001700             88  U021-BAD-RETURN                  VALUE 'B'.      00170000
+001800         03  U021-CUST-ID             PIC S9(9)          COMP-3.  00180004
+001900         03  U021-CUST-TAX-ID         PIC S9(9)          COMP-3.  00190004
+002000         03  U021-CUST-TAX-ID-CERT    PIC X.                      00200000
+002100         03  U021-CUST-MAIL-CODE      PIC X.                      00210002
+002200         03  U021-CUST-TYPE           PIC X.                      00220002
+002300         03  U021-CUST-OFFICER        PIC S9(5)          COMP-3.  00230002
+002400         03  U021-CUST-BRANCH         PIC S9(3)          COMP-3.  00240002
+002500         03  U021-CUST-WITHHOLD-TAX   PIC X.                      00250002
+002600         03  U021-CUST-OSB-IND        PIC X.                      00260002
+002700         03  U021-CUST-NAME           PIC X(40).                  00270002
+002800         03  U021-CUST-FILLER         PIC X(100).                 00280004
+002900                                                                  00290002
+003000     02  U021-INDIVIDUAL-PARAMETERS.                              00300002
+003100         03  U021-CUSTI-BIRTH-DATE    PIC X(10).                  00310005
+003200         03  U021-CUSTI-SEX           PIC X.                      00320005
+003300         03  U021-CUSTI-MARITAL-STAT  PIC X.                      00330005
+003400         03  U021-CUSTI-HOME-PHONE    PIC S9(11)         COMP-3.  00340005
+003500         03  U021-CUSTI-BUS-PHONE     PIC S9(11)         COMP-3.  00350005
+003600         03  U021-CUSTI-CURR-EMPLOY   PIC X(40).                  00360005
+003700         03  U021-CUSTI-PRIV-NOT-DT   PIC X(10).                  00370011
+003800         03  U021-CUSTI-SHARE-INFO    PIC 9.                      00380009
+003900         03  U021-CUSTI-DT-OF-DEATH   PIC X(10).                  00390010
+003910         03  U021-CUSTI-QFD-SCORE     PIC 9(04).                  00391011
+003920         03  U021-CUSTI-CELL-PHONE    PIC S9(11)         COMP-3.  00392012
+004000         03  U021-CUSTI-FILLER        PIC X(19).                  00400012
+004100                                                                  00410002
+004200     02  U021-NON-INDIVIDUAL-PARAMETERS.                          00420002
+004300         03  U021-CUSTN-TYPE          PIC 99.                     00430005
+004400         03  U021-CUSTN-PRI-PHONE     PIC S9(11)         COMP-3.  00440005
+004500         03  U021-CUSTN-SEC-PHONE     PIC S9(11)         COMP-3.  00450005
+004510         03  U021-CUSTN-CELL-PHONE    PIC S9(11)         COMP-3.  00451012
+004600         03  U021-CUSTN-FILLER        PIC X(44).                  00460012
+004700                                                                  00470000
+004800* PURPOSE - THIS BATCH MODULE WILL RETURN INFORMATION FROM THE    00480003
+004900*           CIF CUSTOMER TABLE.  IT WILL ALSO RETURN DEMOGRAPHIC  00490003
+005000*           INFO IF THE U021-DEMOGRAPHICS-IND IS SET TO 'Y'.      00500003
+005100*           U021-CUST-TYPE WILL DETERMINE WHETHER INDIVIDUAL OR   00510003
+005200*           NON-INDIVIDUAL DEMOGRAPHIC INFO IS RETURNED.          00520003
+005300*                                                                 00530000
+005400*       CALL 'CIFU021' USING CIFU021-PARAMETERS.                  00540000
+005500*                                                                 00550000
+005600* CIFU021-PARAMETERS.                                             00560000
+005700* INPUT-PARAMETERS.                                               00570000
+005800*         BANK-NBR               THE BANK NUMBER OF               00580000
+005900*                                CUSTOMER OR ACCOUNT              00590000
+006000*                                                                 00600000
+006100*         FILE-ID                THE FILE ID OF THE               00610000
+006200*                                ACCOUNT OR 'CUST'                00620000
+006300*                                FOR A CUSTOMER.                  00630000
+006400*                                                                 00640000
+006500*         FILE-KEY               THE ACCOUNT OR CUSTOMER          00650000
+006600*                                FORMATTED INTO THE               00660000
+006700*                                CIFXREFK COPYBOOK.               00670000
+006800*                                                                 00680003
+006900*         DEMOGRAPHICS-IND       REQUEST FOR DEMOGRAPHIC INFO     00690004
+007000*                                N = DO NOT RETURN INFO           00700004
+007100*                                Y = RETURN INFO                  00710004
+007200*                                                                 00720000
+007300*                                                                 00730000
+007400*                                                                 00740000
+007500* CUSTOMER-PARAMETERS.                                            00750004
+007600*                                                                 00760000
+007700*         RETURN-CODE                    RETURN CODE:             00770000
+007800*                                        G = GOOD RETURN          00780000
+007900*                                        B = BAD RETURN           00790000
+008000*                                                                 00800000
+008100*         CUST-ID                        THE CUSTOMER ID (TO      00810004
+008200*                                        UNIQUELY IDENTIFY THE    00820004
+008300*                                        CUSTOMER)                00830004
+008400*                                                                 00840004
+008500*         TAX-ID                         THE TAX ID (SSN)         00850004
+008600*                                                                 00860004
+008700*         TAX-ID-CERT                    THE TAX ID CERTIFICATION 00870004
+008800*                                        CODE:                    00880004
+008900*                                        1=GOOD NOTCERT           00890004
+009000*                                        2=GOOD CERT              00900004
+009100*                                        3=GOOD EXEMPT NOTCERT    00910004
+009200*                                        4=GOOD EXEMPT CERT       00920004
+009300*                                        5=BAD NOTCERT            00930004
+009400*                                        6=BAD CERT               00940004
+009500*                                        7=BAD EXEM CERT          00950004
+009600*                                        8=GOOD NO WITHHOLD CERT  00960004
+009700*                                        9=GOOD WITHHOLD REG CERT 00970004
+009800*                                        N=NON-INTEREST           00980004
+009900*                                        X=VALID LOANS            00990004
+010000*                                        L=INVALID LOANS          01000004
+010100*                                                                 01010004
+010200*         MAIL-CODE                      THE MAIL CODE:           01020004
+010300*                                        A=AUDIT NO MAIL          01030004
+010400*                                        C=CHECK MATE             01040004
+010500*                                        E=EMPLOYEE               01050004
+010600*                                        H=HOLD                   01060004
+010700*                                        M=MAIL                   01070004
+010800*                                        R=RETURNED MAIL          01080004
+010900*                                        X=MAIL ALWAYS            01090004
+011000*                                        1=ONE STATEMENT          01100004
+011100*                                        BLANK=NO OVERRIDE        01110004
+011200*                                                                 01120004
+011300*         CUST-TYPE                      CUSTOMER TYPE:           01130004
+011400*                                        I=INDIVIDUAL             01140004
+011500*                                        N=NON-INDIVIDUAL         01150004
+011600*                                                                 01160004
+011700*         OFFICER                        THE OFFICER CODE         01170004
+011800*                                                                 01180004
+011900*         BRANCH                         THE BRANCH OF THE BANK   01190004
+012000*                                        AT WHICH THE CUSTOMER    01200004
+012100*                                        BANKS                    01210004
+012200*                                                                 01220004
+012300*         WITHHOLD-TAX                   THE WITHHOLD TAX CODE:   01230004
+012400*                                        1=NO                     01240004
+012500*                                        2=W/H NO TIN             01250004
+012600*                                        3=W/H INVALID TIN        01260004
+012700*                                        4=W/H UNDER REPORT       01270004
+012800*                                        5=W/H CERTIFICATION      01280004
+012900*                                          FAILED                 01290004
+013000*                                                                 01300004
+013100*         OSB-IND                        OSB LINKED AUTOMATICALLY:01310004
+013200*                                        Y=YES                    01320004
+013300*                                        N=NO                     01330004
+013400*                                                                 01340004
+013500*         CUST-NAME                      THE CUSTOMER NAME        01350004
+013600*                                                                 01360004
+013700*                                                                 01370004
+013800*                                                                 01380004
+013900* INDIVIDUAL-PARAMETERS.                                          01390004
+014000*                                                                 01400004
+014100*         BIRTH-DATE                     THE CUSTOMER BIRTH DATE  01410004
+014200*                                                                 01420004
+014300*         SEX                            THE GENDER OF THE        01430004
+014400*                                        CUSTOMER:                01440004
+014500*                                        F=FEMALE                 01450004
+014600*                                        M=MALE                   01460004
+014700*                                        U=UNKNOWN                01470004
+014800*                                                                 01480004
+014900*         MARITAL-STAT                   THE MARITAL STATUS:      01490004
+015000*                                        M=MARRIED                01500004
+015100*                                        S=SINGLE                 01510004
+015200*                                        D=DEVORCED               01520004
+015300*                                        U=UNKNOWN                01530004
+015400*                                                                 01540004
+015500*         HOME-PHONE                     THE HOME PHONE NUMBER OF 01550004
+015600*                                        THE CUSTOMER             01560004
+015700*                                                                 01570004
+015800*         BUS-PHONE                      THE BUSINESS/WORK PHONE  01580004
+015900*                                        NUMBER OF THE            01590004
+016000*                                        CUSTOMER                 01600004
+016100*                                                                 01610004
+016200*         PRIV-NOT-DT                    DATE CUSTOMER LAST       01620008
+016300*                                        RECEIVED PRIVACY NOTICE  01630008
+016400*                                                                 01640006
+016500*         SHARE-INFO                     SHARE INFORMATION        01650006
+016600*                                        INDICATOR:               01660006
+016700*                                        0=SHARE INFO WITH        01670006
+016800*                                          AFFILIATES             01680006
+016900*                                        1=DO NOT SHARE INFO      01690006
+017000*                                                                 01700006
+017100*         CURR-EMPLOY                    THE NAME OF THE CURRENT  01710004
+017200*                                        EMPLOYER                 01720004
+017300*                                                                 01730004
+017400*         DT-OF-DEATH                    DATE THE CUSTOMER DIED   01740010
+017500*                                                                 01750004
+017510*         CELL-PHONE                     THE CELL PHONE NUMBER OF 01751012
+017520*                                        THE CUSTOMER             01752012
+017530*                                                                 01753012
+017600*                                                                 01760004
+017700* NON-INDIVIDUAL-PARAMETERS.                                      01770004
+017800*                                                                 01780004
+017900*         CUSTN-TYPE                     CUSTOMER TYPE CODE:      01790004
+018000*                                        2=PUBLIC FUND            01800004
+018100*                                        3=BUSINESS               01810004
+018200*                                        4=ORGANIZATION           01820004
+018300*                                        5=SPECIAL                01830004
+018400*                                        6=CONTROL ACCOUNT        01840004
+018500*                                                                 01850004
+018600*         PRI-PHONE                      THE PRIMARY PHONE NUMBER 01860004
+018700*                                        OF THE CUSTOMER          01870004
+018800*                                                                 01880004
+018900*         SEC-PHONE                      THE SECONDARY PHONE      01890004
+019000*                                        NUMBER OF THE CUSTOMER   01900004
+019010*                                                                 01901012
+019100*         CELL-PHONE                     THE CELL PHONE NUMBER    01910012
+019200*                                        OF THE CUSTOMER          01920012

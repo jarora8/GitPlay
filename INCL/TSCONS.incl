@@ -1,0 +1,105 @@
+ /**********************************************************************
+
+ Date   : April 2019
+ Author : Christian Hirschi
+ Purpose: Business TASS Constant
+
+ DESCRIPTION
+ -----------
+ If values from this member are used, it has to be included
+ in top of all modules.
+
+ Also %XINCLUDE (be aware of the X at the beginning) in all
+ copybooks (structures and entry definitions), so everone sees
+ where the TSCONS structures comes from.
+
+ ATTENTION: DO NOT CHANGE ANY DEFINITION WITHOUT RECOMPILE ALL
+ ========== DEPENDENT MODULES! Better make a new type, and conso-
+            lidate it in a managed way (if necessary).
+            New type definitions are never a problem. The type
+            must always begin with TSCONS#.
+            Reason: The TSDEFS structures are parts of structures
+                    with versions, so any change of a generally
+                    type change also a versioned structure.
+
+ -----------------------------------------------------------------------
+ MODIFICATION
+ ------------
+ CH: Christian Hirschi(A336712)
+ -----------------------------------------------------------------------
+
+ -----------------------------------------------------------------------
+ TASS000002:  DC 2/2019  10.05.2019
+ -----------------------------------------------------------------------
+ 02.04.2019 | CH | Initial version
+ -----------------------------------------------------------------------
+
+ **********************************************************************/
+
+ //todo: not finaly
+ //http://vdps-cat.csintra.net/OnlineCatalogue-19.2/DomainDetails.jsp
+ //?dataModel=FIOM&domainName=IncomeCodeType
+ define ordinal TSCONS#vdpsIncomeCode
+   (TSCONS#vdpsIncomeCode01InterestPaidByUSObligorsGeneral      value(1)
+   ,TSCONS#vdpsIncomeCode06DividendsPaidByUSCorporationsGeneral value(2)
+   ,TSCONS#vdpsIncomeCode23GrossIncomeOther                     value(3)
+   ,TSCONS#vdpsIncomeCode24QualifiedInvestmentEntityQIE         value(4)
+   ,TSCONS#vdpsIncomeCode27PubliclyTradedPartnershipDistrLP     value(5)
+   ,TSCONS#vdpsIncomeCode30OriginalIssueDiscountOID             value(6)
+   ,TSCONS#vdpsIncomeCode31ShortTermOID                         value(7)
+   ,TSCONS#vdpsIncomeCode37ReturnOfCapital                      value(8)
+   ,TSCONS#vdpsIncomeCode40OtherDividendEquivalentsUnderIRC     value(9)
+   ,TSCONS#vdpsIncomeCode00CodeBlanc                           value(10)
+   ,TSCONS#vdpsIncomeCodeUnknown                             value(9999)
+   )
+   precision(31) signed
+   ;
+
+ dcl TSCONS#amountTypeCdCashDistribution
+   dim(*) char(3) static nonAsgn suppress(unref)
+   init('100' //Interest
+       ,'101' //Dividend
+       ,'102' //Return of capital
+       ,'103' //Capital gains distribution
+       ,'104' //Cash distribution
+       ,'106' //Dividend equivalent amount
+       ,'107' //Conversion rate adjustment (relevant under section 305c)
+       ,'108' //Effectively connected income
+       ,'109' //Royalty distribution
+       ,'110' //Real estate investment trust distribution
+       ,'111' //Capital redemption
+       ,'112' //Premium OID / Agio (BESL 0445)
+       ,'113' //Premium OID / Agio (BESL 0505)
+       ,'114' //Premium capital / Agio
+       ,'115' //Titelkurs  (TITK)
+       ,'116' //Cash compensation (BESL 0124)
+       ,'117' //Broken period interest with DAAC and dates (BESL 0101)
+       ,'118' //Broken period interest (BESL 0102)
+       ,'119' //Broken period interest with DAAC and dates (BESL 0105)
+       ,'120' //Cash in lieu
+       ,'121' //Cash in lieu Capital gains distribution
+       ,'122' //Cash in lieu dividend
+       ,'123' //Cash in lieu early premium consideration
+       ,'124' //Cash in lieu interest
+       ,'125' //Cash in lieu return of capital
+       ,'126' //Consent fee
+       ,'127' //Conversion rate adjustment (BESL 0112)
+       ,'128' //Early premium consideration
+       ,'129' //Repurchase
+       ,'130' //ADR/GDR Service Fees (BESL 0049)            
+       ,'131' //Capital not paid-up (BESL 0107)
+       ,'132' //Exercise price (BESL 0114)
+       ,'133' //Reduction of nominal value (BESL 1021)
+       )
+   ;
+
+ dcl TSCONS#amountTypeCdSecuritiesDistributions
+   dim(*) char(3) static nonAsgn suppress(unref)
+   init('134' //Securities distribution
+       ,'135' //Securities distribution of capital gains
+       ,'136' //Securities distribution dividend
+       ,'137' //Securities distribution early premium consideration
+       ,'138' //Securities distribution interest
+       ,'139' //Securities distribution return of capital
+       )
+   ;

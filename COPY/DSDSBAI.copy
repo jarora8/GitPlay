@@ -1,0 +1,43 @@
+000100 01  DSDS-BAI-TX-WORK.                                            00010000
+000200     05  BAI-BANK-NO         PIC 99.                              00020000
+000300     05  BAI-ACCT-NBR        PIC 9(9)                    COMP-3.  00030002
+000400     05  BAI-RECORD-CODE     PIC 99.                              00040000
+000500     05  BAI-SEQ-NBR         PIC 9(5)                    COMP-3.  00050002
+000600     05  BAI-INFO            PIC X(88).                           00060002
+000700     05  BAI-REC-03 REDEFINES BAI-INFO.                           00070000
+000800         10  BAI-OPENING-LGR PIC S9(9)V99                COMP-3.  00080002
+000900         10  BAI-OPENING-AVL PIC S9(9)V99                COMP-3.  00090004
+001000         10  BAI-CLOSING-LGR PIC S9(9)V99                COMP-3.  00100002
+001100         10  BAI-CLOSING-AVL PIC S9(9)V99                COMP-3.  00110002
+001200         10  BAI-1-DAY-FLOAT PIC S9(9)                   COMP-3.  00120002
+001300         10  BAI-OTHER-FLOAT PIC S9(9)                   COMP-3.  00130002
+001400         10  BAI-NBR-CREDITS PIC 9(5)                    COMP-3.  00140002
+001500         10  BAI-TOT-CREDITS PIC S9(9)V99                COMP-3.  00150002
+001600         10  BAI-NBR-DEBITS  PIC 9(5)                    COMP-3.  00160002
+001700         10  BAI-TOT-DEBITS  PIC S9(9)V99                COMP-3.  00170002
+001800         10  BAI-03-STATUS   PIC XX.                              00180009
+001900             88 BAI-CLOSED           VALUE '09'.                  00190009
+002000         10  BAI-03-FILLER   PIC X(32).                           00200009
+002100         10  BAI-03-ACCT-ID  PIC 9(03)                   COMP-3.  00210008
+002200     05  BAI-REC-16 REDEFINES BAI-INFO.                           00220000
+002300         10  BAI-DSDS-TX-CODE                                     00230006
+002400                             PIC 9(3)                    COMP-3.  00240006
+002500         10  BAI-TX-AMOUNT   PIC S9(9)V99                COMP-3.  00250002
+002600         10  BAI-TX-DESC.                                         00260000
+002700             15  BAI-DESC-16 PIC X(16).                           00270000
+002800             15  BAI-DESC-10 PIC X(10).                           00280000
+002900         10  BAI-CHK-NO      PIC S9(9)                   COMP-3.  00290007
+003000         10  BAI-16-FILLER   PIC X(47).                           00300008
+003100         10  BAI-16-ACCT-ID  PIC 9(03)                   COMP-3.  00310008
+003200                                                                  00320004
+003300 01  DSDS-BAI-WORK-AREA.                                          00330004
+003400     05  HOLD-BAI-OPENING-LGR                                     00340004
+003500                             PIC S9(9)V99                COMP-3.  00350004
+003600     05  HOLD-BAI-OPENING-AVL                                     00360004
+003700                             PIC S9(9)V99                COMP-3.  00370004
+003800     05  HOLD-BAI-NBR-CREDITS                                     00380004
+003900                             PIC S9(9)V99                COMP-3.  00390004
+004000     05  HOLD-BAI-TOT-CREDITS                                     00400004
+004100                             PIC S9(9)V99                COMP-3.  00410004
+004200     05  HOLD-BAI-NBR-DEBITS PIC 9(5)                    COMP-3.  00420004
+004300     05  HOLD-BAI-TOT-DEBITS PIC S9(9)V99                COMP-3.  00430004

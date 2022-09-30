@@ -1,0 +1,18 @@
+000100******************************************************************00010000
+000200*                                                                *00020000
+000300*    E A R N I N G S   R O U T I N E   W O R K   A R E A         *00030000
+000400*                                                                *00040000
+000500******************************************************************00050000
+000600*01  EARNINGS-ROUTINE-WORK-AREA.                                  00060000
+000700     02  HOLD-DAILY-ACCR     PIC S9(8)V9(5)  VALUE ZERO  COMP-3.  00070000
+000800     02  BACK-DATED-SW       PIC 9           VALUE ZERO  COMP-3.  00080000
+000900     02  HOLD-TTX-AMOUNT     PIC S9(9)V99    VALUE ZERO  COMP-3.  00090000
+001000     02  HOLD-PROGRAM-ID     PIC 9(3)        VALUE ZERO  COMP-3.  00100000
+001100     02  HOLD-DAYS-IN-YEAR   PIC 9(3)        VALUE 365   COMP-3.  00110000
+001200     02  EARN-RETURN         PIC 9           VALUE ZERO  COMP-3.  00120000
+001300     02  HOLD-CYCLE-SW       PIC 9           VALUE ZERO  COMP-3.  00130000
+001400     02  HOLD-SC-CYC-SW      PIC 9           VALUE ZERO  COMP-3.  00140000
+001500     02  HOLD-ACCT-INFO      PIC X(29)       VALUE SPACES.        00150000
+001600     02  HOLD-EARN-INFO      PIC X(29)       VALUE SPACES.        00160000
+001610     02  HOLD-MIN-ACCR       PIC S9(8)V9(5)  VALUE ZERO  COMP-3.  00161000
+001620     EJECT                                                        00162000

@@ -1,0 +1,26 @@
+000100*01  PD-OSB-SAV-HDR.                                              00010000
+000200     02  OSH-BANK-NO         PIC 99.                              00020000
+000300     02  OSH-ACCT-ID         PIC 999                     COMP-3.  00030000
+000400     02  OSH-ACCT-NO         PIC 9(9)                    COMP-3.  00040000
+000500     02  OSH-REPORT-CODE     PIC S999                    COMP-3.  00050000
+000600     02  OSH-STMT-BAL        PIC S9(9)V99                COMP-3.  00060000
+000700     02  OSH-LAST-STMT-DT    PIC S9(7)                   COMP-3.  00070000
+000800     02  OSH-INT-PER1        PIC S9(5)V99                COMP-3.  00080000
+000900     02  OSH-INT-PD-YTD      PIC S9(7)V99                COMP-3.  00090000
+001000     02  OSH-ENDING-BAL      PIC S9(9)V99                COMP-3.  00100000
+001100     02  OSH-NO-DAYS-IN-CYC  PIC S999                    COMP-3.  00110000
+001200     02  OSH-STMT-DISP       PIC X.                               00120000
+001300     02  OSH-DEBIT-AMOUNT    PIC S9(9)V99                COMP-3.  00130000
+001400     02  OSH-CREDIT-AMOUNT   PIC S9(9)V99                COMP-3.  00140000
+001500     02  OSH-STMT-CYCLE-CODE PIC 99.                              00150000
+001600     02  OSH-SC-ROUTINE      PIC 99.                              00160000
+001700     02  OSH-DATE-CLOSED     PIC S9(7)                   COMP-3.  00170002
+001800     02  OSH-FILLER1         PIC X(8).                            00180002
+001900     02  OSH-DDA-ACCT-ID     PIC 999                     COMP-3.  00190000
+002000     02  OSH-DDA-ACCT-NO     PIC 9(9)                    COMP-3.  00200000
+002100     02  OSH-FILLER2         PIC X(151).                          00210001
+002200                                                                  00220000
+002300*  THIS RECORD LAYOUT IS USED AS A HEADER FOR SAVINGS DETAIL THAT 00230000
+002400*    IS TO BE PRINTED ON ONE STATEMENT DDA STATEMENTS. THE        00240000
+002500*    REPORT CODE IS 081 OR 082.                                   00250000
+002600*  THIS RECORD IS 225 CHARACTERS.                                 00260000

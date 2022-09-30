@@ -1,0 +1,34 @@
+000100*01  PROC-CTL-RECORD.                                             00010000
+000200     02  PROC-BK-NO          PIC 99.                              00020000
+000300     02  PROC-FILE-ID        PIC XXX.                             00030000
+000400         88  PROC-DSD                    VALUE 'DSD'.             00040000
+000500         88  PROC-DSS                    VALUE 'DSS'.             00050000
+000600     02  PROC-CURR-DATE      PIC S9(7)                   COMP-3.  00060000
+000700     02  PROC-LAST-DATE      PIC S9(7)                   COMP-3.  00070000
+000800     02  PROC-CURR-DAYS      PIC S9                      COMP-3.  00080000
+000900     02  PROC-FRIDAY-SW      PIC X.                               00090000
+001000         88  NOT-PROC-FRIDAY             VALUE '0'.               00100000
+001100         88  PROC-FRIDAY                 VALUE '1'.               00110000
+001200     02  PROC-MONTH-END-SW   PIC X.                               00120000
+001300         88  NOT-PROC-MONTH-END          VALUE '0'.               00130000
+001400         88  PROC-MONTH-END              VALUE '1'.               00140000
+001500     02  PROC-MONTH-END-DATE PIC S9(7)                   COMP-3.  00150000
+001600     02  PROC-QTR-END-SW     PIC X.                               00160000
+001700         88  NOT-PROC-QTR-END            VALUE '0'.               00170000
+001800         88  PROC-QTR-END                VALUE '1'.               00180000
+001900     02  PROC-QTR-END-DATE   PIC S9(7)                   COMP-3.  00190000
+002000     02  PROC-YEAR-END-SW    PIC X.                               00200000
+002100         88  NOT-PROC-YEAR-END           VALUE '0'.               00210000
+002200         88  PROC-YEAR-END               VALUE '1'.               00220000
+002300     02  PROC-YEAR-END-DATE  PIC S9(7)                   COMP-3.  00230000
+002400     02  PROC-THRU-DATE      PIC S9(7)                   COMP-3.  00240000
+002500     02  PROC-NEXT-DATE      PIC S9(7)                   COMP-3.  00250000
+002600     02  PROC-PRE-DAYS       PIC S9                      COMP-3.  00260000
+002700     02  PROC-MEMO-DAYS      PIC S9                      COMP-3.  00270000
+002800     02  PROCESSING-CYCLE-CODES          OCCURS 98 TIMES.         00280002
+002900         03  PROC-CYCLE-CODE PIC X.                               00290002
+002910     02  PROC-BUS-DAY-OF-MO  PIC 99.                              00291004
+003000     02  FILLER              PIC X(77).                           00300004
+003100*                                                                 00310000
+003200*    RECORD CONTAINS 217 CHARACTERS.                              00320000
+003300*    ALL DATES ARE IN JULIAN FORMAT (YYYYDDD)                     00330000

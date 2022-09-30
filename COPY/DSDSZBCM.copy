@@ -1,0 +1,27 @@
+      ******************************************************************
+      * DCLGEN TABLE(DSDS.ZBACMA)                                      *
+      *        LIBRARY(LMFPROG.APPLDCL.U099553(DSDSZBCM))              *
+      *        ACTION(REPLACE)                                         *
+      *        LANGUAGE(COBOL)                                         *
+      *        QUOTE                                                   *
+      * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+      ******************************************************************
+           EXEC SQL DECLARE DSDS.ZBACMA TABLE
+           ( ZBCM_BANK_NBR                  DECIMAL(3, 0) NOT NULL,
+             ZBCM_ACCOUNT_ID                DECIMAL(3, 0) NOT NULL,
+             ZBCM_ACCOUNT_NBR               DECIMAL(9, 0) NOT NULL,
+             ZBCM_LINK_TYPE                 CHAR(1) NOT NULL,
+             ZBCM_LINK_ACCT_NBR             DECIMAL(9, 0) NOT NULL
+           ) END-EXEC.
+      ******************************************************************
+      * COBOL DECLARATION FOR TABLE DSDS.ZBACMA                        *
+      ******************************************************************
+       01  DSDS-ZBACMA.
+           10 ZBCM-BANK-NBR        PIC S9(3)V USAGE COMP-3.
+           10 ZBCM-ACCOUNT-ID      PIC S9(3)V USAGE COMP-3.
+           10 ZBCM-ACCOUNT-NBR     PIC S9(9)V USAGE COMP-3.
+           10 ZBCM-LINK-TYPE       PIC X(1).
+           10 ZBCM-LINK-ACCT-NBR   PIC S9(9)V USAGE COMP-3.
+      ******************************************************************
+      * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 5       *
+      ******************************************************************

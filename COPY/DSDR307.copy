@@ -1,0 +1,21 @@
+000100*01  STOCK-PAPER-PRINT-LINE.                                      00010000
+000200     02  PL-BANK-NO          PIC 99.                              00020000
+000300     02  PL-REPORT-CODE      PIC S999                    COMP-3.  00030000
+000400     02  PL-ACCT-ID          PIC 999                     COMP-3.  00040000
+000500     02  PL-SEQ-NO           PIC 9(9)                    COMP-3.  00050000
+000600     02  FILLER              PIC X(6).                            00060000
+000700     02  PL-PRINT-LINE.                                           00070000
+000800         03  PL-CC           PIC X.                               00080000
+000900         03  PL-PRINT        PIC X(132).                          00090000
+001000     02  FILLER              PIC X(50).                           00100000
+001100*  THIS RECORD LAYOUT IS USED FOR ANY PREFORMATTED PRINT LINES    00110000
+001200*  THAT ARE TO BE PRINTED IN DSDS300.                             00120000
+001300*        07 = FILE MAINTENANCE                                    00130000
+001400*        23 = TRANSACTION ADDITIONS AND DELETIONS                 00140000
+001500*        24 = TRANSACTION RECAP                                   00150000
+001600*        78 = TELEPHONE TRANSFER SUSPECTS                         00160000
+001700*        80 = POSTING JOURNAL                                     00170000
+001800*        81 = ACCUM DETAIL JOURNAL                                00180000
+001900*        82 = DAILY TOTALS                                        00190000
+002000*        89 = ACCUM DETAIL LOG                                    00200000
+002100*  THIS RECORD IS 200 CHARACTERS.                                 00210001

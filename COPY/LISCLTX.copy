@@ -1,0 +1,350 @@
+000100***************************************************************** 00010000
+000200*          L O A N   I N T E R F A C E   S Y S T E M            * 00020000
+000300*                                                               * 00030000
+000400*   LISCLTX - FILE LAYOUT FOR TRANSACTIONS TO BE FED INTO CL    * 00040000
+000500*                                                               * 00050000
+000600***************************************************************** 00060000
+000700                                                                  00070000
+000800 01  LIS-CL-TRANSACTION.                                          00080000
+000900     02  TXN-BANK            PIC 9(3)   VALUE ZEROS.              00090008
+001000     02  TXN-BRANCH          PIC 9(4)   VALUE ZEROS.              00100008
+001100     02  TXN-CUST-NBR        PIC 9(7)   VALUE ZEROS.              00110008
+001200     02  TXN-LOAN-NBR        PIC 9(4)   VALUE ZEROS.              00120008
+001300     02  TXN-CODE            PIC X(2)   VALUE SPACES.             00130008
+001310                                                                  00131050
+001400     02  TXN-DATA.                                                00140007
+001500         03  FILLER          PIC X(7)   VALUE SPACES.             00150008
+001600         03  TXN-SUB-CODE    PIC X(3)   VALUE SPACES.             00160008
+001700         03  TXN-DATA1       PIC X(50)  VALUE SPACES.             00170008
+001800     02  TXN-BATCH-BRANCH    PIC 9(4)   VALUE ZEROS.              00180008
+001900     02  TXN-BATCH-NBR       PIC 9(3)   VALUE ZEROS.              00190008
+002000     02  TXN-BATCH-ID        PIC X(8)   VALUE SPACES.             00200008
+002000     02  FILLER              PIC X(15)  VALUE SPACES.             00201060
+002100 01  TX01-RECORD REDEFINES LIS-CL-TRANSACTION.                    00210000
+002200     02  FILLER              PIC X(20).                           00220000
+002300     02  TX01-CARD-NBR       PIC 9(1).                            00230008
+002400     02  TX01-CUST-NAME      PIC X(36).                           00240000
+002500     02  FILLER              PIC X(53).                           00250060
+002600 01  TX01-02-RECORD REDEFINES LIS-CL-TRANSACTION.                 00260000
+002700     02  FILLER              PIC X(20).                           00270000
+002800     02  TX01-2-CARD-NBR     PIC 9(1).                            00280008
+002900     02  TX01-2-CUST-NAME    PIC X(36).                           00290001
+003000     02  FILLER              PIC X(53).                           00300060
+003100 01  TX01-03-RECORD REDEFINES LIS-CL-TRANSACTION.                 00310000
+003200     02  FILLER              PIC X(20).                           00320000
+003300     02  TX01-3-CARD-NBR     PIC 9(1).                            00330008
+003400     02  TX01-3-CUST-NAME    PIC X(36).                           00340001
+003500     02  FILLER              PIC X(53).                           00350060
+003600 01  TX01-04-RECORD REDEFINES LIS-CL-TRANSACTION.                 00360000
+003700     02  FILLER              PIC X(20).                           00370000
+003800     02  TX01-4-CARD-NBR     PIC 9(1).                            00380001
+003900     02  TX01-4-STREET-NBR   PIC 9(07).                           00390001
+004000     02  TX01-4-STREET-ADDR  PIC X(29).                           00400001
+004100     02  FILLER              PIC X(53).                           00410060
+004200 01  TX01-05-RECORD REDEFINES LIS-CL-TRANSACTION.                 00420000
+004300     02  FILLER              PIC X(20).                           00430000
+004400     02  TX01-5-CARD-NBR     PIC 9(1).                            00440001
+004500     02  TX01-5-CITY         PIC X(22).                           00450001
+004600     02  TX01-5-STATE        PIC X(02).                           00460001
+004700     02  FILLER              PIC X(65).                           00470060
+004800 01  TX02-RECORD REDEFINES LIS-CL-TRANSACTION.                    00480000
+004900     02  FILLER              PIC X(23).                           00490012
+005000     02  TX02-OCCC           PIC 9(02).                           00500001
+005100     02  TX02-SHORT-NAME     PIC X(15).                           00510001
+005200     02  TX02-ZIP-CODE       PIC X(05).                           00520001
+005300     02  TX02-REPORT-BRANCH  PIC 9(04).                           00530001
+005400     02  TX02-DIVISION       PIC 9(04).                           00540001
+005500     02  TX02-OFFICER        PIC X(05).                           00550001
+005600     02  TX02-REGC           PIC 9(04).                           00560001
+005700     02  FILLER              PIC X(01).                           00570001
+005800     02  TX02-SICC           PIC 9(05).                           00580001
+005900     02  FILLER              PIC X(42).                           00590060
+006000 01  TX21-RECORD REDEFINES LIS-CL-TRANSACTION.                    00600000
+006100     02  FILLER              PIC X(20).                           00610000
+006200     02  TX21-INT-BEGIN-DATE PIC 9(6).                            00620000
+006300     02  TX21-NOTE-TYPE      PIC X.                               00630000
+006400     02  TX21-INT-RATE       PIC V9(7).                           00640000
+006500     02  TX21-CALCULATION    PIC X.                               00650000
+006600     02  TX21-NOTE-DATE      PIC 9(6).                            00660000
+006700     02  TX21-TERM           PIC X(3).                            00670000
+006800     02  TX21-MATURITY-DATE  PIC 9(6).                            00680000
+006900     02  TX21-PYMT-MODE      PIC X.                               00690000
+007000     02  TX21-INT-PYMT-SCHED PIC X.                               00700000
+007100     02  TX21-PRIN-PYMT-SCHED PIC X.                              00710000
+007200     02  TX21-1ST-INT-DUE-DT PIC 9(6).                            00720000
+007300     02  TX21-1ST-PRIN-DUE-DT PIC 9(6).                           00730000
+007400     02  TX21-PRIN-PMT-AMT   PIC 9(11)V9(4).                      00740000
+007500     02  FILLER              PIC X(30).                           00750060
+007600 01  TX22-RECORD REDEFINES LIS-CL-TRANSACTION.                    00760000
+007700     02  FILLER              PIC X(20).                           00770000
+007800     02  TX22-PRIM-OFFICER   PIC 9(5).                            00780000
+007900     02  TX22-ORIG-AMT       PIC 9(11)V9(4).                      00790000
+008000     02  TX22-DISC-AMT       PIC 9(11)V9(4).                      00800000
+008100     02  TX22-DISC-CALC-AMT  PIC 9(11)V9(4).                      00810000
+008200     02  TX22-DEMAND-CODE    PIC X.                               00820000
+008300     02  TX22-REVOLVING-CODE PIC X.                               00830000
+008400     02  TX22-CLASS          PIC X(2).                            00840000
+008500     02  TX22-FRB-CODE       PIC X(3).                            00850000
+008600     02  TX22-DISPOSITION    PIC X.                               00860000
+008700     02  TX22-LEDGER         PIC X(2).                            00870000
+008800     02  FILLER              PIC X(30).                           00880060
+008900 01  TX23-RECORD REDEFINES LIS-CL-TRANSACTION.                    00890000
+009000     02  FILLER              PIC X(20).                           00900000
+009100     02  TX23-SELLING-BANK   PIC X(7).                            00910057
+009200     02  TX23-SEC-OFFICER    PIC X(5).                            00920013
+009300     02  TX23-REPT-BRANCH    PIC 9(5).                            00930023
+009400     02  FILLER              PIC X(7).                            00940026
+009500     02  TX23-COLLATERAL     PIC X(4).                            00950000
+009600     02  TX23-PYMT-PRI-INT   PIC X.                               00960000
+009700     02  TX23-PYMT-PRI-PRIN  PIC X.                               00970000
+009800     02  TX23-PYMT-PRI-TAX   PIC X.                               00980000
+009900     02  TX23-PYMT-PRI-INS   PIC X.                               00990000
+010000     02  TX23-PYMT-PRI-MPP   PIC X.                               01000000
+010100     02  TX23-PYMT-PRI-LC    PIC X.                               01010000
+010200     02  TX23-PYMT-APPL-CODE PIC X.                               01020000
+010300     02  TX23-EFFECT-DATE-CD PIC X.                               01030000
+010400     02  TX23-PRIME-CODE     PIC X(3).                            01040000
+010500     02  TX23-REL-TO-PRIME   PIC X.                               01050000
+010600     02  TX23-PRIME-DIFF     PIC 9(01)V9(04).                     01060021
+010700     02  TX23-PRIME-CEILING  PIC V9(5).                           01070015
+010800     02  TX23-PRIME-FLOOR    PIC V9(5).                           01080015
+010900     02  TX23-NOTICE-CODE    PIC X.                               01090000
+011000     02  TX23-SUB-NOTICE-CD  PIC X.                               01100000
+011100     02  TX23-NOTICE-LEAD-CD PIC X.                               01110000
+011200     02  TX23-TAX-FREE-CODE  PIC X.                               01120000
+011300     02  TX23-TIED-IND       PIC X.                               01130000
+011400     02  FILLER              PIC X(30).                           01140060
+011500 01  TX24-RECORD REDEFINES LIS-CL-TRANSACTION.                    01150000
+011600     02  FILLER              PIC X(20).                           01160000
+011700     02  TX24-LATE-CHRG-CODE PIC X.                               01170000
+011800     02  TX24-LATE-CHRG-1    PIC X(2).                            01180000
+011900     02  TX24-LATE-CHRG-IND  PIC X.                               01190000
+012000     02  TX24-LATE-CHRG-2    PIC X(2).                            01200000
+012100     02  TX24-COMMITTEE-REPT PIC X.                               01210000
+012200     02  TX24-EST-MAT-DATE   PIC 9(6).                            01220000
+012300     02  TX24-RISK-CODE      PIC X(5).                            01230000
+012400     02  TX24-RISK-DATE      PIC 9(6).                            01240000
+012500     02  TX24-RISK-PERCENT   PIC 9(2)V9(4).                       01250000
+012600     02  FILLER              PIC X(3).                            01260000
+012700     02  TX24-PURPOSE-CODE   PIC X(2).                            01270000
+012800     02  TX24-FED-REDISC     PIC X.                               01280000
+012900     02  TX24-PLEDGE-CODE    PIC X.                               01290000
+013000     02  TX24-INTERFACE-CODE PIC X.                               01300000
+013100     02  FILLER              PIC X(52).                           01310060
+013200 01  TX29-005-RECORD REDEFINES LIS-CL-TRANSACTION.                01320001
+013300     02  FILLER              PIC X(27).                           01330001
+013400     02  TX29-005-FILLER     PIC X(3).                            01340001
+013500     02  TX29-005-REPT-BRNCH PIC 9(05).                           01350024
+013600     02  FILLER              PIC X(75).                           01360060
+013610 01  TX29-053-RECORD REDEFINES LIS-CL-TRANSACTION.                01361039
+013620     02  FILLER                       PIC X(27).                  01362039
+013630     02  TX29-053-FILLER              PIC X(03).                  01363039
+013640     02  TX29-053-DEL-MINOR-MATURITY  PIC X(01).                  01364042
+013650     02  FILLER                       PIC X(01).                  01365042
+013660     02  TX29-053-DEL-MINOR-MAJOR-DEL PIC X(01).                  01366042
+013670     02  FILLER                       PIC X(77).                  01367060
+013680 01  TX29-028-RECORD REDEFINES LIS-CL-TRANSACTION.                01368043
+013690     02  FILLER                       PIC X(27).                  01369043
+013691     02  TX29-028-FILLER              PIC X(03).                  01369144
+013692     02  TX29-028-ACH-ACCT-IND        PIC X(01).                  01369246
+013693     02  FILLER                       PIC X(01).                  01369344
+013695     02  TX29-028-ACH-ACCT-NBR        PIC X(17).                  01369543
+013696     02  FILLER                       PIC X(61).                  01369660
+013697 01  TX29-029-RECORD REDEFINES LIS-CL-TRANSACTION.                01369743
+013698     02  FILLER                       PIC X(27).                  01369843
+013699     02  TX29-029-FILLER              PIC X(03).                  01369944
+013700     02  TX29-029-ACH-ACCT-NAME       PIC X(40).                  01370043
+013702     02  FILLER                       PIC X(41).                  01370260
+013703 01  TX29-061-RECORD REDEFINES LIS-CL-TRANSACTION.                01370343
+013704     02  FILLER                       PIC X(27).                  01370443
+013705     02  TX29-061-FILLER              PIC X(03).                  01370547
+013706     02  TX29-061-BUS-DAY-VER-IND     PIC X(01).                  01370646
+013707     02  FILLER                       PIC X(79).                  01370760
+013710 01  TX29-097-RECORD REDEFINES LIS-CL-TRANSACTION.                01371043
+013810     02  FILLER              PIC X(27).                           01381053
+013820     02  TX29-097-CODE       PIC 9(03).                           01382053
+013830     02  TX29-097-FILLER     PIC X(01).                           01383053
+014200     02  TX29-097-PRE-BILL   PIC 9(03).                           01420056
+014210     02  FILLER              PIC X(76).                           01421060
+014300 01  TX29-098-RECORD REDEFINES LIS-CL-TRANSACTION.                01430002
+014400     02  FILLER              PIC X(27).                           01440017
+014500     02  TX29-098-FILLER     PIC 9(03).                           01450016
+014600     02  TX29-098-FILLER1    PIC 9(04).                           01460019
+014700     02  TX29-098-CUST-NBR   PIC 9(07).                           01470002
+014800     02  TX29-098-COMM-NBR   PIC 9(04).                           01480002
+014900     02  FILLER              PIC X(65).                           01490060
+015000 01  TX29-109-RECORD REDEFINES LIS-CL-TRANSACTION.                01500027
+015100     02  FILLER              PIC X(30).                           01510027
+015200     02  TX29-109-BRANCH     PIC 9(05).                           01520027
+015300     02  TX29-109-REGION     PIC 9(05).                           01530027
+015400     02  TX29-109-DIVISION   PIC 9(05).                           01540027
+015500     02  TX29-109-HIARC-1    PIC 9(05).                           01550027
+015600     02  TX29-109-HIARC-2    PIC 9(05).                           01560027
+015700     02  TX29-109-HIARC-3    PIC 9(05).                           01570027
+015800     02  TX29-109-HIARC-4    PIC 9(05).                           01580027
+015900     02  FILLER              PIC X(45).                           01590060
+016000 01  TX29-205-RECORD REDEFINES LIS-CL-TRANSACTION.                01600026
+016100     02  FILLER              PIC X(27).                           01610017
+016200     02  TX29-205-FILLER     PIC 9(03).                           01620016
+016300     02  TX29-205-CUST-GRADE PIC X(05).                           01630049
+016500     02  TX29-205-RISK-PRCT  PIC 9V9(05).                         01650018
+016600     02  FILLER              PIC X(69).                           01660060
+016610 01  TX29-206-RECORD REDEFINES LIS-CL-TRANSACTION.                01661039
+016620     02  FILLER              PIC X(27).                           01662039
+016630     02  TX29-206-FILLER     PIC 9(03).                           01663039
+016640     02  TX29-206-RISK-CD2   PIC X(04).                           01664039
+016650     02  FILLER              PIC X(01).                           01665039
+016660     02  TX29-206-RISK-PRCT2 PIC 9V9(05).                         01666039
+016670     02  FILLER              PIC X(69).                           01667060
+016680 01  TX29-324-RECORD REDEFINES LIS-CL-TRANSACTION.                01668043
+016690     02  FILLER                       PIC X(27).                  01669043
+016700     02  TX29-324-FILLER              PIC X(03).                  01670044
+016701     02  TX29-324-ABA-NBR             PIC X(10).                  01670144
+016703     02  FILLER                       PIC X(70).                  01670360
+016710 01  TX29-345-RECORD REDEFINES LIS-CL-TRANSACTION.                01671041
+016800     02  FILLER               PIC X(27).                          01680035
+016900     02  TX29-345-FILLER      PIC X(3).                           01690035
+017000     02  TX29-345-CODE        PIC X(01).                          01700035
+017100     02  FILLER               PIC X(01).                          01710035
+017200     02  TX29-345-NAICS       PIC X(06).                          01720051
+017300     02  FILLER REDEFINES TX29-345-NAICS.                         01730035
+017500         03  TX29-345-NAICS-X PIC X(05).                          01750051
+017510         03  FILLER           PIC X(01).                          01751048
+017600     02  FILLER               PIC X(72).                          01760060
+017700 01  TX29-330-RECORD REDEFINES LIS-CL-TRANSACTION.                01770022
+017800     02  FILLER              PIC X(27).                           01780041
+017900     02  TX29-330-FILLER     PIC X(03).                           01790022
+018000     02  TX29-330-BILL-CD    PIC X(01).                           01800022
+018100     02  FILLER              PIC X(79).                           01810060
+018200 01  TX29-390-RECORD REDEFINES LIS-CL-TRANSACTION.                01820041
+018201     02  FILLER                   PIC X(27).                      01820141
+018202     02  TX29-390-FILLER          PIC X(03).                      01820241
+018203     02  TX29-390-SBA-APPROVAL-DT PIC 9(06).                      01820341
+018204     02  FILLER                   PIC X(01).                      01820441
+018205     02  TX29-390-SBA-GRP-NBR     PIC X(15).                      01820541
+018206     02  FILLER                   PIC X(58).                      01820660
+018207 01  TX29-396-RECORD REDEFINES LIS-CL-TRANSACTION.                01820743
+018208     02  FILLER                   PIC X(27).                      01820843
+018209     02  TX29-396-FILLER          PIC X(03).                      01820954
+018210     02  TX29-396-ACH-LEAD-CD     PIC X(01).                      01821045
+018211     02  FILLER                   PIC X(01).                      01821145
+018212     02  TX29-396-ACH-LEAD-DAYS   PIC 9(02).                      01821254
+018214     02  FILLER                   PIC X(76).                      01821460
+018215 01  TX29-397-RECORD REDEFINES LIS-CL-TRANSACTION.                01821555
+018216     02  FILLER                   PIC X(27).                      01821655
+018217     02  TX29-397-FILLER          PIC X(03).                      01821755
+018218     02  TX29-397-ACH-ADDL-DATE   PIC 9(06).                      01821855
+018219     02  FILLER                   PIC X(01).                      01821955
+018220     02  TX29-397-ACH-ADDL-FREQ   PIC X(01).                      01822055
+018221     02  FILLER                   PIC X(01).                      01822155
+018222     02  TX29-397-ACH-ADDL-AMT    PIC 9(11).                      01822255
+018223     02  FILLER                   PIC X(60).                      01822360
+018225 01  TX29-494-RECORD REDEFINES LIS-CL-TRANSACTION.                01822543
+018226     02  FILLER                    PIC X(27).                     01822658
+018230     02  TX29-494-FILLER           PIC X(03).                     01823058
+018300     02  TX29-494-PRIME-MO-X       PIC X(02).                     01830058
+018400     02  FILLER REDEFINES TX29-494-PRIME-MO-X.                    01840036
+018500         03  TX29-494-PRIME-MO     PIC 9(02).                     01850058
+018600     02  TX29-494-PRIME-DA-X       PIC X(02).                     01860058
+018700     02  FILLER REDEFINES TX29-494-PRIME-DA-X.                    01870036
+018800         03  TX29-494-PRIME-DA     PIC 9(02).                     01880058
+018810     02  TX29-494-PRIME-CALC       PIC X.                         01881058
+018811     02  FILLER                    PIC XX.                        01881159
+018840     02  TX29-494-PRIME-IDX-CHG-DA PIC 9(03).                     01884058
+018900     02  FILLER                    PIC X(70).                     01890060
+019000 01  TX29-806-RECORD REDEFINES LIS-CL-TRANSACTION.                01900040
+019001     02  FILLER                   PIC X(27).                      01900140
+019002     02  TX29-806-FILLER          PIC X(03).                      01900240
+019003     02  TX29-806-USER-REG1-1-X   PIC X(01).                      01900340
+019004     02  FILLER REDEFINES TX29-806-USER-REG1-1-X.                 01900440
+019005         03  TX29-806-USER-REG1-1 PIC 9(01).                      01900540
+019006     02  FILLER                   PIC X(79).                      01900660
+019010 01  TX29-900-RECORD REDEFINES LIS-CL-TRANSACTION.                01901040
+019100     02  FILLER               PIC X(27).                          01910027
+019200     02  TX29-900-FIELD-NO    PIC 9(03).                          01920031
+019300     02  TX29-900-PAY-INT     PIC X(01).                          01930029
+019400     02  TX29-900-INT-BEG-DT  PIC 9(06).                          01940029
+019500     02  TX29-900-INT-TYP     PIC X(01).                          01950029
+019600     02  TX29-900-INT-FCTR    PIC X(01).                          01960029
+019700     02  TX29-900-INT-DISB    PIC X(01).                          01970029
+019800     02  TX29-900-DISB-TYP    PIC X(01).                          01980029
+019900     02  TX29-900-RATE        PIC V9(07).                         01990029
+020000     02  TX29-900-RATEX REDEFINES TX29-900-RATE                   02000029
+020100                              PIC X(07).                          02010027
+020200     02  TX29-900-NEG-BAL     PIC X(01).                          02020029
+020300     02  TX29-900-PAY-AMOUNT  PIC 9(06)V9(02).                    02030029
+020400     02  TX29-900-PAY-SCH     PIC X(01).                          02040029
+020500     02  TX29-900-FST-P-DUE   PIC 9(06).                          02050029
+020600     02  TX29-900-SHORT-CD    PIC  X(01).                         02060029
+020700         88  TX29-900-SHORT-CD-VALID   VALUE '0' '1' '2' '3'.     02070029
+020800     02  FILLER               PIC  X(77).                         02080060
+020900 01  TX29-930-RECORD REDEFINES LIS-CL-TRANSACTION.                02090027
+021000     02  FILLER               PIC X(27).                          02100027
+021100     02  TX29-930-FIELD-NO    PIC 9(03).                          02110029
+021200     02  TX29-930-PAY-INT     PIC X(01).                          02120030
+021300     02  TX29-930-INT-BEG-DT  PIC 9(06).                          02130029
+021400     02  TX29-930-INT-TYP     PIC X(01).                          02140029
+021500     02  TX29-930-INT-FCTR    PIC X(01).                          02150029
+021600     02  TX29-930-INT-DISB    PIC X(01).                          02160029
+021700     02  TX29-930-DISB-TYP    PIC X(01).                          02170029
+021800     02  TX29-930-RATE        PIC V9(07).                         02180029
+021900     02  TX29-930-RATEX REDEFINES TX29-930-RATE                   02190029
+022000                              PIC X(07).                          02200027
+022100     02  TX29-930-NEG-BAL     PIC X(01).                          02210029
+022200     02  TX29-930-PAY-AMOUNT  PIC 9(06)V9(02).                    02220029
+022300     02  TX29-930-PAY-SCH     PIC X(01).                          02230029
+022400     02  TX29-930-FST-P-DUE   PIC 9(06).                          02240029
+022500     02  TX29-930-SHORT-CD    PIC  X(01).                         02250029
+022600         88  TX29-930-SHORT-CD-VALID   VALUE '0' '1' '2' '3'.     02260029
+022700     02  FILLER               PIC  X(77).                         02270060
+022800 01  TX29-960-RECORD REDEFINES LIS-CL-TRANSACTION.                02280027
+022900     02  FILLER                      PIC X(20).                   02290027
+023000     02  TX29-960-ENT-DESC.                                       02300029
+023100         03 TX29-960-ENT-TYP         PIC X(01).                   02310029
+023200         03 TX29-960-ENT-1           PIC X(03).                   02320029
+023300         03 TX29-960-ENT-2           PIC X(03).                   02330029
+023400     02  TX29-960-FIELD-NO           PIC X(03).                   02340029
+023500     02  TX29-960-DISB-CD            PIC 9(01).                   02350029
+023600     02  TX29-960-DISB-ID            PIC X(20).                   02360029
+023700     02  TX29-960-DISB-FRQ           PIC 9(01).                   02370029
+023800     02  TX29-960-DISB-FST-DT        PIC 9(06).                   02380029
+023900     02  TX29-960-DISB-AMT           PIC 9(09)V9(02).             02390029
+024000     02  TX29-960-DISB-RQ-BAL-FAC    PIC  X(01).                  02400029
+024100         88 TX29-960-DISB-RQ-BAL-FAC-VALID VALUE '+' '-'.         02410029
+024200     02  TX29-960-DISB-RQ-BAL-VAL    PIC  X(01).                  02420029
+024300         88  TX29-960-DISB-RQ-BAL-VAL-VALID  VALUE '0' '1' '2'    02430029
+024400                                                   '3' '4' '5' '6'02440028
+024500                                                   '7' '8' '9'.   02450028
+024600     02  FILLER                      PIC X(71).                   02460060
+024700 01  TX29-965-RECORD REDEFINES LIS-CL-TRANSACTION.                02470027
+024800     02  FILLER               PIC X(20).                          02480034
+024900     02  TX29-965-ENT-DESC.                                       02490033
+025000         03 TX29-965-ENT-TYP         PIC X(01).                   02500033
+025100         03 TX29-965-ENT-1           PIC X(03).                   02510033
+025200         03 TX29-965-ENT-2           PIC X(03).                   02520033
+025300     02  TX29-965-FIELD-NO    PIC 9(03).                          02530031
+025400     02  TX29-965-CHG-DISB-AMT          PIC 9(07)V9(02).          02540032
+025500     02  FILLER                PIC X(01).                         02550027
+025600     02  TX29-965-CHG-DISB-MONTH        PIC 9(02).                02560032
+025700         88  TX29-965-CHG-DISB-MONTH-VALID   VALUE 00 THRU 12.    02570032
+025800     02  FILLER                PIC X(01).                         02580027
+025900     02  TX29-965-CHG-DISB-DAY          PIC 9(02).                02590032
+026000     02  FILLER                PIC X(48).                         02600060
+026100 01  MONETARY-TXN-RECORD REDEFINES LIS-CL-TRANSACTION.            02610002
+026200     02  FILLER              PIC X(20).                           02620000
+026300     02  MON-PART-SOLD       PIC 9(7).                            02630034
+026400     02  MON-ENTITY   REDEFINES MON-PART-SOLD PIC X(7).           02640034
+026500*    02  MON-TYPE            PIC X.                               02650034
+026600*    02  MON-PART-SOLD       PIC 9(6).                            02660034
+026700     02  MON-PAID-TO-DATE    PIC 9(6).                            02670000
+026800     02  MON-ACTION-CODE     PIC X.                               02680000
+026900     02  MON-EFFECT-DATE     PIC 9(6).                            02690000
+027000     02  MON-PYMT-AMT-INT    PIC 9(10)V9(4).                      02700000
+027100     02  MON-PYMT-AMT-PRIN   PIC 9(11)V9(4).                      02710000
+027200     02  MON-DDA-INTERFACE   PIC X.                               02720000
+027300     02  MON-PTS-END-DATE    PIC 9(6).                            02730000
+027400     02  MON-PTS-CALC-CODE   PIC X.                               02740000
+027500     02  MON-PTS-FIAC-CODE   PIC X.                               02750000
+027600     02  MON-FEE-TYPE        PIC X.                               02760000
+027700     02  MON-FILLER          PIC X.                               02770000
+027800     02  FILLER              PIC X(30).                           02780060

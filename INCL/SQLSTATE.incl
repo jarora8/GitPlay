@@ -1,0 +1,32 @@
+ /*********************************************************************/00010000
+ /* SQLSTATE:                                                         */00020000
+ /*        COPYLIB-MEMBER FUER MODULE, DIE DB2 BRAUCHEN ABER KEINE    */00021000
+ /*        YYSTAT-AUFRUFE MACHEN, SONDERN DIESE ANS AUFRUFENDE        */00030000
+ /*        PROGRAMM ZURUECKGEBEN WOLLEN.                              */00040000
+ /*        OVERLAY FUER DIE SQLCA, WENN SQLSTATE ANGESPROCHEN WIRD.   */00041001
+ /*                                                                   */00050000
+ /*        A. SIGRIST, OCP2, MAERZ 93                                 */00060001
+ /*                                                                   */00070000
+ /*        ACHTUNG:                                                   */00080000
+ /*        ENTSPRICHT DER AUFTEILUNG DER SQLCA IM DB2-RELEASE 2.3!!!  */00090001
+ /*********************************************************************/00092000
+-                     2 SQLCAID CHAR(8),                                00093000
+                      2 SQLCABC FIXED(31) BINARY,                       00094000
+                      2 SQLCODE FIXED(31) BINARY,                       00095000
+                      2 SQLERRM CHAR(70) VAR,                           00096000
+                      2 SQLERRP CHAR(8),                                00097000
+                      2 SQLERRD(6) FIXED(31) BINARY,                    00098000
+                      2 SQLWARN,                                        00099000
+                        3 SQLWARN0 CHAR(1),                             00100000
+                        3 SQLWARN1 CHAR(1),                             00110000
+                        3 SQLWARN2 CHAR(1),                             00120000
+                        3 SQLWARN3 CHAR(1),                             00130000
+                        3 SQLWARN4 CHAR(1),                             00140000
+                        3 SQLWARN5 CHAR(1),                             00150000
+                        3 SQLWARN6 CHAR(1),                             00160000
+                        3 SQLWARN7 CHAR(1),                             00170000
+                      2 SQLEXT,                                         00180000
+                        3 SQLWARN8 CHAR(1),                             00190000
+                        3 SQLWARN9 CHAR(1),                             00200000
+                        3 SQLWARNA CHAR(1),                             00210000
+                        3 SQLSTATE CHAR(5);                             00220000

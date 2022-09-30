@@ -1,0 +1,585 @@
+      ******************************************************************
+      * DCLGEN TABLE(MLS.DLYSTRIP)                                     *
+      *        LIBRARY(LMFPROG.APPLDCL.U099074(MLSDLYST))              *
+      *        ACTION(REPLACE)                                         *
+      *        LANGUAGE(COBOL)                                         *
+      *        QUOTE                                                   *
+      * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+      ******************************************************************
+           EXEC SQL DECLARE MLS.DLYSTRIP TABLE
+           ( MLS_ACNT_REM                   DECIMAL(10, 0) NOT NULL,
+             MLS_BANK_NO                    DECIMAL(3, 0) NOT NULL,
+             MLS_BRANCH_NO                  DECIMAL(1, 0) NOT NULL,
+             MLS_ACCOUNT_NO                 DECIMAL(7, 0) NOT NULL,
+             MLS_INST                       DECIMAL(3, 0) NOT NULL,
+             MLS_CLS_CD                     DECIMAL(1, 0) NOT NULL,
+             MLS_PRIM_SOC_SEC               DECIMAL(9, 0) NOT NULL,
+             MLS_PRIMARY_NAME               CHAR(35) NOT NULL,
+             MLS_SECONDARY_NAME             CHAR(35) NOT NULL,
+             MLS_MAIL_ADRS_1                CHAR(35) NOT NULL,
+             MLS_MAIL_ADRS_2                CHAR(35) NOT NULL,
+             MLS_MAIL_CITY                  CHAR(21) NOT NULL,
+             MLS_MAIL_STATE                 CHAR(2) NOT NULL,
+             MLS_MAIL_ZIP                   CHAR(10) NOT NULL,
+             MLS_ORIGIN_DATE                DATE NOT NULL,
+             MLS_PRIN_BAL                   DECIMAL(11, 2) NOT NULL,
+             MLS_P_I_PYMT                   DECIMAL(11, 2) NOT NULL,
+             MLS_INT_RATE                   DECIMAL(7, 5) NOT NULL,
+             MLS_MAT_DATE                   DECIMAL(5, 0) NOT NULL,
+             MLS_BALLOON_DATE               DATE NOT NULL,
+             MLS_PROP_CD                    DECIMAL(3, 0) NOT NULL,
+             MLS_TIF_PTR                    CHAR(16) NOT NULL,
+             MLS_APPL_ADRS_1                CHAR(35) NOT NULL,
+             MLS_APPL_ADRS_2                CHAR(35) NOT NULL,
+             MLS_APPL_CITY                  CHAR(21) NOT NULL,
+             MLS_APPL_STATE                 CHAR(2) NOT NULL,
+             MLS_APPL_ZIP                   CHAR(10) NOT NULL,
+             MLS_CURR_OCC_CODE              CHAR(1) NOT NULL,
+             MLS_LN_TYPE                    DECIMAL(1, 0) NOT NULL,
+             MLS_PUR_CODE                   DECIMAL(3, 0) NOT NULL,
+             MLS_SMSA_CD                    DECIMAL(5, 0) NOT NULL,
+             MLS_T9_NOTES_DATE              DATE NOT NULL,
+             MLS_BRCH_MGR                   DECIMAL(5, 0) NOT NULL,
+             MLS_COUNS_CD                   CHAR(5) NOT NULL,
+             MLS_MTGOR_PD_POINT             DECIMAL(7, 2) NOT NULL,
+             MLS_INT_PD_YTD                 DECIMAL(11, 2) NOT NULL,
+             MLS_ESC_VAR                    DECIMAL(9, 2) NOT NULL,
+             MLS_UNAP_BAL_2                 DECIMAL(9, 2) NOT NULL,
+             MLS_UNAP_BAL_3                 DECIMAL(9, 2) NOT NULL,
+             MLS_UNAP_BAL_4                 DECIMAL(9, 2) NOT NULL,
+             MLS_UNAP_BAL_5                 DECIMAL(9, 2) NOT NULL,
+             MLS_DELQ_TYR_1                 DECIMAL(3, 0) NOT NULL,
+             MLS_DELQ_TYR_2                 DECIMAL(3, 0) NOT NULL,
+             MLS_DELQ_TYR_3                 DECIMAL(3, 0) NOT NULL,
+             MLS_DELQ_TYR_4                 DECIMAL(3, 0) NOT NULL,
+             MLS_DELQ_TYR_5                 DECIMAL(3, 0) NOT NULL,
+             MLS_DELQ_TYR_6                 DECIMAL(3, 0) NOT NULL,
+             MLS_DELQ_TYR_7                 DECIMAL(3, 0) NOT NULL,
+             MLS_DELQ_TYR_8                 DECIMAL(3, 0) NOT NULL,
+             MLS_DELQ_TYR_9                 DECIMAL(3, 0) NOT NULL,
+             MLS_DELQ_TYR_10                DECIMAL(3, 0) NOT NULL,
+             MLS_DELQ_TYR_11                DECIMAL(3, 0) NOT NULL,
+             MLS_DELQ_TYR_12                DECIMAL(3, 0) NOT NULL,
+             MLS_DELQ_LYR_1                 DECIMAL(3, 0) NOT NULL,
+             MLS_DELQ_LYR_2                 DECIMAL(3, 0) NOT NULL,
+             MLS_DELQ_LYR_3                 DECIMAL(3, 0) NOT NULL,
+             MLS_DELQ_LYR_4                 DECIMAL(3, 0) NOT NULL,
+             MLS_DELQ_LYR_5                 DECIMAL(3, 0) NOT NULL,
+             MLS_DELQ_LYR_6                 DECIMAL(3, 0) NOT NULL,
+             MLS_DELQ_LYR_7                 DECIMAL(3, 0) NOT NULL,
+             MLS_DELQ_LYR_8                 DECIMAL(3, 0) NOT NULL,
+             MLS_DELQ_LYR_9                 DECIMAL(3, 0) NOT NULL,
+             MLS_DELQ_LYR_10                DECIMAL(3, 0) NOT NULL,
+             MLS_DELQ_LYR_11                DECIMAL(3, 0) NOT NULL,
+             MLS_DELQ_LYR_12                DECIMAL(3, 0) NOT NULL,
+             MLS_PYMT_CYC                   DECIMAL(1, 0) NOT NULL,
+             MLS_INT_METH                   DECIMAL(3, 0) NOT NULL,
+             MLS_ACCRU_FLAG                 DECIMAL(1, 0) NOT NULL,
+             MLS_APPRA_VALUE                DECIMAL(9, 0) NOT NULL,
+             MLS_APPRA_DATE                 DECIMAL(5, 0) NOT NULL,
+             MLS_ORIGIN_BAL                 DECIMAL(11, 2) NOT NULL,
+             MLS_UNCOLL_LC                  DECIMAL(7, 2) NOT NULL,
+             MLS_PRIME_POINTER              DECIMAL(1, 0) NOT NULL,
+             MLS_ESC_BAL                    DECIMAL(11, 2) NOT NULL,
+             MLS_ESC_PYMT                   DECIMAL(9, 2) NOT NULL,
+             MLS_BILL_METHOD                DECIMAL(1, 0) NOT NULL,
+             MLS_PD_TO_DATE                 DATE NOT NULL,
+             MLS_COUPON_EXP                 DECIMAL(5, 0) NOT NULL,
+             MLS_DLA                        DATE NOT NULL,
+             MLS_TERM_CLOS                  DECIMAL(3, 0) NOT NULL,
+             MLS_FIRST_DUE_DT               DATE NOT NULL,
+             MLS_PRIME_OV_UN                DECIMAL(5, 3) NOT NULL,
+             MLS_PAYF_NOTIF_DT              DATE NOT NULL,
+             MLS_CENSUS_TRACT               DECIMAL(7, 2) NOT NULL,
+             MLS_SEC_MORT_CD                DECIMAL(1, 0) NOT NULL,
+             MLS_FEES                       DECIMAL(7, 2) NOT NULL,
+             MLS_NUMBER                     DECIMAL(6, 0) NOT NULL,
+             MLS_C_R_CAP_DEC                DECIMAL(7, 5) NOT NULL,
+             MLS_C_R_CAP_INC                DECIMAL(7, 5) NOT NULL,
+             MLS_C_P_I_CALC                 DECIMAL(3, 0) NOT NULL,
+             MLS_C_P_MAX_DEC                DECIMAL(7, 5) NOT NULL,
+             MLS_C_P_SBQT_MAX_D             DECIMAL(7, 5) NOT NULL,
+             MLS_C_P_MAX_INC                DECIMAL(7, 5) NOT NULL,
+             MLS_C_P_SBQT_MAX_I             DECIMAL(7, 5) NOT NULL,
+             MLS_C_P_MIN_DEC                DECIMAL(7, 5) NOT NULL,
+             MLS_C_P_SBQT_MIN_D             DECIMAL(7, 5) NOT NULL,
+             MLS_C_P_MIN_INC                DECIMAL(7, 5) NOT NULL,
+             MLS_C_P_SBQT_MIN_I             DECIMAL(7, 5) NOT NULL,
+             MLS_C_R_MAX_DEC                DECIMAL(7, 5) NOT NULL,
+             MLS_C_R_SBQT_MAX_D             DECIMAL(7, 5) NOT NULL,
+             MLS_C_R_MAX_INC                DECIMAL(7, 5) NOT NULL,
+             MLS_C_R_SBQT_MAX_I             DECIMAL(7, 5) NOT NULL,
+             MLS_C_R_MIN_DEC                DECIMAL(7, 5) NOT NULL,
+             MLS_C_R_SBQT_MIN_D             DECIMAL(7, 5) NOT NULL,
+             MLS_C_R_MIN_INC                DECIMAL(7, 5) NOT NULL,
+             MLS_C_R_SBQT_MIN_I             DECIMAL(7, 5) NOT NULL,
+             MLS_USR_01                     DECIMAL(6, 0) NOT NULL,
+             MLS_USR_02                     DECIMAL(6, 0) NOT NULL,
+             MLS_USR_03                     CHAR(1) NOT NULL,
+             MLS_USR_04                     CHAR(1) NOT NULL,
+             MLS_USR_05                     CHAR(1) NOT NULL,
+             MLS_USR_06                     CHAR(1) NOT NULL,
+             MLS_USR_07                     CHAR(2) NOT NULL,
+             MLS_USR_08                     CHAR(2) NOT NULL,
+             MLS_USR_09                     CHAR(2) NOT NULL,
+             MLS_USR_10                     CHAR(2) NOT NULL,
+             MLS_USR_11                     CHAR(3) NOT NULL,
+             MLS_USR_12                     CHAR(3) NOT NULL,
+             MLS_USR_13                     CHAR(3) NOT NULL,
+             MLS_USR_14                     CHAR(6) NOT NULL,
+             MLS_USR_15                     DECIMAL(7, 0) NOT NULL,
+             MLS_USR_16                     DECIMAL(7, 0) NOT NULL,
+             MLS_USR_17                     DECIMAL(9, 2) NOT NULL,
+             MLS_USR_18                     CHAR(15) NOT NULL,
+             MLS_USR_19                     CHAR(5) NOT NULL,
+             MLS_USR_20                     DECIMAL(3, 0) NOT NULL,
+             MLS_USR_21                     CHAR(10) NOT NULL,
+             MLS_USR_22                     CHAR(10) NOT NULL,
+             MLS_USR_23                     CHAR(6) NOT NULL,
+             MLS_USR_24                     CHAR(6) NOT NULL,
+             MLS_USR_25                     DECIMAL(7, 0) NOT NULL,
+             MLS_USR_26                     DECIMAL(7, 0) NOT NULL,
+             MLS_USR_27                     DECIMAL(7, 0) NOT NULL,
+             MLS_USR_28                     DECIMAL(7, 0) NOT NULL,
+             MLS_USR_29                     DECIMAL(7, 0) NOT NULL,
+             MLS_USR_30                     DECIMAL(7, 0) NOT NULL,
+             MLS_USR_31                     DECIMAL(11, 0) NOT NULL,
+             MLS_USR_32                     DECIMAL(11, 0) NOT NULL,
+             MLS_USR_33                     DECIMAL(11, 0) NOT NULL,
+             MLS_USR_34                     DECIMAL(11, 0) NOT NULL,
+             MLS_USR_35                     CHAR(1) NOT NULL,
+             MLS_USR_36                     CHAR(1) NOT NULL,
+             MLS_USR_37                     CHAR(1) NOT NULL,
+             MLS_USR_38                     CHAR(1) NOT NULL,
+             MLS_USR_39                     CHAR(2) NOT NULL,
+             MLS_USR_40                     CHAR(2) NOT NULL,
+             MLS_USR_41                     CHAR(2) NOT NULL,
+             MLS_USR_42                     CHAR(2) NOT NULL,
+             MLS_USR_43                     CHAR(3) NOT NULL,
+             MLS_USR_44                     CHAR(6) NOT NULL,
+             MLS_USR_45                     CHAR(6) NOT NULL,
+             MLS_USR_46                     CHAR(15) NOT NULL,
+             MLS_USR_47                     CHAR(15) NOT NULL,
+             MLS_USR_48                     CHAR(15) NOT NULL,
+             MLS_USR_49                     CHAR(15) NOT NULL,
+             MLS_USR_50                     CHAR(15) NOT NULL,
+             MLS_USR_51                     CHAR(35) NOT NULL,
+             MLS_USR_52                     CHAR(35) NOT NULL,
+             MLS_USR_53                     CHAR(35) NOT NULL,
+             MLS_SR_ACNT_TYP                DECIMAL(2, 0) NOT NULL,
+             MLS_SR_ACNT_ST                 DECIMAL(2, 0) NOT NULL,
+             MLS_SR_OCC_DATE                DATE NOT NULL,
+             MLS_SR_ASSOC_CD                CHAR(1) NOT NULL,
+             MLS_SR_SPC_CMNT                CHAR(2) NOT NULL,
+             MLS_T9_INCOME_LEVL             DECIMAL(9, 2) NOT NULL,
+             MLS_CR_INS_PYMT                DECIMAL(7, 2) NOT NULL,
+             MLS_CDC_TOTAL_PYMT             DECIMAL(11, 2) NOT NULL,
+             MLS_CDC_MAT_DATE               DATE NOT NULL,
+             MLS_CDC_NX_PYMT_DT             DATE NOT NULL,
+             MLS_ALT_CONTRACT               DECIMAL(6, 0) NOT NULL,
+             MLS_FASB_MO_ACCRU              DECIMAL(9, 2) NOT NULL,
+             MLS_DELQ_BAG                   DECIMAL(3, 0) NOT NULL,
+             MLS_W_FLAG                     DECIMAL(1, 0) NOT NULL,
+             MLS_L_FLAG                     DECIMAL(1, 0) NOT NULL,
+             MLS_CBR_RPT_STATUS             CHAR(1) NOT NULL,
+             MLS_CBR_EXPIRE_DT              DATE NOT NULL,
+             MLS_P_I_CHG_DATE               DATE NOT NULL,
+             MLS_RATE_CHG_DATE              DATE NOT NULL,
+             MLS_C_R_FIRST_CHG              DECIMAL(3, 0) NOT NULL,
+             MLS_C_R_INTERV_CHG             DECIMAL(3, 0) NOT NULL,
+             MLS_C_P_FIRST_CHG              DECIMAL(3, 0) NOT NULL,
+             MLS_C_P_INTERV_CHG             DECIMAL(3, 0) NOT NULL,
+             MLS_RECORD_TYPE                DECIMAL(2, 0) NOT NULL,
+             MLS_AUDIT_DATE                 DATE NOT NULL,
+             MLS_SETUP_DATE                 DATE NOT NULL,
+             MLS_ACH_BILL_DAY               DECIMAL(3, 0) NOT NULL,
+             MLS_PRIM_HOME_NO               DECIMAL(11, 0) NOT NULL,
+             MLS_PRIM_WORK_NO               DECIMAL(11, 0) NOT NULL,
+             MLS_SEC_HOME_NO                DECIMAL(11, 0) NOT NULL,
+             MLS_SEC_WORK_NO                DECIMAL(11, 0) NOT NULL,
+             MLS_SECOND_SSN                 DECIMAL(9, 0) NOT NULL,
+             MLS_CO_BOR_1_SSN               DECIMAL(9, 0) NOT NULL,
+             MLS_CO_BOR_2_SSN               DECIMAL(9, 0) NOT NULL,
+             MLS_CO_BOR_3_SSN               DECIMAL(9, 0) NOT NULL,
+             MLS_CO_BOR_4_SSN               DECIMAL(9, 0) NOT NULL,
+             MLS_CO_BOR_5_SSN               DECIMAL(9, 0) NOT NULL,
+             MLS_CO_BOR_6_SSN               DECIMAL(9, 0) NOT NULL,
+             MLS_CO_BOR_7_SSN               DECIMAL(9, 0) NOT NULL,
+             MLS_CO_BOR_8_SSN               DECIMAL(9, 0) NOT NULL,
+             MLS_CO_BOR_9_SSN               DECIMAL(9, 0) NOT NULL,
+             MLS_CO_BOR_10_SSN              DECIMAL(9, 0) NOT NULL,
+             MLS_GOV_ASST_AMT               DECIMAL(11, 2) NOT NULL,
+             MLS_ALT_OV_UN_1ST              DECIMAL(7, 5) NOT NULL,
+             MLS_STATE                      DECIMAL(3, 0) NOT NULL,
+             MLS_SALE_PRICE                 DECIMAL(9, 0) NOT NULL,
+             MLS_ORIG_LN_TO_VAL             DECIMAL(3, 0) NOT NULL,
+             MLS_CURR_LN_TO_VAL             DECIMAL(3, 0) NOT NULL,
+             MLS_USE_CD                     DECIMAL(1, 0) NOT NULL,
+             MLS_LC_CODE                    CHAR(1) NOT NULL,
+             MLS_LC_INDIC                   DECIMAL(1, 0) NOT NULL,
+             MLS_LC_FACTOR                  DECIMAL(5, 3) NOT NULL,
+             MLS_LATE_CHG_MIN               DECIMAL(7, 2) NOT NULL,
+             MLS_LATE_CHG_MAX               DECIMAL(7, 2) NOT NULL,
+             MLS_B_BLOCK                    DECIMAL(5, 0) NOT NULL,
+             MLS_LAST_PYMT_DT               DATE NOT NULL,
+             MLS_ORIG_RATE                  DECIMAL(7, 5) NOT NULL,
+             MLS_TOT_AMT_DUE                DECIMAL(13, 2) NOT NULL,
+             MLS_ACH_ADDL_PRIN              DECIMAL(13, 2) NOT NULL,
+             MLS_ACH_TRAN_ROUT              DECIMAL(9, 0) NOT NULL,
+             MLS_ACH_ACCT_NBR               CHAR(20) NOT NULL,
+             MLS_CTS_CIF_KEY                CHAR(25) NOT NULL,
+             MLS_ACH_ADDL_ESC               DECIMAL(13, 2) NOT NULL,
+             MLS_FLOOR                      DECIMAL(7, 5) NOT NULL,
+             MLS_CEILING                    DECIMAL(7, 5) NOT NULL,
+             MLS_LN_FREEZE_CD               CHAR(1) NOT NULL,
+             MLS_LN_FREEZE_DT               DATE NOT NULL,
+             MLS_DDA_FLAG                   CHAR(1) NOT NULL,
+             MLS_LN_BANK_NUM                DECIMAL(3, 0) NOT NULL,
+             MLS_LN_DDA_NUMBER              DECIMAL(15, 0) NOT NULL,
+             MLS_LN_BANK_ABA_NUM            DECIMAL(9, 0) NOT NULL,
+             MLS_2ND_ACCT_NO                DECIMAL(11, 0) NOT NULL,
+             MLS_CTS_AVAIL_BAL              DECIMAL(11, 2) NOT NULL,
+             MLS_TEASER_EXP_DT              DATE NOT NULL,
+             MLS_DRAW_END_DT                DATE NOT NULL,
+             MLS_PLEDGED_CD                 DECIMAL(1, 0) NOT NULL,
+             MLS_PROD_CD                    CHAR(5) NOT NULL,
+             MLS_INV_OWN_CD                 DECIMAL(1, 0) NOT NULL,
+             MLS_SEC_POS                    DECIMAL(2, 0) NOT NULL,
+             MLS_USR_54                     CHAR(1) NOT NULL,
+             MLS_COUNTY                     DECIMAL(3, 0) NOT NULL,
+             MLS_LPMI_FLAG                  CHAR(1) NOT NULL,
+             MLS_FHA_ALPHA                  CHAR(2) NOT NULL,
+             MLS_MERS_MIN_NBR               CHAR(18) NOT NULL,
+             MLS_MERS_ORG_ID                DECIMAL(7, 0) NOT NULL,
+             MLS_FIPS_ST_CNTY               DECIMAL(5, 0) NOT NULL,
+             MLS_MOM_IND                    CHAR(1) NOT NULL,
+             MLS_INV_ACNT                   CHAR(15) NOT NULL,
+             MLS_FHA_NUMER                  DECIMAL(13, 0) NOT NULL,
+             MLS_POOL_CERT_NUM              DECIMAL(14, 0) NOT NULL,
+             MLS_HMDA_TYPE                  CHAR(1) NOT NULL,
+             MLS_CLTL_CODE                  CHAR(3) NOT NULL,
+             MLS_FED_CALL_CD                CHAR(6) NOT NULL,
+             MLS_BKRUPT_FILED_DT            DATE NOT NULL,
+             MLS_LIT_TYPE                   DECIMAL(3, 0) NOT NULL,
+             MLS_ALT_TYPE_ID                CHAR(1) NOT NULL,
+             MLS_PCO_TAKEN                  DECIMAL(12, 2) NOT NULL,
+             MLS_MO_DEBT_EXPSE              DECIMAL(5, 0) NOT NULL,
+             MLS_DEF_PRIN_BAL               DECIMAL(11, 2) NOT NULL,
+             MLS_FBR_B_CHAP_1               DECIMAL(2, 0) NOT NULL,
+             MLS_FBR_B_CHAP_2               DECIMAL(2, 0) NOT NULL,
+             MLS_PAYOFF_FLAG                CHAR(1) NOT NULL,
+             MLS_PRIOR_ACNT_NBR             CHAR(20) NOT NULL,
+             MLS_DROP_CD                    CHAR(1) NOT NULL,
+             MLS_BRANCH                     DECIMAL(5, 0) NOT NULL,
+             MLS_CUR_APPR_BPO_DT            DECIMAL(5, 0) NOT NULL,
+             MLS_CUR_APPR_BPO_AMT           DECIMAL(9, 0) NOT NULL,
+             MLS_CUR_APPR_BPO_FLG           CHAR(1) NOT NULL,
+             MLS_PLAN_ID                    CHAR(5) NOT NULL,
+             MLS_INT_REC_BAL                DECIMAL(11, 2) NOT NULL,
+             MLS_SUB_TYPE                   DECIMAL(1, 0) NOT NULL,
+             MLS_FBR_B_DSCHG_1_DT           DATE NOT NULL,
+             MLS_POC_CHAPTER                CHAR(2) NOT NULL,
+             MLS_USR_FLD_235                DATE NOT NULL,
+             MLS_FBR_B_DSMSTD_1_DT          DATE NOT NULL,
+             MLS_FBR_B_RELIEF_1_DT          DATE NOT NULL,
+             MLS_BRPY_PLAN_REM_BAL          DECIMAL(13, 2) NOT NULL,
+             MLS_UPDATE_TS                  TIMESTAMP NOT NULL,
+             MLS_USR_FLD_233                DECIMAL(3, 0) NOT NULL,
+             MLS_PCO_DATE                   DATE NOT NULL,
+             MLS_DLY_INT_ACCRU              DECIMAL(7, 2) NOT NULL,
+             MLS_INDEX_NBR                  DECIMAL(6, 0) NOT NULL
+           ) END-EXEC.
+      ******************************************************************
+      * COBOL DECLARATION FOR TABLE MLS.DLYSTRIP                       *
+      ******************************************************************
+       01  MLS-DLYSTRIP.
+           10 MLS-ACNT-REM         PIC S9(10)V USAGE COMP-3.
+           10 MLS-BANK-NO          PIC S9(3)V USAGE COMP-3.
+           10 MLS-BRANCH-NO        PIC S9(1)V USAGE COMP-3.
+           10 MLS-ACCOUNT-NO       PIC S9(7)V USAGE COMP-3.
+           10 MLS-INST             PIC S9(3)V USAGE COMP-3.
+           10 MLS-CLS-CD           PIC S9(1)V USAGE COMP-3.
+           10 MLS-PRIM-SOC-SEC     PIC S9(9)V USAGE COMP-3.
+           10 MLS-PRIMARY-NAME     PIC X(35).
+           10 MLS-SECONDARY-NAME   PIC X(35).
+           10 MLS-MAIL-ADRS-1      PIC X(35).
+           10 MLS-MAIL-ADRS-2      PIC X(35).
+           10 MLS-MAIL-CITY        PIC X(21).
+           10 MLS-MAIL-STATE       PIC X(2).
+           10 MLS-MAIL-ZIP         PIC X(10).
+           10 MLS-ORIGIN-DATE      PIC X(10).
+           10 MLS-PRIN-BAL         PIC S9(9)V9(2) USAGE COMP-3.
+           10 MLS-P-I-PYMT         PIC S9(9)V9(2) USAGE COMP-3.
+           10 MLS-INT-RATE         PIC S9(2)V9(5) USAGE COMP-3.
+           10 MLS-MAT-DATE         PIC S9(5)V USAGE COMP-3.
+           10 MLS-BALLOON-DATE     PIC X(10).
+           10 MLS-PROP-CD          PIC S9(3)V USAGE COMP-3.
+           10 MLS-TIF-PTR          PIC X(16).
+           10 MLS-APPL-ADRS-1      PIC X(35).
+           10 MLS-APPL-ADRS-2      PIC X(35).
+           10 MLS-APPL-CITY        PIC X(21).
+           10 MLS-APPL-STATE       PIC X(2).
+           10 MLS-APPL-ZIP         PIC X(10).
+           10 MLS-CURR-OCC-CODE    PIC X(1).
+           10 MLS-LN-TYPE          PIC S9(1)V USAGE COMP-3.
+           10 MLS-PUR-CODE         PIC S9(3)V USAGE COMP-3.
+           10 MLS-SMSA-CD          PIC S9(5)V USAGE COMP-3.
+           10 MLS-T9-NOTES-DATE    PIC X(10).
+           10 MLS-BRCH-MGR         PIC S9(5)V USAGE COMP-3.
+           10 MLS-COUNS-CD         PIC X(5).
+           10 MLS-MTGOR-PD-POINT   PIC S9(5)V9(2) USAGE COMP-3.
+           10 MLS-INT-PD-YTD       PIC S9(9)V9(2) USAGE COMP-3.
+           10 MLS-ESC-VAR          PIC S9(7)V9(2) USAGE COMP-3.
+           10 MLS-UNAP-BAL-2       PIC S9(7)V9(2) USAGE COMP-3.
+           10 MLS-UNAP-BAL-3       PIC S9(7)V9(2) USAGE COMP-3.
+           10 MLS-UNAP-BAL-4       PIC S9(7)V9(2) USAGE COMP-3.
+           10 MLS-UNAP-BAL-5       PIC S9(7)V9(2) USAGE COMP-3.
+           10 MLS-DELQ-TYR-1       PIC S9(3)V USAGE COMP-3.
+           10 MLS-DELQ-TYR-2       PIC S9(3)V USAGE COMP-3.
+           10 MLS-DELQ-TYR-3       PIC S9(3)V USAGE COMP-3.
+           10 MLS-DELQ-TYR-4       PIC S9(3)V USAGE COMP-3.
+           10 MLS-DELQ-TYR-5       PIC S9(3)V USAGE COMP-3.
+           10 MLS-DELQ-TYR-6       PIC S9(3)V USAGE COMP-3.
+           10 MLS-DELQ-TYR-7       PIC S9(3)V USAGE COMP-3.
+           10 MLS-DELQ-TYR-8       PIC S9(3)V USAGE COMP-3.
+           10 MLS-DELQ-TYR-9       PIC S9(3)V USAGE COMP-3.
+           10 MLS-DELQ-TYR-10      PIC S9(3)V USAGE COMP-3.
+           10 MLS-DELQ-TYR-11      PIC S9(3)V USAGE COMP-3.
+           10 MLS-DELQ-TYR-12      PIC S9(3)V USAGE COMP-3.
+           10 MLS-DELQ-LYR-1       PIC S9(3)V USAGE COMP-3.
+           10 MLS-DELQ-LYR-2       PIC S9(3)V USAGE COMP-3.
+           10 MLS-DELQ-LYR-3       PIC S9(3)V USAGE COMP-3.
+           10 MLS-DELQ-LYR-4       PIC S9(3)V USAGE COMP-3.
+           10 MLS-DELQ-LYR-5       PIC S9(3)V USAGE COMP-3.
+           10 MLS-DELQ-LYR-6       PIC S9(3)V USAGE COMP-3.
+           10 MLS-DELQ-LYR-7       PIC S9(3)V USAGE COMP-3.
+           10 MLS-DELQ-LYR-8       PIC S9(3)V USAGE COMP-3.
+           10 MLS-DELQ-LYR-9       PIC S9(3)V USAGE COMP-3.
+           10 MLS-DELQ-LYR-10      PIC S9(3)V USAGE COMP-3.
+           10 MLS-DELQ-LYR-11      PIC S9(3)V USAGE COMP-3.
+           10 MLS-DELQ-LYR-12      PIC S9(3)V USAGE COMP-3.
+           10 MLS-PYMT-CYC         PIC S9(1)V USAGE COMP-3.
+           10 MLS-INT-METH         PIC S9(3)V USAGE COMP-3.
+           10 MLS-ACCRU-FLAG       PIC S9(1)V USAGE COMP-3.
+           10 MLS-APPRA-VALUE      PIC S9(9)V USAGE COMP-3.
+           10 MLS-APPRA-DATE       PIC S9(5)V USAGE COMP-3.
+           10 MLS-ORIGIN-BAL       PIC S9(9)V9(2) USAGE COMP-3.
+           10 MLS-UNCOLL-LC        PIC S9(5)V9(2) USAGE COMP-3.
+           10 MLS-PRIME-POINTER    PIC S9(1)V USAGE COMP-3.
+           10 MLS-ESC-BAL          PIC S9(9)V9(2) USAGE COMP-3.
+           10 MLS-ESC-PYMT         PIC S9(7)V9(2) USAGE COMP-3.
+           10 MLS-BILL-METHOD      PIC S9(1)V USAGE COMP-3.
+           10 MLS-PD-TO-DATE       PIC X(10).
+           10 MLS-COUPON-EXP       PIC S9(5)V USAGE COMP-3.
+           10 MLS-DLA              PIC X(10).
+           10 MLS-TERM-CLOS        PIC S9(3)V USAGE COMP-3.
+           10 MLS-FIRST-DUE-DT     PIC X(10).
+           10 MLS-PRIME-OV-UN      PIC S9(2)V9(3) USAGE COMP-3.
+           10 MLS-PAYF-NOTIF-DT    PIC X(10).
+           10 MLS-CENSUS-TRACT     PIC S9(5)V9(2) USAGE COMP-3.
+           10 MLS-SEC-MORT-CD      PIC S9(1)V USAGE COMP-3.
+           10 MLS-FEES             PIC S9(5)V9(2) USAGE COMP-3.
+           10 MLS-NUMBER           PIC S9(6)V USAGE COMP-3.
+           10 MLS-C-R-CAP-DEC      PIC S9(2)V9(5) USAGE COMP-3.
+           10 MLS-C-R-CAP-INC      PIC S9(2)V9(5) USAGE COMP-3.
+           10 MLS-C-P-I-CALC       PIC S9(3)V USAGE COMP-3.
+           10 MLS-C-P-MAX-DEC      PIC S9(2)V9(5) USAGE COMP-3.
+           10 MLS-C-P-SBQT-MAX-D   PIC S9(2)V9(5) USAGE COMP-3.
+           10 MLS-C-P-MAX-INC      PIC S9(2)V9(5) USAGE COMP-3.
+           10 MLS-C-P-SBQT-MAX-I   PIC S9(2)V9(5) USAGE COMP-3.
+           10 MLS-C-P-MIN-DEC      PIC S9(2)V9(5) USAGE COMP-3.
+           10 MLS-C-P-SBQT-MIN-D   PIC S9(2)V9(5) USAGE COMP-3.
+           10 MLS-C-P-MIN-INC      PIC S9(2)V9(5) USAGE COMP-3.
+           10 MLS-C-P-SBQT-MIN-I   PIC S9(2)V9(5) USAGE COMP-3.
+           10 MLS-C-R-MAX-DEC      PIC S9(2)V9(5) USAGE COMP-3.
+           10 MLS-C-R-SBQT-MAX-D   PIC S9(2)V9(5) USAGE COMP-3.
+           10 MLS-C-R-MAX-INC      PIC S9(2)V9(5) USAGE COMP-3.
+           10 MLS-C-R-SBQT-MAX-I   PIC S9(2)V9(5) USAGE COMP-3.
+           10 MLS-C-R-MIN-DEC      PIC S9(2)V9(5) USAGE COMP-3.
+           10 MLS-C-R-SBQT-MIN-D   PIC S9(2)V9(5) USAGE COMP-3.
+           10 MLS-C-R-MIN-INC      PIC S9(2)V9(5) USAGE COMP-3.
+           10 MLS-C-R-SBQT-MIN-I   PIC S9(2)V9(5) USAGE COMP-3.
+           10 MLS-USR-01           PIC S9(6)V USAGE COMP-3.
+           10 MLS-USR-02           PIC S9(6)V USAGE COMP-3.
+           10 MLS-USR-03           PIC X(1).
+           10 MLS-USR-04           PIC X(1).
+           10 MLS-USR-05           PIC X(1).
+           10 MLS-USR-06           PIC X(1).
+           10 MLS-USR-07           PIC X(2).
+           10 MLS-USR-08           PIC X(2).
+           10 MLS-USR-09           PIC X(2).
+           10 MLS-USR-10           PIC X(2).
+           10 MLS-USR-11           PIC X(3).
+           10 MLS-USR-12           PIC X(3).
+           10 MLS-USR-13           PIC X(3).
+           10 MLS-USR-14           PIC X(6).
+           10 MLS-USR-15           PIC S9(7)V USAGE COMP-3.
+           10 MLS-USR-16           PIC S9(7)V USAGE COMP-3.
+           10 MLS-USR-17           PIC S9(7)V9(2) USAGE COMP-3.
+           10 MLS-USR-18           PIC X(15).
+           10 MLS-USR-19           PIC X(5).
+           10 MLS-USR-20           PIC S9(3)V USAGE COMP-3.
+           10 MLS-USR-21           PIC X(10).
+           10 MLS-USR-22           PIC X(10).
+           10 MLS-USR-23           PIC X(6).
+           10 MLS-USR-24           PIC X(6).
+           10 MLS-USR-25           PIC S9(7)V USAGE COMP-3.
+           10 MLS-USR-26           PIC S9(7)V USAGE COMP-3.
+           10 MLS-USR-27           PIC S9(7)V USAGE COMP-3.
+           10 MLS-USR-28           PIC S9(7)V USAGE COMP-3.
+           10 MLS-USR-29           PIC S9(7)V USAGE COMP-3.
+           10 MLS-USR-30           PIC S9(7)V USAGE COMP-3.
+           10 MLS-USR-31           PIC S9(11)V USAGE COMP-3.
+           10 MLS-USR-32           PIC S9(11)V USAGE COMP-3.
+           10 MLS-USR-33           PIC S9(11)V USAGE COMP-3.
+           10 MLS-USR-34           PIC S9(11)V USAGE COMP-3.
+           10 MLS-USR-35           PIC X(1).
+           10 MLS-USR-36           PIC X(1).
+           10 MLS-USR-37           PIC X(1).
+           10 MLS-USR-38           PIC X(1).
+           10 MLS-USR-39           PIC X(2).
+           10 MLS-USR-40           PIC X(2).
+           10 MLS-USR-41           PIC X(2).
+           10 MLS-USR-42           PIC X(2).
+           10 MLS-USR-43           PIC X(3).
+           10 MLS-USR-44           PIC X(6).
+           10 MLS-USR-45           PIC X(6).
+           10 MLS-USR-46           PIC X(15).
+           10 MLS-USR-47           PIC X(15).
+           10 MLS-USR-48           PIC X(15).
+           10 MLS-USR-49           PIC X(15).
+           10 MLS-USR-50           PIC X(15).
+           10 MLS-USR-51           PIC X(35).
+           10 MLS-USR-52           PIC X(35).
+           10 MLS-USR-53           PIC X(35).
+           10 MLS-SR-ACNT-TYP      PIC S9(2)V USAGE COMP-3.
+           10 MLS-SR-ACNT-ST       PIC S9(2)V USAGE COMP-3.
+           10 MLS-SR-OCC-DATE      PIC X(10).
+           10 MLS-SR-ASSOC-CD      PIC X(1).
+           10 MLS-SR-SPC-CMNT      PIC X(2).
+           10 MLS-T9-INCOME-LEVL   PIC S9(7)V9(2) USAGE COMP-3.
+           10 MLS-CR-INS-PYMT      PIC S9(5)V9(2) USAGE COMP-3.
+           10 MLS-CDC-TOTAL-PYMT   PIC S9(9)V9(2) USAGE COMP-3.
+           10 MLS-CDC-MAT-DATE     PIC X(10).
+           10 MLS-CDC-NX-PYMT-DT   PIC X(10).
+           10 MLS-ALT-CONTRACT     PIC S9(6)V USAGE COMP-3.
+           10 MLS-FASB-MO-ACCRU    PIC S9(7)V9(2) USAGE COMP-3.
+           10 MLS-DELQ-BAG         PIC S9(3)V USAGE COMP-3.
+           10 MLS-W-FLAG           PIC S9(1)V USAGE COMP-3.
+           10 MLS-L-FLAG           PIC S9(1)V USAGE COMP-3.
+           10 MLS-CBR-RPT-STATUS   PIC X(1).
+           10 MLS-CBR-EXPIRE-DT    PIC X(10).
+           10 MLS-P-I-CHG-DATE     PIC X(10).
+           10 MLS-RATE-CHG-DATE    PIC X(10).
+           10 MLS-C-R-FIRST-CHG    PIC S9(3)V USAGE COMP-3.
+           10 MLS-C-R-INTERV-CHG   PIC S9(3)V USAGE COMP-3.
+           10 MLS-C-P-FIRST-CHG    PIC S9(3)V USAGE COMP-3.
+           10 MLS-C-P-INTERV-CHG   PIC S9(3)V USAGE COMP-3.
+           10 MLS-RECORD-TYPE      PIC S9(2)V USAGE COMP-3.
+           10 MLS-AUDIT-DATE       PIC X(10).
+           10 MLS-SETUP-DATE       PIC X(10).
+           10 MLS-ACH-BILL-DAY     PIC S9(3)V USAGE COMP-3.
+           10 MLS-PRIM-HOME-NO     PIC S9(11)V USAGE COMP-3.
+           10 MLS-PRIM-WORK-NO     PIC S9(11)V USAGE COMP-3.
+           10 MLS-SEC-HOME-NO      PIC S9(11)V USAGE COMP-3.
+           10 MLS-SEC-WORK-NO      PIC S9(11)V USAGE COMP-3.
+           10 MLS-SECOND-SSN       PIC S9(9)V USAGE COMP-3.
+           10 MLS-CO-BOR-1-SSN     PIC S9(9)V USAGE COMP-3.
+           10 MLS-CO-BOR-2-SSN     PIC S9(9)V USAGE COMP-3.
+           10 MLS-CO-BOR-3-SSN     PIC S9(9)V USAGE COMP-3.
+           10 MLS-CO-BOR-4-SSN     PIC S9(9)V USAGE COMP-3.
+           10 MLS-CO-BOR-5-SSN     PIC S9(9)V USAGE COMP-3.
+           10 MLS-CO-BOR-6-SSN     PIC S9(9)V USAGE COMP-3.
+           10 MLS-CO-BOR-7-SSN     PIC S9(9)V USAGE COMP-3.
+           10 MLS-CO-BOR-8-SSN     PIC S9(9)V USAGE COMP-3.
+           10 MLS-CO-BOR-9-SSN     PIC S9(9)V USAGE COMP-3.
+           10 MLS-CO-BOR-10-SSN    PIC S9(9)V USAGE COMP-3.
+           10 MLS-GOV-ASST-AMT     PIC S9(9)V9(2) USAGE COMP-3.
+           10 MLS-ALT-OV-UN-1ST    PIC S9(2)V9(5) USAGE COMP-3.
+           10 MLS-STATE            PIC S9(3)V USAGE COMP-3.
+           10 MLS-SALE-PRICE       PIC S9(9)V USAGE COMP-3.
+           10 MLS-ORIG-LN-TO-VAL   PIC S9(3)V USAGE COMP-3.
+           10 MLS-CURR-LN-TO-VAL   PIC S9(3)V USAGE COMP-3.
+           10 MLS-USE-CD           PIC S9(1)V USAGE COMP-3.
+           10 MLS-LC-CODE          PIC X(1).
+           10 MLS-LC-INDIC         PIC S9(1)V USAGE COMP-3.
+           10 MLS-LC-FACTOR        PIC S9(2)V9(3) USAGE COMP-3.
+           10 MLS-LATE-CHG-MIN     PIC S9(5)V9(2) USAGE COMP-3.
+           10 MLS-LATE-CHG-MAX     PIC S9(5)V9(2) USAGE COMP-3.
+           10 MLS-B-BLOCK          PIC S9(5)V USAGE COMP-3.
+           10 MLS-LAST-PYMT-DT     PIC X(10).
+           10 MLS-ORIG-RATE        PIC S9(2)V9(5) USAGE COMP-3.
+           10 MLS-TOT-AMT-DUE      PIC S9(11)V9(2) USAGE COMP-3.
+           10 MLS-ACH-ADDL-PRIN    PIC S9(11)V9(2) USAGE COMP-3.
+           10 MLS-ACH-TRAN-ROUT    PIC S9(9)V USAGE COMP-3.
+           10 MLS-ACH-ACCT-NBR     PIC X(20).
+           10 MLS-CTS-CIF-KEY      PIC X(25).
+           10 MLS-ACH-ADDL-ESC     PIC S9(11)V9(2) USAGE COMP-3.
+           10 MLS-FLOOR            PIC S9(2)V9(5) USAGE COMP-3.
+           10 MLS-CEILING          PIC S9(2)V9(5) USAGE COMP-3.
+           10 MLS-LN-FREEZE-CD     PIC X(1).
+           10 MLS-LN-FREEZE-DT     PIC X(10).
+           10 MLS-DDA-FLAG         PIC X(1).
+           10 MLS-LN-BANK-NUM      PIC S9(3)V USAGE COMP-3.
+           10 MLS-LN-DDA-NUMBER    PIC S9(15)V USAGE COMP-3.
+           10 MLS-LN-BANK-ABA-NUM  PIC S9(9)V USAGE COMP-3.
+           10 MLS-2ND-ACCT-NO      PIC S9(11)V USAGE COMP-3.
+           10 MLS-CTS-AVAIL-BAL    PIC S9(9)V9(2) USAGE COMP-3.
+           10 MLS-TEASER-EXP-DT    PIC X(10).
+           10 MLS-DRAW-END-DT      PIC X(10).
+           10 MLS-PLEDGED-CD       PIC S9(1)V USAGE COMP-3.
+           10 MLS-PROD-CD          PIC X(5).
+           10 MLS-INV-OWN-CD       PIC S9(1)V USAGE COMP-3.
+           10 MLS-SEC-POS          PIC S9(2)V USAGE COMP-3.
+           10 MLS-USR-54           PIC X(1).
+           10 MLS-COUNTY           PIC S9(3)V USAGE COMP-3.
+           10 MLS-LPMI-FLAG        PIC X(1).
+           10 MLS-FHA-ALPHA        PIC X(2).
+           10 MLS-MERS-MIN-NBR     PIC X(18).
+           10 MLS-MERS-ORG-ID      PIC S9(7)V USAGE COMP-3.
+           10 MLS-FIPS-ST-CNTY     PIC S9(5)V USAGE COMP-3.
+           10 MLS-MOM-IND          PIC X(1).
+           10 MLS-INV-ACNT         PIC X(15).
+           10 MLS-FHA-NUMER        PIC S9(13)V USAGE COMP-3.
+           10 MLS-POOL-CERT-NUM    PIC S9(14)V USAGE COMP-3.
+           10 MLS-HMDA-TYPE        PIC X(1).
+           10 MLS-CLTL-CODE        PIC X(3).
+           10 MLS-FED-CALL-CD      PIC X(6).
+           10 MLS-BKRUPT-FILED-DT  PIC X(10).
+           10 MLS-LIT-TYPE         PIC S9(3)V USAGE COMP-3.
+           10 MLS-ALT-TYPE-ID      PIC X(1).
+           10 MLS-PCO-TAKEN        PIC S9(10)V9(2) USAGE COMP-3.
+           10 MLS-MO-DEBT-EXPSE    PIC S9(5)V USAGE COMP-3.
+           10 MLS-DEF-PRIN-BAL     PIC S9(9)V9(2) USAGE COMP-3.
+           10 MLS-FBR-B-CHAP-1     PIC S9(2)V USAGE COMP-3.
+           10 MLS-FBR-B-CHAP-2     PIC S9(2)V USAGE COMP-3.
+           10 MLS-PAYOFF-FLAG      PIC X(1).
+           10 MLS-PRIOR-ACNT-NBR   PIC X(20).
+           10 MLS-DROP-CD          PIC X(1).
+           10 MLS-BRANCH           PIC S9(5)V USAGE COMP-3.
+           10 MLS-CUR-APPR-BPO-DT  PIC S9(5)V USAGE COMP-3.
+           10 MLS-CUR-APPR-BPO-AMT
+              PIC S9(9)V USAGE COMP-3.
+           10 MLS-CUR-APPR-BPO-FLG
+              PIC X(1).
+           10 MLS-PLAN-ID          PIC X(5).
+           10 MLS-INT-REC-BAL      PIC S9(9)V9(2) USAGE COMP-3.
+           10 MLS-SUB-TYPE         PIC S9(1)V USAGE COMP-3.
+           10 MLS-FBR-B-DSCHG-1-DT
+              PIC X(10).
+           10 MLS-POC-CHAPTER      PIC X(2).
+           10 MLS-USR-FLD-235      PIC X(10).
+           10 MLS-FBR-B-DSMSTD-1-DT
+              PIC X(10).
+           10 MLS-FBR-B-RELIEF-1-DT
+              PIC X(10).
+           10 MLS-BRPY-PLAN-REM-BAL
+              PIC S9(11)V9(2) USAGE COMP-3.
+           10 MLS-UPDATE-TS        PIC X(26).
+           10 MLS-USR-FLD-233      PIC S9(3)V USAGE COMP-3.
+           10 MLS-PCO-DATE         PIC X(10).
+           10 MLS-DLY-INT-ACCRU    PIC S9(5)V9(2) USAGE COMP-3.
+           10 MLS-INDEX-NBR        PIC S9(6)V USAGE COMP-3.
+      ******************************************************************
+      * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 281     *
+      ******************************************************************

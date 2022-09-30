@@ -1,0 +1,6 @@
+ dfsplm01: proc options(main);
+ /* dcl clpls01 entry;   */
+    put skip list(' DFSPLM01 Starting');
+    %include dfsincla;
+    put skip list(' DFSPLM01 Ending');
+ end dfsplm01;

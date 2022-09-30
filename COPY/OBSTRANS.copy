@@ -1,0 +1,47 @@
+000100*01  ONLINE-BULK-SORT-ENCLOSURES.                                 00010000
+000200     03  OBS-ENCL-BK-NO      PIC 999                     COMP-3.  00020000
+000300     03  OBS-ENCL-JOB-NAME.                                       00030000
+000400         05  OBS-ENCL-JN-CTL PIC X(4).                            00040000
+000500         05  OBS-ENCL-JN-NO  PIC 99.                              00050000
+000600     03  OBS-ENCL-ACCT-NO    PIC 9(15)                   COMP-3.  00060000
+000700     03  OBS-ENCL-ACT-VOL    PIC 9(7)                    COMP-3.  00070000
+000800     03  OBS-ENCL-ITEM-HANDLE PIC X.                              00080000
+000900     03  OBS-ENCL-STMT-DISP  PIC X.                               00090000
+001000     03  OBS-ENCL-CYCLE-CODE PIC 99.                              00100001
+001100     03  OBS-ENCL-STMT-IMAGE-IND                                  00110002
+001200                             PIC X.                               00120002
+001300     03  OBS-ENCL-LOC-CODE   PIC X.                               00130003
+001400     03  FILLER              PIC X(74)   VALUE SPACES.            00140004
+001500******************************************************************00150000
+001600*    USER ELEMENT ACTIVITY FILE                                  *00160000
+001700*    HOLDS ENCLOSURE COUNT FOR CYCLE STATEMENTS                  *00170000
+001800******************************************************************00180000
+001900                                                                  00190004
+002000 01  ONLINE-BULK-SORT-EXCEPTIONS.                                 00200000
+002100     03  OBS-EXCPT-BK-NO     PIC 999                     COMP-3.  00210000
+002200     03  OBS-EXCPT-JOB-NAME.                                      00220000
+002300         05  OBS-EXCPT-JN-CTL                                     00230000
+002400                             PIC X(4).                            00240000
+002500         05  OBS-EXCPT-JN-NO PIC 99.                              00250000
+002600     03  OBS-EXCPT-TYPE      PIC XX.                              00260000
+002700     03  OBS-EXCPT-ACCT-NO   PIC 9(13)                   COMP-3.  00270000
+002800     03  OBS-EXCPT-FIELD1    PIC 9(13)                   COMP-3.  00280000
+002900     03  OBS-EXCPT-FIELD2    PIC 9(13)                   COMP-3.  00290000
+003000     03  OBS-EXCPT-CNT       PIC 9(5)                    COMP-3.  00300000
+003100     03  FILLER              PIC X       VALUE SPACES.            00310000
+003200     03  OBS-EXCPT-DOC-NO    PIC 9(15)                   COMP-3.  00320000
+003300     03  OBS-EXCPT-REASON-CODE                                    00330004
+003400                             PIC X(2).                            00340004
+003500     03  OBS-EXCPT-PAR-NBR   PIC 9(15).                           00350004
+003600     03  OBS-EXCPT-TX-CODE   PIC 999                     COMP-3.  00360005
+003700     03  OBS-EXCPT-POS-REF-NBR                                    00370006
+003800                             PIC X(12).                           00380006
+003900     03  OBS-EXCPT-NIPS-SEQ-NBR                                   00390007
+004000                             PIC 9(7)                    COMP-3.  00400007
+004100     03  FILLER              PIC X(20)   VALUE SPACES.            00410008
+004110     03  OBS-EXCPT-ACCT-ID   PIC 9(03)                   COMP-3.  00411008
+004200******************************************************************00420000
+004300*    USER EXCEPTION ACTIVITY FILE                                *00430000
+004400*    HOLDS INFO ON EXCEPTION (POSTED AND UNPOSTED) ITEMS         *00440006
+004500******************************************************************00450000
+004600                                                                  00460004

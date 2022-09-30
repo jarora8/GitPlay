@@ -1,0 +1,61 @@
+000100*01  POSTED-DETAIL-TRANSACTION.                                   00010001
+000200     02  PDTX-BANK-NO            PIC 99.                          00020006
+000300     02  PDTX-ACCT-ID            PIC 999                 COMP-3.  00030006
+000400     02  PDTX-ACCT-NO            PIC 9(9)                COMP-3.  00040006
+000500     02  PDTX-TX-CODE            PIC 999                 COMP-3.  00050006
+000600     02  PDTX-TX-AMT             PIC S9(11)V99           COMP-3.  00060006
+000700     02  PDTX-TX-POST-DT         PIC S9(7)               COMP-3.  00070006
+000800     02  PDTX-TX-BACKDATE-DAYS   PIC S9(3)               COMP-3.  00080006
+000900     02  PDTX-SORT-KEY           PIC XX.                          00090006
+001000     02  PDTX-CHK-NO             PIC S9(11)              COMP-3.  00100006
+001100     02  PDTX-TX-DESC            PIC X(26).                       00110006
+001200     02  FILLER REDEFINES PDTX-TX-DESC.                           00120006
+001300         03  PDTX-CO-DESC        PIC X(16).                       00130006
+001400         03  PDTX-DESC           PIC X(10).                       00140006
+001500     02  PDTX-ITEM-COUNT         PIC S9(5)               COMP-3.  00150006
+001600     02  PDTX-BATCH-NO           PIC S9(5)               COMP-3.  00160006
+001700     02  PDTX-SEQ-NO             PIC S9(5)               COMP-3.  00170006
+001800     02  PDTX-OSB-ACCT-ID        PIC 999                 COMP-3.  00180006
+001900     02  PDTX-OSB-ACCT-NO        PIC 9(9)                COMP-3.  00190006
+002000     02  PDTX-ENCL-SW            PIC X.                           00200006
+002100     02  PDTX-INV-PAR-VALUE      PIC S9(9)               COMP-3.  00210006
+002200     02  PDTX-INV-CUSIP          PIC X(8).                        00220006
+002300     02  PDTX-TX-BALANCE         PIC S9(11)V99           COMP-3.  00230006
+002400     02  PDTX-POS-TX-DATE        PIC 9(7)                COMP-3.  00240006
+002500     02  PDTX-POS-REF-NBR        PIC X(12).                       00250006
+002600     02  PDTX-ACH-PAR-NBR        PIC 9(15).                       00260006
+002700     02  PDTX-ACH-STD-ENTRY-CLASS                                 00270006
+002800                                 PIC X(3).                        00280006
+002900     02  PDTX-DESC-FORMAT        PIC X(3).                        00290006
+003000         88  PDTX-FORMAT-BANKMATE    VALUE SPACES.                00300002
+003100         88  PDTX-FORMAT-FDR         VALUE 'FDR'.                 00310002
+003200         88  PDTX-FORMAT-DEFAULT     VALUE 'DEF'.                 00320002
+003300                                                                  00330005
+003400     02  PDTX-FOR-ATM-DESC       PIC X(50).                       00340006
+003500                                                                  00350005
+003600     02  PDTX-ATM-DESC REDEFINES PDTX-FOR-ATM-DESC.               00360006
+003700         03  PDTX-FOR-ATM-ADDR   PIC X(18).                       00370001
+003800         03  PDTX-FOR-ATM-CITY   PIC X(13).                       00380001
+003900         03  PDTX-FOR-ATM-ST     PIC XX.                          00390001
+004000         03  PDTX-FOR-ATM-INST   PIC X(14).                       00400001
+004100         03  FILLER              PIC X(3).                        00410006
+004200                                                                  00420005
+004300*  USE THIS LAYOUT WITH FORMAT 'FDR'                              00430005
+004400     02  PDTX-POS-DESC REDEFINES PDTX-FOR-ATM-DESC.               00440006
+004500         03  PDTX-POS-MERCH-DESC PIC X(27).                       00450001
+004600         03  PDTX-POS-MERCH-CITY PIC X(15).                       00460001
+004700         03  PDTX-POS-MERCH-ST   PIC X(2).                        00470004
+004800         03  FILLER              PIC X(6).                        00480006
+004900                                                                  00490005
+005000*  USE THIS LAYOUT WITH FORMAT 'DEF'                              00500005
+005100     02  PDTX-ACH-DESC REDEFINES PDTX-FOR-ATM-DESC.               00510006
+005200         03  PDTX-ACH-CO-NAME    PIC X(16).                       00520005
+005300         03  PDTX-ACH-CO-ENTRY-DESC                               00530005
+005400                                 PIC X(10).                       00540005
+005500         03  FILLER              PIC X(1).                        00550005
+005600         03  PDTX-ACH-INDIV-ID   PIC X(15).                       00560006
+005700         03  FILLER              PIC X(8).                        00570006
+005800                                                                  00580005
+005900     02  PDTX-ACH-DISC-DATA  PIC X(2).                            00590009
+006000     02  PDTX-FILLER         PIC X(41).                           00600009
+006100*  COPYBOOK LENGTH IS 225 BYTES                                   00610008

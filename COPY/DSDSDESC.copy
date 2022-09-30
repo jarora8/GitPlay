@@ -1,0 +1,29 @@
+000100*01  ACCT-ID-DESC-TABLE-1.                                        00010000
+000200     02  ACCT-ID-DESC-WK-1.                                       00020000
+000300         03  FILLER-01       PIC X(16)   VALUE 'DEMAND DEPOSIT  '.00030000
+000400         03  FILLER-02       PIC X(16)   VALUE '                '.00040000
+000500         03  FILLER-03       PIC X(16)   VALUE '                '.00050000
+000600         03  FILLER-04       PIC X(16)   VALUE 'SAVINGS         '.00060000
+000700         03  FILLER-05       PIC X(16)   VALUE '                '.00070000
+000800         03  FILLER-06       PIC X(16)   VALUE '                '.00080000
+000900         03  FILLER-07       PIC X(16)   VALUE '                '.00090000
+001000         03  FILLER-08       PIC X(16)   VALUE '                '.00100000
+001100         03  FILLER-09       PIC X(16)   VALUE '                '.00110000
+001200         03  FILLER-10       PIC X(16)   VALUE 'CHRISTMAS CLUB  '.00120000
+001300     02  FILLER REDEFINES ACCT-ID-DESC-WK-1.                      00130000
+001400         03  ACCT-ID-DESC-1  PIC X(16)   OCCURS 10 TIMES.         00140000
+001500     SKIP2                                                        00150000
+001600 01  ACCT-ID-DESC-TABLE-2.                                        00160000
+001700     02  ACCT-ID-DESC-WK-2.                                       00170000
+001800         03  FILLER-01       PIC X(4)    VALUE 'DDA '.            00180000
+001900         03  FILLER-02       PIC X(4)    VALUE '    '.            00190000
+002000         03  FILLER-03       PIC X(4)    VALUE '    '.            00200000
+002100         03  FILLER-04       PIC X(4)    VALUE 'SAV '.            00210000
+002200         03  FILLER-05       PIC X(4)    VALUE '    '.            00220000
+002300         03  FILLER-06       PIC X(4)    VALUE '    '.            00230000
+002400         03  FILLER-07       PIC X(4)    VALUE '    '.            00240000
+002500         03  FILLER-08       PIC X(4)    VALUE '    '.            00250000
+002600         03  FILLER-09       PIC X(4)    VALUE '    '.            00260000
+002700         03  FILLER-10       PIC X(4)    VALUE 'CC  '.            00270000
+002800     02  FILLER REDEFINES ACCT-ID-DESC-WK-2.                      00280000
+002900         03  ACCT-ID-DESC-2  PIC X(4)    OCCURS 10 TIMES.         00290000

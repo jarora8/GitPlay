@@ -1,0 +1,17 @@
+000100*01  ADVANCE-NOTICES.                                             00010000
+000200     02  AN-REPORT-CODE      PIC S999                    COMP-3.  00020000
+000300     02  AN-FILE-ID          PIC XXX.                             00030000
+000400     02  AN-BANK-NO          PIC 99.                              00040000
+000500     02  AN-ACCT-ID          PIC 999                     COMP-3.  00050000
+000600     02  AN-ACCT-NO          PIC 9(9)                    COMP-3.  00060000
+000700     02  AN-CRF-REC-ID       PIC X(11).                           00070000
+000800     02  AN-MESSAGE          PIC S999                    COMP-3.  00080000
+000900     02  AN-LOAN-BAL         PIC S9(9)V99                COMP-3.  00090000
+001000     02  AN-ADV-AMT          PIC S9(9)V99                COMP-3.  00100000
+001100     02  AN-UNUSED           PIC S9(9)V99                COMP-3.  00110000
+001200     02  AN-ADV-DT           PIC S9(7)                   COMP-3.  00120001
+001210     02  AN-PLAN             PIC X(02).                           00121002
+001300     02  FILLER              PIC X(99).                           00130002
+001400*  THIS LAYOUT WILL BE USED FOR REPORT CODE 93.                   00140000
+001500*        93 = NOTICES OF ADVANCE                                  00150000
+001600*  THIS RECORD IS 150 CHARACTERS                                  00160000

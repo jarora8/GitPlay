@@ -1,0 +1,33 @@
+      ******************************************************************
+      * DCLGEN TABLE(DSDS.SACXREF)                                     *
+      *        LIBRARY(LMFPROG.APPLDCL.U099079(DSDSSACX))              *
+      *        ACTION(REPLACE)                                         *
+      *        LANGUAGE(COBOL)                                         *
+      *        QUOTE                                                   *
+      * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+      ******************************************************************
+           EXEC SQL DECLARE DSDS.SACXREF TABLE
+           ( DSSAC_BANK_NBR                 DECIMAL(3, 0) NOT NULL,
+             DSSAC_ACCT_ID                  DECIMAL(3, 0) NOT NULL,
+             DSSAC_ACCT_NBR                 DECIMAL(9, 0) NOT NULL,
+             DSSAC_FA_BANK_NBR              DECIMAL(3, 0) NOT NULL,
+             DSSAC_FA_FILE_ID               CHAR(4) NOT NULL,
+             DSSAC_FA_FILE_KEY              CHAR(25) NOT NULL,
+             DSSAC_FA_BALANCE               DECIMAL(11, 2) NOT NULL,
+             DSSAC_LAST_UPDATE              TIMESTAMP NOT NULL
+           ) END-EXEC.
+      ******************************************************************
+      * COBOL DECLARATION FOR TABLE DSDS.SACXREF                       *
+      ******************************************************************
+       01  DSDS-SACXREF.
+           10 DSSAC-BANK-NBR       PIC S9(3)V USAGE COMP-3.
+           10 DSSAC-ACCT-ID        PIC S9(3)V USAGE COMP-3.
+           10 DSSAC-ACCT-NBR       PIC S9(9)V USAGE COMP-3.
+           10 DSSAC-FA-BANK-NBR    PIC S9(3)V USAGE COMP-3.
+           10 DSSAC-FA-FILE-ID     PIC X(4).
+           10 DSSAC-FA-FILE-KEY    PIC X(25).
+           10 DSSAC-FA-BALANCE     PIC S9(9)V9(2) USAGE COMP-3.
+           10 DSSAC-LAST-UPDATE    PIC X(26).
+      ******************************************************************
+      * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 8       *
+      ******************************************************************

@@ -1,0 +1,32 @@
+000100*01  NSF-ITEM-FILE-2.
+000200     03  NIP2-RECORD-KEY.
+000300         05  NIP2-BANK-NBR   PIC 99.
+000400         05  NIP2-ACCT-ID    PIC 999                     COMP-3.
+000500         05  NIP2-ACCT-NBR   PIC 9(9)                    COMP-3.
+000600     03  NIP2-ACCT-CLASS     PIC XXX.
+000700     03  NIP2-TYPE-CODE      PIC XX.
+               88  NIP2-PERSONAL-ACCT VALUE '01' '02' '08'
+                                            '40' '80' '81'
+                                            '82' '83' '84'.
+000800     03  NIP2-PRIM-OFF       PIC 9(5)                    COMP-3.
+000900     03  NIP2-OTHER-BUS      PIC X(60).
+001000     03  NIP2-DATE-OPENED    PIC 9(7)                    COMP-3.
+001100     03  NIP2-NO-APPR-OD-MTD PIC 999                     COMP-3.
+001200     03  NIP2-NO-APPR-OD-YTD PIC 999                     COMP-3.
+001300     03  NIP2-UNCOLL-MTD     PIC 999                     COMP-3.
+001400     03  NIP2-UNCOLL-YTD     PIC 999                     COMP-3.
+001500     03  NIP2-NSF-MTD        PIC 9(5)                    COMP-3.
+001600     03  NIP2-NSF-YTD        PIC 9(5)                    COMP-3.
+001700     03  NIP2-AVG-COLL-MO    PIC 9(9)                    COMP-3.
+001800     03  NIP2-AVG-COLL-QTR   PIC 9(9)                    COMP-3.
+001900     03  NIP2-DATE-LAST-DEP  PIC 9(7)                    COMP-3.
+002000     03  NIP2-AMT-LAST-DEP   PIC S9(11)V99               COMP-3.
+002100     03  NIP2-BAL-IF-ITEM-PD PIC S9(11)V99               COMP-3.
+002200     03  NIP2-CURR-BAL       PIC S9(11)V99               COMP-3.
+002300     03  NIP2-SC-ROUTINE     PIC 99.
+002400     03  NIP2-DISP-CODE      PIC X.
+002500         88  NIP2-EMPLOYEE               VALUES '8' '9'.
+002600     03  NIP2-OA-ACCT-IND    PIC X.
+002600     03  NIP2-SAC-IND        PIC X.
+002600     03  NIP2-REGE-SW        PIC X.
+002700     03  FILLER              PIC X(14).
