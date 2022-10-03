@@ -8,7 +8,7 @@ node {
   stage('Git to ISPW Synchronization')
   { 
 	gitToIspwIntegration app: 'TXX2', 
-	branchMapping:  '''*Play* => DEV1, per-branch''',
+	branchMapping:  '''*Local* => DEV1, per-branch''',
 	connectionId: 'cwc2-16196', 
 	credentialsId: 'cwezxx2-tso', 
 	gitCredentialsId: 'jaroragit', 
