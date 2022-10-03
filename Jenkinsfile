@@ -8,13 +8,14 @@ node {
   stage('Git to ISPW Synchronization')
   { 
 	gitToIspwIntegration app: 'PLAY', 
-	branchMapping:  '''*Play* => DEV1, per-branch''',
+	branchMapping:  '''*PLAY* => DEV1, per-branch''',
 	connectionId: 'cw09-47623', 
 	credentialsId: 'pinjxa0-tso', 
 	gitCredentialsId: 'jaroragit', 
-	gitRepoUrl: 'https://bitbucket.zeng.bmc.com/scm/~jarora/gitplay.git', 
+	gitRepoUrl: 'https://github.com/jarora8/GitPlay.git', 
 	runtimeConfig: 'tpzp', 
     stream: 'PLAY',
     ispwConfigPath: 'ispwconfig.yml' 
   }  
+  
 }
