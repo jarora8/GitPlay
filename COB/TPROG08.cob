@@ -7,7 +7,7 @@
 000700********************************************************
 000800* THIS PROGRAM IS A TRAINING PROGRAM 1
 000900*      WITH A LINK TO TSUBR08
-001000*       Test Remote Jenkins CWC2 2
+001000*       Test Remote Jenkins CWC2 3
 001100*      AND COPYLIBS   TCPYA08   (HEADER)
 001200*                     TCPYB08   (LINK AREA)
 001300* ======================================================
