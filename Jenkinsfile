@@ -17,5 +17,14 @@ node {
     stream: 'PLAY',
     ispwConfigPath: 'ispwconfig.yml' 
   }  
+	
+  stage('Build ISPW assignment')
+  {
+	ispwOperation connectionId: 'cw09-47623',
+	consoleLogResponseBody: true,
+	credentialsId: 'CES_Token',
+	ispwAction: 'BuildAssignment'
+	ispwRequestBody: '''buildAutomatically = true'''
+  }
   
 }
