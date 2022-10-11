@@ -7,7 +7,7 @@
 000700********************************************************
 000800* THIS PROGRAM IS A TRAINING PROGRAM
 000900*      WITH A LINK TO TSUBR04. Test
-001000* Test1
+001000* Test2
 001100*      AND COPYLIBS   TCPYA04   (HEADER)
 001200*                     TCPYB04   (LINK AREA)
 001300* ======================================================
