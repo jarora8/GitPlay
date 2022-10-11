@@ -24,7 +24,9 @@ node {
 	consoleLogResponseBody: true,
 	credentialsId: 'CES_Token',
 	ispwAction: 'BuildAssignment'
-	ispwRequestBody: '''buildAutomatically = true'''
+	ispwRequestBody: '''assignmentId=PLAY006906
+		            level=DEV1
+			    buildAutomatically = true'''
   }
   
 }
