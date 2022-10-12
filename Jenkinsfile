@@ -16,7 +16,7 @@ node {
 	runtimeConfig: 'TPZP', 
     stream: 'PLAY',
     ispwConfigPath: 'ispwconfig.yml' 
-  }  
+  } 
 	
   stage('Build ISPW assignment')
   {
@@ -24,9 +24,7 @@ node {
 	consoleLogResponseBody: true,
 	credentialsId: 'CES_Token',
 	ispwAction: 'BuildAssignment'
-	ispwRequestBody: '''assignmentId=PLAY006906
-		            level=DEV1
-			    buildAutomatically = true'''
+	ispwRequestBody: 'buildautomatically=true'
   }
   
 }
