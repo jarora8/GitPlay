@@ -13,7 +13,7 @@ node {
 	credentialsId: 'pinjxa0-tso', 
 	gitCredentialsId: 'jaroragit', 
 	gitRepoUrl: 'https://github.com/jarora8/GitPlay.git', 
-	runtimeConfig: 'isp8', 
+	runtimeConfig: 'ISP8', 
     stream: 'CWEZ',
     ispwConfigPath: 'ispwconfig.yml' 
   }  
